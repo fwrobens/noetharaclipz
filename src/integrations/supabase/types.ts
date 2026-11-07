@@ -14,13 +14,553 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      analysis_artifacts: {
+        Row: {
+          audio_events: Json
+          frame_paths: Json
+          model: string | null
+          project_id: string
+          provider: string | null
+          scenes: Json
+          summary: string | null
+          transcript: Json
+          updated_at: string
+          warnings: Json
+          waveform: Json
+        }
+        Insert: {
+          audio_events?: Json
+          frame_paths?: Json
+          model?: string | null
+          project_id: string
+          provider?: string | null
+          scenes?: Json
+          summary?: string | null
+          transcript?: Json
+          updated_at?: string
+          warnings?: Json
+          waveform?: Json
+        }
+        Update: {
+          audio_events?: Json
+          frame_paths?: Json
+          model?: string | null
+          project_id?: string
+          provider?: string | null
+          scenes?: Json
+          summary?: string | null
+          transcript?: Json
+          updated_at?: string
+          warnings?: Json
+          waveform?: Json
+        }
+        Relationships: [
+          {
+            foreignKeyName: "analysis_artifacts_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: true
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      brand_settings: {
+        Row: {
+          owner_id: string
+          settings: Json
+          updated_at: string
+        }
+        Insert: {
+          owner_id: string
+          settings?: Json
+          updated_at?: string
+        }
+        Update: {
+          owner_id?: string
+          settings?: Json
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      clips: {
+        Row: {
+          created_at: string
+          edit: Json
+          highlight_id: string
+          id: string
+          output_bytes: number
+          output_path: string | null
+          project_id: string
+          render_status: string
+          rendered_revision: number | null
+          revision: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          edit: Json
+          highlight_id: string
+          id?: string
+          output_bytes?: number
+          output_path?: string | null
+          project_id: string
+          render_status?: string
+          rendered_revision?: number | null
+          revision?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          edit?: Json
+          highlight_id?: string
+          id?: string
+          output_bytes?: number
+          output_path?: string | null
+          project_id?: string
+          render_status?: string
+          rendered_revision?: number | null
+          revision?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "clips_highlight_id_project_id_fkey"
+            columns: ["highlight_id", "project_id"]
+            isOneToOne: false
+            referencedRelation: "highlights"
+            referencedColumns: ["id", "project_id"]
+          },
+          {
+            foreignKeyName: "clips_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      conversation_messages: {
+        Row: {
+          content: string
+          created_at: string
+          highlight_ids: string[]
+          id: string
+          project_id: string
+          role: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          highlight_ids?: string[]
+          id?: string
+          project_id: string
+          role: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          highlight_ids?: string[]
+          id?: string
+          project_id?: string
+          role?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "conversation_messages_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      highlights: {
+        Row: {
+          category: string
+          created_at: string
+          end_time: number
+          evidence: Json
+          explanation: string
+          id: string
+          project_id: string
+          score: number
+          start_time: number
+          title: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          end_time: number
+          evidence?: Json
+          explanation: string
+          id?: string
+          project_id: string
+          score: number
+          start_time: number
+          title: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          end_time?: number
+          evidence?: Json
+          explanation?: string
+          id?: string
+          project_id?: string
+          score?: number
+          start_time?: number
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "highlights_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      processing_jobs: {
+        Row: {
+          attempts: number
+          cancel_requested: boolean
+          clip_id: string | null
+          created_at: string
+          dedupe_key: string
+          error: string | null
+          id: string
+          kind: string
+          lease_token: string | null
+          lease_until: string | null
+          message_id: number | null
+          payload: Json
+          progress: number
+          project_id: string
+          reserved_bytes: number
+          stage: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          attempts?: number
+          cancel_requested?: boolean
+          clip_id?: string | null
+          created_at?: string
+          dedupe_key: string
+          error?: string | null
+          id?: string
+          kind: string
+          lease_token?: string | null
+          lease_until?: string | null
+          message_id?: number | null
+          payload?: Json
+          progress?: number
+          project_id: string
+          reserved_bytes?: number
+          stage?: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          attempts?: number
+          cancel_requested?: boolean
+          clip_id?: string | null
+          created_at?: string
+          dedupe_key?: string
+          error?: string | null
+          id?: string
+          kind?: string
+          lease_token?: string | null
+          lease_until?: string | null
+          message_id?: number | null
+          payload?: Json
+          progress?: number
+          project_id?: string
+          reserved_bytes?: number
+          stage?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "processing_jobs_clip_id_project_id_fkey"
+            columns: ["clip_id", "project_id"]
+            isOneToOne: false
+            referencedRelation: "clips"
+            referencedColumns: ["id", "project_id"]
+          },
+          {
+            foreignKeyName: "processing_jobs_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          display_name: string
+          id: string
+          preferences: Json
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string
+          id: string
+          preferences?: Json
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string
+          id?: string
+          preferences?: Json
+        }
+        Relationships: []
+      }
+      projects: {
+        Row: {
+          created_at: string
+          deleted_at: string | null
+          folder: string
+          id: string
+          instructions: string
+          owner_id: string
+          request_id: string
+          source_platform: string
+          source_url: string | null
+          status: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          deleted_at?: string | null
+          folder?: string
+          id?: string
+          instructions: string
+          owner_id: string
+          request_id: string
+          source_platform?: string
+          source_url?: string | null
+          status?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          deleted_at?: string | null
+          folder?: string
+          id?: string
+          instructions?: string
+          owner_id?: string
+          request_id?: string
+          source_platform?: string
+          source_url?: string | null
+          status?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      provider_usage: {
+        Row: {
+          created_at: string
+          estimated_cost: number
+          id: string
+          input_tokens: number
+          job_id: string
+          model: string
+          output_tokens: number
+          project_id: string
+          provider: string
+          request_key: string
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          estimated_cost?: number
+          id?: string
+          input_tokens?: number
+          job_id: string
+          model: string
+          output_tokens?: number
+          project_id: string
+          provider: string
+          request_key: string
+          status?: string
+        }
+        Update: {
+          created_at?: string
+          estimated_cost?: number
+          id?: string
+          input_tokens?: number
+          job_id?: string
+          model?: string
+          output_tokens?: number
+          project_id?: string
+          provider?: string
+          request_key?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "provider_usage_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "processing_jobs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "provider_usage_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      videos: {
+        Row: {
+          byte_size: number
+          created_at: string
+          duration: number | null
+          filename: string
+          fps: number | null
+          has_audio: boolean | null
+          height: number | null
+          id: string
+          mime_type: string
+          playback_path: string | null
+          project_id: string
+          source_hash: string | null
+          source_path: string
+          status: string
+          thumbnail_path: string | null
+          width: number | null
+        }
+        Insert: {
+          byte_size: number
+          created_at?: string
+          duration?: number | null
+          filename: string
+          fps?: number | null
+          has_audio?: boolean | null
+          height?: number | null
+          id?: string
+          mime_type: string
+          playback_path?: string | null
+          project_id: string
+          source_hash?: string | null
+          source_path: string
+          status?: string
+          thumbnail_path?: string | null
+          width?: number | null
+        }
+        Update: {
+          byte_size?: number
+          created_at?: string
+          duration?: number | null
+          filename?: string
+          fps?: number | null
+          has_audio?: boolean | null
+          height?: number | null
+          id?: string
+          mime_type?: string
+          playback_path?: string | null
+          project_id?: string
+          source_hash?: string | null
+          source_path?: string
+          status?: string
+          thumbnail_path?: string | null
+          width?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "videos_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: true
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      cancel_job: { Args: { jid: string }; Returns: undefined }
+      export_clip: {
+        Args: { cid: string; expected_revision: number }
+        Returns: string
+      }
+      finalize_upload: { Args: { pid: string }; Returns: string }
+      pipeline_health: { Args: never; Returns: Json }
+      prepare_upload: {
+        Args: {
+          byte_size: number
+          filename: string
+          instructions: string
+          mime_type: string
+          request_id: string
+        }
+        Returns: Json
+      }
+      reserve_inference: {
+        Args: {
+          daily_limit: number
+          jid: string
+          model: string
+          request_key: string
+          token: string
+        }
+        Returns: string
+      }
+      retry_job: { Args: { jid: string }; Returns: string }
+      save_clip: {
+        Args: { edit: Json; expected_revision?: number; hid: string }
+        Returns: string
+      }
+      set_deleted: {
+        Args: { deleted: boolean; pid: string }
+        Returns: undefined
+      }
+      worker_claim: { Args: never; Returns: Json }
+      worker_finish_analysis: {
+        Args: {
+          artifacts: Json
+          highlights: Json
+          jid: string
+          metadata: Json
+          token: string
+        }
+        Returns: undefined
+      }
+      worker_finish_render: {
+        Args: { bytes: number; jid: string; path: string; token: string }
+        Returns: undefined
+      }
+      worker_heartbeat: {
+        Args: { ai_ready: boolean; detail: string }
+        Returns: undefined
+      }
+      worker_tick: {
+        Args: {
+          detail: string
+          error_message?: string
+          jid: string
+          pct: number
+          state: string
+          token: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
       [_ in never]: never
