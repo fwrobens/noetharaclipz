@@ -2,7 +2,9 @@
 
 ## Release gate
 
-**Blocked. Do not merge or publish.** The environment has no Supabase worker credential, Gemini API key, or verified AI Studio quota/tier configuration. Live Gemini access/inference, a real automatically AI-selected highlight, and worker-produced private Storage download have not been verified. No mock result was used to pass that gate.
+**Blocked. Do not merge or publish.** Configured Personal Vault entries are still unbound in this running instance. See the [follow-up runtime/provider report](provider-readiness.md) for current configuration evidence and local multimodal results. Live Gemini access/inference, a real automatically AI-selected highlight, and worker-produced private Storage download have not been verified. No mock result was used to pass that gate.
+
+The follow-up also passes modern/legacy key transport contract tests, paginated cleanup regression, graceful shutdown/recovery checks, and single-use PKCE callback tests. Real local SmolVLM2 video description succeeded, but is not accepted as AI highlight selection. The full acceptance gate remains blocked.
 
 ## Executed checks
 
@@ -11,9 +13,9 @@
 | `npm run build`                                          | Passed; existing Nitro/Cloudflare hosting preset retained                                               |
 | Bun 1.4.4 frozen install, TypeScript, tests, build, lint | Passed with the existing Bun lockfile synchronized                                                      |
 | `npx tsc --noEmit`                                       | Passed                                                                                                  |
-| `npm test`                                               | 12 tests passed                                                                                         |
+| `npm test`                                               | 15 tests passed                                                                                         |
 | `npm run lint`                                           | 0 errors; 11 Fast Refresh warnings, including existing UI-library warnings                              |
-| Worker tests, with `NC_SAMPLE_VIDEO`                     | 24 tests passed, including actual authorized-footage processing                                         |
+| Worker tests, with `NC_SAMPLE_VIDEO`                     | 37 tests passed, including actual authorized-footage processing                                         |
 | `ruff check`                                             | Passed                                                                                                  |
 | Hosted SQL `supabase/tests/access_and_jobs.sql`          | All transactional ownership, render, cancellation, lease, and idempotency assertions passed             |
 | Browser email/password login                             | Passed with two provisioned temporary, preconfirmed QA accounts; confirmation email delivery not tested |
@@ -24,6 +26,7 @@
 | Delete/restore                                           | Both persisted through navigation and refresh                                                           |
 | Brand Kit                                                | Saved caption color survived refresh                                                                    |
 | Sign-out                                                 | Subsequent protected navigation redirected to sign-in                                                   |
+| Follow-up Auth callback browser checks                   | Protected-route redirect, missing/invalid PKCE code handling, no unhandled browser errors passed        |
 | Responsive                                               | No horizontal overflow on tested home/workspace/editor views at 390, 768, and 1440 px                   |
 | Anonymous database access                                | Denied (401)                                                                                            |
 | Cross-user projects/clips                                | Hidden by RLS                                                                                           |

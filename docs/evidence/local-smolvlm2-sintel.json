@@ -1,0 +1,23 @@
+{
+  "provider": "local-smolvlm2",
+  "model": "HuggingFaceTB/SmolVLM2-500M-Video-Instruct",
+  "revision": "7b375e1b73b11138ff12fe22c8f2822d8fe03467",
+  "source_interval": [
+    11,
+    21
+  ],
+  "video_tensor_shape": [
+    1,
+    4,
+    3,
+    512,
+    512
+  ],
+  "input_tokens": 372,
+  "output_tokens": 25,
+  "description": " A character with red hair is seen running through a snowy alleyway, while another character with a sword is fighting nearby.",
+  "inference_seconds": 11.41,
+  "selection_method": "none: visual description only; not an AI-selected or heuristic highlight",
+  "hosted_inference": false,
+  "quality": "Not validated for automatic highlight selection"
+}

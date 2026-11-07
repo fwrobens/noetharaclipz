@@ -9,7 +9,7 @@ Python 3.11–3.13, uv, FFmpeg/FFprobe with libx264, AAC and libass, and an unpr
 Supply these through secure environment settings or an ignored local secret file loaded by your shell/service manager:
 
 - `SUPABASE_URL`: the existing project URL above.
-- `SUPABASE_SERVICE_ROLE_KEY`: a server-only worker credential from that project.
+- `SUPABASE_SECRET_KEY` (preferred) or `SUPABASE_SERVICE_ROLE_KEY`: a server-only worker credential from that project. Either name accepts a modern `sb_secret_` key; the legacy alias also supports a `service_role` JWT. Modern keys are sent only in `apikey`; JWT credentials use `apikey` and `Authorization: Bearer`. Never use a publishable key or user access token as the worker credential.
 - `GEMINI_API_KEY`: from a genuinely free, billing-disabled AI Studio project eligible for development use.
 - `GEMINI_FREE_TIER_VERIFIED=true`: only after checking that project's tier.
 - `GEMINI_VERIFIED_RPM`, `GEMINI_VERIFIED_RPD`, `GEMINI_VERIFIED_TPM`: actual account limits shown in AI Studio; zero disables inference.
@@ -35,7 +35,7 @@ uv run python ../scripts/check_worker.py
 uv run python -m noetharaclipz.runner
 ```
 
-The check command verifies the worker's database access and model metadata access, but performs no generation. With missing AI credentials, preprocessing and transcription can still run when the Supabase worker credential is supplied; the job then fails explicitly before any inference. Without the worker credential, queued jobs remain waiting.
+The check command checks database access and Gemini model metadata independently, but performs no generation. A false verification flag does not prevent an explicitly requested model metadata lookup when a key is bound, and is never automatically changed to true. Metadata does not establish free-tier/account eligibility or quota. With missing AI credentials, preprocessing and transcription can still run when the Supabase worker credential is supplied; the job then fails explicitly before any inference. Without the worker credential, queued jobs remain waiting.
 
 ## Complete the release gate
 

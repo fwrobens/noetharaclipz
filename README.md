@@ -12,7 +12,7 @@ AI video clipping, continuing the existing Lovable/TanStack Start frontend. The 
 
 The backend, real media worker, authentication, resumable upload, real player, persistent editor, and asynchronous MP4 export integration are implemented. Build/type checks, media integration tests, browser upload/playback/persistence tests, and hosted ownership/queue tests pass.
 
-**The complete AI-to-private-download acceptance test is blocked.** This environment has no worker service credential or Gemini key/account quota configuration. No live Gemini inference or hosted render completion has been claimed. The development branch must remain unmerged and unpublished until that acceptance test passes.
+**The complete AI-to-private-download acceptance test is blocked.** The user has configured Personal Vault entries, but the current running instance reports no environment configuration or injected secret bindings. Worker/API authentication cannot be validated until those bindings are applied. The intentional false Gemini verification flag remains a hard inference gate. No live Gemini inference or hosted render completion has been claimed. The development branch must remain unmerged and unpublished until that acceptance test passes.
 
 See [verification evidence](docs/verification.md), [architecture](docs/architecture.md), and [worker setup](docs/worker-setup.md).
 
