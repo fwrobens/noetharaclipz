@@ -124,3 +124,21 @@ def test_playlist_cannot_open_local_or_remote_resources(tmp_path):
     )
     with pytest.raises(RuntimeError, match="Media operation failed"):
         probe(playlist)
+
+
+def test_cancellation_interrupts_an_actual_subprocess():
+    import sys
+    from noetharaclipz.media import Cancelled
+
+    def cancel():
+        raise Cancelled("User cancelled")
+
+    with pytest.raises(Cancelled):
+        run([sys.executable, "-c", "import time; time.sleep(20)"], timeout=2, tick=cancel)
+
+
+def test_subprocess_deadline_is_enforced():
+    import sys
+
+    with pytest.raises(TimeoutError):
+        run([sys.executable, "-c", "import time; time.sleep(20)"], timeout=0.1)
