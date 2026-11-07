@@ -1,0 +1,88 @@
+{
+  "date": "2026-11-07",
+  "project": "zxdnjnsghdnviflahvry",
+  "user_authorized_narrow_exception": true,
+  "migration": "20261107201038_worker_heartbeat_singleton.sql",
+  "hosted_migration_applied": false,
+  "blocker": "Supabase SQL/migration tools are not exposed in this chat; no administrative SQL credential is bound",
+  "local_postgres": {
+    "passed": true,
+    "hosted_database_changed": false,
+    "image": "postgres@sha256:ff87138949ad9a46f32ff23bd6852b52ce024a13dffe9b4087be98292cdd3b4f",
+    "postgres": "PostgreSQL 17.11 (Debian 17.11-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit",
+    "checks": [
+      "old unbounded update reproduced locally",
+      "new predicate addresses only id=true",
+      "function OID/owner/ACL/signature/security/search_path/execution attributes/comment preserved",
+      "migration repeatable",
+      "service-role invocation succeeds and detail is bounded",
+      "worker JWT authorization guard preserved",
+      "anonymous and browser roles denied"
+    ]
+  },
+  "live_heartbeat_before_repair": {
+    "project": "zxdnjnsghdnviflahvry",
+    "hosted_inference_requested": false,
+    "authorized_worker": {
+      "http_status": 400,
+      "code": "21000",
+      "message": "UPDATE requires a WHERE clause"
+    },
+    "unauthorized_rpc_statuses": {
+      "anonymous": {
+        "worker_heartbeat": 401,
+        "worker_claim": 401,
+        "worker_tick": 401
+      },
+      "authenticated": {
+        "worker_heartbeat": 403,
+        "worker_claim": 403,
+        "worker_tick": 403
+      }
+    },
+    "pipeline_health": {
+      "detail": null,
+      "online": null,
+      "ai_ready": false,
+      "max_bytes": 45000000,
+      "max_seconds": 300
+    },
+    "passed": false,
+    "temporary_account_removed": true
+  },
+  "live_queue_baseline_recheck": {
+    "checks": {
+      "shutdown_preserves_live_recoverable_lease": true,
+      "global_concurrency_guard": true,
+      "expired_job_reclaimed_with_new_token": true,
+      "stale_token_rejected": true,
+      "claimed_job_cancellation_acknowledged": true,
+      "retry_and_finished_job_guard": true
+    },
+    "hosted_generation_requested": false,
+    "scope": "Live HTTP queue control tests; not video or AI acceptance",
+    "status": "passed",
+    "cleanup": "all test objects/projects/accounts removed",
+    "elapsed_seconds": 125.34
+  },
+  "backend_recovery_unit_recheck": {
+    "passed": 12,
+    "elapsed_seconds": 0.16
+  },
+  "drift_checks": {
+    "existing_six_migrations_match_github": true,
+    "main": "d81aa69edf2e5f81faf7c6fea7cd2b9d135bfeb5",
+    "starting_pr_head": "b6c69bb1b1845ebfb5585e4da32778f124c423f9",
+    "live_function_catalog": "unavailable without SQL tools",
+    "live_migration_ledger": "unavailable without SQL tools",
+    "lovable": {
+      "http_status": 200,
+      "host": "noetharaclipz.lovable.app",
+      "homepage_heading_present": true,
+      "deployment_commit": "not exposed; Lovable project integration unavailable"
+    }
+  },
+  "merged": false,
+  "published": false,
+  "paid_services_enabled": false
+}
