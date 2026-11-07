@@ -52,4 +52,10 @@ Do not provision paid hosting, enable billing, change unrelated projects, or pub
 
 ## Repeatable browser acceptance
 
-`scripts/acceptance.py` performs the actual browser flow and refuses to pass without a completed Gemini usage record, real highlights, a stored output, and a downloaded/decoded MP4. It has no provider fixtures. Install the pinned dependencies in `scripts/requirements-e2e.txt` in a test environment with Chromium, then set `NC_TEST_EMAIL`, `NC_TEST_PASSWORD`, and `NC_SAMPLE_VIDEO` through secure environment configuration. Set `NC_BASE_URL` for the development app and optionally `CHROMIUM_PATH` for a system browser. Run `python scripts/acceptance.py` only with the authorized worker/free AI account ready. It has been syntax checked here; its live AI acceptance run is blocked by the missing credentials described above.
+`scripts/acceptance.py` performs the actual browser flow and refuses to pass without a completed Gemini usage record, real highlights, a stored output, and a downloaded/decoded MP4. It has no provider fixtures. Install the pinned dependencies in `scripts/requirements-e2e.txt` in a test environment with Chromium, then set `NC_TEST_EMAIL`, `NC_TEST_PASSWORD`, and `NC_SAMPLE_VIDEO` through secure environment configuration. Set `NC_BASE_URL` for the development app and optionally `CHROMIUM_PATH` for a system browser. Run `python scripts/acceptance.py` only with the authorized worker/free AI account ready. Its live AI acceptance run remains blocked by unverified free-tier eligibility and the newly exposed heartbeat defect; see the [credential-backed report](credential-backed-verification.md).
+
+`scripts/check_live_pipeline.py` separately verifies real worker preprocessing,
+transcription, browser editing, manual-interval rendering, private download and
+cross-user isolation while requiring the hosted inference flag to stay false.
+It creates and cleans up temporary QA accounts and reports the heartbeat failure
+with a nonzero exit status. It never replaces the complete AI acceptance gate.

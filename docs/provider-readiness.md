@@ -1,6 +1,21 @@
 # Follow-up: credentials, provider eligibility, and real video verification
 
-## Current task environment
+## Credential-equipped follow-up
+
+The [new credential-backed verification](credential-backed-verification.md)
+supersedes the runtime-binding, model-access and private-download blockers below.
+The configured environment now validates the real Supabase worker credential,
+Gemini model metadata and NVIDIA NVCF authentication. Independent live media
+processing and a browser private-MP4 download succeeded using a manual QA
+interval. The false Gemini flag remains unchanged; free account eligibility and
+automatic AI selection are still unverified. The live database heartbeat RPC
+also requires the [authorized scoped function correction](heartbeat-repair.md),
+which is locally verified and awaits hosted SQL access.
+
+The remaining sections preserve the earlier task's observations and must not be
+read as a current absence of credentials in the configured environment.
+
+## Earlier implementation task environment
 
 The user reports that all nine requested variables are saved in Codex Cloud Personal Vault. Fresh shell commands and the managed runtime status still show **no bindings in this running instance**:
 
