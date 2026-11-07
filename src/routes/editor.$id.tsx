@@ -63,7 +63,7 @@ function Editor() {
     setTimeout(() => {
       const notes: string[] = [];
       const num = t.match(/(\d+)\s*(s|sec|second)/);
-      if (num) { const n = Math.min(+num[1], max); setTrim([0, n]); notes.push(`trimmed to ${n}s`); }
+      if (num) { const n = Math.min(+(num[1] ?? 0), max); setTrim([0, n]); notes.push(`trimmed to ${n}s`); }
       if (t.includes("subtitle") || t.includes("caption")) { setCaptions(true); setCapStyle(t.includes("animated") ? "Karaoke" : "Bold pop"); notes.push("added animated captions"); setTab("captions"); }
       if (t.includes("gameplay")) { setFocus("Gameplay"); notes.push("crop focused on gameplay"); setTab("frame"); }
       if (t.includes("face")) { setFocus("Face"); notes.push("crop follows your face"); }
@@ -141,7 +141,7 @@ function Editor() {
             <div className="flex h-8 items-center gap-px rounded-lg bg-muted px-1">
               {Array.from({ length: 120 }).map((_, i) => <span key={i} className="flex-1 rounded-full bg-primary/60" style={{ height: `${15 + Math.abs(Math.sin(i * 0.9) * Math.cos(i * 0.3)) * 80}%` }} />)}
             </div>
-            <Slider value={trim} min={0} max={max} step={1} onValueChange={(v) => setTrim([v[0], v[1]] as [number, number])} aria-label="Trim" />
+            <Slider value={trim} min={0} max={max} step={1} onValueChange={(v) => setTrim([v[0] ?? 0, v[1] ?? max])} aria-label="Trim" />
           </div>
         </div>
 

@@ -42,7 +42,7 @@ function Home() {
 
   const submit = (value = text) => {
     const v = value.trim() || (file ? `Find the best moments in ${file}` : "");
-    if (!v) return toast("Paste a link or describe what you want first");
+    if (!v) { toast("Paste a link or describe what you want first"); return; }
     const id = createProject(v);
     nav({ to: "/project/$id", params: { id } });
   };

@@ -32,7 +32,7 @@ const genHighlights = (pid: string, len: number, n: number, cat?: Category): Hig
     ["Genuine shock reaction", "Reaction"], ["Pro tip: peek timing", "Tutorial"], ["Last-second save", "Clutch"],
   ];
   return Array.from({ length: n }, (_, i) => {
-    const [title, c] = cat ? [titles.find((t) => t[1] === cat)![0] + ` #${i + 1}`, cat] : titles[i % titles.length];
+    const [title, c] = cat ? [titles.find((t) => t[1] === cat)![0] + ` #${i + 1}`, cat] : titles[i % titles.length]!;
     return { id: `${pid}-g${Date.now()}-${i}`, title, category: c, start: Math.floor(((i + 1) / (n + 1)) * len), duration: 15 + ((i * 7) % 35), score: 96 - i * 3 };
   });
 };
@@ -64,7 +64,7 @@ function Workspace() {
         if (newClips?.length) {
           addHighlights(id, newClips);
           updateMsg(id, mid, text, newClips.map((c) => c.id));
-          setActiveId(newClips[0].id);
+          setActiveId(newClips[0]!.id);
         }
         setBusy(false);
       });
