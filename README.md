@@ -2,8 +2,10 @@
 
 AI video clipping, continuing the existing Lovable/TanStack Start frontend. The internal Clipwave design, animation classes, navigation, and responsive panels are retained.
 
-**Implementation branch:** `feat/real-video-pipeline`  
-**Existing app:** https://noetharaclipz.lovable.app  
+**Implementation branch:** `feat/real-video-pipeline`
+
+**Existing app:** https://noetharaclipz.lovable.app
+
 **Existing Supabase project:** `zxdnjnsghdnviflahvry` (`NoetharaClipZ`, us-east-1)
 
 ## Current status
