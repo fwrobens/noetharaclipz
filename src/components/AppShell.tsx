@@ -28,7 +28,7 @@ function Logo({ compact }: { compact?: boolean }) {
   );
 }
 
-function NavList({ compact, onNavigate }: { compact?: boolean; onNavigate?: () => void }) {
+function NavList({ compact, onNavigate }: { compact?: boolean | undefined; onNavigate?: (() => void) | undefined }) {
   const path = useRouterState({ select: (r) => r.location.pathname });
   return (
     <nav className="flex flex-col gap-1">
@@ -57,7 +57,7 @@ function NavList({ compact, onNavigate }: { compact?: boolean; onNavigate?: () =
   );
 }
 
-function SidebarBody({ compact, onNavigate }: { compact?: boolean; onNavigate?: () => void }) {
+function SidebarBody({ compact, onNavigate }: { compact?: boolean | undefined; onNavigate?: (() => void) | undefined }) {
   return (
     <div className="flex h-full flex-col gap-6 p-3">
       <NavList compact={compact} onNavigate={onNavigate} />

@@ -5,7 +5,7 @@ export interface ChatMsg {
   id: string;
   role: "user" | "ai";
   text: string;
-  clipIds?: string[];
+  clipIds?: string[] | undefined;
 }
 
 interface Store {
@@ -47,7 +47,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         {
           id,
           title: isLink ? "Imported stream VOD" : prompt.slice(0, 48) || "Untitled project",
-          thumb: thumbs[ps.length % thumbs.length],
+          thumb: thumbs[ps.length % thumbs.length]!,
           platform: /twitch/i.test(prompt) ? "Twitch" : isLink ? "YouTube" : "Upload",
           length: 6480,
           status: "processing",

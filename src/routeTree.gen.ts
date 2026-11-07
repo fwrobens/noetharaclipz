@@ -15,6 +15,7 @@ import { Route as LibraryRouteImport } from './routes/library'
 import { Route as ProjectsRouteImport } from './routes/projects'
 import { Route as TemplatesRouteImport } from './routes/templates'
 import { Route as TrashRouteImport } from './routes/trash'
+import { Route as EditorIdRouteImport } from './routes/editor.$id'
 import { Route as ProjectIdRouteImport } from './routes/project.$id'
 
 const IndexRoute = IndexRouteImport.update({
@@ -47,6 +48,11 @@ const TrashRoute = TrashRouteImport.update({
   path: '/trash',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EditorIdRoute = EditorIdRouteImport.update({
+  id: '/editor/$id',
+  path: '/editor/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProjectIdRoute = ProjectIdRouteImport.update({
   id: '/project/$id',
   path: '/project/$id',
@@ -60,6 +66,7 @@ export interface FileRoutesByFullPath {
   '/projects': typeof ProjectsRoute
   '/templates': typeof TemplatesRoute
   '/trash': typeof TrashRoute
+  '/editor/$id': typeof EditorIdRoute
   '/project/$id': typeof ProjectIdRoute
 }
 export interface FileRoutesByTo {
@@ -69,6 +76,7 @@ export interface FileRoutesByTo {
   '/projects': typeof ProjectsRoute
   '/templates': typeof TemplatesRoute
   '/trash': typeof TrashRoute
+  '/editor/$id': typeof EditorIdRoute
   '/project/$id': typeof ProjectIdRoute
 }
 export interface FileRoutesById {
@@ -79,6 +87,7 @@ export interface FileRoutesById {
   '/projects': typeof ProjectsRoute
   '/templates': typeof TemplatesRoute
   '/trash': typeof TrashRoute
+  '/editor/$id': typeof EditorIdRoute
   '/project/$id': typeof ProjectIdRoute
 }
 export interface FileRouteTypes {
@@ -90,6 +99,7 @@ export interface FileRouteTypes {
     | '/projects'
     | '/templates'
     | '/trash'
+    | '/editor/$id'
     | '/project/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -99,6 +109,7 @@ export interface FileRouteTypes {
     | '/projects'
     | '/templates'
     | '/trash'
+    | '/editor/$id'
     | '/project/$id'
   id:
     | '__root__'
@@ -108,6 +119,7 @@ export interface FileRouteTypes {
     | '/projects'
     | '/templates'
     | '/trash'
+    | '/editor/$id'
     | '/project/$id'
   fileRoutesById: FileRoutesById
 }
@@ -118,6 +130,7 @@ export interface RootRouteChildren {
   ProjectsRoute: typeof ProjectsRoute
   TemplatesRoute: typeof TemplatesRoute
   TrashRoute: typeof TrashRoute
+  EditorIdRoute: typeof EditorIdRoute
   ProjectIdRoute: typeof ProjectIdRoute
 }
 
@@ -165,6 +178,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TrashRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/editor/$id': {
+      id: '/editor/$id'
+      path: '/editor/$id'
+      fullPath: '/editor/$id'
+      preLoaderRoute: typeof EditorIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/project/$id': {
       id: '/project/$id'
       path: '/project/$id'
@@ -182,6 +202,7 @@ const rootRouteChildren: RootRouteChildren = {
   ProjectsRoute: ProjectsRoute,
   TemplatesRoute: TemplatesRoute,
   TrashRoute: TrashRoute,
+  EditorIdRoute: EditorIdRoute,
   ProjectIdRoute: ProjectIdRoute,
 }
 export const routeTree = rootRouteImport

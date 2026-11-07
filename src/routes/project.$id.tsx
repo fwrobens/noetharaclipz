@@ -248,7 +248,7 @@ function Message({ m, project, onPick }: { m: ChatMsg; project: { highlights: Hi
   );
 }
 
-function Timeline({ length, clips, activeId, onPick }: { length: number; clips: Highlight[]; activeId?: string; onPick: (id: string) => void }) {
+function Timeline({ length, clips, activeId, onPick }: { length: number; clips: Highlight[]; activeId?: string | undefined; onPick: (id: string) => void }) {
   return (
     <div className="p-4">
       <div className="relative h-10 rounded-xl bg-muted">
