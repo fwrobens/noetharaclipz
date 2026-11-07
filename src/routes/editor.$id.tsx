@@ -99,7 +99,7 @@ function Editor() {
                 </div>
               )}
               {captions && (
-                <p style={{ fontSize: capSize[0] * (ratio === "16:9" ? 0.8 : 0.6) }}
+                <p style={{ fontSize: (capSize[0] ?? 28) * (ratio === "16:9" ? 0.8 : 0.6) }}
                   className={cn("absolute inset-x-4 bottom-[18%] text-center font-display font-bold uppercase leading-tight drop-shadow-lg",
                     capStyle === "Bold pop" && "text-background [-webkit-text-stroke:1px_var(--foreground)]",
                     capStyle === "Karaoke" && "text-warning", capStyle === "Minimal" && "font-sans font-medium normal-case text-background",
