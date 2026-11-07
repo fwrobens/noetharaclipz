@@ -1,0 +1,3 @@
+- [x] Build AI clipping prototype (home, library, projects, workspace, editor, dark mode)
+- [x] Mobile responsive + drop shadows
+- [x] Do NOT connect GitHub connector (user request)

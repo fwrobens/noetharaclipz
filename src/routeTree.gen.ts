@@ -10,33 +10,128 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as BrandKitRouteImport } from './routes/brand-kit'
+import { Route as LibraryRouteImport } from './routes/library'
+import { Route as ProjectsRouteImport } from './routes/projects'
+import { Route as TemplatesRouteImport } from './routes/templates'
+import { Route as TrashRouteImport } from './routes/trash'
+import { Route as EditorIdRouteImport } from './routes/editor.$id'
+import { Route as ProjectIdRouteImport } from './routes/project.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BrandKitRoute = BrandKitRouteImport.update({
+  id: '/brand-kit',
+  path: '/brand-kit',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LibraryRoute = LibraryRouteImport.update({
+  id: '/library',
+  path: '/library',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProjectsRoute = ProjectsRouteImport.update({
+  id: '/projects',
+  path: '/projects',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TemplatesRoute = TemplatesRouteImport.update({
+  id: '/templates',
+  path: '/templates',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TrashRoute = TrashRouteImport.update({
+  id: '/trash',
+  path: '/trash',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EditorIdRoute = EditorIdRouteImport.update({
+  id: '/editor/$id',
+  path: '/editor/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProjectIdRoute = ProjectIdRouteImport.update({
+  id: '/project/$id',
+  path: '/project/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/brand-kit': typeof BrandKitRoute
+  '/library': typeof LibraryRoute
+  '/projects': typeof ProjectsRoute
+  '/templates': typeof TemplatesRoute
+  '/trash': typeof TrashRoute
+  '/editor/$id': typeof EditorIdRoute
+  '/project/$id': typeof ProjectIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/brand-kit': typeof BrandKitRoute
+  '/library': typeof LibraryRoute
+  '/projects': typeof ProjectsRoute
+  '/templates': typeof TemplatesRoute
+  '/trash': typeof TrashRoute
+  '/editor/$id': typeof EditorIdRoute
+  '/project/$id': typeof ProjectIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/brand-kit': typeof BrandKitRoute
+  '/library': typeof LibraryRoute
+  '/projects': typeof ProjectsRoute
+  '/templates': typeof TemplatesRoute
+  '/trash': typeof TrashRoute
+  '/editor/$id': typeof EditorIdRoute
+  '/project/$id': typeof ProjectIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/brand-kit'
+    | '/library'
+    | '/projects'
+    | '/templates'
+    | '/trash'
+    | '/editor/$id'
+    | '/project/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/brand-kit'
+    | '/library'
+    | '/projects'
+    | '/templates'
+    | '/trash'
+    | '/editor/$id'
+    | '/project/$id'
+  id:
+    | '__root__'
+    | '/'
+    | '/brand-kit'
+    | '/library'
+    | '/projects'
+    | '/templates'
+    | '/trash'
+    | '/editor/$id'
+    | '/project/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  BrandKitRoute: typeof BrandKitRoute
+  LibraryRoute: typeof LibraryRoute
+  ProjectsRoute: typeof ProjectsRoute
+  TemplatesRoute: typeof TemplatesRoute
+  TrashRoute: typeof TrashRoute
+  EditorIdRoute: typeof EditorIdRoute
+  ProjectIdRoute: typeof ProjectIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +143,67 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/brand-kit': {
+      id: '/brand-kit'
+      path: '/brand-kit'
+      fullPath: '/brand-kit'
+      preLoaderRoute: typeof BrandKitRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/library': {
+      id: '/library'
+      path: '/library'
+      fullPath: '/library'
+      preLoaderRoute: typeof LibraryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/projects': {
+      id: '/projects'
+      path: '/projects'
+      fullPath: '/projects'
+      preLoaderRoute: typeof ProjectsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/templates': {
+      id: '/templates'
+      path: '/templates'
+      fullPath: '/templates'
+      preLoaderRoute: typeof TemplatesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/trash': {
+      id: '/trash'
+      path: '/trash'
+      fullPath: '/trash'
+      preLoaderRoute: typeof TrashRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/editor/$id': {
+      id: '/editor/$id'
+      path: '/editor/$id'
+      fullPath: '/editor/$id'
+      preLoaderRoute: typeof EditorIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/project/$id': {
+      id: '/project/$id'
+      path: '/project/$id'
+      fullPath: '/project/$id'
+      preLoaderRoute: typeof ProjectIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  BrandKitRoute: BrandKitRoute,
+  LibraryRoute: LibraryRoute,
+  ProjectsRoute: ProjectsRoute,
+  TemplatesRoute: TemplatesRoute,
+  TrashRoute: TrashRoute,
+  EditorIdRoute: EditorIdRoute,
+  ProjectIdRoute: ProjectIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
