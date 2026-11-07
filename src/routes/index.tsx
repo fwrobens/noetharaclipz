@@ -116,7 +116,7 @@ function Home() {
           <h2 className="text-lg font-semibold">Recent videos</h2>
           <button onClick={() => nav({ to: "/library" })} className="text-sm text-primary hover:underline">See all</button>
         </div>
-        <div className="no-scrollbar -mx-4 flex snap-x gap-4 overflow-x-auto px-4 pb-4 sm:-mx-8 sm:px-8">
+        <div className="no-scrollbar flex snap-x gap-4 overflow-x-auto p-1 pb-4">
           {recent.map((p) => (
             <VideoCard key={p.id} p={p} className="w-64 shrink-0 snap-start sm:w-72" />
           ))}
