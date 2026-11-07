@@ -12,9 +12,12 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as BrandKitRouteImport } from './routes/brand-kit'
 import { Route as LibraryRouteImport } from './routes/library'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as ProjectsRouteImport } from './routes/projects'
+import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as TemplatesRouteImport } from './routes/templates'
 import { Route as TrashRouteImport } from './routes/trash'
+import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
 import { Route as EditorIdRouteImport } from './routes/editor.$id'
 import { Route as ProjectIdRouteImport } from './routes/project.$id'
 
@@ -33,9 +36,19 @@ const LibraryRoute = LibraryRouteImport.update({
   path: '/library',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProjectsRoute = ProjectsRouteImport.update({
   id: '/projects',
   path: '/projects',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsRoute = SettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TemplatesRoute = TemplatesRouteImport.update({
@@ -46,6 +59,11 @@ const TemplatesRoute = TemplatesRouteImport.update({
 const TrashRoute = TrashRouteImport.update({
   id: '/trash',
   path: '/trash',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthCallbackRoute = AuthCallbackRouteImport.update({
+  id: '/auth/callback',
+  path: '/auth/callback',
   getParentRoute: () => rootRouteImport,
 } as any)
 const EditorIdRoute = EditorIdRouteImport.update({
@@ -63,9 +81,12 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/brand-kit': typeof BrandKitRoute
   '/library': typeof LibraryRoute
+  '/login': typeof LoginRoute
   '/projects': typeof ProjectsRoute
+  '/settings': typeof SettingsRoute
   '/templates': typeof TemplatesRoute
   '/trash': typeof TrashRoute
+  '/auth/callback': typeof AuthCallbackRoute
   '/editor/$id': typeof EditorIdRoute
   '/project/$id': typeof ProjectIdRoute
 }
@@ -73,9 +94,12 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/brand-kit': typeof BrandKitRoute
   '/library': typeof LibraryRoute
+  '/login': typeof LoginRoute
   '/projects': typeof ProjectsRoute
+  '/settings': typeof SettingsRoute
   '/templates': typeof TemplatesRoute
   '/trash': typeof TrashRoute
+  '/auth/callback': typeof AuthCallbackRoute
   '/editor/$id': typeof EditorIdRoute
   '/project/$id': typeof ProjectIdRoute
 }
@@ -84,9 +108,12 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/brand-kit': typeof BrandKitRoute
   '/library': typeof LibraryRoute
+  '/login': typeof LoginRoute
   '/projects': typeof ProjectsRoute
+  '/settings': typeof SettingsRoute
   '/templates': typeof TemplatesRoute
   '/trash': typeof TrashRoute
+  '/auth/callback': typeof AuthCallbackRoute
   '/editor/$id': typeof EditorIdRoute
   '/project/$id': typeof ProjectIdRoute
 }
@@ -96,9 +123,12 @@ export interface FileRouteTypes {
     | '/'
     | '/brand-kit'
     | '/library'
+    | '/login'
     | '/projects'
+    | '/settings'
     | '/templates'
     | '/trash'
+    | '/auth/callback'
     | '/editor/$id'
     | '/project/$id'
   fileRoutesByTo: FileRoutesByTo
@@ -106,9 +136,12 @@ export interface FileRouteTypes {
     | '/'
     | '/brand-kit'
     | '/library'
+    | '/login'
     | '/projects'
+    | '/settings'
     | '/templates'
     | '/trash'
+    | '/auth/callback'
     | '/editor/$id'
     | '/project/$id'
   id:
@@ -116,9 +149,12 @@ export interface FileRouteTypes {
     | '/'
     | '/brand-kit'
     | '/library'
+    | '/login'
     | '/projects'
+    | '/settings'
     | '/templates'
     | '/trash'
+    | '/auth/callback'
     | '/editor/$id'
     | '/project/$id'
   fileRoutesById: FileRoutesById
@@ -127,9 +163,12 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   BrandKitRoute: typeof BrandKitRoute
   LibraryRoute: typeof LibraryRoute
+  LoginRoute: typeof LoginRoute
   ProjectsRoute: typeof ProjectsRoute
+  SettingsRoute: typeof SettingsRoute
   TemplatesRoute: typeof TemplatesRoute
   TrashRoute: typeof TrashRoute
+  AuthCallbackRoute: typeof AuthCallbackRoute
   EditorIdRoute: typeof EditorIdRoute
   ProjectIdRoute: typeof ProjectIdRoute
 }
@@ -157,11 +196,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LibraryRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/projects': {
       id: '/projects'
       path: '/projects'
       fullPath: '/projects'
       preLoaderRoute: typeof ProjectsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/templates': {
@@ -176,6 +229,13 @@ declare module '@tanstack/react-router' {
       path: '/trash'
       fullPath: '/trash'
       preLoaderRoute: typeof TrashRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth/callback': {
+      id: '/auth/callback'
+      path: '/auth/callback'
+      fullPath: '/auth/callback'
+      preLoaderRoute: typeof AuthCallbackRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/editor/$id': {
@@ -199,9 +259,12 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   BrandKitRoute: BrandKitRoute,
   LibraryRoute: LibraryRoute,
+  LoginRoute: LoginRoute,
   ProjectsRoute: ProjectsRoute,
+  SettingsRoute: SettingsRoute,
   TemplatesRoute: TemplatesRoute,
   TrashRoute: TrashRoute,
+  AuthCallbackRoute: AuthCallbackRoute,
   EditorIdRoute: EditorIdRoute,
   ProjectIdRoute: ProjectIdRoute,
 }
