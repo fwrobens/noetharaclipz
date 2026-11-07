@@ -6,33 +6,36 @@
 
 ## Executed checks
 
-| Check                                           | Result                                                                                                  |
-| ----------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| `npm run build`                                 | Passed; existing Nitro/Cloudflare hosting preset retained                                               |
-| `npx tsc --noEmit`                              | Passed                                                                                                  |
-| `npm test`                                      | 12 tests passed                                                                                         |
-| `npm run lint`                                  | 0 errors; 11 Fast Refresh warnings, including existing UI-library warnings                              |
-| Worker tests, with `NC_SAMPLE_VIDEO`            | 23 tests passed, including actual authorized-footage processing                                         |
-| `ruff check`                                    | Passed                                                                                                  |
-| Hosted SQL `supabase/tests/access_and_jobs.sql` | All transactional ownership, render, cancellation, lease, and idempotency assertions passed             |
-| Browser email/password login                    | Passed with two provisioned temporary, preconfirmed QA accounts; confirmation email delivery not tested |
-| Browser composer upload                         | Actual 4,372,373-byte source uploaded through resumable TUS; persisted project and queued job appeared  |
-| Browser playback                                | Actual `<video>` advanced beyond 1.9 seconds, duration 52.208333 s, readyState 4                        |
-| Reload persistence                              | Project, initial instructions, queue state, and saved edit persisted                                    |
-| Editor                                          | Seek to real transcript interval, caption display, save/reload, actual render-job submission passed     |
-| Delete/restore                                  | Both persisted through navigation and refresh                                                           |
-| Brand Kit                                       | Saved caption color survived refresh                                                                    |
-| Sign-out                                        | Subsequent protected navigation redirected to sign-in                                                   |
-| Responsive                                      | No horizontal overflow on tested home/workspace/editor views at 390, 768, and 1440 px                   |
-| Anonymous database access                       | Denied (401)                                                                                            |
-| Cross-user projects/clips                       | Hidden by RLS                                                                                           |
-| Cross-user source URL signing                   | Denied                                                                                                  |
-| Cross-user finalization/export                  | Denied                                                                                                  |
-| Browser source overwrite                        | Denied                                                                                                  |
-| Browser rendered-output upload                  | Denied                                                                                                  |
-| Forged job completion / worker RPC              | Denied                                                                                                  |
-| Duplicate source finalization                   | Returned the same durable job                                                                           |
-| Paid activation / fallback / Lovable generation | None performed                                                                                          |
+| Check                                                    | Result                                                                                                  |
+| -------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| `npm run build`                                          | Passed; existing Nitro/Cloudflare hosting preset retained                                               |
+| Bun 1.4.4 frozen install, TypeScript, tests, build, lint | Passed with the existing Bun lockfile synchronized                                                      |
+| `npx tsc --noEmit`                                       | Passed                                                                                                  |
+| `npm test`                                               | 12 tests passed                                                                                         |
+| `npm run lint`                                           | 0 errors; 11 Fast Refresh warnings, including existing UI-library warnings                              |
+| Worker tests, with `NC_SAMPLE_VIDEO`                     | 24 tests passed, including actual authorized-footage processing                                         |
+| `ruff check`                                             | Passed                                                                                                  |
+| Hosted SQL `supabase/tests/access_and_jobs.sql`          | All transactional ownership, render, cancellation, lease, and idempotency assertions passed             |
+| Browser email/password login                             | Passed with two provisioned temporary, preconfirmed QA accounts; confirmation email delivery not tested |
+| Browser composer upload                                  | Actual 4,372,373-byte source uploaded through resumable TUS; persisted project and queued job appeared  |
+| Browser playback                                         | Actual `<video>` advanced beyond 1.9 seconds, duration 52.208333 s, readyState 4                        |
+| Reload persistence                                       | Project, initial instructions, queue state, and saved edit persisted                                    |
+| Editor                                                   | Seek to real transcript interval, caption display, save/reload, actual render-job submission passed     |
+| Delete/restore                                           | Both persisted through navigation and refresh                                                           |
+| Brand Kit                                                | Saved caption color survived refresh                                                                    |
+| Sign-out                                                 | Subsequent protected navigation redirected to sign-in                                                   |
+| Responsive                                               | No horizontal overflow on tested home/workspace/editor views at 390, 768, and 1440 px                   |
+| Anonymous database access                                | Denied (401)                                                                                            |
+| Cross-user projects/clips                                | Hidden by RLS                                                                                           |
+| Cross-user source URL signing                            | Denied                                                                                                  |
+| Cross-user finalization/export                           | Denied                                                                                                  |
+| Browser source overwrite                                 | Denied                                                                                                  |
+| Browser rendered-output upload                           | Denied                                                                                                  |
+| Forged job completion / worker RPC                       | Denied                                                                                                  |
+| Duplicate source finalization                            | Returned the same durable job                                                                           |
+| Paid activation / fallback / Lovable generation          | None performed                                                                                          |
+
+Visual inspection caught subtitles disappearing after a nonzero trim: output seeking left libass on source timestamps while captions were clip-relative. Input seeking now resets filter timestamps correctly. A rendered-frame regression test checks that text is absent before speech and visibly burned into the expected interval; the actual sample was rendered again and visually inspected with captions present.
 
 The initial hosted upload test exposed a `pgmq.send` set-returning-function incompatibility. A migration fixed it; repeated source finalization and transactional queue tests subsequently passed. Actual Whisper execution exposed incompatible PyAV 19 behavior; PyAV 16.0.1 is now pinned and transcription passes.
 

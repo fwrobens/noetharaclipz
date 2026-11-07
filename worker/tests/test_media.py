@@ -142,3 +142,57 @@ def test_subprocess_deadline_is_enforced():
 
     with pytest.raises(TimeoutError):
         run([sys.executable, "-c", "import time; time.sleep(20)"], timeout=0.1)
+
+
+def test_trimmed_captions_are_burned_at_clip_relative_times(tmp_path):
+    import numpy as np
+    import subprocess
+
+    source = tmp_path / "black.mp4"
+    run(
+        [
+            "ffmpeg",
+            "-v",
+            "error",
+            "-y",
+            "-f",
+            "lavfi",
+            "-i",
+            "color=c=black:s=320x180:r=24:d=4",
+            "-c:v",
+            "libx264",
+            "-pix_fmt",
+            "yuv420p",
+            str(source),
+        ]
+    )
+    output = tmp_path / "captioned.mp4"
+    transcript = [{"id": "speech", "start": 2, "end": 3, "text": "REAL TIMED CAPTION", "words": []}]
+    render(source, Edit(start=1.5, end=3.5, ratio="1:1"), transcript, output)
+
+    def frame(time):
+        raw = subprocess.check_output(
+            [
+                "ffmpeg",
+                "-v",
+                "error",
+                "-ss",
+                str(time),
+                "-i",
+                str(output),
+                "-frames:v",
+                "1",
+                "-pix_fmt",
+                "rgb24",
+                "-f",
+                "rawvideo",
+                "pipe:1",
+            ],
+            timeout=30,
+        )
+        return np.frombuffer(raw, dtype=np.uint8)
+
+    assert np.count_nonzero(frame(0.1) > 180) == 0, "Caption appears before actual speech"
+    assert np.count_nonzero(frame(1) > 180) > 100, (
+        "Caption disappeared after trimming a nonzero source interval"
+    )

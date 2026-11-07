@@ -78,8 +78,8 @@ def probe(path):
     }
 
 
-def ffmpeg(source, *args):
-    return [
+def ffmpeg(source, *args, seek=None):
+    command = [
         "ffmpeg",
         "-hide_banner",
         "-loglevel",
@@ -92,10 +92,10 @@ def ffmpeg(source, *args):
         "file,pipe",
         "-format_whitelist",
         "mov,matroska,webm",
-        "-i",
-        str(source),
-        *map(str, args),
     ]
+    if seek is not None:
+        command += ["-ss", str(seek)]
+    return command + ["-i", str(source), *map(str, args)]
 
 
 def prepare(source, directory, tick=None):
@@ -311,10 +311,10 @@ def render(source, edit: Edit, transcript, output: Path, tick=None):
             + ":fontsdir="
             + str(Path(__file__).resolve().parents[1] / "fonts")
         )
+    # Input seeking with transcoding resets filter timestamps to clip-relative time.
+    # Output -ss leaves libass seeing source time, silently hiding trimmed captions.
     args = ffmpeg(
         source,
-        "-ss",
-        edit.start,
         "-t",
         edit.end - edit.start,
         "-map",
@@ -339,6 +339,7 @@ def render(source, edit: Edit, transcript, output: Path, tick=None):
         "yuv420p",
         "-r",
         "30",
+        seek=edit.start,
     )
     if meta["has_audio"]:
         args += ["-af", f"volume={edit.volume}", "-c:a", "aac", "-b:a", "128k"]
