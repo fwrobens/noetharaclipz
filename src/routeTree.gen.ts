@@ -15,6 +15,7 @@ import { Route as LibraryRouteImport } from './routes/library'
 import { Route as ProjectsRouteImport } from './routes/projects'
 import { Route as TemplatesRouteImport } from './routes/templates'
 import { Route as TrashRouteImport } from './routes/trash'
+import { Route as ProjectIdRouteImport } from './routes/project.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -46,6 +47,11 @@ const TrashRoute = TrashRouteImport.update({
   path: '/trash',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProjectIdRoute = ProjectIdRouteImport.update({
+  id: '/project/$id',
+  path: '/project/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -54,6 +60,7 @@ export interface FileRoutesByFullPath {
   '/projects': typeof ProjectsRoute
   '/templates': typeof TemplatesRoute
   '/trash': typeof TrashRoute
+  '/project/$id': typeof ProjectIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -62,6 +69,7 @@ export interface FileRoutesByTo {
   '/projects': typeof ProjectsRoute
   '/templates': typeof TemplatesRoute
   '/trash': typeof TrashRoute
+  '/project/$id': typeof ProjectIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -71,13 +79,27 @@ export interface FileRoutesById {
   '/projects': typeof ProjectsRoute
   '/templates': typeof TemplatesRoute
   '/trash': typeof TrashRoute
+  '/project/$id': typeof ProjectIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/brand-kit' | '/library' | '/projects' | '/templates' | '/trash'
+    | '/'
+    | '/brand-kit'
+    | '/library'
+    | '/projects'
+    | '/templates'
+    | '/trash'
+    | '/project/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/brand-kit' | '/library' | '/projects' | '/templates' | '/trash'
+  to:
+    | '/'
+    | '/brand-kit'
+    | '/library'
+    | '/projects'
+    | '/templates'
+    | '/trash'
+    | '/project/$id'
   id:
     | '__root__'
     | '/'
@@ -86,6 +108,7 @@ export interface FileRouteTypes {
     | '/projects'
     | '/templates'
     | '/trash'
+    | '/project/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -95,6 +118,7 @@ export interface RootRouteChildren {
   ProjectsRoute: typeof ProjectsRoute
   TemplatesRoute: typeof TemplatesRoute
   TrashRoute: typeof TrashRoute
+  ProjectIdRoute: typeof ProjectIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -141,6 +165,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TrashRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/project/$id': {
+      id: '/project/$id'
+      path: '/project/$id'
+      fullPath: '/project/$id'
+      preLoaderRoute: typeof ProjectIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -151,6 +182,7 @@ const rootRouteChildren: RootRouteChildren = {
   ProjectsRoute: ProjectsRoute,
   TemplatesRoute: TemplatesRoute,
   TrashRoute: TrashRoute,
+  ProjectIdRoute: ProjectIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
