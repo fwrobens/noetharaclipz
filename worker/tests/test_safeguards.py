@@ -56,3 +56,27 @@ def test_text_only_provider_metadata_rejected():
 
     with pytest.raises(ValueError, match="required video API"):
         Gemini(config, httpx.Client(transport=httpx.MockTransport(metadata))).preflight()
+
+
+def test_false_free_flag_allows_metadata_inspection_but_never_inference(tmp_path):
+    seen = []
+
+    def metadata(request):
+        seen.append(request)
+        assert request.method == "GET"
+        return httpx.Response(
+            200,
+            json={
+                "name": "models/gemini-3.8-flash",
+                "supportedGenerationMethods": ["generateContent"],
+            },
+        )
+
+    config = replace(
+        Settings(), gemini_key="unit-test-key", free_verified=False, rpm=0, rpd=0, tpm=0
+    )
+    provider = Gemini(config, httpx.Client(transport=httpx.MockTransport(metadata)))
+    assert provider.inspect_access()["name"] == "models/gemini-3.8-flash"
+    with pytest.raises(ValueError, match="Verify the FREE tier"):
+        provider.analyze(tmp_path / "not-read.mp4", "request", {})
+    assert len(seen) == 1

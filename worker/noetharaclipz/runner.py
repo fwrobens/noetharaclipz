@@ -15,18 +15,21 @@ log = logging.getLogger(__name__)
 
 
 class Lease:
-    def __init__(self, backend, job):
+    def __init__(self, backend, job, shutdown=None):
         self.backend = backend
         self.job = job
         self.state = "preparing"
         self.progress = 1
         self.detail = "Preparing source"
         self.error = None
+        self.shutdown = shutdown
         self.started = time.monotonic()
         self.stopped = threading.Event()
         self.thread = None
 
     def tick(self, force=False):
+        if self.shutdown is not None and self.shutdown.is_set():
+            raise InterruptedError("Worker stopping; lease will become available for recovery")
         if time.monotonic() - self.started > 1200:
             raise TimeoutError("Job exceeded its 20-minute processing limit")
         if self.error:
@@ -70,7 +73,8 @@ class Lease:
 
 
 class Worker:
-    def __init__(self, settings=None, backend=None, provider=None):
+    def __init__(self, settings=None, backend=None, provider=None, stop_event=None):
+        self.stop_event = stop_event or threading.Event()
         self.settings = settings or Settings()
         self.backend = backend or Backend(self.settings)
         self.provider = provider or Gemini(self.settings)
@@ -79,7 +83,7 @@ class Worker:
         if job["attempts"] > 3:
             raise RuntimeError("Job retry limit reached")
         with (
-            Lease(self.backend, job) as lease,
+            Lease(self.backend, job, self.stop_event) as lease,
             tempfile.TemporaryDirectory(prefix="noetharaclipz-") as temp,
         ):
             directory = Path(temp)
@@ -302,6 +306,8 @@ class Worker:
             return False
         try:
             self.process(job)
+        except InterruptedError:
+            log.info("Job %s released through lease expiry after worker shutdown", job["id"])
         except Exception as e:
             # Redact credentials and avoid logging provider request bodies / private media.
             detail = str(e)
@@ -328,24 +334,33 @@ class Worker:
 def main():
     logging.basicConfig(level=logging.INFO)
     settings = Settings()
-    worker = Worker(settings)
     stop = threading.Event()
+    worker = Worker(settings, stop_event=stop)
     signal.signal(signal.SIGTERM, lambda *_: stop.set())
     signal.signal(signal.SIGINT, lambda *_: stop.set())
-    last_heartbeat = 0
-    last_cleanup = 0
-    while not stop.is_set():
-        try:
-            if time.monotonic() - last_heartbeat > 30:
+
+    def health_loop():
+        while not stop.is_set():
+            try:
                 try:
                     settings.check_ai()
                     ready = True
-                    detail = "Ready; free AI configuration supplied"
+                    detail = (
+                        "Free AI configuration supplied; inference still validates model access"
+                    )
                 except ValueError as e:
                     ready = False
                     detail = str(e)
                 worker.backend.rpc("worker_heartbeat", ai_ready=ready, detail=detail)
-                last_heartbeat = time.monotonic()
+            except Exception:
+                log.error("Worker health update failed")
+            stop.wait(30)
+
+    health = threading.Thread(target=health_loop, daemon=True)
+    health.start()
+    last_cleanup = 0
+    while not stop.is_set():
+        try:
             if time.monotonic() - last_cleanup > 3600:
                 worker.backend.cleanup()
                 for orphan in Path(tempfile.gettempdir()).glob("noetharaclipz-*"):

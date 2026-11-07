@@ -3,6 +3,7 @@
 begin;
 create temporary table nc_test (owner_id uuid,other_id uuid,pid uuid,hid uuid,cid uuid,jid uuid);
 insert into nc_test values(gen_random_uuid(),gen_random_uuid(),null,gen_random_uuid(),null,null);
+alter table nc_test add column old_token uuid;
 grant all on nc_test to authenticated,service_role;
 insert into auth.users(id,aud,role,email,raw_app_meta_data,raw_user_meta_data)
  select owner_id,'authenticated','authenticated','nc-sql-'||owner_id||'@example.com','{}'::jsonb,'{}'::jsonb from nc_test
@@ -60,6 +61,21 @@ begin
  begin
   perform public.worker_finish_render((j->>'id')::uuid,(j->>'lease_token')::uuid,'missing.mp4',100);raise exception 'Missing output marked successful';
  exception when raise_exception then if sqlerrm='Missing output marked successful' then raise; end if;
+ end;
+ update nc_test set old_token=(j->>'lease_token')::uuid;
+end $$;
+reset role;
+-- Administrator-only test setup: workers cannot directly access the pgmq schema.
+update public.processing_jobs set lease_until=now()-interval '1 second' where id=(select jid from nc_test);
+select pgmq.set_vt('noetharaclipz',message_id,0) from public.processing_jobs where id=(select jid from nc_test);
+set local role service_role;
+do $$ declare j jsonb;
+begin
+ j:=public.worker_claim();
+ if j is null or (j->>'attempts')::int<>2 or (j->>'lease_token')::uuid=(select old_token from nc_test) then raise exception 'Interrupted job was not reclaimed with a fresh lease'; end if;
+ begin
+  perform public.worker_tick((j->>'id')::uuid,(select old_token from nc_test),'rendering',30,'Old worker');raise exception 'Stale worker token accepted';
+ exception when raise_exception then if sqlerrm='Stale worker token accepted' then raise; end if;
  end;
  perform public.worker_tick((j->>'id')::uuid,(j->>'lease_token')::uuid,'failed',0,'Test stopped','Test transaction only');
  begin

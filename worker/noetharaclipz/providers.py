@@ -20,8 +20,9 @@ class Gemini:
         self.base = "https://generativelanguage.googleapis.com/v1beta"
         self.headers = {"x-goog-api-key": settings.gemini_key}
 
-    def preflight(self):
-        self.settings.check_ai()
+    def inspect_access(self):
+        if not self.settings.gemini_key:
+            raise ValueError("Gemini API key is not bound to this runtime")
         # Metadata lookup verifies actual access without running inference.
         r = self.client.get(f"{self.base}/models/{self.settings.model}", headers=self.headers)
         r.raise_for_status()
@@ -29,6 +30,10 @@ class Gemini:
         if "generateContent" not in meta.get("supportedGenerationMethods", []):
             raise ValueError("Configured model does not expose the required video API")
         return meta
+
+    def preflight(self):
+        self.settings.check_ai()
+        return self.inspect_access()
 
     def analyze(self, path, prompt, evidence):
         self.settings.check_ai()

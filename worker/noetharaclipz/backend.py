@@ -1,20 +1,18 @@
 from pathlib import Path
 from urllib.parse import quote
 import httpx
-from .config import Settings
+from .config import Settings, server_key_headers
 
 
 class Backend:
-    def __init__(self, settings: Settings):
+    def __init__(self, settings: Settings, client=None):
         settings.check_project()
         self.base = settings.supabase_url.rstrip("/")
-        self.client = httpx.Client(
-            timeout=60,
-            headers={
-                "apikey": settings.service_key,
-                "Authorization": "Bearer " + settings.service_key,
-            },
-        )
+        self.client = client or httpx.Client(timeout=60)
+        self.client.headers.update(server_key_headers(settings.service_key))
+        # A pre-existing client may contain an unrelated bearer; never forward it.
+        if settings.service_key.startswith("sb_secret_"):
+            self.client.headers.pop("Authorization", None)
 
     def rpc(self, name, **params):
         response = self.client.post(self.base + "/rest/v1/rpc/" + name, json=params)
@@ -62,7 +60,8 @@ class Backend:
     def remove_prefix(self, bucket, prefix):
         # Storage API removal, never SQL DELETE against storage.objects.
         start = 0
-        files = []
+        entries = []
+        # Snapshot every page before deleting subfolders: removal can shift offsets.
         while True:
             r = self.client.post(
                 self.base + "/storage/v1/object/list/" + bucket,
@@ -70,15 +69,17 @@ class Backend:
             )
             r.raise_for_status()
             items = r.json()
-            for item in items:
-                path = prefix + item["name"]
-                if item.get("id") is None:
-                    self.remove_prefix(bucket, path + "/")
-                else:
-                    files.append(path)
+            entries.extend(items)
             if len(items) < 100:
                 break
             start += 100
+        files = []
+        for item in entries:
+            path = prefix + item["name"]
+            if item.get("id") is None:
+                self.remove_prefix(bucket, path + "/")
+            else:
+                files.append(path)
         for i in range(0, len(files), 100):
             r = self.client.request(
                 "DELETE",
