@@ -25,10 +25,10 @@ const Ctx = createContext<Store | null>(null);
 export function StoreProvider({ children }: { children: ReactNode }) {
   const [projects, setProjects] = useState<Project[]>(seedProjects);
   const [chats, setChats] = useState<Record<string, ChatMsg[]>>({});
-  const [dark, setDark] = useState(false);
+  const [dark, setDark] = useState(true);
 
   useEffect(() => {
-    if (localStorage.getItem("clipwave-dark") === "1") setDark(true);
+    setDark(localStorage.getItem("clipwave-dark") !== "0");
   }, []);
   useEffect(() => {
     document.documentElement.classList.toggle("dark", dark);
@@ -47,7 +47,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         {
           id,
           title: isLink ? "Imported stream VOD" : prompt.slice(0, 48) || "Untitled project",
-          thumb: thumbs[ps.length % thumbs.length]!,
+          thumb: thumbs[ps.length % thumbs.length] ?? "",
           platform: /twitch/i.test(prompt) ? "Twitch" : isLink ? "YouTube" : "Upload",
           length: 6480,
           status: "processing",
