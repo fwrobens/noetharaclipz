@@ -18,7 +18,7 @@ host-sized, so explicit per-service caps are not confirmed. Do not change them.
 Existing published container bindings shown are loopback-only.
 
 **Resource and reported software compatibility review pass for a bounded,
-staged 500M QA trial. Explicit deployment approval is still absent.** This session still has no
+staged 500M QA trial. The user has now approved that bounded trial.** This session still has no
 AWS connector/identity or CLI; the readings are operator-supplied, not direct
 remote observations by this agent. No tools/credentials were installed/changed.
 
@@ -162,8 +162,8 @@ only source-interface-specific hooks:
 No global ACCEPT/DROP policy is changed, no shared chain is flushed, and no
 hook matches the existing staging/Supabase bridge interfaces. The renderer also
 prints exact rollback commands that remove only these hooks/owned rules/chain,
-**after stopping this worker and seed**. Applying/rolling back is not permitted
-by this read-only review.
+**after stopping this worker and seed**. The user has approved only this
+scoped policy, conditional on the collision and preflight gates below.
 
 Compose pins worker/seed DNS to the approved resolver and disables IPv6 in their
 own network namespaces, avoiding an IPv6 bypass of the IPv4-only policy. No
@@ -245,11 +245,12 @@ zero incremental bill impact merely because the VM is already running. Do not
 add EBS/NAT/ALB/ECR/log subscriptions or enable paid monitoring. No upgrade is
 justified by the supplied resource readings.
 
-## Exact deployment sequence — do not execute before approval
+## Exact deployment sequence — approved, conditional on preflight
 
-All commands in this section are **future authorized deployment actions**,
-not read-only checks. First finish the remaining security/admission review and record
-explicit QA authorization. If any host-specific network action is needed,
+The user approved this staged sequence on 2026-11-08 by answering “yes” to the
+30-minute QA approval request. These are deployment actions, not read-only
+checks; approval does not waive collision, kernel-quota or network gates. If any
+host-specific network action is needed,
 the print-only scoped policy above must be reviewed before starting; this
 runbook does not authorize arbitrary firewall or existing-application changes.
 
@@ -370,15 +371,14 @@ runbook does not authorize arbitrary firewall or existing-application changes.
    logs for review. Do not run `docker system prune`, shared `compose down`,
    daemon/service restarts, global worker startup, merge or publication.
 
-## Explicit staged QA approval required
+## Staged QA approval received
 
-The resource, supplied network inputs and software compatibility review are
-complete enough to request **staged QA approval**. No deployment has been
-authorized. Approval is conditional: first run read-only collision checks,
+The user answered “yes” to the explicit bounded QA request on 2026-11-08.
+Do not ask for the same approval again. The approved scope below remains
+conditional: first run read-only collision checks,
 abort before changes on conflicts, and require actual kernel quota proof and
 scoped network verification before AI startup/QA footage. Do not equate the
-reported cgroup version with enforced limits. Authorization should identify the
-reviewed commit/artifact and permit only:
+reported cgroup version with enforced limits. The recorded approval covers the reviewed commit/artifact and only this scope:
 
 > I authorize an isolated, maximum 30-minute SmolVLM2-500M QA deployment on
 > i-0be10e530045fc650 in us-east-2 using the reviewed image/configuration, capped
@@ -394,3 +394,32 @@ reviewed commit/artifact and permit only:
 This does not authorize a production/global consumer, indefinite operation,
 2.2B, host reboot, Docker upgrades or changes to existing applications. A
 successful QA trial still does not grant any of those actions.
+
+## Execution access blocker and operator handoff
+
+After approval, this session rechecked its available tools and local login
+capabilities: there is no AWS connector, usable AWS identity/CLI, SSH key,
+SSH config or SSH agent. The managed cloud desktop is this development machine,
+not a connection to the EC2 instance. No EC2 command has been executed and no
+QA account, worker, volumes, paths or firewall rules have been created.
+Authorization is recorded; an existing authorized remote execution channel or
+operator execution is required to proceed. Do not install/change AWS credentials.
+
+The small QA bundle contains only reviewed deployment files and this runbook;
+it has no service key, QA login, footage or model weights. Extract it in a new
+operator-owned staging directory, separate from existing application checkouts.
+Then run this first **read-only** step on the existing EC2 login:
+
+```sh
+sudo -n python3 deploy/worker/host_probe.py
+sudo -n iptables -S
+```
+
+Review reserved UID/GID 62001, both dedicated paths, `nccz-qa0` and
+`NCZQA_EGRESS` before any deployment mutation; abort on foreign ownership or
+unverifiable state. The second command includes existing chain declarations,
+so a collision can be detected without interpreting permission errors as
+absence. These commands print no container environment or secret contents.
+Return their output for review; do not independently advance to model seeding
+or AI startup. Subsequent steps remain covered by the existing conditional
+approval once their prerequisites pass.

@@ -26,7 +26,7 @@
     "credentials_or_cli_installed_or_changed": false,
     "aws_api_calls": 0
   },
-  "host_suitability": "resource snapshot supports bounded 500M QA; final network/security and explicit deployment approval pending",
+  "host_suitability": "operator resource/software snapshot supports bounded 500M QA; approved, but execution access and actual preflights remain outstanding",
   "local_configuration_review": {
     "base_standby": true,
     "missing_qa_owner_refused": true,
@@ -59,7 +59,7 @@
   "protected_row_identical_to_previous_snapshot": true,
   "queue_claims": 0,
   "ec2_deployment_or_startup": false,
-  "qa_deployment_authorized": false,
+  "qa_deployment_authorized": true,
   "global_consumption_enabled": false,
   "gemini_enabled": false,
   "aws_infrastructure_or_billing_changes": false,
@@ -146,12 +146,12 @@
     }
   },
   "remaining_checks": [
-    "Explicit <=30 minute staged QA/scoped-policy authorization",
+    "Existing authorized remote execution channel or operator handoff; do not change credentials",
     "Read-only reserved UID/GID/path/bridge/chain collision checks before any changes; abort on conflict",
     "After authorization: actual seed/standby cgroup proof must pass before model download or AI startup",
     "After authorization: worker-network allow/deny behavior, normal QA flow and other-service impact monitoring"
   ],
-  "deployment_review_status": "resource and reported software compatibility review passed for bounded staged QA; authorization still absent; AI remains blocked on mandatory kernel/policy preflight",
+  "deployment_review_status": "bounded 30-minute QA approved; no remote execution channel available; mandatory collision/kernel/network gates remain",
   "local_kernel_resource_validation": {
     "previous_hard_cap_claim_superseded": true,
     "evidence": "local-cgroup-validation-correction.json",
@@ -172,5 +172,31 @@
     "compose_version": "2.40.3+ds1-0ubuntu1",
     "source": "operator-pasted read-only docker info and compose version output",
     "minimum_version_review": "passed; exceeds Engine 24+/Compose 2.24+ plan"
+  },
+  "execution_access": {
+    "checked_after_approval": true,
+    "aws_connector": false,
+    "aws_cli": false,
+    "usable_aws_identity": false,
+    "ssh_config": false,
+    "ssh_keys": false,
+    "ssh_agent": false,
+    "credentials_installed_or_changed": false,
+    "ec2_commands_executed": 0
+  },
+  "approval": {
+    "received": "2026-11-08",
+    "user_response": "yes",
+    "scope": "maximum 30-minute isolated 500M QA, dedicated resources and new QA owner only; reviewed scoped policy; 8 GiB, 2 vCPU, one job; conditional on collision, actual quota and network preflight",
+    "global_or_production_authorized": false
+  },
+  "protected_upload_post_approval_readonly_check": {
+    "read_only": true,
+    "status": "queued",
+    "attempts": 0,
+    "lease_token": null,
+    "lease_until": null,
+    "cancel_requested": false,
+    "row_matches_previous_snapshot": true
   }
 }
