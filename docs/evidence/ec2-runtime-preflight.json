@@ -1,0 +1,55 @@
+{
+  "date": "2026-11-08",
+  "instance_id": "i-0be10e530045fc650",
+  "region": "us-east-2",
+  "source": "operator-pasted SSM result; no direct agent EC2 access",
+  "quota_probe": {
+    "actual_cgroup_limits": {
+      "version": 2,
+      "memory_bytes": 8589934592,
+      "cpu_quota": 200000,
+      "cpu_period": 100000,
+      "extra_swap_bytes": 0,
+      "pids_max": 256
+    },
+    "checks": {
+      "memory_exactly_8gib": true,
+      "cpu_exactly_2": true,
+      "no_extra_swap": true,
+      "pids_at_most_256": true,
+      "all_controls_read": true
+    },
+    "passed": true,
+    "source": "current process cgroup files, not requested Docker flags"
+  },
+  "probe_type": "short-lived network-none diagnostic, not AI worker or model seeder",
+  "runtime_reference": "sha256:472913bf34e918c48e5b77a56c4ea2dfd31873bdd79ecc2d1c4e7ab4cf3e5759",
+  "network_preflight": {
+    "status": "prepared, not yet executed on EC2",
+    "source_file": "deploy/worker/network_preflight.py",
+    "sha256": "83a5f1445364d2d28942d015ba3741a662744a9ab9685cd56984afb6f229984b",
+    "policy_source_sha256": "ec116cab16d2276b87d675eced9d12b83f05b860687f7ade458b8e35a868a646",
+    "bridge": "nccz-qa0",
+    "network": "noetharaclipz-isolated_worker-egress",
+    "proposed_subnet": "172.20.0.0/24",
+    "owned_network_and_exact_reviewed_rules_retained_only_on_pass": true,
+    "deny_proof": "matching REJECT counter delta plus failed TCP connect; no application requests to private services",
+    "models_credentials_queue_or_worker": false,
+    "diagnostic_removal_required_before_policy_cleanup": true
+  },
+  "automated_checks": {
+    "worker_passed": 117,
+    "worker_skipped": 1,
+    "worker_seconds": 19.46,
+    "skip_reason": "optional authorized-sample test not selected",
+    "network_scope_policy_tests_passed": 23,
+    "ruff": "passed"
+  },
+  "worker_started": false,
+  "models_loaded_on_ec2": false,
+  "qa_account_created": false,
+  "global_consumption_enabled": false,
+  "gemini_enabled": false,
+  "paid_services_activated": false,
+  "merged_or_published": false
+}

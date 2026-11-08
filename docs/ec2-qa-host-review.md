@@ -583,3 +583,46 @@ printf '%s\n' 'e35ff35de3e085799b7d10ed2b3d7eec6ad0ca28d10ab682e075921e0bfed5fe 
 sudo -n docker --host=unix:///var/run/docker.sock run --rm --interactive --pull=never --platform linux/amd64 --network none --user 62001:62001 --read-only --cap-drop ALL --security-opt no-new-privileges:true --memory 8g --memory-swap 8g --cpus 2 --cpu-shares 256 --pids-limit 256 --oom-score-adj 500 --entrypoint python sha256:472913bf34e918c48e5b77a56c4ea2dfd31873bdd79ecc2d1c4e7ab4cf3e5759 - < config/deploy/worker/check_cgroup_limits.py
 )
 ```
+
+
+## Actual EC2 quota gate passed; network preflight prepared
+
+The operator's network-none diagnostic returned cgroup v2 memory.max
+8,589,934,592, cpu.max `200000 100000`, memory.swap.max 0 and pids.max 256,
+with all five checks true and `passed=true`. This is actual kernel evidence,
+not Docker requested settings. It applies to that diagnostic; seed/standby
+profiles still require their own probe before model/AI activation.
+
+The next operator step is `deploy/worker/network_preflight.py`. It requires
+root through existing sudo and `--apply-approved-qa-policy`, validates the
+instance/image, source hashes, host headroom, existing service health and all
+reserved resources, and aborts before mutation on a conflict. It uses exactly
+the previously approved egress renderer (SHA256 ec116cab16d2276b87d675eced9d12b83f05b860687f7ade458b8e35a868a646).
+No source/global policy or existing-service rule is flushed or replaced.
+
+Only after those checks does it install the reviewed source-bridge hooks,
+create the dedicated Compose-labeled network on unused 172.20.0.0/24, and run
+one disposable diagnostic capped at 8 GiB / 2 vCPU with a 180-second maximum
+process lifetime. There are no mounts, ports, credentials, queue calls or model
+loads. It checks actual cgroups again, IPv6-disabled namespace settings, public
+DNS/TLS to Supabase and Hugging Face metadata, and TCP-only negative probes.
+Private targets use unused addresses rather than existing application services;
+IMDS gets no HTTP request or token exchange. Each denial requires its matching
+iptables REJECT counter to increase, so a closed port is not an isolation pass.
+
+The helper requires diagnostic removal before removing protections. A successful
+result retains only this owned
+network and exact reviewed rules for the following QA stages and writes a
+root-owned receipt at `<received>/network-preflight.json`. Network labels and
+the receipt identify ownership; the preflight refuses to rerun over existing
+reserved resources. On failure it removes only its own network and successfully
+applied rules, after diagnostic removal; uncertain cleanup retains protections
+and stops. No daemon/host restart or security-group change is authorized. Before
+later seeding/startup recheck these rules and ownership; none are a promise of
+persistence across a reboot.
+
+The helper is staged as a small private, SHA256-verified JSON handoff through
+the same existing Supabase bucket. No image transfer/rebuild, new PAT, registry,
+Actions run or account credential on EC2 is needed. At this commit the network
+preflight has **not run on EC2**; only its tests and source review have passed.
+Return the complete JSON output before proceeding to model seeding or workers.

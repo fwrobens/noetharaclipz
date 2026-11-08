@@ -1,6 +1,6 @@
 {
   "date": "2026-11-08",
-  "status": "Loaded EC2 OCI manifest identity is cryptographically bound to the original reviewed config and all 11 layers; quota/network checks pending",
+  "status": "EC2 operator quota diagnostic passed actual 8 GiB/2 vCPU/no extra swap/256 PID controls; network gate pending",
   "github_authentication": {
     "repository_api": 200,
     "managed_placeholder": true,
@@ -174,10 +174,9 @@
   ],
   "ec2_receipt_verified": true,
   "remaining": [
-    "Run pinned OCI-identity network-none quota probe on EC2; no reload/rebuild needed",
-    "No-network kernel quota probe (short-lived diagnostic only); then actual seed/standby limits",
-    "Scoped worker network allow/deny preflights and secure existing service-key placement",
-    "One new QA owner and <=30 minute isolated normal website acceptance; no global consumption"
+    "Operator network preflight: apply only reviewed source-bridge rules and prove DNS/TLS allows plus counter-backed private/host/IMDS denies",
+    "Actual seed/standby limits, secure existing service credential placement and pinned 500M/Whisper assets",
+    "One QA owner; normal workflow, recovery and security checks within approved <=30 minute trial"
   ],
   "ec2_receipt": {
     "source": "operator-pasted SSM downloader output",
@@ -211,7 +210,7 @@
     "host_available_ram_gib": 28.9,
     "host_free_disk_gib": 52.2,
     "docker_runtime_image_id_reported": true,
-    "quota_json_reported": false,
+    "quota_json_reported": true,
     "worker_started": false,
     "next_check": "Run the no-network cgroup probe by the verified EC2 OCI manifest ID; do not reload/rebuild",
     "reported_id": "sha256:472913bf34e918c48e5b77a56c4ea2dfd31873bdd79ecc2d1c4e7ab4cf3e5759",
@@ -234,5 +233,25 @@
     "config_and_manifest_have_identical_11_layer_references": true,
     "image_or_layers_modified": false,
     "reason_for_original_guard_failure": "Compared config digest against OCI manifest digest"
-  }
+  },
+  "ec2_kernel_quota_probe": {
+    "actual_cgroup_limits": {
+      "version": 2,
+      "memory_bytes": 8589934592,
+      "cpu_quota": 200000,
+      "cpu_period": 100000,
+      "extra_swap_bytes": 0,
+      "pids_max": 256
+    },
+    "checks": {
+      "memory_exactly_8gib": true,
+      "cpu_exactly_2": true,
+      "no_extra_swap": true,
+      "pids_at_most_256": true,
+      "all_controls_read": true
+    },
+    "passed": true,
+    "source": "current process cgroup files, not requested Docker flags"
+  },
+  "network_preflight_evidence": "ec2-runtime-preflight.json"
 }
