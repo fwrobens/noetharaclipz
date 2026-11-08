@@ -45,7 +45,7 @@
     "passed": 14,
     "seconds": 0.15
   },
-  "network_security_on_ec2": "partially observed: Docker CIDRs and empty IPv4 DOCKER-USER chain; routes/DNS, INPUT/forward policy, SGs, IMDS restriction, UID/path/bridge collision and daemon checks pending",
+  "network_security_on_ec2": "operator inputs sufficient for concrete worker-only proposal; not applied or tested on EC2; daemon/Compose and reserved identity/path/bridge/chain checks still pending",
   "production_model": "pinned SmolVLM2-500M only",
   "runtime_image_id": "sha256:32fd88495ceab2c59ab7bc6a0c7980c1003d9b4b6eea507131783a24be4b88a5",
   "models_installed_activated_or_downloaded": 0,
@@ -110,5 +110,55 @@
     "mocked_aws_contract_tests_passed": 2,
     "actual_aws_calls": 0,
     "credentials_or_cli_installed": false
+  },
+  "operator_network_report": {
+    "default_gateway": "172.31.32.1",
+    "host_subnet": "172.31.32.0/20",
+    "upstream_dns": "172.31.0.2",
+    "local_dns_stub": "127.0.0.53",
+    "input_policy": "ACCEPT",
+    "forward_policy": "DROP with DOCKER-USER and DOCKER-FORWARD jumps",
+    "docker_user_rules": [],
+    "security_group_id": "sg-0e74e0664079302bd",
+    "security_group_name": "launch-wizard-3",
+    "reported_ipv4_ingress": "TCP 22 from 0.0.0.0/0",
+    "reported_ipv4_egress": "all traffic to 0.0.0.0/0",
+    "source": "operator-provided outputs and group summary; no direct AWS API calls"
+  },
+  "network_proposal": {
+    "mode": "print-only",
+    "source": "deploy/worker/egress_policy.py",
+    "hooks_match_only_bridge": "nccz-qa0",
+    "chain": "NCZQA_EGRESS",
+    "dns_allowed": "172.31.0.2 UDP/TCP 53",
+    "tls_allowed": "public IPv4 TCP 443 under existing Docker policy",
+    "denies": "host INPUT/local, private/shared/link-local including VPC/staging/Supabase and IPv4 IMDS, other egress",
+    "ipv6": "disabled in worker/seed namespaces only",
+    "shared_policies_or_existing_rules_changed": false,
+    "security_groups_changed": false,
+    "rules_applied": 0,
+    "qa_restart": "on-failure:3; manual review required after host/daemon restart",
+    "syntax_and_guard_validation": {
+      "targeted_tests_passed": 25,
+      "iptables_translation": "all proposed apply commands passed read-only translator",
+      "shell_syntax": "apply and rollback pass sh -n",
+      "compose_network_review": "passed; no containers started"
+    }
+  },
+  "remaining_checks": [
+    "Docker/Compose version and cgroup support on EC2",
+    "Reserved UID/GID 62001, paths, bridge and NCZQA_EGRESS chain collision checks",
+    "Explicit <=30 minute QA deployment/scoped-policy authorization",
+    "After authorization: seed/standby actual kernel quota proof before any model download/AI startup",
+    "After authorization: actual worker-network allow/deny behavior and hosted QA flow"
+  ],
+  "deployment_review_status": "resource snapshot adequate; concrete guarded policy ready for review; final host compatibility/collisions and explicit approval pending",
+  "local_kernel_resource_validation": {
+    "previous_hard_cap_claim_superseded": true,
+    "evidence": "local-cgroup-validation-correction.json",
+    "actual_ec2_limits_verified": false,
+    "new_probe": "deploy/worker/check_cgroup_limits.py",
+    "gates": "seed preparation and standby-to-QA activation require exit 0; missing/unlimited/host-parent limits fail",
+    "benchmark_models_loaded_this_review": 0
   }
 }

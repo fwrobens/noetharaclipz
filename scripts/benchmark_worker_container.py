@@ -1,6 +1,7 @@
 """Local-only Docker gaming benchmark. No credentials, networking or queue access.
 
-Runs one fresh model at a time in the exact 8 GiB/2 CPU sandbox. Never touches
+Verifies actual kernel quotas before any model/media work, then runs serially.
+Requested Docker flags alone cannot establish an 8 GiB/2 CPU sandbox. Never touches
 EC2. Existing unrelated containers are only enumerated to assert preservation.
 """
 
@@ -84,11 +85,20 @@ def main():
             str(cache) + ":/models/huggingface:ro",
             "-v",
             str(output) + ":/reports",
+            "-v",
+            str(ROOT / "deploy/worker/check_cgroup_limits.py") + ":/quota_probe.py:ro",
             "--entrypoint",
             "python",
             args.image,
-            "-m",
-            "noetharaclipz_deploy.benchmark",
+            "-c",
+            """import runpy,sys,json
+q=runpy.run_path('/quota_probe.py')
+r=q['evaluate'](q['read_limits']())
+print(json.dumps(r),flush=True)
+if not r['passed']: sys.exit(78)
+sys.argv=['benchmark',sys.argv[1]]
+runpy.run_module('noetharaclipz_deploy.benchmark',run_name='__main__')
+""",
             mode,
         ]
         try:
@@ -109,7 +119,7 @@ def main():
             )
             if mode == "prepare" and info["State"]["ExitCode"]:
                 raise RuntimeError(
-                    "Real media preparation failed; inspect local benchmark log"
+                    "Kernel quota verification or media preparation failed; no benchmark pass"
                 )
         finally:
             docker("rm", "-f", name)

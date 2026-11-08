@@ -1,0 +1,12 @@
+{
+  "observed_on": "managed cloud executor, not EC2",
+  "docker_warning": "WARNING: Running in rootless-mode without cgroups. Systemd is required to enable cgroups in rootless-mode.",
+  "docker_version": "29.9.2",
+  "memory_limit_capability_reported": false,
+  "cpu_quota_capability_reported": false,
+  "previous_inspect_assertion": "requested flags confirmed; kernel enforcement not established",
+  "historical_model_measurements": "CPU time/RSS/timestamps remain real; 2.2B exit was process watchdog, not evidence of hard cgroup enforcement",
+  "ec2_kernel_limits_verified": false,
+  "new_gate": "check_cgroup_limits.py must pass inside seed/standby before model download or AI startup",
+  "no_container_or_model_started_this_review": true
+}

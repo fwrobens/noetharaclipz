@@ -28,11 +28,22 @@ mode. The earlier ~1,300-credit claim is not a current measurement for this
 confirmed instance type and is no longer an admission requirement.
 
 Observed Docker networks are `172.17.0.0/16` (default), `172.18.0.0/16`
-(staging), and `172.19.0.0/16` (Supabase). `DOCKER-USER` exists but has no rules.
-This does not establish per-worker egress/host/IMDS denial; existing Docker
-isolation and host INPUT rules also need review. VPC routes, DNS, security-group
-rules, dedicated path/UID/bridge collisions and daemon compatibility remain to
-be returned. No worker network was created and no firewall rule was changed.
+(staging), and `172.19.0.0/16` (Supabase). Host routes show `172.31.32.0/20`
+and a default gateway at `172.31.32.1`. The upstream resolver is confirmed as
+**172.31.0.2**, rather than the systemd stub `127.0.0.53`. INPUT policy is ACCEPT;
+FORWARD is DROP with jumps to DOCKER-USER and DOCKER-FORWARD. DOCKER-USER is empty.
+
+The operator reports attached group **launch-wizard-3 / sg-0e74e0664079302bd**
+with IPv4 SSH/22 open to `0.0.0.0/0` and unrestricted IPv4 outbound traffic.
+This is existing exposure, not a new worker port. **Do not change that group or
+SSH access as part of QA**; narrowing SSH requires a separately reviewed access
+change to avoid locking out the operator. No public worker ports are needed.
+
+The proposed worker-only policy below is now concrete and syntax-tested.
+It has not been installed, and its real DNS/TLS/deny behavior on EC2 is not yet
+verified. Docker/Compose compatibility and dedicated UID/path/bridge/chain
+collision checks remain to be confirmed before any deployment. No worker
+network or firewall rule has been created/changed.
 
 The Docker resource envelope is locally tested. It limits this worker to
 8 GiB RAM, 2 vCPU, no swap, low CPU shares, one active job, 256 PIDs and no public
@@ -118,6 +129,90 @@ non-burstable types such as m6i; missing type information remains unverified.
 No Cost Explorer, Logs Insights, agent installation or monitoring activation.
 Do not infer zero cost or zero risk from missing metrics or access-denied output.
 
+## Worker-only network proposal — not applied
+
+`deploy/worker/egress_policy.py` **only prints** the proposed commands. It has
+no subprocess/command execution path. Rendered shell also refuses execution
+unless `NC_QA_FIREWALL_APPROVED=yes` is explicitly set; that accident guard is
+not a substitute for actual user authorization. Inspect without applying it:
+
+```sh
+python3 deploy/worker/egress_policy.py --format shell
+python3 deploy/worker/egress_policy.py --format shell --rollback
+```
+
+The future operator must check that `NCZQA_EGRESS` does not already belong to
+another service and `nccz-qa0` is unused. Never flush/reuse a foreign chain.
+After explicit authorization, construct the full new chain first and then add
+only source-interface-specific hooks:
+
+- `DOCKER-USER`: traffic **from `nccz-qa0` only** jumps to `NCZQA_EGRESS`.
+- `INPUT`: traffic **from `nccz-qa0` only** is rejected, protecting host services.
+- Egress chain first permits UDP/TCP DNS **only to 172.31.0.2:53**. This exception
+  must precede the private-address block because the approved resolver is private.
+- Reject RFC1918/private/shared/link-local/loopback/reserved ranges, including
+  staging/Supabase networks, the VPC's other private services and IPv4 IMDS
+  `169.254.169.254`. Also reject host-local destinations.
+- Return established public traffic and TCP/443 to the existing Docker policy;
+  this does not bypass any later host/Docker denies. Reject other egress.
+
+No global ACCEPT/DROP policy is changed, no shared chain is flushed, and no
+hook matches the existing staging/Supabase bridge interfaces. The renderer also
+prints exact rollback commands that remove only these hooks/owned rules/chain,
+**after stopping this worker and seed**. Applying/rolling back is not permitted
+by this read-only review.
+
+Compose pins worker/seed DNS to the approved resolver and disables IPv6 in their
+own network namespaces, avoiding an IPv6 bypass of the IPv4-only policy. No
+host sysctl or other container is changed. HTTPS is allowed to public IPv4
+endpoints; this is not a hostname allowlist. Post-authorization QA must verify
+DNS + Supabase HTTPS and denial of host/private/IMDS/other-port access using
+this worker network, without probing or modifying unrelated application data.
+
+Firewall persistence across reboot has not been configured. The **QA override
+therefore uses `on-failure:3`**, which supports process-failure recovery but does
+not automatically start a stopped container on Docker-daemon/host reboot. Re-review/reinstall the scoped policy
+before any manual resumption. With Docker live-restore, a running container may
+remain alive across a daemon restart; daemon/reboot changes are not authorized
+during the trial, and any such event requires stopping QA and re-reviewing rules. The base standby service remains `unless-stopped`
+and makes no queue calls. Future continuous/global startup needs separately
+approved firewall persistence/startup ordering; it is not authorized by QA.
+
+Remaining read-only compatibility checks (no installation/change):
+
+```sh
+sudo -n docker info --format 'Server={{.ServerVersion}} Cgroup={{.CgroupVersion}} Security={{json .SecurityOptions}} Warnings={{json .Warnings}}'
+sudo -n docker compose version
+```
+
+The prepared `host_probe.py` additionally records UID/GID 62001 and path/bridge
+collisions. Check these before file/network creation, and stop rather than
+reuse any reserved identity/path already owned by another application.
+
+**Correction to earlier local enforcement claims:** the managed development
+Docker daemon reports `Running in rootless-mode without cgroups`. Earlier smoke
+checks inspected requested HostConfig values; they did not prove kernel quota
+enforcement. The CPU/RSS and model-output measurements remain real, and the
+2.2B exit was its own safety watchdog, but the claimed hard 8 GiB/2 CPU sandbox
+is **unverified** for those historical runs. This finding is from the cloud
+executor, not the EC2 host; do not infer that EC2 has the same limitation.
+
+`check_cgroup_limits.py` now reads actual cgroup v1/v2 membership/controls, not
+requested flags. It requires 8 GiB memory, 2 CPU quota, no extra swap and <=256
+PIDs; unavailable, unlimited or outer-host limits fail closed. The smoke helper
+now refuses success without this proof, and the optional benchmark runner
+checks it before importing a model or doing media work. Do not rerun the 2.2B
+research task. After authorization, EC2's seed and standby limits must pass this
+read-only probe before asset work/AI processing as shown below.
+
+Local validation: **25 targeted tests pass** (14 deployment guards, 2 AWS
+contracts, 5 firewall tests and 4 kernel-quota verifier tests). Proposed rules
+pass `iptables-translate` without kernel writes; shell text passes `sh -n`.
+Compose rendering confirms DNS, per-container IPv6 disablement, bounded QA
+restart, no ports, requested 8 GiB/2 CPU/no swap and disabled global/Gemini.
+These are configuration/parser/control tests, **not an EC2 enforcement pass**.
+No container/model/firewall/EC2 service was started or changed by this review.
+
 ## Admission and cost decision
 
 Require fresh ≥10 GiB MemAvailable, ≥20 GiB free worker/Docker filesystem budget,
@@ -150,8 +245,8 @@ justified by the supplied resource readings.
 All commands in this section are **future authorized deployment actions**,
 not read-only checks. First finish the remaining security/admission review and record
 explicit QA authorization. If any host-specific network action is needed,
-its exact rules and scope must be reviewed before starting; this runbook does
-not authorize arbitrary firewall or existing-application changes.
+the print-only scoped policy above must be reviewed before starting; this
+runbook does not authorize arbitrary firewall or existing-application changes.
 
 1. Run the following commands from the directory containing the reviewed
    `deploy/worker/` files, separate from existing application checkouts. Freeze
@@ -201,16 +296,19 @@ not authorize arbitrary firewall or existing-application changes.
    ```
 
    Use `/etc/noetharaclipz-isolated/worker.env` below. Once approved, install
-   only the reviewed worker-specific network policy; verify it does not match
-   existing traffic. Then seed pinned **500M and Whisper only**, with no secret
+   only the reviewed worker-specific network policy rendered by
+   `egress_policy.py`; verify both scoped hooks and all chain rules before any
+   seed/worker start, and verify they do not match existing traffic. Then seed pinned **500M and Whisper only**, with no secret
    attached to the seed service:
 
    ```sh
    docker compose --env-file /etc/noetharaclipz-isolated/worker.env -f deploy/worker/compose.yaml config --quiet
-   docker compose --env-file /etc/noetharaclipz-isolated/worker.env -f deploy/worker/compose.yaml --profile tools run --rm --no-deps seed
+   docker compose --env-file /etc/noetharaclipz-isolated/worker.env -f deploy/worker/compose.yaml --profile tools run --rm --no-deps -T --entrypoint python seed - < deploy/worker/check_cgroup_limits.py && docker compose --env-file /etc/noetharaclipz-isolated/worker.env -f deploy/worker/compose.yaml --profile tools run --rm --no-deps seed
    ```
 
-   Verify the manifest's model/revision before proceeding. The seed does not
+   The seed quota probe must return `passed=true` and exit 0; otherwise stop
+   without downloading/loading models. Verify the manifest's model/revision
+   before proceeding. The seed does not
    claim jobs or run inference. Never invoke the optional 2.2B research runner.
 
 4. Start only this worker in standby and inspect health/limits:
@@ -218,10 +316,12 @@ not authorize arbitrary firewall or existing-application changes.
    ```sh
    docker compose --env-file /etc/noetharaclipz-isolated/worker.env -f deploy/worker/compose.yaml up -d --no-deps worker
    docker compose --env-file /etc/noetharaclipz-isolated/worker.env -f deploy/worker/compose.yaml exec -T worker cat /run/worker/health.json
+   docker compose --env-file /etc/noetharaclipz-isolated/worker.env -f deploy/worker/compose.yaml exec -T worker python - < deploy/worker/check_cgroup_limits.py
    ```
 
    Expected `mode=standby`, `ai_ready=false`. No backend call or key loading.
-   Confirm actual memory=8589934592, swap-total=8589934592 (no extra swap),
+   Require the kernel quota probe's `passed=true`, not just Docker inspect flags.
+   Also confirm requested memory=8589934592, swap-total=8589934592,
    NanoCpus=2000000000, uid 62001, no port bindings and only the private worker
    mounts/network. Inspect only this project's container, not full secret-bearing
    metadata of staging/Supabase containers.
@@ -235,10 +335,11 @@ not authorize arbitrary firewall or existing-application changes.
 
    ```sh
    docker compose --env-file /etc/noetharaclipz-isolated/worker.env --env-file /etc/noetharaclipz-isolated/qa-owner.env -f deploy/worker/compose.yaml -f deploy/worker/compose.qa.yaml config --quiet
-   docker compose --env-file /etc/noetharaclipz-isolated/worker.env --env-file /etc/noetharaclipz-isolated/qa-owner.env -f deploy/worker/compose.yaml -f deploy/worker/compose.qa.yaml up -d --no-deps worker
+   docker compose --env-file /etc/noetharaclipz-isolated/worker.env -f deploy/worker/compose.yaml exec -T worker python - < deploy/worker/check_cgroup_limits.py && docker compose --env-file /etc/noetharaclipz-isolated/worker.env --env-file /etc/noetharaclipz-isolated/qa-owner.env -f deploy/worker/compose.yaml -f deploy/worker/compose.qa.yaml up -d --no-deps worker
    ```
 
-   The override fixes QA mode; the base keeps global approval false, local
+   The activation command is chained to actual standby quota proof with `&&`;
+   a failing probe cannot activate QA. The override fixes QA mode and on-failure restart; the base keeps global approval false, local
    provider explicit and Gemini false. It recreates only this worker container,
    leaving other applications untouched. Require actual scoped `ai_ready=true`
    before the test. All live claims must name the QA owner UUID.
@@ -276,7 +377,7 @@ The authorization should identify the reviewed commit/artifact and permit only:
 > Apply only the separately reviewed worker-specific network policy. Permit
 > worker-only graceful stop/recovery testing. Keep Gemini and global processing
 > disabled, preserve the existing queued upload and all Noethara/Supabase
-> services, and do not resize/create paid infrastructure or change billing mode.
+> services, and do not resize/create paid infrastructure or change billing settings.
 
 This does not authorize a production/global consumer, indefinite operation,
 2.2B, host reboot, Docker upgrades or changes to existing applications. A

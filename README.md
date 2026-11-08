@@ -33,7 +33,8 @@ The explicitly selected local provider uses pinned SmolVLM2-500M, actual video,
 Whisper, scenes and audio evidence in the normal worker. Its hosted queued flow
 is verified; descriptions and bounded sampling still have quality limitations.
 [Model benchmarks and deployment limits](docs/worker-deployment.md) include a
-real 2-vCPU/8-GiB gaming test and a memory-aborted 2.2B research attempt. The
+real gaming test with requested 2-vCPU/8-GiB settings (kernel enforcement
+was not established on the rootless executor; see the corrected preflight) and a memory-aborted 2.2B research attempt. The
 larger model is not enabled in the production provider or database allowlist.
 
 ## Development

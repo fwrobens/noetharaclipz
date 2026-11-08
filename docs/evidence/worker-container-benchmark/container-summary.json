@@ -31,5 +31,7 @@
       "nano_cpus": 2000000000
     }
   ],
-  "existing_container_ids_preserved": true
+  "existing_container_ids_preserved": true,
+  "limits_are_requested_not_verified_kernel_caps": true,
+  "validation_correction": "../local-cgroup-validation-correction.json"
 }

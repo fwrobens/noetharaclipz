@@ -3,11 +3,21 @@
   "queue_access": false,
   "checks": {
     "standby_healthy_without_secret_or_network": true,
+    "automatic_restart_after_process_failure": true,
+    "graceful_standby_shutdown": true,
+    "qa_without_authorization_scope_refused": true,
+    "global_without_authorization_scope_refused": true,
+    "requested_8gib_2cpu_config_confirmed": true
+  },
+  "image_id": "sha256:32fd88495ceab2c59ab7bc6a0c7980c1003d9b4b6eea507131783a24be4b88a5",
+  "historical_checks_as_originally_reported": {
+    "standby_healthy_without_secret_or_network": true,
     "nonroot_readonly_8gib_2cpu_no_ports_enforced": true,
     "automatic_restart_after_process_failure": true,
     "graceful_standby_shutdown": true,
     "qa_without_authorization_scope_refused": true,
     "global_without_authorization_scope_refused": true
   },
-  "image_id": "sha256:32fd88495ceab2c59ab7bc6a0c7980c1003d9b4b6eea507131783a24be4b88a5"
+  "kernel_resource_limits_verified": false,
+  "validation_correction": "local-cgroup-validation-correction.json supersedes previous enforced wording"
 }

@@ -20,13 +20,23 @@ def main():
         env.pop(k, None)
     base = ["docker", "--host=unix:///var/run/docker.sock"]
 
-    def docker(*args):
+    def docker(*args, input=None):
         return subprocess.run(
-            base + list(args), env=env, capture_output=True, text=True, timeout=60
+            base + list(args),
+            env=env,
+            input=input,
+            capture_output=True,
+            text=True,
+            timeout=60,
         )
 
     name = "nc-standby-check-" + uuid.uuid4().hex[:8]
-    report = {"ec2_touched": False, "queue_access": False, "checks": {}}
+    report = {
+        "ec2_touched": False,
+        "queue_access": False,
+        "passed": False,
+        "checks": {},
+    }
     try:
         docker(
             "run",
@@ -70,7 +80,17 @@ def main():
             info["HostConfig"]["ReadonlyRootfs"]
             and not info["HostConfig"]["PortBindings"]
         )
-        report["checks"]["nonroot_readonly_8gib_2cpu_no_ports_enforced"] = True
+        report["checks"]["nonroot_readonly_no_ports_and_requested_limits"] = True
+        probe = (
+            Path(__file__).resolve().parents[1] / "deploy/worker/check_cgroup_limits.py"
+        )
+        actual = docker("exec", "-i", name, "python", "-", input=probe.read_text())
+        report["actual_quota_probe"] = json.loads(actual.stdout)
+        report["checks"]["kernel_resource_limits_verified"] = actual.returncode == 0
+        if actual.returncode:
+            raise RuntimeError(
+                "Actual kernel quotas not verified; refuse deployment/benchmark approval"
+            )
         # Docker treats `docker kill` as an intentional stop; crash the owned
         # standby supervisor child instead, after restart-policy activation.
         time.sleep(11)
@@ -110,12 +130,13 @@ def main():
             assert result.returncode != 0
             report["checks"][mode + "_without_authorization_scope_refused"] = True
         report["image_id"] = info["Image"]
+        report["passed"] = True
     finally:
         docker("rm", "-f", name)
-    path = Path("test-results/deployment-container-smoke.json")
-    path.parent.mkdir(exist_ok=True)
-    path.write_text(json.dumps(report, indent=2) + "\n")
-    print(json.dumps(report, indent=2))
+        path = Path("test-results/deployment-container-smoke.json")
+        path.parent.mkdir(exist_ok=True)
+        path.write_text(json.dumps(report, indent=2) + "\n")
+        print(json.dumps(report, indent=2))
 
 
 if __name__ == "__main__":

@@ -4,14 +4,22 @@
 IMDSv2 output identify **i-0be10e530045fc650, us-east-2, m6i.2xlarge**, 8 vCPU and
 approximately 32 GiB installed RAM. Current operator readings show ~29 GiB
 available, 53 GB free disk and low CPU. The resource snapshot supports a bounded
-500M QA trial. Remaining network/security checks and explicit deployment
-approval are still required; see the [Ohio review and procedure](ec2-qa-host-review.md).
+500M QA trial. The operator has supplied the security group, routes and upstream DNS. A
+worker-only print-only firewall proposal is now prepared and syntax-tested;
+compatibility/collision checks and explicit deployment approval remain required; see the [Ohio review and procedure](ec2-qa-host-review.md).
 
 No EC2 changes/startup, CLI/credential installation or model activation occurred.
 M6i has no CPU-credit mechanism; prior T2 credit-mode and surcharge calculations
 below are historical and **do not apply** to the confirmed host. 2.2B remains
 excluded from deployment. Direct AWS tooling is still unavailable in this chat;
 operator-returned readings are distinguished from agent-observed calls.
+
+**Local validation correction:** the managed executor's Docker daemon reports
+rootless mode without cgroups. Older smoke checks proved requested limits in
+HostConfig, not actual kernel enforcement. Historical timing/CPU/RSS/model
+results remain measurements, but the hard-cap claim is withdrawn. Actual EC2
+quota enforcement is now a mandatory seed/standby preflight before AI startup;
+see [the corrected review](ec2-qa-host-review.md). No host settings were changed.
 
 ## Recommendation and budget
 
@@ -69,8 +77,10 @@ boundaries remain in the report. The original is credited to SuperTux Kart-Autor
 CC BY-SA 4.0; [source and license](https://commons.wikimedia.org/wiki/File:Benchmark_SuperTux_Kart_Base_Profile_2025.07.04_-_10.19.10.02.webm).
 Use only that derivative or other footage for which testing is authorized.
 
-The local Docker runner enforces **8 GiB RAM, no swap, 2 CPUs, no network, no
-ports, no credentials and no Supabase access**. This benchmark runs on the
+The historical local runner requested **8 GiB RAM/no swap/2 CPU**, but kernel
+enforcement was not verified on the rootless executor. Network=none, no ports,
+no credentials and no Supabase access still applied. The corrected runner now
+requires actual quota proof before any model work. This benchmark runs on the
 managed development executor, **not the EC2 instance**. Its AMD EPYC CPU differs
 from T2 hardware; timings are not an EC2 performance promise.
 
@@ -83,8 +93,8 @@ Preparation of real video/audio/scenes/Whisper and candidate files took 21.277 s
 separately and is reused for a fair model comparison. The 2.2B checkpoint's
 2,246,784,880 F32 parameters occupy **8.37 GiB in weights alone**, so float32 is
 inadmissible under 8 GiB. BF16 was genuinely attempted; the 7.25 GiB RSS safety
-threshold was crossed between 200 ms samples before loading completed. The hard
-8 GiB cgroup remained in force; exit 75, `OOMKilled=false`. This does not prove
+threshold was crossed between 200 ms samples before loading completed. Kernel hard-cap enforcement was not established; the process safety cutoff
+was real, with exit 75, `OOMKilled=false`. This does not prove
 an optimized loader could never fit BF16, but it does reject this loading path
 for a reliable shared-host deployment. **No 2.2B highlight-quality or inference
 speed claim is possible.** No memory limit was raised to force a pass.
@@ -158,10 +168,12 @@ QA/global startup with missing opt-ins. Docker intentionally suppresses restart
 for a manual `docker kill`, so the test crashes only its own standby supervisor
 child. No existing container is killed/restarted/removed.
 
-Final local verification passed **74 worker tests**, zero skipped with authorized
+The earlier local verification passed **74 worker tests**, zero skipped with authorized
 Sintel footage, including 14 deployment guards; Ruff, Compose validation, the
 image build/`pip check`, and the final standby Docker lifecycle/isolation smoke
-test passed. EC2 lifecycle/QA processing are deliberately not counted as passes.
+test passed for lifecycle/requested flags; actual kernel enforcement was not
+proved and is now explicitly gated. EC2 lifecycle/QA processing are not counted
+as passes.
 
 A transferable local image archive was prepared under
 `test-results/noetharaclipz-worker-review.tar.gz` (about 728 MiB). Its exact size,
@@ -247,8 +259,11 @@ The image runs as non-root uid/gid 62001 with read-only root, dropped
 capabilities, no new privileges, 256 PIDs, 8 GiB/no swap and 2 CPU limits.
 Review compatibility with Docker Engine 24+ and Compose v2.24+ before deployment;
 do not upgrade the existing daemon as part of this task.
-Docker `unless-stopped` provides startup/restart for this container, assuming the
-existing daemon's boot service is already enabled. Private bind paths and rotated
+The base standby uses `unless-stopped`; the QA override uses `on-failure:3`
+to avoid unattended reboot startup before firewall re-review. Future continuous
+production needs separately reviewed network-policy persistence. Existing daemon
+boot settings still need read-only verification; do not change them here. Private
+bind paths and rotated
 Docker JSON logs (5×10 MB) persist across container recreation; no new paid log
 service is used. Docker administrators remain privileged over file secrets.
 

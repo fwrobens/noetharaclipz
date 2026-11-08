@@ -2,6 +2,8 @@
 # Missing/empty owner fails Compose interpolation before any container starts.
 services:
   worker:
+    # QA crash recovery is bounded; daemon/host reboot requires network re-review.
+    restart: on-failure:3
     environment:
       NC_DEPLOY_MODE: qa
       NC_WORKER_OWNER_ID: ${NC_QA_OWNER_ID:?A newly created temporary QA owner UUID is required}

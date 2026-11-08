@@ -42,7 +42,8 @@
     "2.2b_seconds_until_abort": 11.045,
     "2.2b_peak_rss_bytes": 7914926080,
     "2.2b_inference_speed_and_quality": "unavailable; model never finished loading",
-    "raw": "worker-container-benchmark/"
+    "raw": "worker-container-benchmark/",
+    "hard_kernel_8gib_2cpu_cap_verified": false
   },
   "pricing": {
     "sources": [
@@ -83,7 +84,7 @@
     "ruff": "passed",
     "compose_validation": "passed",
     "final_image_build_and_pip_check": "passed",
-    "local_container_smoke": "passed",
+    "local_container_smoke": "lifecycle/requested configuration passed; actual kernel quota enforcement unverified on rootless executor",
     "ec2_deployment_test": "not authorized or performed"
   },
   "artifact": {
@@ -92,5 +93,6 @@
     "archive_bytes": 762913897,
     "archive_sha256": "29afebf52f7e4edca43282405941f9b636611ad8bb36cb1126f7ef1275ce41b9",
     "uploaded_to_aws_or_registry": false
-  }
+  },
+  "local_kernel_quota_validation_correction": "local-cgroup-validation-correction.json"
 }

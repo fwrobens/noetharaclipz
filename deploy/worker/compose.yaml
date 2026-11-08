@@ -49,6 +49,10 @@ services:
       driver: json-file
       options: {max-size: 10m, max-file: "5", compress: "true"}
     networks: [worker-egress]
+    dns: [172.31.0.2]
+    sysctls:
+      net.ipv6.conf.all.disable_ipv6: "1"
+      net.ipv6.conf.default.disable_ipv6: "1"
     deploy:
       replicas: 1
   # One-off asset preparation. No Supabase credentials, queue or inference.
@@ -65,6 +69,7 @@ services:
     cpus: 2.0
     mem_limit: 8g
     memswap_limit: 8g
+    pids_limit: 256
     cap_drop: [ALL]
     security_opt: [no-new-privileges:true]
     volumes:
@@ -73,9 +78,14 @@ services:
         target: /models
         bind: {create_host_path: false}
     networks: [worker-egress]
+    dns: [172.31.0.2]
+    sysctls:
+      net.ipv6.conf.all.disable_ipv6: "1"
+      net.ipv6.conf.default.disable_ipv6: "1"
 networks:
   worker-egress:
     driver: bridge
+    enable_ipv6: false
     driver_opts:
       com.docker.network.bridge.name: nccz-qa0
 secrets:
