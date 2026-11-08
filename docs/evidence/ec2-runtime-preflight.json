@@ -214,6 +214,11 @@
       "public_request_status": 400,
       "public": false,
       "cleanup_required_after_receipt": true
+    },
+    "protected_job_readonly_before_step": {
+      "status": "queued",
+      "attempts": 0,
+      "row_identical": true
     }
   }
 }
