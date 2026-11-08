@@ -14,9 +14,11 @@ import { cn } from "@/lib/utils";
 export const Route = createFileRoute("/project/$id")({
   head: () => ({
     meta: [
-      { title: "Project workspace — Clipwave" },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { title: "Project workspace — Noethara Clipz" },
       { name: "description", content: "Chat with the AI and review detected highlights." },
-      { property: "og:title", content: "Project workspace — Clipwave" },
+      { property: "og:title", content: "Project workspace — Noethara Clipz" },
       { property: "og:description", content: "Chat with the AI and review detected highlights." },
     ],
   }),
@@ -115,7 +117,7 @@ function Workspace() {
       <div className="flex items-center gap-2 border-b px-4 py-3">
         <span className="grid h-7 w-7 place-items-center rounded-lg bg-primary text-primary-foreground shadow-pop"><Scissors className="h-3.5 w-3.5" /></span>
         <div className="min-w-0 flex-1">
-          <p className="text-sm font-semibold">Clipwave AI</p>
+          <p className="text-sm font-semibold">Noethara Clipz AI</p>
           <p className="truncate text-xs text-muted-foreground">{project.title}</p>
         </div>
         <button onClick={() => setChatOpen(false)} className="hidden rounded-lg p-1.5 text-muted-foreground hover:bg-muted lg:block" aria-label="Collapse chat"><PanelLeftClose className="h-4 w-4" /></button>

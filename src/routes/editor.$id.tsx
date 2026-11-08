@@ -10,9 +10,11 @@ import { cn } from "@/lib/utils";
 export const Route = createFileRoute("/editor/$id")({
   head: () => ({
     meta: [
-      { title: "Clip editor — Clipwave" },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { title: "Clip editor — Noethara Clipz" },
       { name: "description", content: "Trim, caption and reframe clips with AI commands." },
-      { property: "og:title", content: "Clip editor — Clipwave" },
+      { property: "og:title", content: "Clip editor — Noethara Clipz" },
       { property: "og:description", content: "Trim, caption and reframe clips with AI commands." },
     ],
   }),
