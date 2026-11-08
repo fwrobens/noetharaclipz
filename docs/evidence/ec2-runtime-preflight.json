@@ -193,6 +193,27 @@
     "existing_network_rules_revalidated_before_seeding": true,
     "key_delivery_plan": "host generates root-only RSA-4096 transport key; public half returned for later OAEP-SHA256 encryption of existing service credential; no account key recreation or plaintext credential in chat",
     "controller_source_sha256": "16cbd1c5256d31412312c0ee8e151c672da88f2d73e353f1ab8a4cab65377578",
-    "private_key_stays_on_ec2": true
+    "private_key_stays_on_ec2": true,
+    "private_handoff": {
+      "transfer_id": "d2c4a4f4-7101-48f3-8c17-e683a39ca21e",
+      "prefix": "_worker-transfer/d2c4a4f4-7101-48f3-8c17-e683a39ca21e/",
+      "objects": [
+        "_worker-transfer/d2c4a4f4-7101-48f3-8c17-e683a39ca21e/prepare-assets.json"
+      ],
+      "source_commit": "e03d3cf22428b64cd9e838154310314418505ec3",
+      "created_unix": 1794180896,
+      "sha256": "067eeae0d2d0ed1565f853732a83f5e5a0f1907999fa50d3d3bef3511e596b86",
+      "bytes": 29426,
+      "storage_before": 48627594,
+      "file_sha256": {
+        "network_preflight.py": "bf4e598d9bd7e316ba907ba646e3a56c99cb612c37365ce1343a72e091a1981e",
+        "prepare_qa_assets.py": "16cbd1c5256d31412312c0ee8e151c672da88f2d73e353f1ab8a4cab65377578"
+      },
+      "expires_unix": 1794184497,
+      "signed_download_hash_verified": true,
+      "public_request_status": 400,
+      "public": false,
+      "cleanup_required_after_receipt": true
+    }
   }
 }
