@@ -17,8 +17,8 @@ low snapshot CPU. Staging shows a 1 GiB limit; Supabase limits shown by stats ar
 host-sized, so explicit per-service caps are not confirmed. Do not change them.
 Existing published container bindings shown are loopback-only.
 
-**Resource snapshot passes for a bounded 500M QA trial. Final security review
-and explicit deployment approval remain pending.** This session still has no
+**Resource and reported software compatibility review pass for a bounded,
+staged 500M QA trial. Explicit deployment approval is still absent.** This session still has no
 AWS connector/identity or CLI; the readings are operator-supplied, not direct
 remote observations by this agent. No tools/credentials were installed/changed.
 
@@ -41,8 +41,11 @@ change to avoid locking out the operator. No public worker ports are needed.
 
 The proposed worker-only policy below is now concrete and syntax-tested.
 It has not been installed, and its real DNS/TLS/deny behavior on EC2 is not yet
-verified. Docker/Compose compatibility and dedicated UID/path/bridge/chain
-collision checks remain to be confirmed before any deployment. No worker
+verified. Operator Docker 29.1.3 / cgroup v2 and Compose 2.40.3 satisfy the
+version requirements; reported security options are AppArmor, default seccomp
+and cgroup namespaces, with no warnings. This is not actual per-container
+quota proof. Dedicated UID/path/bridge/chain collision checks must run read-only
+before changes and abort the approved procedure if any ownership conflicts exist. No worker
 network or firewall rule has been created/changed.
 
 The Docker resource envelope is locally tested. It limits this worker to
@@ -178,7 +181,9 @@ during the trial, and any such event requires stopping QA and re-reviewing rules
 and makes no queue calls. Future continuous/global startup needs separately
 approved firewall persistence/startup ordering; it is not authorized by QA.
 
-Remaining read-only compatibility checks (no installation/change):
+Reported compatibility checks passed (no installation/change). These commands
+remain useful for a fresh preflight; operator results were Engine 29.1.3, cgroup
+v2, AppArmor/seccomp/cgroupns, no warnings, Compose 2.40.3:
 
 ```sh
 sudo -n docker info --format 'Server={{.ServerVersion}} Cgroup={{.CgroupVersion}} Security={{json .SecurityOptions}} Warnings={{json .Warnings}}'
@@ -365,15 +370,22 @@ runbook does not authorize arbitrary firewall or existing-application changes.
    logs for review. Do not run `docker system prune`, shared `compose down`,
    daemon/service restarts, global worker startup, merge or publication.
 
-## Approval needed later
+## Explicit staged QA approval required
 
-Approval is **not requested until the fresh host and network review passes**.
-The authorization should identify the reviewed commit/artifact and permit only:
+The resource, supplied network inputs and software compatibility review are
+complete enough to request **staged QA approval**. No deployment has been
+authorized. Approval is conditional: first run read-only collision checks,
+abort before changes on conflicts, and require actual kernel quota proof and
+scoped network verification before AI startup/QA footage. Do not equate the
+reported cgroup version with enforced limits. Authorization should identify the
+reviewed commit/artifact and permit only:
 
 > I authorize an isolated, maximum 30-minute SmolVLM2-500M QA deployment on
 > i-0be10e530045fc650 in us-east-2 using the reviewed image/configuration, capped
 > at 8 GiB RAM, 2 vCPUs and one active job. Create only the dedicated worker
 > paths/secrets/network and temporary QA account; use only its explicit UUID.
+> Abort before changes if reserved resources conflict; do not load models or
+> enable AI unless the kernel quota and scoped network preflights pass.
 > Apply only the separately reviewed worker-specific network policy. Permit
 > worker-only graceful stop/recovery testing. Keep Gemini and global processing
 > disabled, preserve the existing queued upload and all Noethara/Supabase
