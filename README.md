@@ -20,7 +20,7 @@ disabled; the existing queued upload is protected.
 
 A continuously running worker is the next milestone.
 [Isolated EC2 deployment preparation](docs/worker-deployment.md) targets the
-user's existing t2.xlarge with an 8 GiB / 2 vCPU container, standby by default.
+operator-confirmed existing m6i.2xlarge (8 vCPU/32 GiB) with an 8 GiB / 2 vCPU container, standby by default.
 Local Docker/research tests do not constitute deployment or verified spare AWS
 capacity. No EC2 worker or global queue consumer has been started. Keep Draft
 PR #1 unmerged and unpublished until separately authorized.

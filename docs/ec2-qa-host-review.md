@@ -1,6 +1,8 @@
 # Ohio host review and exact gated QA procedure
 
-Target: **i-0be10e530045fc650**, **us-east-2**, t2.xlarge, 4 vCPU / 16 GiB.
+Target: **i-0be10e530045fc650**, **us-east-2**, **m6i.2xlarge, 8 vCPU / approximately 32 GiB**.
+Instance ID was confirmed by the operator's DMI board tag; type was read through
+IMDSv2, and `nproc` reports 8. Earlier T2 specifications are superseded.
 Runtime artifact: the tested **b51ffb5 preparation**, pinned SmolVLM2-500M only.
 Do not install/activate the 2.2B research model or rerun the research comparison.
 No EC2 deployment, worker start, AWS credential installation/change, or existing
@@ -8,24 +10,34 @@ service mutation has been performed in this review.
 
 ## Current decision
 
-The operator's earlier **14 GiB MemAvailable, 53 GB free disk, low CPU and about
-1,300 credits** are promising for a bounded QA trial. They exceed our numerical
-snapshot requirements (10 GiB MemAvailable and 20 GiB free disk). They are not
-fresh measurements or proof of spare capacity during staging/Supabase peaks.
-The t2.xlarge earned-credit maximum is 1,296, so “around 1,300” is consistent with
-a rounded near-full balance, not a separately verified current value.
+The operator's new read-only output confirms about **29 GiB available RAM**,
+**53 GB free ext4 disk**, low load (0.06 / 0.04 / 0.00), and six existing
+Noethara-staging/Supabase containers using about **395 MiB** combined with very
+low snapshot CPU. Staging shows a 1 GiB limit; Supabase limits shown by stats are
+host-sized, so explicit per-service caps are not confirmed. Do not change them.
+Existing published container bindings shown are loopback-only.
 
-**Conditionally suitable; final host/security review is pending.** This session
-still has no AWS connector/identity or AWS CLI. Configured credential/profile
-files are empty. Region is now known from the operator. No attempt was made to
-install CLI tools, configure credentials, assume another role or use another
-machine's identity. Return the read-only results below to finish the review.
+**Resource snapshot passes for a bounded 500M QA trial. Final security review
+and explicit deployment approval remain pending.** This session still has no
+AWS connector/identity or CLI; the readings are operator-supplied, not direct
+remote observations by this agent. No tools/credentials were installed/changed.
+
+**M6i is not burstable. CPU credits, Standard/Unlimited mode and the old T2
+surcharge/throttling estimates do not apply.** Do not request or change a credit
+mode. The earlier ~1,300-credit claim is not a current measurement for this
+confirmed instance type and is no longer an admission requirement.
+
+Observed Docker networks are `172.17.0.0/16` (default), `172.18.0.0/16`
+(staging), and `172.19.0.0/16` (Supabase). `DOCKER-USER` exists but has no rules.
+This does not establish per-worker egress/host/IMDS denial; existing Docker
+isolation and host INPUT rules also need review. VPC routes, DNS, security-group
+rules, dedicated path/UID/bridge collisions and daemon compatibility remain to
+be returned. No worker network was created and no firewall rule was changed.
 
 The Docker resource envelope is locally tested. It limits this worker to
 8 GiB RAM, 2 vCPU, no swap, low CPU shares, one active job, 256 PIDs and no public
 ports, with non-root/read-only execution and private paths/secrets. It cannot
-guarantee zero shared-host impact: filesystem I/O, cache pressure, CPU credits
-and peak workloads remain shared. Docker bridge separation alone does not block
+guarantee zero shared-host impact: filesystem I/O, cache pressure and peak workloads remain shared. Docker bridge separation alone does not block
 access to host services, other routed private networks or IMDS. That policy must
 be inspected/reviewed before startup, without weakening existing rules.
 
@@ -84,8 +96,6 @@ CloudWatch consoles to report the same values without enabling monitoring.
 
 ```sh
 aws ec2 describe-instances --region us-east-2 --instance-ids i-0be10e530045fc650 --query 'Reservations[].Instances[].{Type:InstanceType,State:State.Name,SecurityGroups:SecurityGroups,MetadataOptions:MetadataOptions}' --output json
-aws ec2 describe-instance-credit-specifications --region us-east-2 --instance-ids i-0be10e530045fc650 --output json
-aws cloudwatch get-metric-statistics --region us-east-2 --namespace AWS/EC2 --metric-name CPUCreditBalance --dimensions Name=InstanceId,Value=i-0be10e530045fc650 --start-time "$(date -u -d '1 hour ago' +%FT%TZ)" --end-time "$(date -u +%FT%TZ)" --period 300 --statistics Minimum Average --query 'sort_by(Datapoints,&Timestamp)[-6:]' --output json
 ```
 
 For security groups, use only the IDs returned by that exact instance query:
@@ -94,7 +104,7 @@ For security groups, use only the IDs returned by that exact instance query:
 aws ec2 describe-security-groups --region us-east-2 --group-ids <returned-security-group-IDs> --query 'SecurityGroups[].{Id:GroupId,Ingress:IpPermissions,Egress:IpPermissionsEgress}' --output json
 ```
 
-For the full existing seven-day CPU/credit/volume/security review in one command,
+For the full existing seven-day CPU/volume/security review in one command,
 use the prepared read-only inventory with the already authenticated CLI:
 
 ```sh
@@ -102,8 +112,9 @@ python3 scripts/aws_worker_inventory.py --region us-east-2 --instance-id i-0be10
 ```
 
 The output is mode 0600; no credential configuration is changed. Review
-CPUUtilization average/max, CPUCreditBalance trend, CPUSurplusCreditBalance and
-CPUSurplusCreditsCharged, credit mode, EBS encryption and metadata options.
+CPUUtilization average/max, actual instance capabilities, EBS encryption and
+metadata options. The inventory now skips credit APIs/metrics for confirmed
+non-burstable types such as m6i; missing type information remains unverified.
 No Cost Explorer, Logs Insights, agent installation or monitoring activation.
 Do not infer zero cost or zero risk from missing metrics or access-denied output.
 
@@ -115,32 +126,29 @@ regression. Confirm Docker 24+/Compose v2.24+, daemon already boot-enabled,
 UID/GID 62001 and dedicated paths/project/bridge are unused or explicitly owned
 by this deployment. Confirm network/security policy and volume encryption.
 
-For the first trial, use a **30-minute maximum QA window**, start with at least
-300 CPU credits and no unexplained surplus-credit charges, and stop only this
-worker if credits reach 200, MemAvailable drops below 2 GiB, free disk drops
-below 10 GiB, it OOMs, or another application regresses. These are proposed
-operator stop thresholds, not automatically enforced CloudWatch alarms. Missing
-current readings mean admission remains pending, not approved by the old 1,300.
+For the first trial, use a **30-minute maximum QA window** and stop only this
+worker if MemAvailable drops below 2 GiB, free disk falls below 10 GiB, it OOMs,
+or another application regresses. These are proposed operator stop thresholds,
+not automatically configured alarms. Continue monitoring actual existing peak
+workloads and the worker's 8 GiB / 2 CPU limits. No CPU-credit threshold applies.
 
-Existing infrastructure allocation can remain unchanged. The previously quoted
-Linux On-Demand illustration is $0.1856/hour (~$135.49/730 h), excluding existing
-EBS/IP and any transfer; verify the actual Ohio account rate/discounts. Credits
-are earned at 54/hour = 0.9 vCPU total. Full 2-vCPU use alone drains about 66
-credits/hour after earnings; a rounded 1,300-credit balance would last about
-19.7 hours in that simplified case, **not indefinitely**. Existing applications
-can deplete it faster (up to 186 credits/hour at all 4 vCPUs busy).
+Reusing the already running m6i instance adds no extra EC2 instance allocation
+or CPU-credit fee. Its existing hourly bill continues; the previous T2
+$135.49/month and $40.15–$73 surplus estimates are superseded, not a quote for
+m6i. Verify actual m6i/Ohio OS pricing and discounts in existing billing views
+before quoting total ongoing cost. No resize or new infrastructure is proposed.
 
-Standard mode can throttle after depletion. Unlimited Linux surplus is
-$0.05/vCPU-hour: a continuous worker could add about $40.15–$73/month depending
-on existing baseline usage, plus any billed transfer. The bounded QA trial is
-intended to stay within a verified earned-credit buffer; it is not a guarantee
-of zero bill impact. Do not change credit mode, resize, add EBS/NAT/ALB/ECR/log
-subscriptions or enable paid monitoring. No upgrade is currently justified.
+The repository records hosted Supabase in us-east-1 while EC2 is us-east-2.
+Confirm that region/allowance: cross-region or public storage transfers and
+Supabase egress/storage overages remain possible usage costs. Do not promise
+zero incremental bill impact merely because the VM is already running. Do not
+add EBS/NAT/ALB/ECR/log subscriptions or enable paid monitoring. No upgrade is
+justified by the supplied resource readings.
 
 ## Exact deployment sequence — do not execute before approval
 
 All commands in this section are **future authorized deployment actions**,
-not read-only checks. First finish the admission/security review and record
+not read-only checks. First finish the remaining security/admission review and record
 explicit QA authorization. If any host-specific network action is needed,
 its exact rules and scope must be reviewed before starting; this runbook does
 not authorize arbitrary firewall or existing-application changes.
@@ -243,7 +251,7 @@ not authorize arbitrary firewall or existing-application changes.
    queued rendering, private download and decode, cross-user denial, readiness,
    cancellation and a controlled worker-only lease recovery test. Keep other
    consumers stopped for this QA owner; no global claims or host reboot test.
-   Capture stats/credits and compare existing applications to their baseline.
+   Capture resource/transfer usage and compare existing applications to their baseline.
 
 7. End the trial within 30 minutes; stop only this worker:
 

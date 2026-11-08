@@ -3,10 +3,10 @@
   "target": {
     "instance_id": "i-0be10e530045fc650",
     "region": "us-east-2",
-    "type": "t2.xlarge",
-    "vcpus": 4,
-    "installed_ram_gib": 16,
-    "source": "operator supplied"
+    "type": "m6i.2xlarge",
+    "vcpus": 8,
+    "installed_ram_gib_approx": 32,
+    "source": "operator-returned board asset tag, IMDSv2 instance-type and nproc; no direct remote agent access"
   },
   "previous_operator_readings": {
     "available_ram_gib_approx": 14,
@@ -14,7 +14,8 @@
     "cpu": "low",
     "credits_approx": 1300,
     "current_recheck": false,
-    "measurement_time": "not supplied"
+    "measurement_time": "not supplied",
+    "superseded": true
   },
   "current_aws_access_recheck": {
     "connector_available": false,
@@ -25,7 +26,7 @@
     "credentials_or_cli_installed_or_changed": false,
     "aws_api_calls": 0
   },
-  "host_suitability": "plausible for bounded QA based on prior readings; final current capacity, credits and network review pending",
+  "host_suitability": "resource snapshot supports bounded 500M QA; final network/security and explicit deployment approval pending",
   "local_configuration_review": {
     "base_standby": true,
     "missing_qa_owner_refused": true,
@@ -44,7 +45,7 @@
     "passed": 14,
     "seconds": 0.15
   },
-  "network_security_on_ec2": "not observed; requires read-only host/firewall/SG review and approved per-worker policy",
+  "network_security_on_ec2": "partially observed: Docker CIDRs and empty IPv4 DOCKER-USER chain; routes/DNS, INPUT/forward policy, SGs, IMDS restriction, UID/path/bridge collision and daemon checks pending",
   "production_model": "pinned SmolVLM2-500M only",
   "runtime_image_id": "sha256:32fd88495ceab2c59ab7bc6a0c7980c1003d9b4b6eea507131783a24be4b88a5",
   "models_installed_activated_or_downloaded": 0,
@@ -62,5 +63,52 @@
   "global_consumption_enabled": false,
   "gemini_enabled": false,
   "aws_infrastructure_or_billing_changes": false,
-  "merged_or_published": false
+  "merged_or_published": false,
+  "superseded_target_assumption": {
+    "instance_id": "i-0be10e530045fc650",
+    "region": "us-east-2",
+    "type": "t2.xlarge",
+    "vcpus": 4,
+    "installed_ram_gib": 16,
+    "source": "operator supplied"
+  },
+  "current_operator_readings": {
+    "available_ram_gib_approx": 29,
+    "docker_reported_host_ram_gib": 30.81,
+    "free_disk_gb_approx": 53,
+    "filesystem": "ext4",
+    "load_average": [
+      0.06,
+      0.04,
+      0.0
+    ],
+    "container_count": 6,
+    "supabase_container_count": 5,
+    "staging_container_count": 1,
+    "combined_container_memory_mib_approx": 395.22,
+    "snapshot_cpu": "very low",
+    "published_bindings_shown": "loopback-only",
+    "staging_container_memory_limit_gib": 1,
+    "supabase_explicit_memory_caps": "not confirmed; stats show host-sized limit",
+    "network_cidrs": [
+      "172.17.0.0/16",
+      "172.18.0.0/16",
+      "172.19.0.0/16"
+    ],
+    "ipv4_docker_user_chain": "exists, empty",
+    "observation_source": "user-pasted read-only command output"
+  },
+  "cpu_credit_review": "not applicable to confirmed non-burstable m6i; previous T2 costs, mode, credit thresholds superseded",
+  "cost_review": {
+    "additional_ec2_allocation_planned": false,
+    "cpu_credit_charges_applicable": false,
+    "previous_t2_price_and_surplus_estimates_applicable": false,
+    "actual_existing_m6i_bill": "not queried",
+    "remaining_usage_costs": "data transfer and hosted Supabase allowances; repository records EC2 Ohio versus Supabase us-east-1"
+  },
+  "inventory_update_validation": {
+    "mocked_aws_contract_tests_passed": 2,
+    "actual_aws_calls": 0,
+    "credentials_or_cli_installed": false
+  }
 }

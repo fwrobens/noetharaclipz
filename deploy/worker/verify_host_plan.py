@@ -32,7 +32,7 @@ def main():
         "ready_to_start": False,
         "remaining_manual_gates": [
             "Verify this report is from i-0be10e530045fc650 and review peak existing workloads",
-            "Verify EC2 region, T2 credit mode/balance and incremental-cost budget",
+            "Verify EC2 region/type and incremental-cost budget; confirmed m6i is not credit based",
             "Review existing networks/firewall, IMDS isolation and dedicated paths/UID",
             "Review host Docker boot setting and log/storage retention",
             "Obtain explicit deployment permission, then enable a QA owner only",

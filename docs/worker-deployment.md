@@ -1,31 +1,22 @@
 # Isolated EC2 worker preparation — no remote deployment
 
-**Latest host review:** region **us-east-2** is now operator-confirmed. Prior
-operator readings were ~14 GiB available RAM, 53 GB free disk, low CPU and ~1,300
-credits. Fresh capacity/network/credit readings are still required. See the
-[Ohio review commands and exact gated QA procedure](ec2-qa-host-review.md).
-No CLI/credential installation or EC2 action was attempted. 2.2B is excluded
-from this deployment; the research section below is historical evidence only.
+**Latest host review supersedes the original T2 assumption:** operator DMI and
+IMDSv2 output identify **i-0be10e530045fc650, us-east-2, m6i.2xlarge**, 8 vCPU and
+approximately 32 GiB installed RAM. Current operator readings show ~29 GiB
+available, 53 GB free disk and low CPU. The resource snapshot supports a bounded
+500M QA trial. Remaining network/security checks and explicit deployment
+approval are still required; see the [Ohio review and procedure](ec2-qa-host-review.md).
 
-Target supplied by the user: **i-0be10e530045fc650**, `t2.xlarge`, 4 vCPU,
-16 GiB installed RAM, approximately 53 GB free disk. These are **operator-supplied
-facts, not a live capacity measurement**. Existing Noethara/Supabase containers
-were not inspected or modified remotely. No EC2 instance, volume, credit mode,
-security group, subscription or paid service was created/changed.
-
-This session has no AWS connector, the identity manifest has no connections,
-the AWS profile is `__oai_no_aws_identity__`, and both configured AWS files are
-empty. Consequently **existing AWS suitability is unverified**: free RAM,
-workloads, security groups, credit balance/mode are unknown. Region is now confirmed as us-east-2.
-The current review uses operator-run read-only commands rather than installing
-or changing credentials; no credentials need to
-be pasted or recreated. The prior hosted website pass remains valid, but no
-queue consumer was started for this deployment task.
+No EC2 changes/startup, CLI/credential installation or model activation occurred.
+M6i has no CPU-credit mechanism; prior T2 credit-mode and surcharge calculations
+below are historical and **do not apply** to the confirmed host. 2.2B remains
+excluded from deployment. Direct AWS tooling is still unavailable in this chat;
+operator-returned readings are distinguished from agent-observed calls.
 
 ## Recommendation and budget
 
 Use the **existing instance with SmolVLM2-500M**, conditionally, for an isolated
-QA trial **only after** capacity/credit/network review and explicit deployment
+QA trial **only after** capacity/network/cost review and explicit deployment
 authorization. It has enough nominal total RAM, but that does not establish
 spare capacity. Do not resize or buy a replacement on the evidence available.
 The 2.2B model is research-only and is not in the worker/database allowlist.
@@ -44,7 +35,8 @@ supports it. Compose does not impose a byte quota on ordinary bind mounts.
 Do not provision another volume or change another application's disk settings.
 Stop QA if free disk approaches the agreed reserve or another service degrades.
 
-Official [T2 pricing](https://aws.amazon.com/ec2/instance-types/t2/) reviewed in
+**Historical superseded T2 cost illustration — not the current m6i host.**
+The original [T2 pricing](https://aws.amazon.com/ec2/instance-types/t2/) reviewed in
 this task lists `t2.xlarge` at **$0.1856/hour**, **$135.49/month at 730 hours**
 for the standard Linux On-Demand illustration, and **54 CPU credits/hour**.
 Confirm the actual region, OS, discounts and current bill; this is not an
@@ -194,8 +186,8 @@ or enabled as a provider. Do not supply a Supabase key to the benchmark.
 
 These are **review instructions, not actions performed on EC2**:
 
-1. Capture/review the read-only inventory and host report; identify region and
-   current credit mode/cost. Get explicit approval for the isolated QA trial.
+1. Capture/review the read-only inventory and host report; identify region/type
+   and current instance/transfer cost. Get explicit approval for the isolated QA trial.
    Keep the existing upload unchanged and global processing disabled.
 2. Build/test off-host, record commit/image ID and archive SHA256, then transfer
    only that artifact. Do not build on or restart a busy shared EC2 host.
@@ -239,8 +231,8 @@ These are **review instructions, not actions performed on EC2**:
    tokens, test cancellation/retry/attempt limits and private/cross-user denial.
    Reboot testing on a shared host is not authorized; inspect boot configuration
    and use a worker-only process crash instead. Monitor existing applications,
-   Docker stats, memavailable, disk, CPU credits and readiness throughout.
-10. Stop only this QA worker if another service regresses, OOM/credits/disk
+   Docker stats, memavailable, disk and readiness throughout.
+10. Stop only this QA worker if another service regresses, OOM/disk
     limits are approached or health fails. Remove only its completed QA
     account/projects/objects after checking no jobs remain in flight. Record
     the original queued job's whole-row hash before/after.

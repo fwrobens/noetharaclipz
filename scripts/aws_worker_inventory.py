@@ -72,12 +72,21 @@ def main():
                     "--instance-types",
                     instance["InstanceType"],
                 )
-                report["credit_mode"] = read(
-                    "ec2",
-                    "describe-instance-credit-specifications",
-                    "--instance-ids",
-                    args.instance_id,
-                )
+                type_rows = report["instance_type"].get("InstanceTypes") or [{}]
+                burstable = type_rows[0].get("BurstablePerformanceSupported")
+                if burstable is True:
+                    report["credit_mode"] = read(
+                        "ec2",
+                        "describe-instance-credit-specifications",
+                        "--instance-ids",
+                        args.instance_id,
+                    )
+                else:
+                    report["credit_mode"] = (
+                        "not applicable: non-burstable instance"
+                        if burstable is False
+                        else "instance capability unavailable"
+                    )
                 volumes = [
                     d["Ebs"]["VolumeId"]
                     for d in instance.get("BlockDeviceMappings", [])
@@ -100,12 +109,14 @@ def main():
                 )
                 now = datetime.now(timezone.utc)
                 report["metrics"] = {}
-                for metric in (
-                    "CPUUtilization",
-                    "CPUCreditBalance",
-                    "CPUSurplusCreditBalance",
-                    "CPUSurplusCreditsCharged",
-                ):
+                metrics = ["CPUUtilization"]
+                if burstable is True:
+                    metrics += [
+                        "CPUCreditBalance",
+                        "CPUSurplusCreditBalance",
+                        "CPUSurplusCreditsCharged",
+                    ]
+                for metric in metrics:
                     report["metrics"][metric] = read(
                         "cloudwatch",
                         "get-metric-statistics",
