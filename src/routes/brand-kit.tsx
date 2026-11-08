@@ -8,9 +8,11 @@ import { cn } from "@/lib/utils";
 export const Route = createFileRoute("/brand-kit")({
   head: () => ({
     meta: [
-      { title: "Brand Kit — Clipwave" },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { title: "Brand Kit — Noethara Clipz" },
       { name: "description", content: "Your logo, colors and fonts applied to every clip." },
-      { property: "og:title", content: "Brand Kit — Clipwave" },
+      { property: "og:title", content: "Brand Kit — Noethara Clipz" },
       { property: "og:description", content: "Your logo, colors and fonts applied to every clip." },
     ],
   }),

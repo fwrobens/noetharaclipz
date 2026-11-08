@@ -28,3 +28,9 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+## App architecture
+- Public marketing and auth pages stay outside the client-only authenticated layout; creator pages use that layout so browser sessions survive refresh without SSR redirects.
+- Use authenticated TanStack server functions and the existing upload RPCs for durable creator data; do not insert projects directly or use privileged clients for ordinary reads.
+- Keep legacy prototype workspace URLs working separately from durable creator pages so existing links remain valid without presenting simulated edits as saved work.
+- Shared brand, marketing, session, and SEO modules keep identity, navigation state, and leaf metadata consistent across the public and signed-in experiences.

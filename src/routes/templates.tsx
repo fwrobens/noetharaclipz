@@ -6,9 +6,11 @@ import { PageHeader } from "@/components/Page";
 export const Route = createFileRoute("/templates")({
   head: () => ({
     meta: [
-      { title: "Templates — Clipwave" },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { title: "Templates — Noethara Clipz" },
       { name: "description", content: "Ready-made caption and layout styles for every platform." },
-      { property: "og:title", content: "Templates — Clipwave" },
+      { property: "og:title", content: "Templates — Noethara Clipz" },
       { property: "og:description", content: "Ready-made caption and layout styles for every platform." },
     ],
   }),

@@ -7,9 +7,11 @@ import { PageHeader, EmptyState } from "@/components/Page";
 export const Route = createFileRoute("/trash")({
   head: () => ({
     meta: [
-      { title: "Recently Deleted — Clipwave" },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { title: "Recently Deleted — Noethara Clipz" },
       { name: "description", content: "Restore projects deleted in the last 30 days." },
-      { property: "og:title", content: "Recently Deleted — Clipwave" },
+      { property: "og:title", content: "Recently Deleted — Noethara Clipz" },
       { property: "og:description", content: "Restore projects deleted in the last 30 days." },
     ],
   }),
