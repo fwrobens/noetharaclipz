@@ -650,3 +650,68 @@ The operator's existing local copy remains available; do not reuse the expired
 or removed download link. The target remains an actual owner-scoped EC2 QA
 upload/analysis/export/download, not preparation-only completion. The worker
 has not yet been deployed or advertised as ready.
+
+
+## Confirmed metadata bug fixed; retry without a download or reload
+
+The operator's read-only trace confirms `map has no entry for key "Health"`
+on the existing REST container. No receipt, owned diagnostic container,
+network or NCZQA_EGRESS chain exists. The original preflight stopped in its
+service snapshot before applying rules. Unchecked containers are allowed by
+that guard; a missing healthcheck is not an unhealthy service. Do not add a
+healthcheck, reset restart counts or restart any existing service to fix it.
+
+Use `{{with index .State "Health"}}{{.Status}}{{else}}none{{end}}` instead of
+looking up the optional key directly. A real managed-cloud Docker regression
+reproduced the old error and accepted the new template against an empty-image
+container that was created but never started (PID 0), then removed with its
+image. This is a template test, not an EC2 network pass. Existing unhealthy
+services remain rejected. All 120 worker tests pass; one optional sample test
+is skipped. The 26 network/policy/error tests also pass.
+
+The operator retry uses the existing host copy, verifies its original SHA256
+83a5f1445364d2d28942d015ba3741a662744a9ab9685cd56984afb6f229984b,
+and fixes only that quoted template in memory. It attaches the tested redacted
+command-error runner and invokes the same main routine under the existing
+conditional QA approval. Offline AST comparison confirms all admission, policy,
+cleanup and receipt functions are unchanged. No new download/image transfer,
+helper-file rewrite, daemon restart or credential input is needed. Network
+success and worker readiness remain unverified until the operator returns
+an actual result.
+
+```sh
+sudo -n python3 - <<'PY'
+import hashlib, json, re, subprocess, sys
+from pathlib import Path
+
+def run(command, source=None, timeout=30):
+    result = subprocess.run(command, input=source, text=True, capture_output=True, timeout=timeout)
+    if result.returncode:
+        # Commands in this helper never contain credentials. Do not include
+        # stdin, and redact credential-shaped text if a tool emits it anyway.
+        error = result.stderr.strip()
+        error = re.sub(r"(?i)(Bearer\s+)\S+", r"\1[redacted]", error)
+        error = re.sub(r"(?i)((?:api[_-]?key|token|password|secret)\s*[=:]\s*)\S+",
+                       r"\1[redacted]", error)
+        raise RuntimeError(json.dumps({"command": command[:4], "exit_code": result.returncode,
+                                       "stderr": error[-2000:]}))
+    return result.stdout.strip()
+
+try:
+    path = Path("/tmp/nccz-netgate-a62yun7w/network_preflight.py")
+    source = path.read_text()
+    assert hashlib.sha256(source.encode()).hexdigest() == "83a5f1445364d2d28942d015ba3741a662744a9ab9685cd56984afb6f229984b", "Unexpected helper version"
+    old = "{{.Id}} {{.State.StartedAt}} {{.RestartCount}} {{if .State.Health}}{{.State.Health.Status}}{{else}}none{{end}}"
+    new = '{{.Id}} {{.State.StartedAt}} {{.RestartCount}} {{with index .State "Health"}}{{.Status}}{{else}}none{{end}}'
+    assert source.count(json.dumps(old)) == 1, "Unexpected template"
+    source = source.replace(json.dumps(old), json.dumps(new), 1)
+    scope = {"__name__": "nccz_fixed", "__file__": str(path)}
+    exec(compile(source, str(path), "exec"), scope)
+    scope["run"] = run
+    sys.argv = [str(path), "--config-root", "/tmp/nccz-transfer-kbbradmg/received/config", "--apply-approved-qa-policy"]
+    scope["main"]()
+except Exception as error:
+    print(json.dumps({"failed": True, "reason": str(error), "worker_started": False}))
+    raise SystemExit(1) from None
+PY
+```

@@ -150,7 +150,7 @@
     "Verify actual seed/standby profile limits and secure service-key placement",
     "One scoped QA owner; normal website and recovery tests in <=30 minute trial"
   ],
-  "deployment_review_status": "kernel limits passed; network helper failed with hidden Docker error; actual worker remains undeployed; host partial state must be read before retry",
+  "deployment_review_status": "EC2 kernel quota passed; network preflight blocked by confirmed optional Health template bug before mutations; fixed retry prepared",
   "local_kernel_resource_validation": {
     "previous_hard_cap_claim_superseded": true,
     "evidence": "local-cgroup-validation-correction.json",

@@ -25,7 +25,7 @@
   "probe_type": "short-lived network-none diagnostic, not AI worker or model seeder",
   "runtime_reference": "sha256:472913bf34e918c48e5b77a56c4ea2dfd31873bdd79ecc2d1c4e7ab4cf3e5759",
   "network_preflight": {
-    "status": "operator execution failed with Docker command error; root cause and partial host state unverified",
+    "status": "root cause confirmed: optional Health lookup failed before mutations; corrected retry prepared, not yet run on EC2",
     "source_file": "deploy/worker/network_preflight.py",
     "sha256": "83a5f1445364d2d28942d015ba3741a662744a9ab9685cd56984afb6f229984b",
     "policy_source_sha256": "ec116cab16d2276b87d675eced9d12b83f05b860687f7ade458b8e35a868a646",
@@ -41,14 +41,24 @@
     "retry_blocked_pending_readonly_error_and_state": true,
     "error_reporting_fix": "repository helper retains Docker subcommand, exit status and bounded redacted stderr; no supplied stdin is logged",
     "host_copy_not_patched": true,
-    "repository_error_reporting_fix_sha256": "5caeb9bc2014b0ca6d1dccb82679f8f5055b7a01a4ff9a515d6053962110b9c0"
+    "repository_error_reporting_fix_sha256": "5caeb9bc2014b0ca6d1dccb82679f8f5055b7a01a4ff9a515d6053962110b9c0",
+    "confirmed_failure": "Docker strict template map has no entry for Health on the existing unchecked REST container",
+    "state_after_failure": {
+      "receipt": null,
+      "owned_probe_containers": 0,
+      "owned_networks": 0,
+      "owned_firewall_chain_present": false,
+      "source": "operator-pasted read-only diagnostic output"
+    },
+    "repository_health_fix_sha256": "bf4e598d9bd7e316ba907ba646e3a56c99cb612c37365ce1343a72e091a1981e",
+    "retry_preserves_all_admission_policy_and_cleanup_functions": true
   },
   "automated_checks": {
-    "worker_passed": 118,
+    "worker_passed": 120,
     "worker_skipped": 1,
-    "worker_seconds": 19.35,
+    "worker_seconds": 19.16,
     "skip_reason": "optional authorized-sample test not selected",
-    "network_scope_policy_tests_passed": 24,
+    "network_scope_policy_tests_passed": 26,
     "ruff": "passed",
     "error_reporting_and_network_targeted_passed": 24
   },
@@ -84,5 +94,21 @@
     "status": "queued",
     "attempts": 0,
     "row_identical": true
+  },
+  "docker_template_regression": {
+    "where": "managed cloud Docker only, not EC2",
+    "fixture": "empty filesystem, created but never started",
+    "original_template_exit": 1,
+    "original_error": "template parsing error: template: :1:58: executing \"\" at <.State.Health>: map has no entry for key \"Health\"",
+    "fixed_template_exit": 0,
+    "missing_health_result": "none",
+    "running": false,
+    "pid": 0
+  },
+  "operator_hotpatch_validation": {
+    "original_host_source_sha256": "83a5f1445364d2d28942d015ba3741a662744a9ab9685cd56984afb6f229984b",
+    "patched_source_sha256": "57ef6257846976d6835a04c829d088113c97564f77cac23104f1135748a9affe",
+    "service_snapshot_matches_repository_fix": true,
+    "all_admission_policy_and_cleanup_functions_unchanged": true
   }
 }

@@ -106,3 +106,16 @@ def test_command_failure_preserves_action_exit_status_and_error_without_credenti
     assert details["command"][-1] == "--format" and details["exit_code"] == 1
     assert "missing Health" in details["stderr"]
     assert "PRIVATE" not in str(caught.value)
+
+
+def test_snapshot_retains_unchecked_and_healthy_services_without_resetting_restart_history(monkeypatch):
+    replies = iter(["rest auth", "rest startedA 0 none\nauth startedB 2 healthy"])
+    monkeypatch.setattr(net, "run", lambda *args, **kwargs: next(replies))
+    assert net.service_snapshot() == ["auth startedB 2 healthy", "rest startedA 0 none"]
+
+
+def test_snapshot_still_refuses_an_existing_unhealthy_service(monkeypatch):
+    replies = iter(["auth", "auth started 2 unhealthy"])
+    monkeypatch.setattr(net, "run", lambda *args, **kwargs: next(replies))
+    with pytest.raises(ValueError, match="unhealthy"):
+        net.service_snapshot()

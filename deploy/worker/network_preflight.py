@@ -108,7 +108,7 @@ def service_snapshot():
     if not ids:
         raise ValueError("Expected existing services not found")
     lines = run(DOCKER + ["inspect", "--format",
-        "{{.Id}} {{.State.StartedAt}} {{.RestartCount}} {{if .State.Health}}{{.State.Health.Status}}{{else}}none{{end}}", *ids]).splitlines()
+        '{{.Id}} {{.State.StartedAt}} {{.RestartCount}} {{with index .State "Health"}}{{.Status}}{{else}}none{{end}}', *ids]).splitlines()
     if any(line.split()[-1] not in ("none", "healthy") for line in lines):
         raise ValueError("An existing service is unhealthy")
     return sorted(lines)
