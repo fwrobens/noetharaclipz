@@ -715,3 +715,50 @@ except Exception as error:
     raise SystemExit(1) from None
 PY
 ```
+
+
+## Network gate passed on EC2; begin pinned asset preparation
+
+The operator's result at Unix 1794179523 confirms network_preflight_passed=true
+on network 79d31a3d0a9e1df6873461c6761dd3ce8e170de85785022d34242f04c640ef28,
+probe afd21af8a4fe44aca8e2ae9e7ccedca6. Public IPv4 DNS and verified TLS succeeded
+for Supabase (401 expected without an API key) and Hugging Face (200). Namespace
+IPv6 is disabled. Matching REJECT counters increased for staging/Supabase/VPC
+private destinations, IMDS, host, bridge gateway and non-HTTPS public traffic.
+Actual cgroup controls again matched 8 GiB / 2 vCPU / no swap / 256 PIDs.
+The diagnostic was removed and existing service start/health state was unchanged.
+Only the dedicated network and reviewed source-bridge rules remain installed.
+No worker, model, credential or queue was used for that test.
+
+The next approved operator helper is `deploy/worker/prepare_qa_assets.py`, shipped
+with the corrected network helper as two hash-checked files in a small private
+JSON handoff. It revalidates the successful receipt, exact owned network and
+live rule presence/order, selected image, private path ownership and host
+headroom. It creates only the dedicated model/cache/tmp and config paths; it
+will not take over foreign paths or overwrite different settings. Its non-secret
+worker.env explicitly pins the verified OCI image and standby mode. The real
+service credential file remains absent at this stage.
+
+The actual existing Compose seed profile was parsed and validated locally: no
+secret mounts, only /models, 8 GiB / 2 vCPU / no extra swap / 256 PIDs. A missing
+future worker secret does not block seed configuration. No containers were
+started to claim that config check. On EC2 the seed runs a same-process kernel
+probe BEFORE importing the downloader, then downloads only pinned 500M and
+Whisper-small files. A failed probe exits before any download. Only one seed
+runs at a time; a 1,200-second timeout and owned-container cleanup bound the job.
+The controller compares existing services before and after and validates the
+completed asset manifest. No model inference, backend key, QA job or worker
+startup occurs.
+
+After successful seeding, the host generates a temporary RSA-4096 key. Its private
+half is root-owned mode 0600 in the dedicated config path and never mounted into
+a container or printed. Only the public key is returned in JSON. This is an
+end-to-end credential transport key, not a new PAT or Supabase account key. The
+existing ready vault credential fits RSA-OAEP/SHA256 and will be encrypted to that
+public key in a later step; no plaintext service credential should be pasted
+into SSM/chat or put in the artifact bucket. Delete the transport private key
+after successful unsealing. Do not start the worker until the key file and a
+new explicit QA owner are configured and the 30-minute stop procedure is armed.
+At this commit the asset helper has not yet run on EC2; download and credential
+readiness are still pending. Gemini/global consumption and paid services remain
+disabled. No new AWS resources or instance resize are involved.

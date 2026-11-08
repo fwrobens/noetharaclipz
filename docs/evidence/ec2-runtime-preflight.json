@@ -25,7 +25,7 @@
   "probe_type": "short-lived network-none diagnostic, not AI worker or model seeder",
   "runtime_reference": "sha256:472913bf34e918c48e5b77a56c4ea2dfd31873bdd79ecc2d1c4e7ab4cf3e5759",
   "network_preflight": {
-    "status": "root cause confirmed: optional Health lookup failed before mutations; corrected retry prepared, not yet run on EC2",
+    "status": "passed on EC2 via operator SSM output; diagnostic removed; scoped network/rules retained",
     "source_file": "deploy/worker/network_preflight.py",
     "sha256": "83a5f1445364d2d28942d015ba3741a662744a9ab9685cd56984afb6f229984b",
     "policy_source_sha256": "ec116cab16d2276b87d675eced9d12b83f05b860687f7ade458b8e35a868a646",
@@ -38,7 +38,7 @@
     "diagnostic_removal_required_before_policy_cleanup": true,
     "operator_error": "Command failed: docker --host=unix:///var/run/docker.sock",
     "reported_worker_started": false,
-    "retry_blocked_pending_readonly_error_and_state": true,
+    "retry_blocked_pending_readonly_error_and_state": false,
     "error_reporting_fix": "repository helper retains Docker subcommand, exit status and bounded redacted stderr; no supplied stdin is logged",
     "host_copy_not_patched": true,
     "repository_error_reporting_fix_sha256": "5caeb9bc2014b0ca6d1dccb82679f8f5055b7a01a4ff9a515d6053962110b9c0",
@@ -51,16 +51,87 @@
       "source": "operator-pasted read-only diagnostic output"
     },
     "repository_health_fix_sha256": "bf4e598d9bd7e316ba907ba646e3a56c99cb612c37365ce1343a72e091a1981e",
-    "retry_preserves_all_admission_policy_and_cleanup_functions": true
+    "retry_preserves_all_admission_policy_and_cleanup_functions": true,
+    "operator_pass_result": {
+      "network_preflight_passed": true,
+      "worker_started": false,
+      "models_loaded": false,
+      "credentials_used": false,
+      "queue_access": false,
+      "network": "noetharaclipz-isolated_worker-egress",
+      "bridge": "nccz-qa0",
+      "subnet": "172.20.0.0/24",
+      "probe_id": "afd21af8a4fe44aca8e2ae9e7ccedca6",
+      "checks": {
+        "public_endpoints": {
+          "supabase": {
+            "dns_public_ipv4": true,
+            "tls_verified": true,
+            "http_status": 401
+          },
+          "huggingface": {
+            "dns_public_ipv4": true,
+            "tls_verified": true,
+            "http_status": 200
+          }
+        },
+        "ipv6_disabled": true,
+        "staging_private": {
+          "blocked": true,
+          "matching_reject_counter_delta": 1
+        },
+        "supabase_private": {
+          "blocked": true,
+          "matching_reject_counter_delta": 1
+        },
+        "vpc_private": {
+          "blocked": true,
+          "matching_reject_counter_delta": 1
+        },
+        "imds": {
+          "blocked": true,
+          "matching_reject_counter_delta": 1
+        },
+        "host": {
+          "blocked": true,
+          "matching_reject_counter_delta": 1
+        },
+        "bridge_gateway": {
+          "blocked": true,
+          "matching_reject_counter_delta": 1
+        },
+        "public_non_https": {
+          "blocked": true,
+          "matching_reject_counter_delta": 2
+        }
+      },
+      "phase": "passed",
+      "actual_cgroup_limits": {
+        "version": 2,
+        "memory_bytes": 8589934592,
+        "cpu_quota": 200000,
+        "cpu_period": 100000,
+        "extra_swap_bytes": 0,
+        "pids_max": 256
+      },
+      "network_id": "79d31a3d0a9e1df6873461c6761dd3ce8e170de85785022d34242f04c640ef28",
+      "policy_sha256": "ec116cab16d2276b87d675eced9d12b83f05b860687f7ade458b8e35a868a646",
+      "diagnostic_removed": true,
+      "existing_services_unchanged": true,
+      "scoped_network_and_rules_retained": true,
+      "completed_unix": 1794179523
+    }
   },
   "automated_checks": {
-    "worker_passed": 120,
+    "worker_passed": 135,
     "worker_skipped": 1,
-    "worker_seconds": 19.16,
+    "worker_seconds": 19.09,
     "skip_reason": "optional authorized-sample test not selected",
     "network_scope_policy_tests_passed": 26,
     "ruff": "passed",
-    "error_reporting_and_network_targeted_passed": 24
+    "error_reporting_and_network_targeted_passed": 24,
+    "asset_preparation_tests_passed": 15,
+    "actual_compose_seed_profile_validation": "passed without starting containers; selected seed has no secret mounts and only /models"
   },
   "worker_started": false,
   "models_loaded_on_ec2": false,
@@ -110,5 +181,18 @@
     "patched_source_sha256": "57ef6257846976d6835a04c829d088113c97564f77cac23104f1135748a9affe",
     "service_snapshot_matches_repository_fix": true,
     "all_admission_policy_and_cleanup_functions_unchanged": true
+  },
+  "asset_preparation": {
+    "status": "prepared, not yet executed on EC2",
+    "model": "HuggingFaceTB/SmolVLM2-500M-Video-Instruct",
+    "model_revision": "7b375e1b73b11138ff12fe22c8f2822d8fe03467",
+    "whisper_revision": "536b0662742c02347bc0e980a01041f333bce120",
+    "inference_or_queue": false,
+    "seed_timeout_seconds": 1200,
+    "actual_seed_cgroup_gate_before_downloader_import": true,
+    "existing_network_rules_revalidated_before_seeding": true,
+    "key_delivery_plan": "host generates root-only RSA-4096 transport key; public half returned for later OAEP-SHA256 encryption of existing service credential; no account key recreation or plaintext credential in chat",
+    "controller_source_sha256": "16cbd1c5256d31412312c0ee8e151c672da88f2d73e353f1ab8a4cab65377578",
+    "private_key_stays_on_ec2": true
   }
 }

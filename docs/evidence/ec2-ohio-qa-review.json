@@ -146,11 +146,11 @@
     }
   },
   "remaining_checks": [
-    "Run reviewed worker-only network preflight; no model/secret/worker/queue access",
-    "Verify actual seed/standby profile limits and secure service-key placement",
-    "One scoped QA owner; normal website and recovery tests in <=30 minute trial"
+    "Seed pinned 500M/Whisper assets under actual seed cgroup limits; return only public transport key",
+    "Deliver existing service credential encrypted to host, then configure exactly one temporary QA owner",
+    "Run bounded <=30 minute worker and normal website/recovery/security acceptance; no global consumption"
   ],
-  "deployment_review_status": "EC2 kernel quota passed; network preflight blocked by confirmed optional Health template bug before mutations; fixed retry prepared",
+  "deployment_review_status": "EC2 quota and network preflight passed; owned bridge/rules retained and existing services unchanged; assets, secure credentials and scoped QA worker pending",
   "local_kernel_resource_validation": {
     "previous_hard_cap_claim_superseded": true,
     "evidence": "local-cgroup-validation-correction.json",

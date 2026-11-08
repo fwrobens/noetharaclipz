@@ -1,6 +1,6 @@
 {
   "date": "2026-11-08",
-  "status": "EC2 operator quota diagnostic passed actual 8 GiB/2 vCPU/no extra swap/256 PID controls; network gate pending",
+  "status": "EC2 artifact receipt, actual diagnostic quotas and counter-backed network preflight passed; worker not started",
   "github_authentication": {
     "repository_api": 200,
     "managed_placeholder": true,
@@ -174,9 +174,9 @@
   ],
   "ec2_receipt_verified": true,
   "remaining": [
-    "Operator network preflight: apply only reviewed source-bridge rules and prove DNS/TLS allows plus counter-backed private/host/IMDS denies",
-    "Actual seed/standby limits, secure existing service credential placement and pinned 500M/Whisper assets",
-    "One QA owner; normal workflow, recovery and security checks within approved <=30 minute trial"
+    "Pinned 500M/Whisper asset preparation with actual seed limits",
+    "Secure encrypted service-key delivery and one temporary QA owner",
+    "Bounded worker startup and complete normal website acceptance"
   ],
   "ec2_receipt": {
     "source": "operator-pasted SSM downloader output",
