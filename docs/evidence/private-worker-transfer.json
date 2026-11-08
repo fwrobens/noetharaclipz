@@ -1,6 +1,6 @@
 {
   "date": "2026-11-08",
-  "status": "EC2 receipt verified from operator SSM output; temporary transport objects removed; image load and quota/network checks pending",
+  "status": "Operator confirms image archive loaded; runtime image ID and kernel quota output still unverified",
   "github_authentication": {
     "repository_api": 200,
     "managed_placeholder": true,
@@ -170,7 +170,7 @@
   ],
   "ec2_receipt_verified": true,
   "remaining": [
-    "Operator load of verified image after fresh target/headroom/project/tag checks",
+    "Inspect loaded image metadata: original block stopped before quota output; runtime ID not confirmed",
     "No-network kernel quota probe (short-lived diagnostic only); then actual seed/standby limits",
     "Scoped worker network allow/deny preflights and secure existing service-key placement",
     "One new QA owner and <=30 minute isolated normal website acceptance; no global consumption"
@@ -183,7 +183,7 @@
     "config_archive_bytes": 32031,
     "config_archive_sha256": "db369c5c9001e53d33e1b6e053224e2318f41eadb7285569ac597095f28be6da",
     "transfer_verified": true,
-    "image_loaded": false,
+    "image_loaded": true,
     "worker_started": false,
     "direct_agent_ec2_access": false
   },
@@ -199,5 +199,16 @@
       "row_identical": true,
       "read_only": true
     }
+  },
+  "ec2_image_load": {
+    "source": "operator-pasted SSM output",
+    "archive_hash_checks": "all three passed",
+    "loaded_tag": "noetharaclipz-worker:review",
+    "host_available_ram_gib": 28.9,
+    "host_free_disk_gib": 52.2,
+    "docker_runtime_image_id_reported": false,
+    "quota_json_reported": false,
+    "worker_started": false,
+    "next_check": "Read-only loaded image metadata; do not bypass immutable image ID comparison"
   }
 }

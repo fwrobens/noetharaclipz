@@ -530,3 +530,19 @@ sudo -n docker --host=unix:///var/run/docker.sock run --rm --interactive --pull=
 
 Return the complete cgroup JSON output. Stop on any failed check; do not
 advance to models, QA/global processing or a network-connected worker.
+
+
+## Image load reported; quota result missing
+
+The operator confirms 28.9 GiB MemAvailable, 52.2 GiB free disk, all three
+hash checks OK and `Loaded image: noetharaclipz-worker:review`. No runtime
+image-ID or quota JSON was supplied. The original block can stop silently at
+its image-ID comparison; this is a hypothesis until inspect metadata is read.
+Do not bypass that comparison, substitute a different ID, reload the archive,
+or claim quotas passed. Next read only this image's ID/platform/runtime user:
+
+```sh
+sudo -n docker --host=unix:///var/run/docker.sock image inspect noetharaclipz-worker:review --format 'ID={{.Id}} OS={{.Os}} ARCH={{.Architecture}} USER={{.Config.User}}'
+```
+
+The image is loaded, but no AI worker or successful quota probe is evidenced.
