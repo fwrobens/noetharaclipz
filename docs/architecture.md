@@ -36,9 +36,11 @@ version/prompt, compares scene/speech/uniform candidate videos with measured
 audio evidence and persists validated results with truthful local provenance.
 It does not require Gemini or invoke hosted inference. The reviewed database
 proposal adds provider-aware atomic completion and service-only owner-scoped
-claims/health; it is not yet deployed. QA workers never use global claims or
-cleanup. Hosted browser acceptance remains a release gate; disposable real
-queue/render integration has passed.
+claims/health; it is deployed and recorded as `20261108152724_local_worker_queue`.
+QA workers never use global claims or cleanup. Normal hosted browser acceptance
+and scoped queue recovery/cancellation have passed; see the
+[hosted report](hosted-local-acceptance.md). No persistent production worker has
+been provisioned.
 
 A Python worker pulls the logged `pgmq` queue over Supabase's API. Worker-only RPCs claim a fenced 120-second lease. A heartbeat renews it every 20 seconds. Global active-worker concurrency is one. Interrupted claims become eligible again; attempts are capped at three. Explicit cancellation terminates subprocesses when observed. Each job has a 20-minute processing deadline; FFmpeg operations have their own timeouts.
 

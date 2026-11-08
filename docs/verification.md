@@ -2,32 +2,46 @@
 
 ## Release gate
 
-**Latest local-worker follow-up: implemented, hosted acceptance blocked.**
-`NC_AI_PROVIDER=local` now selects real SmolVLM2 in the normal worker with
-Whisper/scenes/audio, validated highlights, honest provider usage, caches and
-queued rendering. A fresh disposable PostgreSQL/PGMQ run passed normal worker
-analysis → saved edit → queued export → real 22.2-second captioned MP4/full
-decode, without inserted highlight/completion fixtures. This is SQL/file-adapter
-integration, **not** hosted browser acceptance. The hosted protocol probe and
-browser launcher stopped before creating accounts or starting a worker because
-the reviewed database proposal is not deployed. The user's queued job is
-unchanged. No heartbeat migration was reapplied.
+**Normal local-provider website acceptance passed against live Supabase.**
+The normal UI performed login, resumable upload, instructions/Generate, actual
+queued SmolVLM2/Whisper/scene/audio analysis, persisted automatic highlight,
+selection/playback, changed trim/Save/refresh, normal Export, actual queued
+rendering and authenticated private MP4 browser download/full decode. The first
+output is **720×1280 H.264/AAC, 22.3 seconds, 5,070,117 bytes**. No highlight,
+usage or completed-job fixtures bypassed the application workflow.
 
-Current repeated checks: **60 worker tests** (authorized footage, zero skipped),
-**15 frontend tests**, TypeScript, build, Ruff and lint (11 existing warnings).
-Actual model testing covers Elephants Dream, Sintel, SuperTuxKart gameplay, a
-muted visual derivative and a synthetic empty negative. A real blank-video false
-positive and a cold NumPy serialization failure were found and corrected; raw
-descriptions still hallucinate and are separated from measured evidence.
-See [implementation, benchmarks, exact gates and reproduction](local-worker-integration.md)
-and [disposable queue evidence](evidence/local-queue-pipeline.json).
+The operator-applied migration is recorded verbatim as
+`20261108152724_local_worker_queue.sql` under the user's explicit authorization;
+it was not reapplied. The live protocol/readiness and actual queue operations
+pass. The protected upload is unchanged with zero attempts and no lease. Actual
+120-second expiry/reclaim, stale-token rejection, cancellation, retry, terminal
+protection and attempt limits passed in **125.72 seconds** using only scoped QA
+claims; QA data was removed.
 
-**Can a website user now upload and automatically receive a downloadable clip?
-Not yet verified on hosted infrastructure.** Do not merge or publish. The
-database proposal requires authorization/versioning/deployment and the ordinary
-browser flow must pass with an owner-scoped QA worker. Gemini remains disabled;
-no paid inference or Lovable credits were used. Historical sections below
-describe earlier runs, not additional current passes.
+Repeated automated checks: **60 worker tests** (authorized Sintel footage, zero
+skipped), **15 frontend tests**, TypeScript, build, Ruff and frontend lint (11
+existing warnings). Fresh disposable PostgreSQL/PGMQ suites also pass with the
+new recorded migration applied once.
+
+[Hosted acceptance and limitations](hosted-local-acceptance.md) ·
+[Actual first website run](evidence/hosted-local-website-first.json) ·
+[Final browser/security pass](evidence/hosted-local-website.json) ·
+[Live scoped recovery/cancellation](evidence/hosted-local-queue-recovery.json) ·
+[Local implementation and multi-sample benchmarks](local-worker-integration.md).
+
+**A user can use the normal website flow with an active local worker.** The
+QA worker is stopped afterward, and no always-on production worker has been
+provisioned. The development website used the live existing Supabase project;
+no new public website version was published. Keep Draft PR #1 draft and do not
+merge/publish. Gemini remains disabled; no paid services or Lovable credits were
+activated. Production email/redirect/global Storage limits and complete Lovable/
+Supabase catalog drift inspection remain operational checks.
+
+## Historical verification before the hosted local-provider pass
+
+The following sections preserve earlier results and blockers; the current
+hosted local-provider report above supersedes their automatic-selection and
+runtime-binding blockers.
 
 **Blocked. Do not merge or publish.** The newer [credential-backed verification](credential-backed-verification.md) supersedes the earlier runtime-binding blocker: Supabase worker authentication, actual private rendering/download and Gemini model metadata now pass. Automatic AI selection remains unverified with the false free-tier flag preserved. The heartbeat repair now passes real credential-backed checks; see the [post-repair record](heartbeat-repair.md) for version alignment and queue/media recheck limitations. No mock result was used to pass the complete AI gate.
 

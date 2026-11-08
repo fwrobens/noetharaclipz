@@ -5,9 +5,9 @@ Use the existing project only: `https://zxdnjnsghdnviflahvry.supabase.co`.
 ## Current local provider setup
 
 The [normal local-worker integration](local-worker-integration.md) is implemented
-and passes real disposable PostgreSQL/PGMQ analysis and queued rendering. Hosted
-website acceptance remains blocked by the **unapplied database proposal**. Do
-not start a global worker around the user's protected upload. The heartbeat
+and [normal hosted website acceptance](hosted-local-acceptance.md) now passes.
+The operator-applied protocol is recorded as `20261108152724_local_worker_queue`;
+do not reapply it. Do not start a global worker around the protected upload. The heartbeat
 repair must not be reapplied.
 
 Use explicit `NC_AI_PROVIDER=local`, `GEMINI_FREE_TIER_VERIFIED=false`,
@@ -30,7 +30,7 @@ normal Export button.
 
 ```sh
 NC_AI_PROVIDER=local GEMINI_FREE_TIER_VERIFIED=false /path/to/local-vlm/bin/python scripts/check_worker.py
-# After authorizing/versioning/deploying the reviewed SQL proposal:
+# Repeat isolated acceptance against the already deployed protocol:
 NC_AI_PROVIDER=local GEMINI_FREE_TIER_VERIFIED=false NC_LOCAL_PYTHON=/path/to/local-vlm/bin/python NC_SAMPLE_VIDEO=/path/to/authorized/sample.mp4 CHROMIUM_PATH=/usr/bin/chromium python scripts/accept_local_queue.py
 ```
 
@@ -39,8 +39,7 @@ running at `NC_BASE_URL` (default `http://127.0.0.1:8080`). Model Python is
 `NC_LOCAL_PYTHON`. Secure test credentials stay in child-process environment.
 Readiness is false until the selected provider/protocol/models are ready;
 startup failure disables claims. Local `check_worker.py` never contacts Gemini.
-Current hosted probes fail closed at the absent protocol, without QA data or
-work consumption. See [the report](local-worker-integration.md) for benchmarks,
+Current hosted protocol/readiness and scoped website acceptance pass. See [the report](local-worker-integration.md) for benchmarks,
 queue tests and exact remaining release gates.
 
 The following Gemini requirements are retained for that explicit provider;
@@ -96,7 +95,7 @@ Do not provision paid hosting, enable billing, change unrelated projects, or pub
 
 ## Repeatable browser acceptance
 
-`scripts/acceptance.py` performs the actual browser flow and requires completed usage for the explicitly selected provider, actual claimed analysis/render jobs, genuine model evidence, saved edits and a downloaded/decoded private MP4. It has no provider fixtures. The safe local launcher above supplies temporary QA credentials and scoped worker selection. For an already authorized test account/worker, set `NC_TEST_EMAIL`, `NC_TEST_PASSWORD`, `NC_SAMPLE_VIDEO`, `NC_AI_PROVIDER`, `NC_BASE_URL` and optionally `CHROMIUM_PATH` securely. The local hosted gate currently requires deployment of the reviewed queue protocol; Gemini remains disabled. See [current verification](local-worker-integration.md).
+`scripts/acceptance.py` performs the actual browser flow and requires completed usage for the explicitly selected provider, actual claimed analysis/render jobs, genuine model evidence, saved edits and a downloaded/decoded private MP4. It has no provider fixtures. The safe local launcher above supplies temporary QA credentials and scoped worker selection. For an already authorized test account/worker, set `NC_TEST_EMAIL`, `NC_TEST_PASSWORD`, `NC_SAMPLE_VIDEO`, `NC_AI_PROVIDER`, `NC_BASE_URL` and optionally `CHROMIUM_PATH` securely. The local hosted gate now passes with the deployed queue protocol; Gemini remains disabled. See [current verification](local-worker-integration.md).
 
 `scripts/check_live_pipeline.py` separately verifies real worker preprocessing,
 transcription, browser editing, manual-interval rendering, private download and

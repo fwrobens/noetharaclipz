@@ -1,10 +1,11 @@
 # Follow-up: credentials, provider eligibility, and real video verification
 
-Latest status: [the normal local provider](local-worker-integration.md) is
-implemented and real disposable queue/inference/render tests pass. Local mode
-does not require a Gemini key/free-tier check. Hosted readiness currently fails
-closed on the absent local-worker database protocol; no hosted AI completion or
-normal browser acceptance is claimed. Gemini's verification flag remains false.
+Latest status: the [normal hosted local-provider workflow](hosted-local-acceptance.md)
+now passes real browser upload, queued automatic highlights, normal Export and
+private MP4 download. The deployed local-worker protocol and loaded provider
+report ready. Local mode does not require Gemini; its free-tier flag stays
+false. The following credential-equipped/earlier sections retain historical
+observations rather than current blockers.
 
 ## Credential-equipped follow-up
 

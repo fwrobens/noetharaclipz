@@ -2,8 +2,8 @@
 
 **Newer follow-up:** [normal worker integration](local-worker-integration.md)
 now implements explicit local provider selection and tests actual queue-driven
-analysis/rendering on disposable PostgreSQL/PGMQ. Hosted website acceptance is
-still blocked by the unapplied database proposal. The following is the earlier
+analysis/rendering on disposable PostgreSQL/PGMQ. The [normal hosted website flow](hosted-local-acceptance.md) now passes with the
+deployed local-worker protocol. The following is the earlier
 `8230acc` isolated-runner proof and its historical limitations.
 
 One genuine locally selected highlight has been played/edited in the existing

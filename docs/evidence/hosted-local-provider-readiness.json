@@ -1,0 +1,27 @@
+{
+  "variables": {
+    "SUPABASE_URL": "bound",
+    "SUPABASE_SERVICE_ROLE_KEY": "bound",
+    "SUPABASE_SECRET_KEY": "not_bound",
+    "NC_AI_PROVIDER": "bound",
+    "NC_WORKER_OWNER_ID": "not_bound",
+    "GEMINI_API_KEY": "bound",
+    "GEMINI_FREE_TIER_VERIFIED": "bound",
+    "GEMINI_VERIFIED_RPM": "bound",
+    "GEMINI_VERIFIED_RPD": "bound",
+    "GEMINI_VERIFIED_TPM": "bound",
+    "NVIDIA_API_KEY": "bound",
+    "ANYMODEL_API_KEY": "bound"
+  },
+  "generation_requested": false,
+  "supabase": "server credential accepted for intended project; queue consumption not attempted",
+  "selected_provider": "local",
+  "gemini_free_tier_verified": false,
+  "gemini_inference": "disabled for local provider; no Gemini metadata or inference requests",
+  "local_queue_protocol": "compatible; no claim attempted",
+  "selected_provider_readiness": {
+    "provider": "local-smolvlm2",
+    "model": "HuggingFaceTB/SmolVLM2-500M-Video-Instruct@7b375e1b73b11138ff12fe22c8f2822d8fe03467",
+    "ready": true
+  }
+}

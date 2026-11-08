@@ -1,11 +1,12 @@
 # Local provider and normal queue integration — 2026-11-08
 
-**Not ready to merge or publish. The normal hosted website acceptance has not
-passed.** The selected local provider is implemented in the normal Python worker;
-the hosted database still lacks its queue/provenance protocol. The actual
-readiness/browser probes stopped before claiming work or creating QA accounts.
-The protected upload remains queued and unchanged. The heartbeat repair at
-`e22528b` is untouched and must not be reapplied.
+**The normal website flow now passes against live Supabase** with an explicitly
+selected local provider and owner-scoped QA worker. See the
+[hosted acceptance report](hosted-local-acceptance.md). The migration was applied
+by the operator, then recorded here at its exact reported version without
+reapplying it. The protected upload remains queued and unchanged. The heartbeat
+repair at `e22528b` is untouched. Keep the PR draft; no merge or publication is
+authorized. A persistent production CPU worker has not been provisioned.
 
 ## Worker path
 
@@ -35,13 +36,14 @@ checks run between actual transformer layers as well as FFmpeg/ASR stages.
 
 ## Database proposal and protected queue
 
-[Reviewed SQL proposal](proposals/local-worker-queue.sql) is deliberately outside
-`supabase/migrations/`: `AGENTS.md` says, “Do not add or edit
-`supabase/migrations/` or `drizzle/`.” Its previous exception was specifically
-the heartbeat repair. A new narrow exception has been requested for this
-proposal. It has **not** been applied or added to the migration ledger. This
-session has no callable Supabase SQL/Lovable tools; an authenticated REST worker
-credential is not an SQL management capability.
+The [reviewed SQL proposal](proposals/local-worker-queue.sql) was applied by the
+operator and recorded under the user's explicit AGENTS.md exception as
+`supabase/migrations/20261108152724_local_worker_queue.sql`. Both files have
+identical SHA256 `37ff1347f255c3a3217258c3c54daa58f7a1342c392643e1ee5e8a01f04324fd`.
+No hosted SQL/migration was reapplied. The exact ledger version is based on the
+operator's report; actual protocol/readiness, queue operations and normal
+website processing were independently verified over HTTP. Full catalog/Lovable
+editor drift inspection remains unavailable in this session.
 
 The proposal contains only:
 
@@ -171,9 +173,8 @@ with 11 existing warnings. The SQL harness also passes the existing access/jobs
 and heartbeat suites plus new scoped provider/cancellation/recovery/provenance
 checks. No existing migration or heartbeat function was modified on the host.
 
-After the proposal has been authorized, versioned once with the actual deployed
-ledger version, and applied to the existing project, start the unchanged app and
-run:
+The proposal is now deployed and recorded. To repeat isolated acceptance, start
+the unchanged app and run:
 
 ```sh
 NC_AI_PROVIDER=local GEMINI_FREE_TIER_VERIFIED=false python scripts/check_worker.py
@@ -191,8 +192,9 @@ protected job snapshot. It cleans up only its own completed QA data. If its own
 job remains active after failure, it retains that QA data for scoped recovery
 rather than deleting an in-flight job or touching another user's queue.
 
-Current run: **blocked at protocol preflight**, before accounts or worker;
-[machine-readable status](evidence/local-hosted-status.json). Cancellation,
-recovery and access checks pass in disposable PostgreSQL; the new hosted UI
-flow, hosted cancellation/recovery and download still require that final run.
-No deployment, merge, publication, new hosting, or paid activation occurred.
+Current run: **normal hosted browser acceptance passed**, including genuine
+queued local analysis, normal Export, private browser download and decode.
+Actual scoped lease recovery/cancellation/retry controls also passed in 125.72
+seconds. See [current machine-readable status](evidence/local-hosted-status.json)
+and [the hosted report](hosted-local-acceptance.md). QA workers/data are removed
+after testing. No merge, publication, new hosting or paid activation occurred.

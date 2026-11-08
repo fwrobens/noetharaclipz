@@ -1,0 +1,142 @@
+{
+  "passed": true,
+  "hosted_generation": false,
+  "global_worker_started": false,
+  "checks": {
+    "compatible_scoped_queue_protocol": true,
+    "normal_ui_acceptance": true,
+    "cross_user_rows_denied": true,
+    "cross_user_private_download_denied": true,
+    "browser_privileged_operations_denied": true,
+    "invalid_upload_denied": true,
+    "cross_user_source_signing_denied": true,
+    "anonymous_private_media_denied": true,
+    "owner_browser_media_overwrite_denied": true,
+    "browser_job_state_forgery_denied": true,
+    "anonymous_worker_operations_denied": true,
+    "shutdown_clears_provider_readiness": true,
+    "protected_job_unchanged": true
+  },
+  "acceptance": {
+    "passed": true,
+    "source_sha256": "988596de4e539c1c200ab1a76421d3e66aa7c73b8b1bc13e1a33febd61ebf1d7",
+    "project_id": "afb1ae2f-5817-4a56-8f95-367c0bf08832",
+    "upload_and_analysis_seconds": 19.722,
+    "usage": [
+      {
+        "id": "4c522951-e244-4500-8f83-e66a757b07b1",
+        "job_id": "ed010613-c93d-41b5-8864-3ea15f0f1dea",
+        "project_id": "afb1ae2f-5817-4a56-8f95-367c0bf08832",
+        "request_key": "local:ed010613-c93d-41b5-8864-3ea15f0f1dea",
+        "provider": "local-smolvlm2",
+        "model": "HuggingFaceTB/SmolVLM2-500M-Video-Instruct@7b375e1b73b11138ff12fe22c8f2822d8fe03467",
+        "status": "completed",
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost": 0,
+        "created_at": "2026-11-08T15:43:57.903821+00:00"
+      }
+    ],
+    "provider_model": "HuggingFaceTB/SmolVLM2-500M-Video-Instruct@7b375e1b73b11138ff12fe22c8f2822d8fe03467",
+    "local_metrics": {
+      "admission_rejected": false,
+      "analysis_cache_hit": true,
+      "prepared_cache_hit": true,
+      "transcript_cache_hit": true,
+      "source_inference_input_tokens": 4246
+    },
+    "model_evidence": {
+      "decision": {
+        "choice": "G",
+        "relative_choice_scores": {
+          "A": 0.018129704520106316,
+          "B": 0.010680424980819225,
+          "C": 0.042055893689394,
+          "D": 0.04319572448730469,
+          "E": 0.2551009953022003,
+          "F": 0.11204680055379868,
+          "G": 0.32254692912101746,
+          "H": 0.17192432284355164,
+          "Z": 0.024319224059581757
+        },
+        "video_tensor_shape": [
+          8,
+          4,
+          3,
+          512,
+          512
+        ],
+        "input_tokens": 3877,
+        "video_tensor_sha256": "5ee1d309e42dda98cc1462952fac8af0ff3b2af558c4e1a1d4f2c106d3466f9b",
+        "model_window": [
+          42.857,
+          52.857
+        ],
+        "speech_completed_interval": [
+          31.65,
+          54.0
+        ]
+      },
+      "source_hash": "988596de4e539c1c200ab1a76421d3e66aa7c73b8b1bc13e1a33febd61ebf1d7",
+      "hosted_inference": false,
+      "original_inference_usage": {
+        "input_tokens": 4246,
+        "output_tokens": 29
+      }
+    },
+    "provider": "local-smolvlm2",
+    "analysis_job_id": "ed010613-c93d-41b5-8864-3ea15f0f1dea",
+    "render_job_id": "6f261202-8b42-4691-b3dc-25c91c9b41af",
+    "analysis_attempts": 1,
+    "render_attempts": 1,
+    "highlights": [
+      {
+        "id": "ccee8066-a19e-43de-a511-c50380a0aad7",
+        "project_id": "afb1ae2f-5817-4a56-8f95-367c0bf08832",
+        "start_time": 31.65,
+        "end_time": 54,
+        "title": "Are you hurt? I don't think so. You?",
+        "category": "Other",
+        "score": 32,
+        "explanation": "Timestamped speech excerpt: Are you hurt? I don't think so. You?. Local multimodal model chose candidate G among 8 actual videos plus a none option. Measured evidence: 2 speech segments, 0 audio events, 1 scene boundaries. Scores are relative choices, not calibrated quality or virality.",
+        "evidence": {
+          "visual": "Four decoded frames per candidate; selected interval with measured speech context 31.650\u201354.000s. Comparison tensor SHA256 5ee1d309e42dda98cc1462952fac8af0ff3b2af558c4e1a1d4f2c106d3466f9b."
+        },
+        "created_at": "2026-11-08T15:43:57.903821+00:00"
+      }
+    ],
+    "clip_id": "23e4b9be-8d2f-401e-8dc1-28d7ae6548d8",
+    "persisted_edit": {
+      "end": 54,
+      "font": "Instrument Sans",
+      "ratio": "9:16",
+      "start": 31.7,
+      "crop_x": 0.5,
+      "crop_y": 0.5,
+      "volume": 1,
+      "version": 1,
+      "captions": true,
+      "caption_size": 28,
+      "caption_color": "#FFFFFF",
+      "caption_style": "Bold pop",
+      "caption_overrides": {}
+    },
+    "output_path": "df89a5a4-1ca1-424b-9bc6-3b72d49d482e/afb1ae2f-5817-4a56-8f95-367c0bf08832/6f261202-8b42-4691-b3dc-25c91c9b41af.mp4",
+    "output_bytes": 5070115,
+    "output_sha256": "b562e9a85825dc5dd5f789a9c1bc9a01da5d99d7e9b11cbbce9d56bedc5f1caa",
+    "output_duration": 22.3,
+    "elapsed_seconds": 45.652,
+    "unhandled_browser_errors": [],
+    "ui_steps": "login, upload, instructions, generate, select, edit, save, refresh, Export button, Download MP4 button"
+  },
+  "cleanup": [
+    {
+      "user_id": "df89a5a4-1ca1-424b-9bc6-3b72d49d482e",
+      "removed": true
+    },
+    {
+      "user_id": "02a1b94e-3159-4de2-ac25-7a0160c0ff65",
+      "removed": true
+    }
+  ]
+}

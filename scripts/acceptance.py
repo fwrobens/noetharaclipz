@@ -20,6 +20,7 @@ PUBLIC_KEY = "sb_publishable_wlXMNmobAj-bq_wKU7BduQ_FoKG6Eyk"
 
 
 def main():
+    started = time.monotonic()
     email = os.environ["NC_TEST_EMAIL"]
     password = os.environ["NC_TEST_PASSWORD"]
     sample = Path(os.environ["NC_SAMPLE_VIDEO"]).resolve(strict=True)
@@ -92,6 +93,8 @@ def main():
             page.get_by_label("Password", exact=True).fill(password)
             page.get_by_role("button", name="Sign in", exact=True).click()
             page.wait_for_url("**/library")
+            page.get_by_role("heading", name="Library", exact=True).wait_for()
+            page.wait_for_load_state("networkidle")
             page.goto(base + "/", wait_until="networkidle")
             page.locator("input[type=file]").set_input_files(str(sample))
             page.locator("textarea").fill(
@@ -107,6 +110,9 @@ def main():
             evidence["project_id"] = pid
             print("Actual upload accepted; waiting for live video analysis", flush=True)
             analysis_job = wait_job(pid, "analysis")
+            evidence["upload_and_analysis_seconds"] = round(
+                time.monotonic() - started, 3
+            )
             assert (
                 analysis_job["message_id"] is not None and analysis_job["attempts"] > 0
             ), "No actual queue claim"
@@ -125,6 +131,9 @@ def main():
             ), "No recorded actual inference usage"
             highlights = rows("highlights", project_id="eq." + pid)
             video = rows("videos", project_id="eq." + pid)[0]
+            evidence["usage"] = usage
+            evidence["provider_model"] = artifacts[0]["model"]
+            evidence["local_metrics"] = analysis_job["payload"].get("local_metrics")
             if selected_provider == "local":
                 prefix = video["source_path"].split("/")[:2]
                 raw = api.get(
@@ -144,6 +153,12 @@ def main():
                     proof["hosted_inference"] is False
                     and proof["decision"]["input_tokens"] > 0
                 )
+                evidence["model_evidence"] = {
+                    "decision": proof["decision"],
+                    "source_hash": proof["source_hash"],
+                    "hosted_inference": proof["hosted_inference"],
+                    "original_inference_usage": proof["local_usage"],
+                }
             assert highlights, (
                 "No real AI highlight was selected; acceptance remains incomplete"
             )
@@ -154,13 +169,35 @@ def main():
             page.reload(wait_until="networkidle")
             page.get_by_role("button", name="Select clip", exact=True).first.click()
             page.get_by_role("link", name="Edit", exact=True).click()
+            page.wait_for_url("**/editor/**")
+            page.locator('[aria-label="Trim"] [role="slider"]').first.wait_for()
+            page.wait_for_load_state("networkidle")
             page.wait_for_function("document.querySelector('video')?.readyState>=2")
+            page.locator("video").evaluate("""v => {
+              window.ncMediaEvents = [];
+              for (const event of ['play','playing','pause','waiting','stalled','seeking','seeked','loadedmetadata','error','emptied'])
+                v.addEventListener(event, () => window.ncMediaEvents.push({event,time:v.currentTime,paused:v.paused,ready:v.readyState,seeking:v.seeking}));
+            }""")
             initial = page.locator("video").evaluate("v=>v.currentTime")
             page.get_by_role("button", name="Play", exact=True).click()
-            page.wait_for_function(
-                "start=>{const v=document.querySelector('video');return v&&!v.paused&&v.currentTime>start+.1}",
-                arg=initial,
-            )
+            try:
+                page.wait_for_function(
+                    "start=>{const v=document.querySelector('video');return v&&!v.paused&&v.currentTime>start+.1}",
+                    arg=initial,
+                )
+            except Exception:
+                state = page.locator("video").evaluate(
+                    """v=>({time:v.currentTime,paused:v.paused,ready:v.readyState,seeking:v.seeking,ended:v.ended,error:v.error?.code,network:v.networkState,events:window.ncMediaEvents})"""
+                )
+                state["initial_time"] = initial
+                (output.parent / "acceptance-playback-failure.json").write_text(
+                    json.dumps(state, indent=2) + "\n"
+                )
+                page.screenshot(
+                    path=str(output.parent / "acceptance-playback-failure.png"),
+                    full_page=True,
+                )
+                raise
             trim = page.locator('[aria-label="Trim"] [role="slider"]').first
             trim.focus()
             trim.press("ArrowRight")
@@ -185,6 +222,9 @@ def main():
                 )
                 < 0.11
             )
+            page.screenshot(
+                path=str(output.parent / "acceptance-saved-edit.png"), full_page=True
+            )
             page.get_by_role("button", name="Export", exact=True).click()
             page.get_by_role("dialog").get_by_role(
                 "button", name="Export", exact=True
@@ -202,6 +242,9 @@ def main():
             with page.expect_download() as result:
                 page.get_by_role("button", name="Download MP4", exact=True).click()
             result.value.save_as(str(output))
+            page.screenshot(
+                path=str(output.parent / "acceptance-export-ready.png"), full_page=True
+            )
             assert output.stat().st_size > 0
             metadata = json.loads(
                 subprocess.check_output(
@@ -248,6 +291,7 @@ def main():
                 output_bytes=output.stat().st_size,
                 output_sha256=hashlib.sha256(output.read_bytes()).hexdigest(),
                 output_duration=float(metadata["format"]["duration"]),
+                elapsed_seconds=round(time.monotonic() - started, 3),
                 unhandled_browser_errors=errors,
                 ui_steps="login, upload, instructions, generate, select, edit, save, refresh, Export button, Download MP4 button",
             )

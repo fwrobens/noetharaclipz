@@ -131,6 +131,64 @@ def main():
         assert denied.status_code in (400, 401, 403, 404), (
             "Cross-user private output access"
         )
+        video = backend.rows("videos", project_id="eq." + pid)[0]
+        source_path = video["source_path"]
+        denied = apis[1].post(
+            backend.base + "/storage/v1/object/sign/source-videos/" + source_path,
+            json={"expiresIn": 60},
+        )
+        assert denied.status_code in (400, 401, 403, 404), (
+            "Cross-user source signing allowed"
+        )
+        for bucket, path in (
+            ("source-videos", source_path),
+            ("rendered-clips", proof["output_path"]),
+        ):
+            with httpx.Client(timeout=60, headers={"apikey": PUBLIC_KEY}) as anonymous:
+                denied = anonymous.get(
+                    backend.base
+                    + "/storage/v1/object/authenticated/"
+                    + bucket
+                    + "/"
+                    + path
+                )
+                assert denied.status_code in (400, 401, 403, 404), (
+                    "Anonymous private media allowed"
+                )
+        # Owner browsers cannot overwrite a reserved source or forge rendered output.
+        for bucket, path in (
+            ("source-videos", source_path),
+            ("rendered-clips", proof["output_path"]),
+        ):
+            denied = apis[0].post(
+                backend.base + "/storage/v1/object/" + bucket + "/" + path,
+                content=b"DENIED QA overwrite probe",
+                headers={"Content-Type": "video/mp4", "x-upsert": "true"},
+            )
+            assert denied.status_code in (400, 401, 403), (
+                "Owner browser media overwrite allowed"
+            )
+        forged = apis[0].patch(
+            backend.base + "/rest/v1/processing_jobs",
+            params={"id": "eq." + proof["analysis_job_id"]},
+            json={"status": "completed", "attempts": 99},
+        )
+        assert forged.status_code in (401, 403), "Browser job-state write allowed"
+        with httpx.Client(timeout=60, headers={"apikey": PUBLIC_KEY}) as anonymous:
+            for operation, params in (
+                ("worker_protocol", {}),
+                ("worker_claim_scoped", {"owner": users[0]["id"]}),
+                (
+                    "worker_heartbeat_scoped",
+                    {"owner": users[0]["id"], "ai_ready": True, "detail": "forged"},
+                ),
+            ):
+                denied = anonymous.post(
+                    backend.base + "/rest/v1/rpc/" + operation, json=params
+                )
+                assert denied.status_code in (401, 403), (
+                    "Anonymous worker operation allowed"
+                )
         for api in apis:
             for operation in (
                 "worker_claim",
@@ -172,6 +230,11 @@ def main():
             cross_user_private_download_denied=True,
             browser_privileged_operations_denied=True,
             invalid_upload_denied=True,
+            cross_user_source_signing_denied=True,
+            anonymous_private_media_denied=True,
+            owner_browser_media_overwrite_denied=True,
+            browser_job_state_forgery_denied=True,
+            anonymous_worker_operations_denied=True,
         )
         report["acceptance"] = proof
         report["passed"] = True
@@ -184,6 +247,14 @@ def main():
         if process:
             process.terminate()
             process.wait(timeout=90)
+            if report["passed"]:
+                health = apis[0].post(
+                    backend.base + "/rest/v1/rpc/pipeline_health", json={}
+                )
+                health.raise_for_status()
+                report["checks"]["shutdown_clears_provider_readiness"] = (
+                    health.json().get("ai_ready") is False
+                )
         for api in apis:
             api.close()
         cleanup = []
@@ -237,6 +308,10 @@ def main():
         assert all(item["removed"] for item in cleanup), (
             "Scoped QA cleanup incomplete; see report"
         )
+        if report["passed"]:
+            assert report["checks"].get("shutdown_clears_provider_readiness"), (
+                "Stopped worker still AI ready"
+            )
 
 
 if __name__ == "__main__":

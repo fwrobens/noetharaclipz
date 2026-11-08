@@ -132,7 +132,13 @@ create function storage.foldername(name text) returns text[] language sql immuta
         for p in sorted((ROOT / "supabase/migrations").glob("*.sql")):
             sql += p.read_text() + "\n"
         proposal = ROOT / "docs/proposals/local-worker-queue.sql"
-        sql += proposal.read_text() + "\n"
+        recorded = ROOT / "supabase/migrations/20261108152724_local_worker_queue.sql"
+        if recorded.exists():
+            assert recorded.read_bytes() == proposal.read_bytes(), (
+                "Recorded SQL differs from reviewed deployment"
+            )
+        else:
+            sql += proposal.read_text() + "\n"
         sql += (ROOT / "supabase/tests/access_and_jobs.sql").read_text() + "\n"
         sql += (ROOT / "supabase/tests/worker_heartbeat.sql").read_text() + "\n"
         sql += (ROOT / "supabase/tests/local_worker.sql").read_text() + "\n"
