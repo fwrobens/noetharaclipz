@@ -16,6 +16,10 @@ The backend, real media worker, authentication, resumable upload, real player, p
 
 See [verification evidence](docs/verification.md), [architecture](docs/architecture.md), and [worker setup](docs/worker-setup.md).
 
+## Experimental local automatic detection
+
+A pinned CPU SmolVLM2 detector now automatically selects measured video intervals using actual video, transcript, scene and audio evidence. One selected Elephants Dream interval passed existing-editor playback/edits, real MP4 rendering, private storage and browser download in an explicit isolated runner. The shared queued/Gemini workflow remains unchanged, and the user’s pending upload was preserved. See [implementation, results and limits](docs/local-automatic-highlights.md). This does not mark the complete production acceptance gate passed.
+
 ## Development
 
 ```sh

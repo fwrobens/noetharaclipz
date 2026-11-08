@@ -114,7 +114,10 @@ function Editor() {
   useEffect(() => {
     setCaptionText(segment ? (overrides[segment.id] ?? segment.text) : "");
   }, [segment, overrides]);
-  if (loading) return <div className="p-10">Loading your clip…</div>;
+  // Mount the player only after the real trim/brand settings are initialized.
+  // Otherwise a click can race the temporary 0–duration segment and pause the seek.
+  if (loading || brandLoading || (clip && loaded.current !== clip.id))
+    return <div className="p-10">Loading your clip…</div>;
   if (!project || !clip)
     return (
       <div className="p-10 text-center text-muted-foreground">

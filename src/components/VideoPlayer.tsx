@@ -44,7 +44,10 @@ export function VideoPlayer({
     if (!video.current) return;
     try {
       if (video.current.paused) {
-        if (segmentEnd !== undefined && video.current.currentTime >= segmentEnd - 0.05) {
+        if (
+          (seekTo !== undefined && video.current.currentTime < seekTo - 0.05) ||
+          (segmentEnd !== undefined && video.current.currentTime >= segmentEnd - 0.05)
+        ) {
           video.current.currentTime = seekTo ?? 0;
           position.current = seekTo ?? 0;
         }
