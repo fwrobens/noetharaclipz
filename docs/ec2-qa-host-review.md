@@ -474,3 +474,59 @@ there. The next action is the operator's single-block SSM download. Before any
 image load, inspect stopped containers for this Compose project and abort if
 an existing `noetharaclipz-worker:review` tag has a different image ID. The
 existing approved kernel/network gates and bounded QA scope still apply.
+
+
+## EC2 artifact receipt verified; next image/quota gate
+
+The operator's SSM output confirms both file sizes and SHA256 values at
+`/tmp/nccz-transfer-kbbradmg/received`, with `transfer_verified=true` and
+`worker_started=false`. This is operator-observed receipt, not direct agent
+access. All 109 temporary transport objects have now been removed from only
+our dedicated prefix; an independent list confirms zero remain, and total
+storage is back to the original 48,627,594 bytes. The protected job row remains
+identical: queued, zero attempts. Signed handoff links are no longer needed.
+
+The next approved step is to load only the verified image, after checking the
+target, current headroom, stopped project containers and any existing image tag.
+Then run a short-lived quota diagnostic with `--network none`, no volumes,
+credentials or ports, and the immutable image ID. Its entrypoint is overridden
+to Python reading only the reviewed cgroup probe. This diagnostic is neither
+the worker nor asset seeder: it cannot access the queue or private services.
+It is automatically removed and does not download/load any model. Network
+policy remains mandatory before later network-connected seed/worker startup.
+A successful diagnostic is not a claim that seed/standby or network verification
+has passed; those still follow the existing runbook.
+
+The exact next SSM block (syntax-checked here, not run on EC2 by this agent):
+
+```sh
+(
+set -eu
+cd /tmp/nccz-transfer-kbbradmg/received
+[ "$(cat /sys/devices/virtual/dmi/id/board_asset_tag)" = i-0be10e530045fc650 ]
+nc_image='sha256:32fd88495ceab2c59ab7bc6a0c7980c1003d9b4b6eea507131783a24be4b88a5'
+python3 - <<'CHECK'
+import json, shutil
+from pathlib import Path
+ram = int(next(line.split()[1] for line in Path('/proc/meminfo').read_text().splitlines() if line.startswith('MemAvailable:'))) * 1024
+disk = shutil.disk_usage('/var/lib').free
+assert ram >= 10 * 1024**3 and disk >= 20 * 1024**3, 'STOP: insufficient host headroom'
+print(json.dumps({'available_ram_gib': round(ram / 1024**3, 1), 'free_disk_gib': round(disk / 1024**3, 1)}))
+CHECK
+printf '%s\n' 'd4039e807525aab63820b947e6ee99944cf221776a85fb08c1390bfd605e6394  worker-image.tar.xz' 'db369c5c9001e53d33e1b6e053224e2318f41eadb7285569ac597095f28be6da  worker-config.tar.gz' 'e35ff35de3e085799b7d10ed2b3d7eec6ad0ca28d10ab682e075921e0bfed5fe  config/deploy/worker/check_cgroup_limits.py' | sha256sum -c -
+nc_project=$(sudo -n docker --host=unix:///var/run/docker.sock ps -aq --filter label=com.docker.compose.project=noetharaclipz-isolated)
+[ -z "$nc_project" ] || { echo 'STOP: existing worker project containers'; exit 1; }
+nc_tag=$(sudo -n docker --host=unix:///var/run/docker.sock image ls -q --filter reference=noetharaclipz-worker:review)
+if [ -n "$nc_tag" ]; then
+    nc_existing=$(sudo -n docker --host=unix:///var/run/docker.sock image inspect noetharaclipz-worker:review --format '{{.Id}}')
+    [ "$nc_existing" = "$nc_image" ] || { echo 'STOP: existing tag has a different image'; exit 1; }
+fi
+sudo -n docker --host=unix:///var/run/docker.sock load --input worker-image.tar.xz
+nc_loaded=$(sudo -n docker --host=unix:///var/run/docker.sock image inspect noetharaclipz-worker:review --format '{{.Id}}')
+[ "$nc_loaded" = "$nc_image" ]
+sudo -n docker --host=unix:///var/run/docker.sock run --rm --interactive --pull=never --platform linux/amd64 --network none --user 62001:62001 --read-only --cap-drop ALL --security-opt no-new-privileges:true --memory 8g --memory-swap 8g --cpus 2 --cpu-shares 256 --pids-limit 256 --oom-score-adj 500 --entrypoint python "$nc_image" - < config/deploy/worker/check_cgroup_limits.py
+)
+```
+
+Return the complete cgroup JSON output. Stop on any failed check; do not
+advance to models, QA/global processing or a network-connected worker.

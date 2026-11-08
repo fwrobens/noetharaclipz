@@ -1,6 +1,6 @@
 {
   "date": "2026-11-08",
-  "status": "private staging and complete signed download/hash roundtrip passed in managed cloud; EC2 receipt not yet verified",
+  "status": "EC2 receipt verified from operator SSM output; temporary transport objects removed; image load and quota/network checks pending",
   "github_authentication": {
     "repository_api": 200,
     "managed_placeholder": true,
@@ -133,7 +133,7 @@
     ],
     "source_commit": "360110b1cfeaa6ae74f4a8c0e0e03df42646e1ae",
     "signed_urls_recorded_here": false,
-    "cleanup_required_after_ec2_receipt_or_abandonment": true
+    "cleanup_required_after_ec2_receipt_or_abandonment": false
   },
   "privacy": {
     "public_request_status": 400,
@@ -168,11 +168,36 @@
       "worker_started": false
     }
   ],
-  "ec2_receipt_verified": false,
+  "ec2_receipt_verified": true,
   "remaining": [
-    "Operator executes signed handoff through existing SSM terminal and returns hash verification output",
-    "Recheck stopped-project/tag collisions immediately before image load",
-    "Actual seed/standby kernel limits and scoped DNS/TLS/private-network deny preflights",
-    "Secure existing service credential placement without pasting secrets; one scoped QA owner; <=30 minute QA flow"
-  ]
+    "Operator load of verified image after fresh target/headroom/project/tag checks",
+    "No-network kernel quota probe (short-lived diagnostic only); then actual seed/standby limits",
+    "Scoped worker network allow/deny preflights and secure existing service-key placement",
+    "One new QA owner and <=30 minute isolated normal website acceptance; no global consumption"
+  ],
+  "ec2_receipt": {
+    "source": "operator-pasted SSM downloader output",
+    "directory": "/tmp/nccz-transfer-kbbradmg/received",
+    "image_archive_bytes": 441120356,
+    "image_archive_sha256": "d4039e807525aab63820b947e6ee99944cf221776a85fb08c1390bfd605e6394",
+    "config_archive_bytes": 32031,
+    "config_archive_sha256": "db369c5c9001e53d33e1b6e053224e2318f41eadb7285569ac597095f28be6da",
+    "transfer_verified": true,
+    "image_loaded": false,
+    "worker_started": false,
+    "direct_agent_ec2_access": false
+  },
+  "cleanup": {
+    "owned_objects_deleted": 109,
+    "owned_objects_remaining": 0,
+    "current_storage_object_bytes": 48627594,
+    "matches_pre_transfer_storage_bytes": true,
+    "bucket_settings_changed": false,
+    "protected_upload": {
+      "status": "queued",
+      "attempts": 0,
+      "row_identical": true,
+      "read_only": true
+    }
+  }
 }

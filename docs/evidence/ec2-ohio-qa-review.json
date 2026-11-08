@@ -146,12 +146,12 @@
     }
   },
   "remaining_checks": [
-    "Operator SSM download and verify receipt; no account credentials required",
-    "Recheck stopped Compose-project/tag collisions before any EC2 mutations",
-    "Actual seed/standby cgroup proof before model downloads or AI startup",
-    "Scoped worker-network allow/deny verification, secure service-key placement, new QA owner, normal website flow and existing-service monitoring"
+    "Fresh target/headroom/project/tag checks before image load",
+    "Actual kernel quota probe in a network-none diagnostic; still no worker, models or credentials",
+    "Scoped worker-network isolation, actual seed/standby limits and secure service-key placement",
+    "One scoped QA owner; normal website and recovery tests in <=30 minute trial"
   ],
-  "deployment_review_status": "private Supabase staging and full cloud signed download/hash verification passed; operator EC2 receipt and runtime preflights pending",
+  "deployment_review_status": "operator EC2 receipt verified; all 109 transport objects removed; image load, actual kernel/network preflights and QA still pending",
   "local_kernel_resource_validation": {
     "previous_hard_cap_claim_superseded": true,
     "evidence": "local-cgroup-validation-correction.json",
