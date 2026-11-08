@@ -51,5 +51,29 @@
   "global_consumption_enabled": false,
   "gemini_enabled": false,
   "paid_services_activated": false,
-  "merged_or_published": false
+  "merged_or_published": false,
+  "private_helper_handoff": {
+    "transfer_id": "fd029d87-312b-4f2b-8776-545e6de1ce9c",
+    "prefix": "_worker-transfer/fd029d87-312b-4f2b-8776-545e6de1ce9c/",
+    "objects": [
+      "_worker-transfer/fd029d87-312b-4f2b-8776-545e6de1ce9c/network-preflight.json"
+    ],
+    "created_unix": 1794177408,
+    "source_sha256": "83a5f1445364d2d28942d015ba3741a662744a9ab9685cd56984afb6f229984b",
+    "source_commit": "530b149db873e0111e63486985b599da0af9b9c8",
+    "payload_sha256": "cf9957e0d236e87ff9561cdd4d8a76ee24473e4cb88aec1700eb740744438678",
+    "bytes": 16225,
+    "storage_before_bytes": 48627594,
+    "expires_unix": 1794181008,
+    "signed_download_verified": true,
+    "public_request_status": 400,
+    "public": false,
+    "credentials_in_payload": false,
+    "cleanup_after_operator_receipt_or_abandonment": true
+  },
+  "protected_upload_readonly_check": {
+    "status": "queued",
+    "attempts": 0,
+    "row_identical": true
+  }
 }
