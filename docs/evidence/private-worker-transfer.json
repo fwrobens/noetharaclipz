@@ -1,0 +1,108 @@
+{
+  "date": "2026-11-08",
+  "status": "private storage transfer preparation; no EC2 transfer/deployment yet",
+  "github_authentication": {
+    "repository_api": 200,
+    "managed_placeholder": true,
+    "alternate_identity_available": false,
+    "gh_host_credential_file_present": false,
+    "upload_probe_target": "previously deleted release; cannot create an asset",
+    "upload_probe": 401,
+    "upload_retries_stopped": true,
+    "credentials_created_or_changed": false,
+    "billing_api": 403,
+    "actions_runs_in_repository": 0
+  },
+  "selected_method": {
+    "provider": "existing Supabase Storage",
+    "bucket": "processing-artifacts",
+    "public": false,
+    "existing_object_limit_bytes": 45000000,
+    "encoding": "valid application/json chunks with base85 payloads",
+    "raw_chunk_bytes": 4194304,
+    "new_buckets_or_policy_changes": false,
+    "signed_url_lifetime_seconds": 3600,
+    "actions_or_registry_activated": false
+  },
+  "artifact": {
+    "uncompressed_tar_identical": true,
+    "uncompressed_tar_sha256": "a22386493543719fdcfbf0e5901b42b888191e04bbdcfb2cfceba5e56d2519e1",
+    "xz_sha256": "d4039e807525aab63820b947e6ee99944cf221776a85fb08c1390bfd605e6394",
+    "xz_bytes": 441120356,
+    "original_gzip_sha256": "29afebf52f7e4edca43282405941f9b636611ad8bb36cb1126f7ef1275ce41b9",
+    "rebuilt": false
+  },
+  "image": {
+    "id": "sha256:32fd88495ceab2c59ab7bc6a0c7980c1003d9b4b6eea507131783a24be4b88a5",
+    "platform": "linux/amd64",
+    "rootfs_layers": 11,
+    "original_source": "b51ffb5",
+    "base_image": "python:3.12-slim-bookworm@sha256:935c3c5b12357a7e10caa9c1e6ca5692344d97cf229832ef584be2cec9fc03df",
+    "rebuilt": false,
+    "dependency_lock": "deploy/worker/requirements.lock",
+    "model": "HuggingFaceTB/SmolVLM2-500M-Video-Instruct",
+    "model_revision": "7b375e1b73b11138ff12fe22c8f2822d8fe03467"
+  },
+  "storage_before": {
+    "read_only": true,
+    "buckets": [
+      {
+        "bucket": "source-videos",
+        "bytes": 48627594,
+        "objects": 3
+      },
+      {
+        "bucket": "rendered-clips",
+        "bytes": 0,
+        "objects": 0
+      },
+      {
+        "bucket": "thumbnails",
+        "bytes": 0,
+        "objects": 0
+      },
+      {
+        "bucket": "processing-artifacts",
+        "bytes": 0,
+        "objects": 0
+      },
+      {
+        "bucket": "brand-assets",
+        "bytes": 0,
+        "objects": 0
+      }
+    ],
+    "total_object_bytes": 48627594,
+    "total_objects": 3
+  },
+  "reservations_before": {
+    "read_only": true,
+    "database_committed_and_reserved_bytes": 97255188,
+    "active_jobs": 1,
+    "rows_or_jobs_modified": false
+  },
+  "ec2_deployed": false,
+  "worker_started": false,
+  "global_queue_consumption": false,
+  "gemini_enabled": false,
+  "paid_services_activated": false,
+  "merged_or_published": false,
+  "verification": {
+    "image_archive": {
+      "verified": true,
+      "archive_sha256": "d4039e807525aab63820b947e6ee99944cf221776a85fb08c1390bfd605e6394",
+      "image_id": "sha256:32fd88495ceab2c59ab7bc6a0c7980c1003d9b4b6eea507131783a24be4b88a5",
+      "architecture": "amd64",
+      "os": "linux",
+      "worker_started": false
+    },
+    "worker_tests": {
+      "passed": 95,
+      "skipped": 1,
+      "seconds": 19.27
+    },
+    "new_security_tests_passed": 11,
+    "ruff": "passed",
+    "runtime_recipe_and_sources_unchanged_since_b51ffb5": true
+  }
+}
