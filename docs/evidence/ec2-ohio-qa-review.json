@@ -146,12 +146,12 @@
     }
   },
   "remaining_checks": [
-    "Fresh target/headroom/project/tag checks before image load",
+    "No-network quota probe using the verified EC2 OCI manifest ID (not the classic-store config ID)",
     "Actual kernel quota probe in a network-none diagnostic; still no worker, models or credentials",
     "Scoped worker-network isolation, actual seed/standby limits and secure service-key placement",
     "One scoped QA owner; normal website and recovery tests in <=30 minute trial"
   ],
-  "deployment_review_status": "operator EC2 receipt verified; all 109 transport objects removed; image load, actual kernel/network preflights and QA still pending",
+  "deployment_review_status": "operator reports loaded OCI manifest ID; verified manifest->config->11 layers binding against original archive; quota/network/QA still pending",
   "local_kernel_resource_validation": {
     "previous_hard_cap_claim_superseded": true,
     "evidence": "local-cgroup-validation-correction.json",
@@ -258,5 +258,7 @@
     "credentials_installed_or_changed": false,
     "new_paid_services": false
   },
-  "artifact_transfer_evidence": "private-worker-transfer.json"
+  "artifact_transfer_evidence": "private-worker-transfer.json",
+  "runtime_content_config_digest": "sha256:32fd88495ceab2c59ab7bc6a0c7980c1003d9b4b6eea507131783a24be4b88a5",
+  "ec2_oci_runtime_reference": "sha256:472913bf34e918c48e5b77a56c4ea2dfd31873bdd79ecc2d1c4e7ab4cf3e5759"
 }

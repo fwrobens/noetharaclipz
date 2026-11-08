@@ -40,14 +40,18 @@ Both decompress to the exact same tar stream, SHA256
 `a22386493543719fdcfbf0e5901b42b888191e04bbdcfb2cfceba5e56d2519e1`.
 No image was rebuilt or modified.
 
-The immutable image ID remains:
+The immutable image **config digest** (and local classic-store image ID) remains:
 `sha256:32fd88495ceab2c59ab7bc6a0c7980c1003d9b4b6eea507131783a24be4b88a5`.
 The offline verifier streams and hashes every content-addressed blob and checks
 the config/rootfs correspondence, linux/amd64 architecture, UID/GID 62001,
 absence of exposed ports and local/standby/Gemini-disabled defaults.
 The b51ffb5 runtime recipe, frozen dependencies and runtime source are unchanged.
-This is an image config ID, not a claimed GHCR manifest digest; no registry image
-has been created. The model remains pinned SmolVLM2-500M; no weights are included
+The same archive also contains OCI manifest digest
+`sha256:472913bf34e918c48e5b77a56c4ea2dfd31873bdd79ecc2d1c4e7ab4cf3e5759`,
+which references that exact config and the same 11 verified layer digests.
+The EC2 daemon reports this manifest digest as `.Id`; use it as the pinned
+`NC_WORKER_IMAGE` on this host. The local daemon reports the config digest.
+Neither identifier represents a rebuilt image; no registry image was created. The model remains pinned SmolVLM2-500M; no weights are included
 in this archive and no 2.2B assets are downloaded.
 
 ## Operator sequence
@@ -61,14 +65,15 @@ in this archive and no 2.2B assets are downloaded.
 2. Return the verification output. Until that happens, EC2 receipt is **not
    verified**, even if private staging and a cloud-side download passed.
 3. Recheck reserved resources including stopped Compose containers. Load only
-   the verified archive, then compare Docker's image ID to the value above:
+   the verified archive, then compare Docker's reported identity with the verified
+   config/OCI mapping above:
 
    ```sh
    sudo -n docker load --input worker-image.tar.xz
    sudo -n docker image inspect noetharaclipz-worker:review --format '{{.Id}}'
    ```
 
-   A mismatch stops the procedure. These commands load bytes; they do not run
+   An ID outside the verified config/OCI mapping stops the procedure. These commands load bytes; they do not run
    an image or process a job. No credential or Docker login is needed.
 4. Continue [the approved conditional QA procedure](ec2-qa-host-review.md).
    Actual seed/standby kernel quota proof and scoped network allow/deny tests

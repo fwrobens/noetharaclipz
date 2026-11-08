@@ -1,6 +1,6 @@
 {
   "date": "2026-11-08",
-  "status": "Operator confirms image archive loaded; runtime image ID and kernel quota output still unverified",
+  "status": "Loaded EC2 OCI manifest identity is cryptographically bound to the original reviewed config and all 11 layers; quota/network checks pending",
   "github_authentication": {
     "repository_api": 200,
     "managed_placeholder": true,
@@ -41,7 +41,10 @@
     "rebuilt": false,
     "dependency_lock": "deploy/worker/requirements.lock",
     "model": "HuggingFaceTB/SmolVLM2-500M-Video-Instruct",
-    "model_revision": "7b375e1b73b11138ff12fe22c8f2822d8fe03467"
+    "model_revision": "7b375e1b73b11138ff12fe22c8f2822d8fe03467",
+    "config_digest": "sha256:32fd88495ceab2c59ab7bc6a0c7980c1003d9b4b6eea507131783a24be4b88a5",
+    "archive_oci_manifest_digest": "sha256:472913bf34e918c48e5b77a56c4ea2dfd31873bdd79ecc2d1c4e7ab4cf3e5759",
+    "ec2_runtime_reference": "sha256:472913bf34e918c48e5b77a56c4ea2dfd31873bdd79ecc2d1c4e7ab4cf3e5759"
   },
   "storage_before": {
     "read_only": true,
@@ -97,10 +100,10 @@
       "worker_started": false
     },
     "worker_tests": {
-      "passed": 95,
+      "passed": 99,
       "skipped": 1,
-      "seconds": 19.27,
-      "skip_reason": "Optional authorized-sample transcription/render test; NC_SAMPLE_VIDEO was not selected for this transfer-only run"
+      "seconds": 19.78,
+      "skip_reason": "Optional authorized-sample test; no sample selected for transfer-only run"
     },
     "new_security_tests_passed": 11,
     "ruff": "passed",
@@ -108,7 +111,8 @@
     "provenance_file_sha256": {
       "deploy/worker/Dockerfile": "1d0b2d2cf8e47c915410f0ed3483467e8f5fa40f8e235a482266b3562ff3fe5b",
       "deploy/worker/requirements.lock": "2d63938d9793fa15754a4f28528f78abc30876e07d87e8b0af9d33fae8ed9d27"
-    }
+    },
+    "runtime_identity_security_tests_added": 4
   },
   "staged": {
     "owned_objects": 109,
@@ -170,7 +174,7 @@
   ],
   "ec2_receipt_verified": true,
   "remaining": [
-    "Inspect loaded image metadata: original block stopped before quota output; runtime ID not confirmed",
+    "Run pinned OCI-identity network-none quota probe on EC2; no reload/rebuild needed",
     "No-network kernel quota probe (short-lived diagnostic only); then actual seed/standby limits",
     "Scoped worker network allow/deny preflights and secure existing service-key placement",
     "One new QA owner and <=30 minute isolated normal website acceptance; no global consumption"
@@ -206,9 +210,29 @@
     "loaded_tag": "noetharaclipz-worker:review",
     "host_available_ram_gib": 28.9,
     "host_free_disk_gib": 52.2,
-    "docker_runtime_image_id_reported": false,
+    "docker_runtime_image_id_reported": true,
     "quota_json_reported": false,
     "worker_started": false,
-    "next_check": "Read-only loaded image metadata; do not bypass immutable image ID comparison"
+    "next_check": "Run the no-network cgroup probe by the verified EC2 OCI manifest ID; do not reload/rebuild",
+    "reported_id": "sha256:472913bf34e918c48e5b77a56c4ea2dfd31873bdd79ecc2d1c4e7ab4cf3e5759",
+    "reported_os": "linux",
+    "reported_architecture": "amd64",
+    "reported_user": "62001:62001",
+    "runtime_identity_binding_verified": true
+  },
+  "runtime_identity_verification": {
+    "verified": true,
+    "archive_sha256": "d4039e807525aab63820b947e6ee99944cf221776a85fb08c1390bfd605e6394",
+    "image_id": "sha256:32fd88495ceab2c59ab7bc6a0c7980c1003d9b4b6eea507131783a24be4b88a5",
+    "architecture": "amd64",
+    "runtime_id": "sha256:472913bf34e918c48e5b77a56c4ea2dfd31873bdd79ecc2d1c4e7ab4cf3e5759",
+    "runtime_id_verified": true,
+    "os": "linux",
+    "worker_started": false,
+    "source": "Offline hashing of original reviewed archive, plus operator Docker inspect output",
+    "oci_manifest_already_in_original_archive": true,
+    "config_and_manifest_have_identical_11_layer_references": true,
+    "image_or_layers_modified": false,
+    "reason_for_original_guard_failure": "Compared config digest against OCI manifest digest"
   }
 }

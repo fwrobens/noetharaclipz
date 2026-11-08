@@ -14,7 +14,7 @@ sys.path.insert(0, str(ROOT / "deploy/worker"))
 sys.path.insert(0, str(ROOT / "scripts"))
 from private_transfer import HOST, checked_url, decode_chunk, extract_config, download  # noqa: E402
 from stage_worker_transfer import encode_chunk  # noqa: E402
-from verify_worker_transfer import verify_image  # noqa: E402
+from verify_worker_transfer import verify_image, verified_runtime_ids  # noqa: E402
 
 PREFIX = "_worker-transfer/11111111-1111-4111-8111-111111111111/"
 
@@ -75,3 +75,40 @@ def test_docker_archive_rejects_content_addressed_blob_tampering(tmp_path):
         archive.addfile(member, io.BytesIO(b"bad"))
     with pytest.raises(ValueError, match="blob digest"):
         verify_image(path, "sha256:" + "b" * 64)
+
+
+def identity_fixture(config_id="sha256:" + "b" * 64, layer_id="sha256:" + "c" * 64):
+    config = b'{"reviewed":true}'
+    manifest = json.dumps({"schemaVersion": 2,
+        "mediaType": "application/vnd.oci.image.manifest.v1+json",
+        "config": {"digest": config_id, "size": len(config)},
+        "layers": [{"digest": layer_id}]}, separators=(",", ":")).encode()
+    manifest_id = "sha256:" + hashlib.sha256(manifest).hexdigest()
+    entry = {"Config": "blobs/sha256/" + "b" * 64,
+             "Layers": ["blobs/sha256/" + "c" * 64]}
+    small = {entry["Config"]: config, "blobs/sha256/" + manifest_id[7:]: manifest,
+             "index.json": json.dumps({"schemaVersion": 2, "manifests": [{
+                 "mediaType": "application/vnd.oci.image.manifest.v1+json",
+                 "digest": manifest_id, "size": len(manifest)}]}).encode()}
+    return small, entry, manifest_id
+
+
+def test_classic_and_containerd_runtime_ids_must_bind_to_the_same_config_and_layers():
+    small, entry, manifest_id = identity_fixture()
+    assert verified_runtime_ids(small, entry, "sha256:" + "b" * 64) == {
+        "sha256:" + "b" * 64, manifest_id}
+
+
+@pytest.mark.parametrize("kwargs", [{"config_id": "sha256:" + "a" * 64},
+                                   {"layer_id": "sha256:" + "a" * 64}])
+def test_unrelated_config_or_layers_cannot_pass_a_runtime_manifest_guard(kwargs):
+    small, entry, _ = identity_fixture(**kwargs)
+    with pytest.raises(ValueError, match="does not reference reviewed"):
+        verified_runtime_ids(small, entry, "sha256:" + "b" * 64)
+
+
+def test_tampered_manifest_cannot_be_accepted_under_a_previously_verified_runtime_id():
+    small, entry, manifest_id = identity_fixture()
+    small["blobs/sha256/" + manifest_id[7:]] += b" "
+    with pytest.raises(ValueError, match="digest/size"):
+        verified_runtime_ids(small, entry, "sha256:" + "b" * 64)

@@ -274,8 +274,11 @@ runbook does not authorize arbitrary firewall or existing-application changes.
    docker image inspect noetharaclipz-worker:review --format '{{.Id}}'
    ```
 
-   Required image ID:
+   Reviewed content config digest:
    `sha256:32fd88495ceab2c59ab7bc6a0c7980c1003d9b4b6eea507131783a24be4b88a5`.
+   This EC2 daemon reports the original archive's OCI manifest digest as its
+   image ID: `sha256:472913bf34e918c48e5b77a56c4ea2dfd31873bdd79ecc2d1c4e7ab4cf3e5759`. Use that verified runtime reference on EC2;
+   the manifest points to the same config and all 11 reviewed layers.
    Do not pull a mutable replacement tag or rebuild/upgrade Docker on this host.
 
 2. After collision/path checks pass, create only the private worker directories:
@@ -296,7 +299,7 @@ runbook does not authorize arbitrary firewall or existing-application changes.
    ```dotenv
    NC_SUPABASE_KEY_FILE=/etc/noetharaclipz-isolated/supabase-key
    NC_WORKER_ROOT=/var/lib/noetharaclipz-isolated
-   NC_WORKER_IMAGE=sha256:32fd88495ceab2c59ab7bc6a0c7980c1003d9b4b6eea507131783a24be4b88a5
+   NC_WORKER_IMAGE=sha256:472913bf34e918c48e5b77a56c4ea2dfd31873bdd79ecc2d1c4e7ab4cf3e5759
    NC_DEPLOY_MODE=standby
    NC_WORKER_OWNER_ID=
    ```
@@ -504,7 +507,7 @@ The exact next SSM block (syntax-checked here, not run on EC2 by this agent):
 set -eu
 cd /tmp/nccz-transfer-kbbradmg/received
 [ "$(cat /sys/devices/virtual/dmi/id/board_asset_tag)" = i-0be10e530045fc650 ]
-nc_image='sha256:32fd88495ceab2c59ab7bc6a0c7980c1003d9b4b6eea507131783a24be4b88a5'
+nc_image='sha256:472913bf34e918c48e5b77a56c4ea2dfd31873bdd79ecc2d1c4e7ab4cf3e5759'
 python3 - <<'CHECK'
 import json, shutil
 from pathlib import Path
@@ -546,3 +549,37 @@ sudo -n docker --host=unix:///var/run/docker.sock image inspect noetharaclipz-wo
 ```
 
 The image is loaded, but no AI worker or successful quota probe is evidenced.
+
+
+## Config/OCI identity distinction resolved; no reload required
+
+The operator reports Docker `.Id` as `sha256:472913bf34e918c48e5b77a56c4ea2dfd31873bdd79ecc2d1c4e7ab4cf3e5759`, linux/amd64,
+user 62001:62001. The exact same digest is a content-addressed OCI manifest
+already present in the original reviewed archive, whose raw bytes hash to that
+value. The archive index points to it; it points to config `sha256:32fd88495ceab2c59ab7bc6a0c7980c1003d9b4b6eea507131783a24be4b88a5`
+and the same 11 layer digests already verified against the rootfs. Nothing was
+rebuilt or changed. The guard incorrectly compared two different digest kinds,
+so the original block exited before the quota diagnostic. It was not a quota
+failure and must not be bypassed by accepting an arbitrary new digest.
+
+The verifier now checks index -> manifest -> reviewed config/layer binding and
+accepts only those content-derived runtime identities. Actual archive verification
+passes for the EC2-reported ID; regression tests reject other configs, layers
+and tampered manifests. All 99 worker tests pass, with one optional sample test
+skipped. These are offline identity tests, not proof of EC2 resource limits.
+
+Use the OCI digest above as `NC_WORKER_IMAGE` in this host's private worker.env.
+Do not rebuild, reload, retag or start a worker to fix the identity comparison.
+Run only the remaining diagnostic below (syntax checked locally; not yet run
+on EC2), then return its cgroup JSON. No credentials, mounts, network or model
+loading are involved:
+
+```sh
+(
+set -eu
+cd /tmp/nccz-transfer-kbbradmg/received
+[ "$(cat /sys/devices/virtual/dmi/id/board_asset_tag)" = i-0be10e530045fc650 ]
+printf '%s\n' 'e35ff35de3e085799b7d10ed2b3d7eec6ad0ca28d10ab682e075921e0bfed5fe  config/deploy/worker/check_cgroup_limits.py' | sha256sum -c -
+sudo -n docker --host=unix:///var/run/docker.sock run --rm --interactive --pull=never --platform linux/amd64 --network none --user 62001:62001 --read-only --cap-drop ALL --security-opt no-new-privileges:true --memory 8g --memory-swap 8g --cpus 2 --cpu-shares 256 --pids-limit 256 --oom-score-adj 500 --entrypoint python sha256:472913bf34e918c48e5b77a56c4ea2dfd31873bdd79ecc2d1c4e7ab4cf3e5759 - < config/deploy/worker/check_cgroup_limits.py
+)
+```
