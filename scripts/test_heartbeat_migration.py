@@ -15,7 +15,7 @@ ROOT = Path(__file__).resolve().parents[1]
 IMAGE = (
     "postgres@sha256:ff87138949ad9a46f32ff23bd6852b52ce024a13dffe9b4087be98292cdd3b4f"
 )
-MIGRATION = ROOT / "supabase/migrations/20261107201038_worker_heartbeat_singleton.sql"
+MIGRATION = ROOT / "supabase/migrations/20261108013140_worker_heartbeat_singleton.sql"
 
 
 def main():

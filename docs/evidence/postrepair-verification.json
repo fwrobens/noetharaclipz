@@ -1,0 +1,75 @@
+{
+  "date": "2026-11-08",
+  "project": "zxdnjnsghdnviflahvry",
+  "base_commit": "17b61f5ed850e14343b824a095a68653768fb232",
+  "migration_alignment": {
+    "supabase_version_reported_by_operator": "20261108013140",
+    "original_filename": "20261107201038_worker_heartbeat_singleton.sql",
+    "aligned_filename": "20261108013140_worker_heartbeat_singleton.sql",
+    "sql_bytes_unchanged": true,
+    "sql_sha256": "5d9d0c6237f3ae733b3b7a6182c61dd3a49c1c58df61a698b1c13c6084d8511c",
+    "reapplied": false,
+    "ledger_modified": false,
+    "ledger_independently_requeried": false
+  },
+  "operator_reported_hosted_sql_regression_and_security_advisor": "passed; transaction rolled back",
+  "live_heartbeat": {
+    "project": "zxdnjnsghdnviflahvry",
+    "hosted_inference_requested": false,
+    "authorized_worker": {
+      "http_status": 204
+    },
+    "unauthorized_rpc_statuses": {
+      "anonymous": {
+        "worker_heartbeat": 401,
+        "worker_claim": 401,
+        "worker_tick": 401
+      },
+      "authenticated": {
+        "worker_heartbeat": 403,
+        "worker_claim": 403,
+        "worker_tick": 403
+      }
+    },
+    "pipeline_health": {
+      "detail": "Authorized heartbeat repair verification Authorized heartbeat repair verification Authorized heartbeat repair verification Authorized heartbeat repair verification Authorized heartbeat repair verification Authorized heartbeat repair verification Authorized heartbeat repair verification Authorized he",
+      "online": true,
+      "ai_ready": false,
+      "max_bytes": 45000000,
+      "max_seconds": 300
+    },
+    "passed": true,
+    "temporary_account_removed": true
+  },
+  "live_queue_recovery_recheck": {
+    "status": "blocked_before_QA_setup",
+    "reason": "Existing non-QA analysis job is queued; user explicitly requested leaving it queued",
+    "existing_job_preserved": true,
+    "exit_status": 1
+  },
+  "live_media_recheck": {
+    "status": "blocked_before_QA_setup",
+    "reason": "Same idle-queue guard; no jobs consumed or cancelled",
+    "exit_status": 1
+  },
+  "local_checks": {
+    "worker": {
+      "passed": 37,
+      "skipped": 0,
+      "elapsed_seconds": 31.61
+    },
+    "frontend": {
+      "passed": 15
+    },
+    "typescript": "passed",
+    "build": "passed",
+    "eslint": {
+      "errors": 0,
+      "warnings": 11
+    }
+  },
+  "hosted_inference_requested": false,
+  "full_ai_acceptance": "not passed; free-tier flag remains false",
+  "merged": false,
+  "published": false
+}

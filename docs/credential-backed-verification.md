@@ -1,5 +1,7 @@
 # Credential-backed verification — 2026-11-07
 
+Historical test record. The heartbeat defect described below was subsequently repaired. See the [2026-11-08 follow-up](heartbeat-repair.md) for the passing real heartbeat, aligned migration version, and current queue/media recheck limitations.
+
 The published `noetharaclipz` environment supplies the runtime variables that were
 absent in the earlier implementation task. This run fetched and checked out
 `feat/real-video-pipeline` at `b6c69bb1b1845ebfb5585e4da32778f124c423f9`.

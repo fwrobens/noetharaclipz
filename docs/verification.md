@@ -2,7 +2,7 @@
 
 ## Release gate
 
-**Blocked. Do not merge or publish.** The newer [credential-backed verification](credential-backed-verification.md) supersedes the earlier runtime-binding blocker: Supabase worker authentication, actual private rendering/download and Gemini model metadata now pass. Automatic AI selection remains unverified with the false free-tier flag preserved. A live database heartbeat defect also prevents readiness. No mock result was used to pass the complete AI gate.
+**Blocked. Do not merge or publish.** The newer [credential-backed verification](credential-backed-verification.md) supersedes the earlier runtime-binding blocker: Supabase worker authentication, actual private rendering/download and Gemini model metadata now pass. Automatic AI selection remains unverified with the false free-tier flag preserved. The heartbeat repair now passes real credential-backed checks; see the [post-repair record](heartbeat-repair.md) for version alignment and queue/media recheck limitations. No mock result was used to pass the complete AI gate.
 
 The follow-up also passes modern/legacy key transport contract tests, paginated cleanup regression, graceful shutdown/recovery checks, and single-use PKCE callback tests. Real local SmolVLM2 video description succeeded, but is not accepted as AI highlight selection. The full acceptance gate remains blocked. The sections below retain the earlier implementation task's results; see the newer report for checks actually repeated in the configured environment.
 

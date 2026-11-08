@@ -2,7 +2,7 @@
   "date": "2026-11-07",
   "project": "zxdnjnsghdnviflahvry",
   "user_authorized_narrow_exception": true,
-  "migration": "20261107201038_worker_heartbeat_singleton.sql",
+  "migration": "20261108013140_worker_heartbeat_singleton.sql",
   "hosted_migration_applied": false,
   "blocker": "Supabase SQL/migration tools are not exposed in this chat; no administrative SQL credential is bound",
   "local_postgres": {
@@ -84,5 +84,8 @@
   },
   "merged": false,
   "published": false,
-  "paid_services_enabled": false
+  "paid_services_enabled": false,
+  "historical_predeployment_record": true,
+  "original_prepared_migration": "20261107201038_worker_heartbeat_singleton.sql",
+  "superseded_by": "postrepair-verification.json"
 }

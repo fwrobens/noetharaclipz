@@ -10,7 +10,7 @@ processing and a browser private-MP4 download succeeded using a manual QA
 interval. The false Gemini flag remains unchanged; free account eligibility and
 automatic AI selection are still unverified. The live database heartbeat RPC
 also requires the [authorized scoped function correction](heartbeat-repair.md),
-which is locally verified and awaits hosted SQL access.
+which now passes real credential-backed checks; its filename matches the operator-reported deployed version.
 
 The remaining sections preserve the earlier task's observations and must not be
 read as a current absence of credentials in the configured environment.
