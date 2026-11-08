@@ -146,12 +146,12 @@
     }
   },
   "remaining_checks": [
-    "Reviewed image/config private transfer to existing SSM-only host; existing GitHub API identity fails asset-upload authentication",
-    "Recheck stopped containers for this Compose project and all reserved resources immediately before mutations",
-    "Actual seed/standby cgroup proof before model download or AI startup",
-    "Scoped worker-network allow/deny verification, normal QA website flow and other-service monitoring"
+    "Operator SSM download and verify receipt; no account credentials required",
+    "Recheck stopped Compose-project/tag collisions before any EC2 mutations",
+    "Actual seed/standby cgroup proof before model downloads or AI startup",
+    "Scoped worker-network allow/deny verification, secure service-key placement, new QA owner, normal website flow and existing-service monitoring"
   ],
-  "deployment_review_status": "approved bounded QA; SSM-only operator access; no agent EC2 connection; reviewed image transfer blocked by GitHub asset upload HTTP 401",
+  "deployment_review_status": "private Supabase staging and full cloud signed download/hash verification passed; operator EC2 receipt and runtime preflights pending",
   "local_kernel_resource_validation": {
     "previous_hard_cap_claim_superseded": true,
     "evidence": "local-cgroup-validation-correction.json",
@@ -257,5 +257,6 @@
     "remaining_release_list_empty": true,
     "credentials_installed_or_changed": false,
     "new_paid_services": false
-  }
+  },
+  "artifact_transfer_evidence": "private-worker-transfer.json"
 }

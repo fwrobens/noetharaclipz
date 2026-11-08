@@ -454,3 +454,23 @@ location. Do not paste account/service credentials into the SSM terminal or
 chat. Once staged, verify the existing archive hash and image ID, then follow
 the conditional deployment sequence. Do not rebuild on EC2, start a worker,
 or process any job to work around the transfer blocker.
+
+
+## Secure transfer route prepared and verified
+
+The earlier GitHub upload blocker is superseded by the existing private
+Supabase route in [private-worker-transfer.md](private-worker-transfer.md).
+The original image was not rebuilt; the exact tar stream was recompressed and
+all image blobs/rootfs/config were checked. Private JSON chunks and signed
+manifest download passed a complete roundtrip in the managed cloud environment.
+No Actions/registry activation, new bucket, RLS change or account credential
+transfer is involved. Temporary transport objects must be cleaned after EC2
+receipt or abandonment. See `docs/evidence/private-worker-transfer.json` for
+hashes, expiry and actual results; signed URLs remain only in the private
+handoff/state, never Git.
+
+This has not yet verified receipt on EC2 and has not loaded or started anything
+there. The next action is the operator's single-block SSM download. Before any
+image load, inspect stopped containers for this Compose project and abort if
+an existing `noetharaclipz-worker:review` tag has a different image ID. The
+existing approved kernel/network gates and bounded QA scope still apply.
