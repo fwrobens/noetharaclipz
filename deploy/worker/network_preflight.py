@@ -12,6 +12,7 @@ import importlib.util
 import ipaddress
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -32,7 +33,14 @@ QUOTA_SHA = "e35ff35de3e085799b7d10ed2b3d7eec6ad0ca28d10ab682e075921e0bfed5fe"
 def run(command, source=None, timeout=30):
     result = subprocess.run(command, input=source, text=True, capture_output=True, timeout=timeout)
     if result.returncode:
-        raise RuntimeError("Command failed: " + command[0] + " " + command[1])
+        # Commands in this helper never contain credentials. Do not include
+        # stdin, and redact credential-shaped text if a tool emits it anyway.
+        error = result.stderr.strip()
+        error = re.sub(r"(?i)(Bearer\s+)\S+", r"\1[redacted]", error)
+        error = re.sub(r"(?i)((?:api[_-]?key|token|password|secret)\s*[=:]\s*)\S+",
+                       r"\1[redacted]", error)
+        raise RuntimeError(json.dumps({"command": command[:4], "exit_code": result.returncode,
+                                       "stderr": error[-2000:]}))
     return result.stdout.strip()
 
 

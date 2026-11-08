@@ -2,6 +2,7 @@
 
 import importlib.util
 import json
+import subprocess
 from pathlib import Path
 
 import pytest
@@ -92,3 +93,16 @@ def test_audit_receipt_does_not_follow_a_replaced_symlink(tmp_path):
     with pytest.raises(OSError):
         net.save_report(link, {"probe_id": "owned", "phase": "changed"})
     assert json.loads(target.read_text())["untouched"] is True
+
+
+def test_command_failure_preserves_action_exit_status_and_error_without_credentials(monkeypatch):
+    command = net.DOCKER + ["inspect", "--format", "metadata"]
+    def failed(*args, **kwargs):
+        return subprocess.CompletedProcess(command, 1, "", 'template: missing Health; Bearer PRIVATE token=PRIVATE2')
+    monkeypatch.setattr(net.subprocess, "run", failed)
+    with pytest.raises(RuntimeError) as caught:
+        net.run(command, source="PRIVATE_STDIN")
+    details = json.loads(str(caught.value))
+    assert details["command"][-1] == "--format" and details["exit_code"] == 1
+    assert "missing Health" in details["stderr"]
+    assert "PRIVATE" not in str(caught.value)

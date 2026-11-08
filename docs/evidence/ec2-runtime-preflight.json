@@ -25,7 +25,7 @@
   "probe_type": "short-lived network-none diagnostic, not AI worker or model seeder",
   "runtime_reference": "sha256:472913bf34e918c48e5b77a56c4ea2dfd31873bdd79ecc2d1c4e7ab4cf3e5759",
   "network_preflight": {
-    "status": "prepared, not yet executed on EC2",
+    "status": "operator execution failed with Docker command error; root cause and partial host state unverified",
     "source_file": "deploy/worker/network_preflight.py",
     "sha256": "83a5f1445364d2d28942d015ba3741a662744a9ab9685cd56984afb6f229984b",
     "policy_source_sha256": "ec116cab16d2276b87d675eced9d12b83f05b860687f7ade458b8e35a868a646",
@@ -35,15 +35,22 @@
     "owned_network_and_exact_reviewed_rules_retained_only_on_pass": true,
     "deny_proof": "matching REJECT counter delta plus failed TCP connect; no application requests to private services",
     "models_credentials_queue_or_worker": false,
-    "diagnostic_removal_required_before_policy_cleanup": true
+    "diagnostic_removal_required_before_policy_cleanup": true,
+    "operator_error": "Command failed: docker --host=unix:///var/run/docker.sock",
+    "reported_worker_started": false,
+    "retry_blocked_pending_readonly_error_and_state": true,
+    "error_reporting_fix": "repository helper retains Docker subcommand, exit status and bounded redacted stderr; no supplied stdin is logged",
+    "host_copy_not_patched": true,
+    "repository_error_reporting_fix_sha256": "5caeb9bc2014b0ca6d1dccb82679f8f5055b7a01a4ff9a515d6053962110b9c0"
   },
   "automated_checks": {
-    "worker_passed": 117,
+    "worker_passed": 118,
     "worker_skipped": 1,
-    "worker_seconds": 19.46,
+    "worker_seconds": 19.35,
     "skip_reason": "optional authorized-sample test not selected",
-    "network_scope_policy_tests_passed": 23,
-    "ruff": "passed"
+    "network_scope_policy_tests_passed": 24,
+    "ruff": "passed",
+    "error_reporting_and_network_targeted_passed": 24
   },
   "worker_started": false,
   "models_loaded_on_ec2": false,
@@ -69,7 +76,9 @@
     "public_request_status": 400,
     "public": false,
     "credentials_in_payload": false,
-    "cleanup_after_operator_receipt_or_abandonment": true
+    "cleanup_after_operator_receipt_or_abandonment": false,
+    "owned_objects_deleted_after_receipt": 1,
+    "old_download_url_no_longer_needed": true
   },
   "protected_upload_readonly_check": {
     "status": "queued",

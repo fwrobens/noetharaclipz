@@ -626,3 +626,27 @@ the same existing Supabase bucket. No image transfer/rebuild, new PAT, registry,
 Actions run or account credential on EC2 is needed. At this commit the network
 preflight has **not run on EC2**; only its tests and source review have passed.
 Return the complete JSON output before proceeding to model seeding or workers.
+
+
+## Network helper failed; do not retry without the actual Docker error
+
+The operator's helper exited with `Command failed: docker --host=...` and no
+network result. The helper discarded stderr and hid the Docker subcommand.
+The repository now retains the command/action, return code and bounded redacted
+stderr without logging supplied stdin. This reporting fix has not yet patched
+the existing EC2 copy. The following Apport traceback is a secondary Ubuntu
+crash-reporter error for a Python stdin script, not the original Docker failure.
+Do not alter Apport, restart Docker or change credentials to address it.
+
+The network gate has not passed. Partial bridge/rule/diagnostic cleanup cannot
+be assumed from this output. Read the saved receipt, own resources and the
+failing read-only metadata commands before applying or removing any rules.
+No new artifact, setup retry or worker start is needed for that diagnosis.
+A template involving optional container Health metadata is one possible read
+failure; it is not established as the cause until Docker stderr is observed.
+
+The small private helper object was removed after confirmed host receipt.
+The operator's existing local copy remains available; do not reuse the expired
+or removed download link. The target remains an actual owner-scoped EC2 QA
+upload/analysis/export/download, not preparation-only completion. The worker
+has not yet been deployed or advertised as ready.
