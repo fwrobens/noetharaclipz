@@ -2,6 +2,10 @@
 
 Use the existing project only: `https://zxdnjnsghdnviflahvry.supabase.co`.
 
+See [isolated deployment preparation](worker-deployment.md) for the standby-first
+Docker configuration, resource/cost review and authorization gates. No EC2
+service has been started.
+
 ## Current local provider setup
 
 The [normal local-worker integration](local-worker-integration.md) is implemented

@@ -17,12 +17,25 @@ CACHE_VERSION = "local-queue-v3-empty-admission-speech-bounds"
 def available_memory():
     free = os.sysconf("SC_AVPHYS_PAGES") * os.sysconf("SC_PAGE_SIZE")
     try:
+        for line in Path("/proc/meminfo").read_text().splitlines():
+            if line.startswith("MemAvailable:"):
+                free = int(line.split()[1]) * 1024
+                break
+    except (OSError, ValueError):
+        pass
+    try:
         limit = Path("/sys/fs/cgroup/memory.max").read_text().strip()
         if limit != "max":
             free = min(free, int(limit) - int(Path("/sys/fs/cgroup/memory.current").read_text()))
     except (OSError, ValueError):
-        pass
-    return free
+        try:
+            # Older EC2 Linux distributions can still use cgroup v1.
+            limit = int(Path("/sys/fs/cgroup/memory/memory.limit_in_bytes").read_text())
+            used = int(Path("/sys/fs/cgroup/memory/memory.usage_in_bytes").read_text())
+            free = min(free, limit - used)
+        except (OSError, ValueError):
+            pass
+    return max(0, free)
 
 
 class LocalProvider:

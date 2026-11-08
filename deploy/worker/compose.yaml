@@ -1,0 +1,79 @@
+name: noetharaclipz-isolated
+services:
+  worker:
+    image: ${NC_WORKER_IMAGE:-noetharaclipz-worker:review}
+    platform: linux/amd64
+    # This bundle is standby by default. QA requires both explicit mode and owner.
+    environment:
+      NC_DEPLOY_MODE: ${NC_DEPLOY_MODE:-standby}
+      NC_WORKER_OWNER_ID: ${NC_WORKER_OWNER_ID:-}
+      NC_GLOBAL_QUEUE_APPROVED: "false"
+      NC_AI_PROVIDER: local
+      GEMINI_FREE_TIER_VERIFIED: "false"
+      SUPABASE_URL: https://zxdnjnsghdnviflahvry.supabase.co
+      NC_SUPABASE_KEY_FILE: /run/secrets/supabase_key
+    secrets:
+      - supabase_key
+    user: "62001:62001"
+    init: true
+    restart: unless-stopped
+    stop_grace_period: 100s
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    cpus: 2.0
+    cpu_shares: 256
+    mem_limit: 8g
+    memswap_limit: 8g
+    pids_limit: 256
+    oom_score_adj: 500
+    tmpfs:
+      - /run/worker:rw,noexec,nosuid,nodev,size=16m,uid=62001,gid=62001,mode=0700
+      - /tmp:rw,noexec,nosuid,nodev,size=16m,uid=62001,gid=62001,mode=0700
+    volumes:
+      - type: bind
+        source: ${NC_WORKER_ROOT:-/var/lib/noetharaclipz-isolated}/models
+        target: /models
+        read_only: true
+        bind: {create_host_path: false}
+      - type: bind
+        source: ${NC_WORKER_ROOT:-/var/lib/noetharaclipz-isolated}/cache
+        target: /data/cache
+        bind: {create_host_path: false}
+      - type: bind
+        source: ${NC_WORKER_ROOT:-/var/lib/noetharaclipz-isolated}/tmp
+        target: /data/tmp
+        bind: {create_host_path: false}
+    logging:
+      driver: json-file
+      options: {max-size: 10m, max-file: "5", compress: "true"}
+    networks: [worker-egress]
+    deploy:
+      replicas: 1
+  # One-off asset preparation. No Supabase credentials, queue or inference.
+  seed:
+    image: ${NC_WORKER_IMAGE:-noetharaclipz-worker:review}
+    platform: linux/amd64
+    profiles: [tools]
+    entrypoint: [python, -m, noetharaclipz_deploy.assets]
+    environment:
+      HF_HUB_OFFLINE: "0"
+      TRANSFORMERS_OFFLINE: "0"
+    user: "62001:62001"
+    cpus: 2.0
+    mem_limit: 8g
+    memswap_limit: 8g
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    volumes:
+      - type: bind
+        source: ${NC_WORKER_ROOT:-/var/lib/noetharaclipz-isolated}/models
+        target: /models
+        bind: {create_host_path: false}
+    networks: [worker-egress]
+networks:
+  worker-egress:
+    driver: bridge
+secrets:
+  supabase_key:
+    file: ${NC_SUPABASE_KEY_FILE:-/etc/noetharaclipz-isolated/supabase-key}

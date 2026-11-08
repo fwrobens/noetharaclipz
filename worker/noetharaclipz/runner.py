@@ -1,4 +1,6 @@
 import logging
+import json
+import os
 import shutil
 import signal
 import tempfile
@@ -82,6 +84,7 @@ class Worker:
         self.backend = backend or Backend(self.settings)
         self.provider = provider or build_provider(self.settings)
         self.protocol_checked = False
+        self.last_cycle = time.monotonic()
 
     def check_protocol(self):
         if not self.protocol_checked and (
@@ -101,13 +104,33 @@ class Worker:
 
     def heartbeat(self, ready, detail):
         if self.settings.scope_owner:
-            return self.backend.rpc(
+            result = self.backend.rpc(
                 "worker_heartbeat_scoped",
                 owner=self.settings.scope_owner,
                 ai_ready=ready,
                 detail=detail,
             )
-        return self.backend.rpc("worker_heartbeat", ai_ready=ready, detail=detail)
+        else:
+            result = self.backend.rpc("worker_heartbeat", ai_ready=ready, detail=detail)
+        # Optional local supervisor probe, written only after a successful DB heartbeat.
+        # It contains no tokens, media paths, account IDs or private job content.
+        if target := os.getenv("NC_HEALTH_FILE"):
+            path = Path(target)
+            temporary = path.with_suffix(".tmp")
+            temporary.write_text(
+                json.dumps(
+                    {
+                        "pid": os.getpid(),
+                        "at": time.time(),
+                        "ai_ready": ready,
+                        "mode": "qa" if self.settings.scope_owner else "global",
+                        "main_age_seconds": time.monotonic() - self.last_cycle,
+                    }
+                )
+            )
+            temporary.chmod(0o600)
+            temporary.replace(path)
+        return result
 
     def process(self, job):
         if job["attempts"] > 3:
@@ -370,6 +393,7 @@ class Worker:
             )
 
     def once(self):
+        self.last_cycle = time.monotonic()
         self.check_protocol()
         job = (
             self.backend.rpc("worker_claim_scoped", owner=self.settings.scope_owner)

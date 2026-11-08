@@ -1,5 +1,12 @@
 # Verification — updated 2026-11-08
 
+## Deployment preparation follow-up
+
+[Isolated EC2 plan](worker-deployment.md): local 8 GiB/2 CPU Docker testing is
+separate from the hosted website pass below. Existing AWS capacity is unverified
+without an attached identity/host report. No EC2 deployment, global consumption,
+resize, paid service, merge or publication is authorized by these tests.
+
 ## Release gate
 
 **Normal local-provider website acceptance passed against live Supabase.**

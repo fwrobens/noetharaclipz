@@ -12,13 +12,29 @@ AI video clipping, continuing the existing Lovable/TanStack Start frontend. The 
 
 The backend, real media worker, authentication, resumable upload, real player, persistent editor, and asynchronous MP4 export integration are implemented. Build/type checks, media integration tests, browser upload/playback/persistence tests, and hosted ownership/queue tests pass.
 
-**The complete AI-to-private-download acceptance test remains blocked.** The credential-equipped follow-up validated Supabase worker authentication, actual queued preprocessing/transcription, private rendering and browser MP4 download using a clearly labelled manual interval. Gemini model metadata and NVIDIA account authentication also work. Hosted inference remains disabled by the intentional false Gemini verification flag, so automatic AI highlight selection is unverified. The live checks exposed a database heartbeat function rejected for lacking a `WHERE` clause. The repair is now deployed and the real credential-backed heartbeat passes; the [migration filename is aligned](docs/heartbeat-repair.md) with Supabase version `20261108013140`. Live queue/media rechecks are blocked by an existing upload the user requested preserving. See the [credential-backed results and reproduction steps](docs/credential-backed-verification.md). The development branch must remain unmerged and unpublished until the full acceptance test passes.
+**The normal local-AI website workflow has passed against live Supabase:** upload,
+queued SmolVLM2 analysis, automatic highlights, saved edits, normal queued Export
+and authenticated private MP4 download/decode. See the
+[hosted acceptance report](docs/hosted-local-acceptance.md). Gemini remains
+disabled; the existing queued upload is protected.
+
+A continuously running worker is the next milestone.
+[Isolated EC2 deployment preparation](docs/worker-deployment.md) targets the
+user's existing t2.xlarge with an 8 GiB / 2 vCPU container, standby by default.
+Local Docker/research tests do not constitute deployment or verified spare AWS
+capacity. No EC2 worker or global queue consumer has been started. Keep Draft
+PR #1 unmerged and unpublished until separately authorized.
 
 See [verification evidence](docs/verification.md), [architecture](docs/architecture.md), and [worker setup](docs/worker-setup.md).
 
 ## Experimental local automatic detection
 
-A pinned CPU SmolVLM2 detector now automatically selects measured video intervals using actual video, transcript, scene and audio evidence. One selected Elephants Dream interval passed existing-editor playback/edits, real MP4 rendering, private storage and browser download in an explicit isolated runner. The shared queued/Gemini workflow remains unchanged, and the user’s pending upload was preserved. See [implementation, results and limits](docs/local-automatic-highlights.md). This does not mark the complete production acceptance gate passed.
+The explicitly selected local provider uses pinned SmolVLM2-500M, actual video,
+Whisper, scenes and audio evidence in the normal worker. Its hosted queued flow
+is verified; descriptions and bounded sampling still have quality limitations.
+[Model benchmarks and deployment limits](docs/worker-deployment.md) include a
+real 2-vCPU/8-GiB gaming test and a memory-aborted 2.2B research attempt. The
+larger model is not enabled in the production provider or database allowlist.
 
 ## Development
 

@@ -1,0 +1,35 @@
+{
+  "ec2_touched": false,
+  "supabase_access": false,
+  "limits": {
+    "memory_bytes": 8589934592,
+    "cpus": 2,
+    "swap_bytes": 0,
+    "published_ports": [],
+    "network": "none"
+  },
+  "runs": [
+    {
+      "mode": "prepare",
+      "exit_code": 0,
+      "oom_killed": false,
+      "memory_limit": 8589934592,
+      "nano_cpus": 2000000000
+    },
+    {
+      "mode": "500m",
+      "exit_code": 0,
+      "oom_killed": false,
+      "memory_limit": 8589934592,
+      "nano_cpus": 2000000000
+    },
+    {
+      "mode": "2.2b",
+      "exit_code": 75,
+      "oom_killed": false,
+      "memory_limit": 8589934592,
+      "nano_cpus": 2000000000
+    }
+  ],
+  "existing_container_ids_preserved": true
+}
