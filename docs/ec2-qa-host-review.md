@@ -423,3 +423,34 @@ absence. These commands print no container environment or secret contents.
 Return their output for review; do not independently advance to model seeding
 or AI startup. Subsequent steps remain covered by the existing conditional
 approval once their prerequisites pass.
+
+
+## Post-approval operator recheck and SSM-only transfer
+
+The operator ran the inline read-only checks successfully on the target:
+8 CPUs, 31,207,124 KiB MemAvailable (about 29.8 GiB), no swap, and 52.2 GiB
+free disk. UID/GID 62001, both dedicated paths and `nccz-qa0` are unused.
+The complete IPv4 filter table has no `NCZQA_EGRESS`; DOCKER-USER is empty.
+The same six running containers remain present with low snapshot CPU and about
+409.87 MiB combined RAM. This passes capacity and those specific collision
+checks, not actual worker quota/network proof. Before mutations also inspect
+stopped containers for this dedicated Compose project (read-only):
+
+```sh
+sudo -n docker ps -a --filter label=com.docker.compose.project=noetharaclipz-isolated --format '{{.Names}} {{.Status}}'
+```
+
+The operator has **SSM terminal only**. The reviewed image/config have not
+reached EC2. A temporary private GitHub draft release was tried as an
+asset-only download staging route. Its upload endpoint returned HTTP 401
+although repository API access works. No asset was uploaded and no release
+was published; the empty draft (ID 438521804) was deleted and the release
+list is empty. No credentials were installed, copied into chat, or changed.
+No public temporary file host or new paid service was substituted.
+
+A working private transfer channel is now required: repair existing GitHub
+release-asset upload access, or use an already authorized private download
+location. Do not paste account/service credentials into the SSM terminal or
+chat. Once staged, verify the existing archive hash and image ID, then follow
+the conditional deployment sequence. Do not rebuild on EC2, start a worker,
+or process any job to work around the transfer blocker.
