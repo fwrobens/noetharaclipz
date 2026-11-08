@@ -1,5 +1,11 @@
 # Local automatic highlight detection — 2026-11-08
 
+**Newer follow-up:** [normal worker integration](local-worker-integration.md)
+now implements explicit local provider selection and tests actual queue-driven
+analysis/rendering on disposable PostgreSQL/PGMQ. Hosted website acceptance is
+still blocked by the unapplied database proposal. The following is the earlier
+`8230acc` isolated-runner proof and its historical limitations.
+
 One genuine locally selected highlight has been played/edited in the existing
 frontend, rendered, stored privately, downloaded through the browser and fully
 decoded. This is an **explicit isolated local runner**, not acceptance of the

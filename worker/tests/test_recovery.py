@@ -5,6 +5,7 @@ from dataclasses import replace
 import pytest
 from noetharaclipz.config import Settings
 from noetharaclipz.runner import Lease, Worker
+from noetharaclipz.media import Cancelled
 
 
 class Records:
@@ -37,3 +38,22 @@ def test_shutdown_does_not_mark_job_failed_or_cancelled():
     worker.process = interrupted
     assert worker.once()
     assert [name for name, _ in backend.calls] == ["worker_claim"]
+
+
+def test_acknowledged_cancellation_does_not_repeat_terminal_update():
+    class CancelledBackend(Records):
+        def rpc(self, name, **args):
+            self.calls.append((name, args))
+            return {"id": "job", "lease_token": "token"} if name == "worker_claim" else False
+
+    backend = CancelledBackend()
+    worker = Worker(replace(Settings(), service_key="unused"), backend=backend, provider=object())
+
+    def process(job):
+        with pytest.raises(Cancelled):
+            Lease(backend, job).tick(True)
+        raise Cancelled("Acknowledged by database")
+
+    worker.process = process
+    assert worker.once()
+    assert [name for name, _ in backend.calls] == ["worker_claim", "worker_tick"]

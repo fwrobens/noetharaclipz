@@ -2,6 +2,50 @@
 
 Use the existing project only: `https://zxdnjnsghdnviflahvry.supabase.co`.
 
+## Current local provider setup
+
+The [normal local-worker integration](local-worker-integration.md) is implemented
+and passes real disposable PostgreSQL/PGMQ analysis and queued rendering. Hosted
+website acceptance remains blocked by the **unapplied database proposal**. Do
+not start a global worker around the user's protected upload. The heartbeat
+repair must not be reapplied.
+
+Use explicit `NC_AI_PROVIDER=local`, `GEMINI_FREE_TIER_VERIFIED=false`,
+`WHISPER_MODEL=small` and the existing Supabase worker credential. Local mode
+does not need Gemini keys or quotas. An unset provider retains legacy `gemini`;
+unsupported values fail and there is no fallback. Install the pinned optional
+CPU model environment described in
+[local setup](local-automatic-highlights.md#reproduction), including
+`scripts/requirements-local-highlights.txt`, in the Python that runs the worker.
+At least 6 GiB available RAM is checked before startup (use an 8 GiB or larger
+host). Both models load once; one active job is allowed. The private cache root
+is configurable with `NC_WORKER_CACHE_DIR`.
+
+Current development **must use `NC_WORKER_OWNER_ID=<temporary QA owner UUID>`**.
+An unset scope permits global consumption and must not be used. The safe
+launcher below creates that owner and starts the normal worker scoped to it;
+it skips global cleanup. It checks the deployed protocol before creating any
+account or worker. It never inserts highlights/completed jobs or bypasses the
+normal Export button.
+
+```sh
+NC_AI_PROVIDER=local GEMINI_FREE_TIER_VERIFIED=false /path/to/local-vlm/bin/python scripts/check_worker.py
+# After authorizing/versioning/deploying the reviewed SQL proposal:
+NC_AI_PROVIDER=local GEMINI_FREE_TIER_VERIFIED=false NC_LOCAL_PYTHON=/path/to/local-vlm/bin/python NC_SAMPLE_VIDEO=/path/to/authorized/sample.mp4 CHROMIUM_PATH=/usr/bin/chromium python scripts/accept_local_queue.py
+```
+
+Use an E2E Python environment with `scripts/requirements-e2e.txt` and the app
+running at `NC_BASE_URL` (default `http://127.0.0.1:8080`). Model Python is
+`NC_LOCAL_PYTHON`. Secure test credentials stay in child-process environment.
+Readiness is false until the selected provider/protocol/models are ready;
+startup failure disables claims. Local `check_worker.py` never contacts Gemini.
+Current hosted probes fail closed at the absent protocol, without QA data or
+work consumption. See [the report](local-worker-integration.md) for benchmarks,
+queue tests and exact remaining release gates.
+
+The following Gemini requirements are retained for that explicit provider;
+they do not gate local processing.
+
 ## Requirements
 
 Python 3.11–3.13, uv, FFmpeg/FFprobe with libx264, AAC and libass, and an unprivileged worker process. Dependencies and PyAV are pinned in `worker/uv.lock`. Bundled caption fonts retain their OFL licenses.
@@ -32,10 +76,10 @@ The model is fixed to `gemini-3.8-flash` on the development allowlist. Free tier
 uv sync --project worker --frozen
 cd worker
 uv run python ../scripts/check_worker.py
-uv run python -m noetharaclipz.runner
+# Do not start an unscoped/global consumer while the protected upload is queued.
 ```
 
-The check command checks database access and Gemini model metadata independently, but performs no generation. A false verification flag does not prevent an explicitly requested model metadata lookup when a key is bound, and is never automatically changed to true. Metadata does not establish free-tier/account eligibility or quota. With missing AI credentials, preprocessing and transcription can still run when the Supabase worker credential is supplied; the job then fails explicitly before any inference. Without the worker credential, queued jobs remain waiting.
+In explicit Gemini mode the check command checks database access and model metadata independently, without generation. A false verification flag is never automatically changed to true; metadata does not establish free-tier/account eligibility or quota. The normal service now checks selected-provider readiness before claiming jobs. Without a ready provider/worker credential, queued jobs remain waiting.
 
 ## Complete the release gate
 
@@ -52,10 +96,10 @@ Do not provision paid hosting, enable billing, change unrelated projects, or pub
 
 ## Repeatable browser acceptance
 
-`scripts/acceptance.py` performs the actual browser flow and refuses to pass without a completed Gemini usage record, real highlights, a stored output, and a downloaded/decoded MP4. It has no provider fixtures. Install the pinned dependencies in `scripts/requirements-e2e.txt` in a test environment with Chromium, then set `NC_TEST_EMAIL`, `NC_TEST_PASSWORD`, and `NC_SAMPLE_VIDEO` through secure environment configuration. Set `NC_BASE_URL` for the development app and optionally `CHROMIUM_PATH` for a system browser. Run `python scripts/acceptance.py` only with the authorized worker/free AI account ready. Its live AI acceptance run remains blocked by unverified free-tier eligibility; the heartbeat repair now passes credential-backed verification; see the [credential-backed report](credential-backed-verification.md).
+`scripts/acceptance.py` performs the actual browser flow and requires completed usage for the explicitly selected provider, actual claimed analysis/render jobs, genuine model evidence, saved edits and a downloaded/decoded private MP4. It has no provider fixtures. The safe local launcher above supplies temporary QA credentials and scoped worker selection. For an already authorized test account/worker, set `NC_TEST_EMAIL`, `NC_TEST_PASSWORD`, `NC_SAMPLE_VIDEO`, `NC_AI_PROVIDER`, `NC_BASE_URL` and optionally `CHROMIUM_PATH` securely. The local hosted gate currently requires deployment of the reviewed queue protocol; Gemini remains disabled. See [current verification](local-worker-integration.md).
 
 `scripts/check_live_pipeline.py` separately verifies real worker preprocessing,
 transcription, browser editing, manual-interval rendering, private download and
 cross-user isolation while requiring the hosted inference flag to stay false.
-It creates and cleans up temporary QA accounts and reports the heartbeat failure
-with a nonzero exit status. It never replaces the complete AI acceptance gate.
+It is historical independent/manual QA evidence and its idle-queue guard must not
+be bypassed. It never replaces the complete AI acceptance gate.

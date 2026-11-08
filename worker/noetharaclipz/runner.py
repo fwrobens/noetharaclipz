@@ -9,7 +9,7 @@ from .backend import Backend
 from .config import Settings
 from .media import Cancelled, ffmpeg, prepare, render, run, transcribe
 from .models import Candidate, Edit, rank_candidates
-from .providers import Gemini
+from .providers import build_provider
 
 log = logging.getLogger(__name__)
 
@@ -44,6 +44,8 @@ class Lease:
                 detail=self.detail,
             )
             if not ok:
+                # worker_tick already acknowledged cancellation and archived its message.
+                self.job["status"] = "cancelled"
                 raise Cancelled("Job was cancelled")
 
     def stage(self, state, pct, detail):
@@ -69,7 +71,8 @@ class Lease:
 
     def __exit__(self, *args):
         self.stopped.set()
-        self.thread.join(timeout=65)
+        if self.thread:
+            self.thread.join(timeout=65)
 
 
 class Worker:
@@ -77,7 +80,34 @@ class Worker:
         self.stop_event = stop_event or threading.Event()
         self.settings = settings or Settings()
         self.backend = backend or Backend(self.settings)
-        self.provider = provider or Gemini(self.settings)
+        self.provider = provider or build_provider(self.settings)
+        self.protocol_checked = False
+
+    def check_protocol(self):
+        if not self.protocol_checked and (
+            self.settings.provider == "local" or self.settings.scope_owner
+        ):
+            protocol = self.backend.rpc("worker_protocol")
+            if (
+                protocol.get("version") != 1
+                or "local-smolvlm2" not in protocol.get("providers", [])
+                or not protocol.get("scoped_claim")
+                or not protocol.get("scoped_health")
+            ):
+                raise RuntimeError(
+                    "Database local-worker protocol is not deployed; refusing queue consumption"
+                )
+            self.protocol_checked = True
+
+    def heartbeat(self, ready, detail):
+        if self.settings.scope_owner:
+            return self.backend.rpc(
+                "worker_heartbeat_scoped",
+                owner=self.settings.scope_owner,
+                ai_ready=ready,
+                detail=detail,
+            )
+        return self.backend.rpc("worker_heartbeat", ai_ready=ready, detail=detail)
 
     def process(self, job):
         if job["attempts"] > 3:
@@ -116,7 +146,11 @@ class Worker:
             if job["kind"] != "analysis":
                 raise ValueError("Conversational editing is not enabled in the upload MVP")
             lease.stage("preparing", 5, "Inspecting media and extracting real frames")
-            data = prepare(source, directory, lease.tick)
+            data = (
+                self.provider.prepare(source, lease.tick)
+                if self.settings.provider == "local"
+                else prepare(source, directory, lease.tick)
+            )
             prefix = f"{project['owner_id']}/{project['id']}"
             # Make real playback and preprocessing usable even when AI credentials are missing.
             self.backend.upload(
@@ -139,14 +173,19 @@ class Worker:
             lease.tick(True)
             self.backend.update("videos", metadata, project_id="eq." + job["project_id"])
             lease.stage("analyzing", 25, "Transcribing spoken audio locally")
-            transcript = transcribe(data["audio"], self.settings.whisper_model, lease.tick)
+            transcript = (
+                self.provider.transcript(data, lease.tick)
+                if self.settings.provider == "local"
+                else transcribe(data["audio"], self.settings.whisper_model, lease.tick)
+            )
             artifact = {
                 "transcript": transcript,
                 "scenes": data["scenes"],
                 "audio_events": data["audio_events"],
                 "waveform": data["waveform"],
                 "frame_paths": frames,
-                "model": self.settings.model,
+                "provider": getattr(self.provider, "name", "gemini"),
+                "model": getattr(self.provider, "model", self.settings.model),
                 "summary": "",
                 "warnings": [],
             }
@@ -162,8 +201,38 @@ class Worker:
                 self.backend.update(
                     "analysis_artifacts", artifact, project_id="eq." + job["project_id"]
                 )
-            lease.stage("analyzing", 45, "Checking free AI access and account quota configuration")
+            lease.stage("analyzing", 45, "Checking selected AI provider readiness")
             self.provider.preflight()
+            if self.settings.provider == "local":
+                lease.stage("analyzing", 50, "Comparing actual videos with the local model")
+                analysis, result, result_path = self.provider.analyze(
+                    source, data, transcript, project["instructions"], lease.tick
+                )
+                lease.stage(
+                    "generating_highlights", 90, "Saving local evidence and validated intervals"
+                )
+                self.backend.upload(
+                    "processing-artifacts",
+                    prefix + "/local-analysis.json",
+                    result_path,
+                    "application/json",
+                )
+                artifact.update(
+                    summary=analysis.summary,
+                    local_usage=result["execution_usage"],
+                    local_metrics=self.provider.metrics,
+                    warnings=[result["visual_observation_warning"]],
+                )
+                lease.tick(True)
+                self.backend.rpc(
+                    "worker_finish_analysis",
+                    jid=job["id"],
+                    token=job["lease_token"],
+                    metadata=metadata,
+                    artifacts=artifact,
+                    highlights=[h.model_dump() for h in analysis.highlights],
+                )
+                return
             candidates = []
             summaries = []
             duration = metadata["duration"]
@@ -301,7 +370,12 @@ class Worker:
             )
 
     def once(self):
-        job = self.backend.rpc("worker_claim")
+        self.check_protocol()
+        job = (
+            self.backend.rpc("worker_claim_scoped", owner=self.settings.scope_owner)
+            if self.settings.scope_owner
+            else self.backend.rpc("worker_claim")
+        )
         if not job:
             return False
         try:
@@ -316,6 +390,8 @@ class Worker:
                     detail = detail.replace(secret, "[redacted]")
             detail = detail[:1200]
             log.error("Job %s failed: %s", job["id"], detail)
+            if job.get("status") == "cancelled":
+                return True
             try:
                 self.backend.rpc(
                     "worker_tick",
@@ -338,20 +414,22 @@ def main():
     worker = Worker(settings, stop_event=stop)
     signal.signal(signal.SIGTERM, lambda *_: stop.set())
     signal.signal(signal.SIGINT, lambda *_: stop.set())
+    # Readiness describes the selected provider's actual loaded state, not key presence.
+    ready = False
+    detail = "Selected provider is starting"
+    try:
+        worker.check_protocol()
+        worker.provider.preflight()
+        ready = True
+        detail = "Ready: " + getattr(worker.provider, "model", settings.model)
+    except Exception as exc:
+        detail = "Selected provider unavailable: " + type(exc).__name__
+        log.error("Provider startup failed: %s", detail)
 
     def health_loop():
         while not stop.is_set():
             try:
-                try:
-                    settings.check_ai()
-                    ready = True
-                    detail = (
-                        "Free AI configuration supplied; inference still validates model access"
-                    )
-                except ValueError as e:
-                    ready = False
-                    detail = str(e)
-                worker.backend.rpc("worker_heartbeat", ai_ready=ready, detail=detail)
+                worker.heartbeat(ready, detail)
             except Exception:
                 log.error("Worker health update failed")
             stop.wait(30)
@@ -359,23 +437,34 @@ def main():
     health = threading.Thread(target=health_loop, daemon=True)
     health.start()
     last_cleanup = 0
-    while not stop.is_set():
+    try:
+        while not stop.is_set():
+            try:
+                if not ready:
+                    stop.wait(10)
+                    continue
+                if not settings.scope_owner and time.monotonic() - last_cleanup > 3600:
+                    worker.backend.cleanup()
+                    for orphan in Path(tempfile.gettempdir()).glob("noetharaclipz-*"):
+                        if (
+                            orphan.is_dir()
+                            and not orphan.is_symlink()
+                            and time.time() - orphan.stat().st_mtime > 86400
+                        ):
+                            shutil.rmtree(orphan)
+                    last_cleanup = time.monotonic()
+                if not worker.once():
+                    stop.wait(3)
+            except Exception:
+                log.exception("Worker connection failed")
+                stop.wait(10)
+    finally:
+        stop.set()
+        health.join(timeout=65)
         try:
-            if time.monotonic() - last_cleanup > 3600:
-                worker.backend.cleanup()
-                for orphan in Path(tempfile.gettempdir()).glob("noetharaclipz-*"):
-                    if (
-                        orphan.is_dir()
-                        and not orphan.is_symlink()
-                        and time.time() - orphan.stat().st_mtime > 86400
-                    ):
-                        shutil.rmtree(orphan)
-                last_cleanup = time.monotonic()
-            if not worker.once():
-                stop.wait(3)
+            worker.heartbeat(False, "Worker stopped")
         except Exception:
-            log.exception("Worker connection failed")
-            stop.wait(10)
+            log.error("Could not clear worker readiness; heartbeat will expire")
 
 
 if __name__ == "__main__":

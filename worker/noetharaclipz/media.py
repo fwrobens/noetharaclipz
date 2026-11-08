@@ -2,6 +2,7 @@ import hashlib
 import json
 import math
 import subprocess
+from functools import lru_cache
 from pathlib import Path
 from .models import Edit
 
@@ -205,12 +206,17 @@ def prepare(source, directory, tick=None):
     }
 
 
+@lru_cache(maxsize=1)
+def whisper_engine(model):
+    from faster_whisper import WhisperModel
+
+    return WhisperModel(model, device="cpu", compute_type="int8", cpu_threads=2)
+
+
 def transcribe(audio, model="small", tick=None):
     if audio is None:
         return []
-    from faster_whisper import WhisperModel
-
-    whisper = WhisperModel(model, device="cpu", compute_type="int8", cpu_threads=2)
+    whisper = whisper_engine(model)
     segments, _ = whisper.transcribe(str(audio), word_timestamps=True, vad_filter=True, beam_size=3)
     results = []
     for i, s in enumerate(segments):
@@ -219,10 +225,13 @@ def transcribe(audio, model="small", tick=None):
         results.append(
             {
                 "id": str(i),
-                "start": s.start,
-                "end": s.end,
+                "start": float(s.start),
+                "end": float(s.end),
                 "text": s.text.strip(),
-                "words": [{"start": w.start, "end": w.end, "text": w.word} for w in s.words or []],
+                "words": [
+                    {"start": float(w.start), "end": float(w.end), "text": w.word}
+                    for w in s.words or []
+                ],
             }
         )
     return results

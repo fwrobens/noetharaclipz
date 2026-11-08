@@ -1,6 +1,33 @@
-# Verification — 2026-11-07
+# Verification — updated 2026-11-08
 
 ## Release gate
+
+**Latest local-worker follow-up: implemented, hosted acceptance blocked.**
+`NC_AI_PROVIDER=local` now selects real SmolVLM2 in the normal worker with
+Whisper/scenes/audio, validated highlights, honest provider usage, caches and
+queued rendering. A fresh disposable PostgreSQL/PGMQ run passed normal worker
+analysis → saved edit → queued export → real 22.2-second captioned MP4/full
+decode, without inserted highlight/completion fixtures. This is SQL/file-adapter
+integration, **not** hosted browser acceptance. The hosted protocol probe and
+browser launcher stopped before creating accounts or starting a worker because
+the reviewed database proposal is not deployed. The user's queued job is
+unchanged. No heartbeat migration was reapplied.
+
+Current repeated checks: **60 worker tests** (authorized footage, zero skipped),
+**15 frontend tests**, TypeScript, build, Ruff and lint (11 existing warnings).
+Actual model testing covers Elephants Dream, Sintel, SuperTuxKart gameplay, a
+muted visual derivative and a synthetic empty negative. A real blank-video false
+positive and a cold NumPy serialization failure were found and corrected; raw
+descriptions still hallucinate and are separated from measured evidence.
+See [implementation, benchmarks, exact gates and reproduction](local-worker-integration.md)
+and [disposable queue evidence](evidence/local-queue-pipeline.json).
+
+**Can a website user now upload and automatically receive a downloadable clip?
+Not yet verified on hosted infrastructure.** Do not merge or publish. The
+database proposal requires authorization/versioning/deployment and the ordinary
+browser flow must pass with an owner-scoped QA worker. Gemini remains disabled;
+no paid inference or Lovable credits were used. Historical sections below
+describe earlier runs, not additional current passes.
 
 **Blocked. Do not merge or publish.** The newer [credential-backed verification](credential-backed-verification.md) supersedes the earlier runtime-binding blocker: Supabase worker authentication, actual private rendering/download and Gemini model metadata now pass. Automatic AI selection remains unverified with the false free-tier flag preserved. The heartbeat repair now passes real credential-backed checks; see the [post-repair record](heartbeat-repair.md) for version alignment and queue/media recheck limitations. No mock result was used to pass the complete AI gate.
 

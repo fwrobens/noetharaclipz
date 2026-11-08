@@ -9,11 +9,14 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "worker"))
 from noetharaclipz.config import Settings
 from noetharaclipz.backend import Backend
 from noetharaclipz.providers import Gemini
+from noetharaclipz.runner import Worker
 
 NAMES = (
     "SUPABASE_URL",
     "SUPABASE_SERVICE_ROLE_KEY",
     "SUPABASE_SECRET_KEY",
+    "NC_AI_PROVIDER",
+    "NC_WORKER_OWNER_ID",
     "GEMINI_API_KEY",
     "GEMINI_FREE_TIER_VERIFIED",
     "GEMINI_VERIFIED_RPM",
@@ -38,6 +41,7 @@ def main():
         report["configuration"] = str(e)
         print(json.dumps(report, indent=2))
         return 1
+    backend = None
     try:
         backend = Backend(settings)
         backend.rows("projects", select="id", limit=1)
@@ -47,6 +51,32 @@ def main():
     except Exception:
         report["supabase"] = (
             "not validated; check runtime bindings and server-key format/permissions"
+        )
+    report["selected_provider"] = settings.provider
+    report["gemini_free_tier_verified"] = settings.free_verified
+    if settings.provider == "local":
+        report["gemini_inference"] = (
+            "disabled for local provider; no Gemini metadata or inference requests"
+        )
+        try:
+            if backend is None:
+                raise RuntimeError("Worker backend unavailable")
+            worker = Worker(settings, backend=backend)
+            worker.check_protocol()
+            report["local_queue_protocol"] = "compatible; no claim attempted"
+            report["selected_provider_readiness"] = worker.provider.preflight()
+        except Exception as exc:
+            # Log type only: backend messages may contain private server details.
+            report["selected_provider_readiness"] = {
+                "ready": False,
+                "error_type": type(exc).__name__,
+            }
+        print(json.dumps(report, indent=2))
+        return (
+            0
+            if isinstance(report["selected_provider_readiness"], dict)
+            and report["selected_provider_readiness"].get("ready")
+            else 1
         )
     if settings.gemini_key:
         try:

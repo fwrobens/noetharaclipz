@@ -14,11 +14,14 @@ class VideoProvider(Protocol):
 class Gemini:
     """Native video adapter. No paid fallbacks or requests to text-only models."""
 
+    name = "gemini"
+
     def __init__(self, settings: Settings, client=None):
         self.settings = settings
         self.client = client or httpx.Client(timeout=180)
         self.base = "https://generativelanguage.googleapis.com/v1beta"
         self.headers = {"x-goog-api-key": settings.gemini_key}
+        self.model = settings.model
 
     def inspect_access(self):
         if not self.settings.gemini_key:
@@ -92,3 +95,13 @@ class Gemini:
             return Analysis.model_validate_json(text), payload.get("usageMetadata", {})
         except (KeyError, IndexError) as e:
             raise ValueError("Provider returned no usable analysis") from e
+
+
+def build_provider(settings):
+    if settings.provider == "local":
+        from .local_provider import LocalProvider
+
+        return LocalProvider(settings)
+    if settings.provider == "gemini":
+        return Gemini(settings)
+    raise ValueError("Unsupported AI provider; no automatic fallback")

@@ -1,4 +1,4 @@
-# Isolated optional environment; install official CPU torch as in provider-readiness.md.
+# Optional local-provider worker/test environment; install official CPU torch as in provider-readiness.md.
 -r requirements-local-video.txt
 httpx==0.28.1
 pydantic==2.12.5

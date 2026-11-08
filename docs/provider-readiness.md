@@ -1,5 +1,11 @@
 # Follow-up: credentials, provider eligibility, and real video verification
 
+Latest status: [the normal local provider](local-worker-integration.md) is
+implemented and real disposable queue/inference/render tests pass. Local mode
+does not require a Gemini key/free-tier check. Hosted readiness currently fails
+closed on the absent local-worker database protocol; no hosted AI completion or
+normal browser acceptance is claimed. Gemini's verification flag remains false.
+
 ## Credential-equipped follow-up
 
 The [new credential-backed verification](credential-backed-verification.md)
