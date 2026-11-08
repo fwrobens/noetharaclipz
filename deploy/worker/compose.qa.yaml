@@ -1,0 +1,7 @@
+# Use only after host review and explicit QA deployment authorization.
+# Missing/empty owner fails Compose interpolation before any container starts.
+services:
+  worker:
+    environment:
+      NC_DEPLOY_MODE: qa
+      NC_WORKER_OWNER_ID: ${NC_QA_OWNER_ID:?A newly created temporary QA owner UUID is required}

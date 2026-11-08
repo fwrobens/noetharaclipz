@@ -1,5 +1,12 @@
 # Isolated EC2 worker preparation — no remote deployment
 
+**Latest host review:** region **us-east-2** is now operator-confirmed. Prior
+operator readings were ~14 GiB available RAM, 53 GB free disk, low CPU and ~1,300
+credits. Fresh capacity/network/credit readings are still required. See the
+[Ohio review commands and exact gated QA procedure](ec2-qa-host-review.md).
+No CLI/credential installation or EC2 action was attempted. 2.2B is excluded
+from this deployment; the research section below is historical evidence only.
+
 Target supplied by the user: **i-0be10e530045fc650**, `t2.xlarge`, 4 vCPU,
 16 GiB installed RAM, approximately 53 GB free disk. These are **operator-supplied
 facts, not a live capacity measurement**. Existing Noethara/Supabase containers
@@ -9,8 +16,9 @@ security group, subscription or paid service was created/changed.
 This session has no AWS connector, the identity manifest has no connections,
 the AWS profile is `__oai_no_aws_identity__`, and both configured AWS files are
 empty. Consequently **existing AWS suitability is unverified**: free RAM,
-workloads, security groups, credit balance/mode and actual region are unknown.
-Attaching the existing read-only connection is pending; no credentials need to
+workloads, security groups, credit balance/mode are unknown. Region is now confirmed as us-east-2.
+The current review uses operator-run read-only commands rather than installing
+or changing credentials; no credentials need to
 be pasted or recreated. The prior hosted website pass remains valid, but no
 queue consumer was started for this deployment task.
 
@@ -106,10 +114,10 @@ validation and a separately authorized database/provider change.
 
 ## Read-only host review — before any deployment
 
-With the attached existing AWS identity and the confirmed region, run:
+With an already authenticated AWS CLI, use the confirmed Ohio region:
 
 ```sh
-python scripts/aws_worker_inventory.py --region <confirmed-region> --instance-id i-0be10e530045fc650 --output test-results/aws-worker-inventory.json
+python scripts/aws_worker_inventory.py --region us-east-2 --instance-id i-0be10e530045fc650 --output test-results/aws-worker-inventory.json
 ```
 
 The explicit allowlist only calls STS identity, EC2 Describe operations and
@@ -170,7 +178,8 @@ weights, footage or credentials and has not been uploaded to AWS/a registry.
 Source-controlled Docker configuration is the reproducible delivery; promote
 only a reviewed artifact after authorization.
 
-To repeat the optional benchmark after downloading pinned public models locally:
+The earlier research comparison used the command below. **Do not rerun it or
+download/activate 2.2B for the current deployment.** This is reproduction history:
 
 ```sh
 python scripts/benchmark_worker_container.py --sample /path/to/authorized/supertuxkart-sample.mp4 --hf-cache /path/to/huggingface --output test-results/worker-container-benchmark

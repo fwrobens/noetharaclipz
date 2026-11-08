@@ -8,6 +8,9 @@ import json
 import os
 import shutil
 import subprocess
+import pwd
+import grp
+from datetime import datetime, timezone
 from pathlib import Path
 
 
@@ -34,6 +37,7 @@ def main():
     disk = shutil.disk_usage("/var/lib" if Path("/var/lib").exists() else "/")
     report = {
         "read_only": True,
+        "captured_at_utc": datetime.now(timezone.utc).isoformat(),
         "memory_bytes": memory,
         "logical_cpus": os.cpu_count(),
         "loadavg": os.getloadavg(),
@@ -52,6 +56,22 @@ def main():
         ["ps", "-eo", "comm,pcpu,pmem,rss", "--sort=-rss"]
     )
     report["listening_ports"] = read(["ss", "-lntuH"])
+    report["routes"] = read(["ip", "route", "show"])
+    report["dns_resolvers"] = read(["cat", "/etc/resolv.conf"])
+    report["proposed_bridge_lookup"] = read(["ip", "link", "show", "nccz-qa0"])
+    for kind, lookup in (("uid", pwd.getpwuid), ("gid", grp.getgrgid)):
+        try:
+            lookup(62001)
+            report[kind + "_62001_in_use"] = True
+        except KeyError:
+            report[kind + "_62001_in_use"] = False
+    report["proposed_paths_exist"] = {
+        str(p): p.exists()
+        for p in (
+            Path("/var/lib/noetharaclipz-isolated"),
+            Path("/etc/noetharaclipz-isolated"),
+        )
+    }
     docker = ["docker", "--host=unix:///var/run/docker.sock"]
     report["docker_resources"] = read(
         docker
@@ -81,6 +101,18 @@ def main():
                 "--format",
                 "{{.Name}} memory={{.HostConfig.Memory}} swap={{.HostConfig.MemorySwap}} nano_cpus={{.HostConfig.NanoCpus}} cpu_quota={{.HostConfig.CpuQuota}} pids={{.HostConfig.PidsLimit}} restart={{.HostConfig.RestartPolicy.Name}}",
                 *ids["output"].splitlines(),
+            ]
+        )
+    network_ids = read(docker + ["network", "ls", "-q"])
+    if network_ids["ok"] and network_ids["output"]:
+        report["network_cidrs"] = read(
+            docker
+            + [
+                "network",
+                "inspect",
+                "--format",
+                '{{.Name}} internal={{.Internal}} ipam={{json .IPAM.Config}} bridge={{index .Options "com.docker.network.bridge.name"}}',
+                *network_ids["output"].splitlines(),
             ]
         )
     report["decision"] = (

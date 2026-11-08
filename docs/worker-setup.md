@@ -6,6 +6,10 @@ See [isolated deployment preparation](worker-deployment.md) for the standby-firs
 Docker configuration, resource/cost review and authorization gates. No EC2
 service has been started.
 
+The selected EC2 region is **us-east-2**. Use the
+[minimal read-only host review and gated QA steps](ec2-qa-host-review.md) before
+requesting deployment approval. This deployment uses 500M only.
+
 ## Current local provider setup
 
 The [normal local-worker integration](local-worker-integration.md) is implemented

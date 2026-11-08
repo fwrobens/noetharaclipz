@@ -2,6 +2,7 @@ name: noetharaclipz-isolated
 services:
   worker:
     image: ${NC_WORKER_IMAGE:-noetharaclipz-worker:review}
+    pull_policy: never
     platform: linux/amd64
     # This bundle is standby by default. QA requires both explicit mode and owner.
     environment:
@@ -53,6 +54,7 @@ services:
   # One-off asset preparation. No Supabase credentials, queue or inference.
   seed:
     image: ${NC_WORKER_IMAGE:-noetharaclipz-worker:review}
+    pull_policy: never
     platform: linux/amd64
     profiles: [tools]
     entrypoint: [python, -m, noetharaclipz_deploy.assets]
@@ -74,6 +76,8 @@ services:
 networks:
   worker-egress:
     driver: bridge
+    driver_opts:
+      com.docker.network.bridge.name: nccz-qa0
 secrets:
   supabase_key:
     file: ${NC_SUPABASE_KEY_FILE:-/etc/noetharaclipz-isolated/supabase-key}
