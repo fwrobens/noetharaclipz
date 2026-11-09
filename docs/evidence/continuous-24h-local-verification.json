@@ -6,20 +6,22 @@
   "image_rebuilt": false,
   "model_benchmarks_repeated": false,
   "full_worker_suite": {
-    "passed": 352,
+    "passed": 353,
     "skipped": 1,
-    "seconds": 27.95
+    "seconds": 28.42
   },
   "focused_24h_suite_after_cleanup_hardening": {
     "passed": 55,
-    "seconds": 0.09
+    "seconds": 0.07
   },
   "ruff": "passed",
   "git_diff_check": "passed",
   "new_ec2_trial_started": false,
   "operator_approval_issued": false,
-  "owner_consent_pending": true,
-  "ec2_preflight_result_pending": true,
-  "launcher_sha256": "832e07902dca2049f55861ec3c6c7368922cf9a059db7721be54acf3a7f23ddd",
-  "new_deployment_id": "c25d8492-56fb-4c56-a519-e9a9e4246525"
+  "owner_consent_pending": false,
+  "ec2_preflight_result_pending": false,
+  "launcher_sha256": "f043d31e4082f9839fb0edc9d4e904b62e1068829a6924e29fb30e5f90299d86",
+  "new_deployment_id": "c25d8492-56fb-4c56-a519-e9a9e4246525",
+  "ec2_preflight_recheck_pending": true,
+  "updated_utc": "2026-11-09T22:27:19.425842+00:00"
 }

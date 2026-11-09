@@ -165,6 +165,8 @@ def test_loaded_unit_dropins_and_daemon_drift_fail_closed(monkeypatch, tmp_path)
     props = {"FragmentPath": str(path), "DropInPaths": "", "NeedDaemonReload": "no"}
 
     def read(command):
+        if command[1] == "show":
+            assert command == ["systemctl", "show", "--all", unit]
         return (
             "\n".join(k + "=" + v for k, v in props.items()) if command[1] == "show" else "disabled"
         )
@@ -183,4 +185,7 @@ def test_loaded_unit_dropins_and_daemon_drift_fail_closed(monkeypatch, tmp_path)
     props["DropInPaths"] = "/etc/systemd/system/foreign.conf"
     assert not collector.unit_state(unit, expected)["loaded_reviewed_unit"]
     props["DropInPaths"], props["NeedDaemonReload"] = "", "yes"
+    assert not collector.unit_state(unit, expected)["loaded_reviewed_unit"]
+    props["NeedDaemonReload"] = "no"
+    del props["DropInPaths"]
     assert not collector.unit_state(unit, expected)["loaded_reviewed_unit"]

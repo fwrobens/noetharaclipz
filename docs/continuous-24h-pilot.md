@@ -12,14 +12,20 @@ New deployment ID: `c25d8492-56fb-4c56-a519-e9a9e4246525`.
 Intended pilot owner: `21b61ad1-bda4-4abd-ac35-7a0bf477ed69`.
 The existing identity was authenticated successfully; its previous consent
 generation is expired and will not be reused. **Fresh explicit owner consent
-and the new SSM host-check output are still pending.** No owner request or
-operator approval has been fabricated. Choose the exact UTC window only after
-these inputs arrive; the final manifest and launch handoff have not been issued.
+was authenticated and recorded at 22:24:37 UTC**, generation
+`6b13bb7a-5b9b-4564-80d8-3904872d8c01`. Operator approval and expiry remain
+null; processing authorization is false. See [owner consent](evidence/continuous-24h-owner-consent.json).
+Choose the exact UTC window after the remaining host check passes; the final
+manifest and launch handoff have not been issued.
 
 Read-only Supabase checks at 22:06:27 UTC confirmed protocol v2,
 `future-jobs-only-v1`, revocation/exclusions/audit enabled and global claims
 disabled. The original upload is still queued with zero attempts and the exact
 previous whole-row hash. No migration was applied.
+At 22:23:01 UTC, a further hosted read verified **zero active leases** and the
+original row again. It exercised the launcher's active-lease query against the
+actual `lease_until` column; a prior read-only query typo was corrected before
+any deployment. See [live preparation evidence](evidence/continuous-24h-supabase-preparation.json).
 
 The new private preparation handoff reuses the **unchanged** reviewed 25-file
 worker/controller overlay and both unchanged systemd units. It does not rebuild
@@ -29,8 +35,8 @@ the image or rerun model benchmarks. Source bundle SHA256:
 
 The [private handoff receipt](evidence/continuous-24h-private-preparation.json)
 records its hashes and verified public-access denial, without a signed URL or
-credentials. The temporary private download was read back and verified; actual
-EC2 receipt and preflights must still be supplied by the operator in SSM. The
+credentials. The temporary private download was read back and verified; the
+operator received and verified all files at 22:23:20 UTC in SSM. The
 receiver creates only a new private preparation directory under `/var/tmp`,
 leaving all previous deployment/configuration/evidence paths unchanged.
 
@@ -51,6 +57,17 @@ The preparation receiver cannot read the credential file, issue approval,
 install a systemd unit, change firewall rules or execute a container. The
 separate [24h launcher](../scripts/launch_continuous_24h_pilot.py) is prepared
 and tested locally but has not run on EC2.
+
+The [initial EC2 check](evidence/continuous-24h-ec2-initial-preflight.json)
+passed 22 of 23 checks at 22:23:24 UTC: 28.78 GiB available RAM, 45.64 GiB
+free disk, low CPU, correct image/model-weight hashes, unchanged services and
+old evidence, isolation and both units disabled. The remaining check refused
+to assume that a missing `DropInPaths` property meant no drop-ins: systemd
+omits empty properties without `--all`. The corrected collector explicitly
+requests all properties; it does not relax the empty-value check. The original
+source/report are retained; a [preparation-only recheck](../scripts/recheck_continuous_24h_host.py)
+writes new diagnostic files alongside them. No unit or firewall fix is needed
+or attempted. Deployment stays blocked until the corrected live check passes.
 
 ## Exact launch gating and SSM disconnection
 
@@ -115,8 +132,8 @@ transition logs, lifetime summaries and independent start/interim/end snapshots
 must support the complete-window assessment. No external alert destination has
 been configured.
 
-Local verification: **352 worker tests passed, one optional sample test
-skipped**; after additional rollback hardening, **55 focused 24h tests passed**.
+Local verification: **353 worker tests passed, one optional sample test
+skipped**; **55 focused 24h tests passed** after the read-only collector fix.
 Ruff and diff checks passed. Tests exercise refusal of expired/reused consent,
 scope/hash/time changes, missing approval, boot/global enable attempts,
 nonblocking systemd startup, preservation/rollback and cleanup disk failures.

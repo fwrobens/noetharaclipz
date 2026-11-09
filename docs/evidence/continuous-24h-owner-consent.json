@@ -1,0 +1,26 @@
+{
+  "checked_utc": "2026-11-09T22:24:38.416997+00:00",
+  "authenticated_owner_verified": true,
+  "user_reply": "I consent to the new 24-hour pilot",
+  "consent": {
+    "owner_id": "21b61ad1-bda4-4abd-ac35-7a0bf477ed69",
+    "consent_id": "6b13bb7a-5b9b-4564-80d8-3904872d8c01",
+    "expires_at": null,
+    "request_id": "71392758-d6e3-4d33-aef3-d83bf088e472",
+    "revoked_at": null,
+    "approved_at": null,
+    "requested_at": "2026-11-09T22:24:37.805194+00:00",
+    "terms_version": "local-video-v1",
+    "approval_reason": null
+  },
+  "worker_status": {
+    "owner_id": "21b61ad1-bda4-4abd-ac35-7a0bf477ed69",
+    "authorized": false,
+    "consent_id": "6b13bb7a-5b9b-4564-80d8-3904872d8c01",
+    "expires_at": null,
+    "approved_at": null,
+    "future_jobs_only": true
+  },
+  "operator_approval_issued": false,
+  "worker_started": false
+}

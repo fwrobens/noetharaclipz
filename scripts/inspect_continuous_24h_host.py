@@ -82,7 +82,7 @@ def command_allowed(command):
             for action in ("is-active", "is-enabled")
             for unit in UNITS
         )
-        or any(command == ["systemctl", "show", unit] for unit in UNITS)
+        or any(command == ["systemctl", "show", "--all", unit] for unit in UNITS)
     )
 
 
@@ -124,7 +124,7 @@ def unit_state(unit, expected):
     )
     properties = dict(
         line.split("=", 1)
-        for line in read_command(["systemctl", "show", unit]).splitlines()
+        for line in read_command(["systemctl", "show", "--all", unit]).splitlines()
         if "=" in line
     )
     return {

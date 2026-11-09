@@ -146,6 +146,20 @@ def verify_preparation(root, plan):
             or sha(path.read_bytes()) != expected
         ):
             raise ValueError("Received admission helper changed")
+    for name_key, hash_key, directory in (
+        ("admission_helper_name", "admission_helper_sha256", root / "handoff"),
+        ("admission_report_name", "admission_report_sha256", root),
+    ):
+        name = plan[name_key]
+        path = directory / name
+        if (
+            Path(name).name != name
+            or path.is_symlink()
+            or path.stat().st_uid != 0
+            or path.stat().st_mode & 0o022
+            or sha(path.read_bytes()) != plan[hash_key]
+        ):
+            raise ValueError("Reviewed supplemental admission evidence changed")
     bundle = json.loads((root / "bundle.json").read_text())
     if (
         candidate["files"] != bundle["sha256"]
@@ -184,6 +198,16 @@ def read_authorization(api, plan):
             # Nothing is installed or approved on a missing/invalid receipt.
             return None
         raise
+
+
+def active_leases(api, now):
+    # Match the deployed claim gate's actual column/status contract.
+    return api.rows(
+        "processing_jobs",
+        select="id",
+        lease_until="gt." + datetime.fromtimestamp(now, timezone.utc).isoformat(),
+        status="not.in.(completed,failed,cancelled)",
+    )
 
 
 def activate(root, plan, receipt, manifest, host, api, fresh):
@@ -344,12 +368,12 @@ def main(payload):
         os.environ.pop(key, None)
     sys.path.insert(0, str(root / "handoff"))
     spec = importlib.util.spec_from_file_location(
-        "verified_24h_admission", root / "handoff/inspect_continuous_24h_host.py"
+        "verified_24h_admission", root / "handoff" / plan["admission_helper_name"]
     )
     collector = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(collector)
     fresh = collector.collect(root, deployment, SOURCE_SHA)
-    before = json.loads((root / "host-preflight.json").read_text())
+    before = json.loads((root / plan["admission_report_name"]).read_text())
     if (
         not fresh["host_preparation_checks_passed"]
         or not before["host_preparation_checks_passed"]
@@ -400,12 +424,7 @@ def main(payload):
         raise ValueError(
             "Protected upload changed; no processing approval will be requested"
         )
-    if api.rows(
-        "processing_jobs",
-        select="id",
-        lease_token="not.is.null",
-        lease_expires_at="gt." + datetime.now(timezone.utc).isoformat(),
-    ):
+    if active_leases(api, time.time()):
         raise ValueError("Active leases exist; no concurrent worker may be started")
     status = api.rpc(
         "worker_consent_status", owner=OWNER, consent=manifest["consent_id"]
