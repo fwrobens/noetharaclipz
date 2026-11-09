@@ -1,10 +1,10 @@
-# Proposed 24-hour owner-scoped EC2 pilot — preparation only
+# Approved 24-hour owner-scoped EC2 pilot — awaiting launch
 
-Status: **PREPARATION ONLY; NOT STARTED; NO NEW OPERATOR APPROVAL**.
+Status: **USER AUTHORIZED; PRIVATE RECEIPT ISSUED; NOT STARTED**.
 The 2026-11-09 21:00–21:30 UTC pilot ended safely at 21:29:46 UTC.
 Do not restart, edit, extend, renew, or reuse its expired deployment receipt,
-owner consent generation or signed active manifest. This document is a plan,
-not an authorization to activate processing or to enable boot startup.
+owner consent generation or signed active manifest. Authorization covers only
+the new deployment and fixed window below. Boot startup remains unauthorized.
 
 ## Current preparation (November 9, after commit 6a3c63b)
 
@@ -16,15 +16,23 @@ was authenticated and recorded at 22:24:37 UTC**, generation
 `6b13bb7a-5b9b-4564-80d8-3904872d8c01`. Operator approval and expiry remain
 null; processing authorization is false. See [owner consent](evidence/continuous-24h-owner-consent.json).
 All **23 fresh EC2 preflights passed at 22:28:58 UTC** after the collector fix.
-The immutable review plan is prepared; operator approval, installation and
-startup are still **not authorized or performed**.
+The user subsequently replied **yes** to the exact manifest/window and
+installation/start scope. The separate private authorization receipt was issued
+and verified at **22:47:13 UTC**. Database processing approval is deferred to
+the EC2 launcher inside the approved start window; installation and startup
+have **not yet occurred**.
 
-| Review item | Exact proposed value |
+[User authorization](evidence/continuous-24h-user-authorization.json) ·
+[Private readback/access verification](evidence/continuous-24h-authorization-verification.json).
+Authorization-record SHA256:
+`9e8fab60a71ae088be5b3b3dc966d357ff61222b6418880df1a9fda24910964f`.
+
+| Review item | Exact approved value |
 | --- | --- |
 | UTC window | **2026-11-09 23:00:00 → 2026-11-10 23:00:00** (86,400 seconds) |
 | Launch permitted | 23:00:00–23:04:59 UTC November 9; no waiting/extension |
 | Disabled candidate SHA256 | `0d3dd0f3e1ce7a74712bb555f85104e4c661543e20677a652882bc47bd277bb8` |
-| Activation manifest SHA256, only after approval | `3918b9eb1dee06597852c016a7098a873eea914bbac8afa151557cda2c34dda0` |
+| Approved activation manifest SHA256 | `3918b9eb1dee06597852c016a7098a873eea914bbac8afa151557cda2c34dda0` |
 | Immutable review plan SHA256 (canonical JSON) | `1b0e2436c5a93b65ce73e4cfabfd8625ad87c4c5019458605ada6e85f2875912` |
 | Kernel limits required at startup | 8 GiB, 2 CPU, no extra swap, 256 PIDs, one job |
 | Owner/provider | This fresh pilot consent only; pinned local SmolVLM2-500M |
@@ -33,11 +41,13 @@ startup are still **not authorized or performed**.
 [Disabled candidate](evidence/continuous-24h-manifest-candidate.json) and
 [review plan](evidence/continuous-24h-review-plan.json) are the exact review
 artifacts. The activation digest is precomputed from only the candidate's
-approval flag/reference change; it does not assert approval exists. No active
-manifest or authorization object has been installed/issued. The launcher also
-requires a separately issued private receipt, not just a true flag in a JSON.
+approval flag/reference change. The candidate and review plan remain unchanged
+historical preparation artifacts; the separate receipt records the later user
+approval. An active manifest has not yet been installed. All manifest/plan
+digests use canonical JSON with sorted keys and comma/colon separators. The
+launcher requires the private receipt, not just a true flag in a JSON.
 
-The proposed installation scope is restricted to this new deployment's
+The approved installation scope is restricted to this new deployment's
 configuration/data/report paths, the dedicated `continuous/current` symlink,
 stopping the old isolation oneshot and starting the existing reviewed worker
 unit without enabling it. It reuses the existing image, models, key file and
@@ -85,7 +95,9 @@ the previously reviewed admission checks for the now-installed, disabled units:
 The preparation receiver cannot read the credential file, issue approval,
 install a systemd unit, change firewall rules or execute a container. The
 separate [24h launcher](../scripts/launch_continuous_24h_pilot.py) is prepared
-and tested locally but has not run on EC2.
+and tested locally. The operator's early invocation stopped at the time-window
+guard before installation/approval/start or a launch-attempt marker. It may be
+run once between 23:00:00 and 23:04:59 UTC after receipt issuance.
 
 The [initial EC2 check](evidence/continuous-24h-ec2-initial-preflight.json)
 passed 22 of 23 checks at 22:23:24 UTC: 28.78 GiB available RAM, 45.64 GiB
@@ -105,7 +117,7 @@ admission and checks the passing report/helper hashes before credential access.
 
 ## Exact launch gating and SSM disconnection
 
-The final review plan will bind the fresh consent generation, disabled candidate
+The final review plan binds the fresh consent generation, disabled candidate
 manifest hash, prospective activation-manifest hash, exact UTC start/expiry,
 private source receipt and explicit installation scope. Computing a prospective
 activation hash is not approval: no active manifest is installed or processing
@@ -116,16 +128,18 @@ The [sealed launch handoff](evidence/continuous-24h-launch-handoff.json) is
 `6148a90f924e0008fe0e5cfab7052029bf552df328a42912cc77c8339bd71b21`.
 It was privately uploaded and read back byte-for-byte; its public endpoint is
 denied. The one SSM command is retained privately in the preparation handoff,
-with a download link expiring November 10 at 22:34 UTC. Do not run it until the
-exact manifest and installation/start scope are separately approved, then run
-it once in the reviewed launch window. Its independent authorization object
-does not yet exist, and the command refuses to install/start without it.
+with a download link expiring November 10 at 22:34 UTC. The exact manifest and
+installation/start scope are now approved; run the same command once in the
+reviewed launch window. Its independent authorization object was issued once
+without overwriting any object, read back exactly, and denied to public and
+anonymous clients. The command still refuses early/late launch or a missing,
+changed or out-of-scope authorization record.
 That download link is needed only for installation, not for continued service
 execution or monitoring after SSM disconnects. No signed URL or credential is
 committed to GitHub.
 
-After explicit user approval, an immutable authorization JSON may be created
-once in the existing private bucket. It binds both hashes, owner, consent,
+After explicit user approval, an authorization JSON was issued once in the
+existing private bucket. It binds both hashes, owner, consent,
 deployment and UTC window. The single signed SSM launch command verifies its
 own code/payload, repeats fresh host checks, then reads that exact private
 authorization using the existing EC2 file credential. Missing authorization

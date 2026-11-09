@@ -1,0 +1,29 @@
+{
+  "checked_utc": "2026-11-09T22:47:13.213546+00:00",
+  "authorization_record_issued": true,
+  "authorization_record_sha256": "9e8fab60a71ae088be5b3b3dc966d357ff61222b6418880df1a9fda24910964f",
+  "bytes": 1303,
+  "private_readback_exact": true,
+  "public_access_status": 400,
+  "anonymous_access_status": 400,
+  "worker_consent_status": {
+    "owner_id": "21b61ad1-bda4-4abd-ac35-7a0bf477ed69",
+    "authorized": false,
+    "consent_id": "6b13bb7a-5b9b-4564-80d8-3904872d8c01",
+    "expires_at": null,
+    "approved_at": null,
+    "future_jobs_only": true
+  },
+  "active_lease_count": 0,
+  "protected_job_status": "queued",
+  "protected_job_attempts": 0,
+  "protected_job_row_sha256": "deac9a0a9f311218fce3c531def81e1a3f92ff11e82132701a06e366d545dbdb",
+  "manifest_sha256": "3918b9eb1dee06597852c016a7098a873eea914bbac8afa151557cda2c34dda0",
+  "fixed_start_utc": "2026-11-09T23:00:00Z",
+  "fixed_stop_utc": "2026-11-10T23:00:00Z",
+  "database_processing_approval_issued": false,
+  "ec2_installation_performed": false,
+  "worker_started": false,
+  "boot_enabled": false,
+  "same_sealed_ssm_command_valid": true
+}
