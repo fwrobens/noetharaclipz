@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as BrandKitRouteImport } from './routes/brand-kit'
+import { Route as DashboardVisualCheckRouteImport } from './routes/dashboard-visual-check'
 import { Route as LibraryRouteImport } from './routes/library'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as PricingRouteImport } from './routes/pricing'
@@ -43,6 +44,11 @@ const AuthRoute = AuthRouteImport.update({
 const BrandKitRoute = BrandKitRouteImport.update({
   id: '/brand-kit',
   path: '/brand-kit',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardVisualCheckRoute = DashboardVisualCheckRouteImport.update({
+  id: '/dashboard-visual-check',
+  path: '/dashboard-visual-check',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LibraryRoute = LibraryRouteImport.update({
@@ -110,6 +116,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/brand-kit': typeof BrandKitRoute
+  '/dashboard-visual-check': typeof DashboardVisualCheckRoute
   '/library': typeof LibraryRoute
   '/login': typeof LoginRoute
   '/pricing': typeof PricingRoute
@@ -127,6 +134,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/brand-kit': typeof BrandKitRoute
+  '/dashboard-visual-check': typeof DashboardVisualCheckRoute
   '/library': typeof LibraryRoute
   '/login': typeof LoginRoute
   '/pricing': typeof PricingRoute
@@ -146,6 +154,7 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/brand-kit': typeof BrandKitRoute
+  '/dashboard-visual-check': typeof DashboardVisualCheckRoute
   '/library': typeof LibraryRoute
   '/login': typeof LoginRoute
   '/pricing': typeof PricingRoute
@@ -165,6 +174,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/brand-kit'
+    | '/dashboard-visual-check'
     | '/library'
     | '/login'
     | '/pricing'
@@ -182,6 +192,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/brand-kit'
+    | '/dashboard-visual-check'
     | '/library'
     | '/login'
     | '/pricing'
@@ -200,6 +211,7 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/auth'
     | '/brand-kit'
+    | '/dashboard-visual-check'
     | '/library'
     | '/login'
     | '/pricing'
@@ -219,6 +231,7 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
   BrandKitRoute: typeof BrandKitRoute
+  DashboardVisualCheckRoute: typeof DashboardVisualCheckRoute
   LibraryRoute: typeof LibraryRoute
   LoginRoute: typeof LoginRoute
   PricingRoute: typeof PricingRoute
@@ -259,6 +272,13 @@ declare module '@tanstack/react-router' {
       path: '/brand-kit'
       fullPath: '/brand-kit'
       preLoaderRoute: typeof BrandKitRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard-visual-check': {
+      id: '/dashboard-visual-check'
+      path: '/dashboard-visual-check'
+      fullPath: '/dashboard-visual-check'
+      preLoaderRoute: typeof DashboardVisualCheckRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/library': {
@@ -366,6 +386,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
   BrandKitRoute: BrandKitRoute,
+  DashboardVisualCheckRoute: DashboardVisualCheckRoute,
   LibraryRoute: LibraryRoute,
   LoginRoute: LoginRoute,
   PricingRoute: PricingRoute,
