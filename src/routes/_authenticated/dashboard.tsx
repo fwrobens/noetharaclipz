@@ -505,8 +505,8 @@ function ProjectDialog({
               </div>
               {(project.highlights?.length ?? 0) ? (
                 <div className="mt-3 space-y-2">
-                  {[...project.highlights]
-                    .sort((a, b) => b.score - a.score)
+                  {[...(project.highlights ?? [])]
+                    .sort((a, b) => Number(b.score ?? 0) - Number(a.score ?? 0))
                     .map((highlight, index) => (
                       <div
                         key={highlight.id}
@@ -523,7 +523,7 @@ function ProjectDialog({
                           </p>
                         </div>
                         <span className="rounded-full border border-border bg-card px-2.5 py-1 text-[10px] text-ember">
-                          {Math.round(highlight.score)} score
+                          {Math.round(Number(highlight.score ?? 0))} score
                         </span>
                       </div>
                     ))}
