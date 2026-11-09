@@ -11,8 +11,10 @@ prevented the diagnostic's filter counter from increasing. The network policy
 remained unchanged; no AI work or crash injection ran. The corrected probe uses
 unused private destinations, rejects allocated/raw-shadowed targets read-only,
 and still requires matching counter increases. All 229 worker tests pass, with
-one optional skip. A new immutable preparation bundle is ready; its EC2
-installation and separate start authorization remain pending. The failed attempt
+one optional skip. The operator has now confirmed successful installation of
+the corrected immutable configuration with matching plan SHA; no worker,
+approval receipt or QA account was created. Its temporary private download was
+removed after receipt. Separate start authorization remains pending. The failed attempt
 and its fixed 05:32:30 deadline are preserved. Its short startup measurements do
 not supply the missing AI peak-resource or crash-recovery evidence. See the
 [current trial procedure and actual results](reliability-trial.md).

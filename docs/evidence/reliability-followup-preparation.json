@@ -2,8 +2,8 @@
   "schema": 1,
   "trial_id": "f3fc3665-76e9-4cc5-b6e6-2c437873a6a4",
   "plan_sha256": "80acdb44a931f6cfeba318d58b034b7232a3b7e1032866f6cd1827656536529d",
-  "state": "corrected_bundle_ready_for_preparation_only_handoff",
-  "host_preparation_receipt_received": false,
+  "state": "ec2_prepared_waiting_for_separate_start_approval",
+  "host_preparation_receipt_received": true,
   "approval_issued": false,
   "activation_issued": false,
   "new_qa_account_created": false,
@@ -36,8 +36,24 @@
     "bucket_settings_changed": false,
     "before_object_bytes": 138882061,
     "database_reserved_bytes": 179818577,
-    "free_storage_headroom_check": "max(existing object bytes, database reservations) plus bundle below 700000000-byte threshold; no new resource or paid service"
+    "free_storage_headroom_check": "max(existing object bytes, database reservations) plus bundle below 700000000-byte threshold; no new resource or paid service",
+    "temporary_object_removed_after_receipt": true,
+    "removed_owned_objects": 1,
+    "unrelated_objects_modified": false
   },
   "previous_approval_transfer_removed_after_receipt": true,
-  "continuous_or_global_processing_enabled": false
+  "continuous_or_global_processing_enabled": false,
+  "host_preparation_receipt": {
+    "prepared": true,
+    "ready_for_approval": true,
+    "trial_id": "f3fc3665-76e9-4cc5-b6e6-2c437873a6a4",
+    "plan_sha256": "80acdb44a931f6cfeba318d58b034b7232a3b7e1032866f6cd1827656536529d",
+    "worker_started": false,
+    "approval_receipt_created": false,
+    "new_qa_account_created": false,
+    "old_evidence_preserved": true,
+    "network_rules_changed": false
+  },
+  "receipt_provenance": "Operator-pasted SSM preparation result in this chat; no direct EC2 connection is available to Codex.",
+  "receipt_recorded_utc": "2026-11-09T05:33:01.091400+00:00"
 }

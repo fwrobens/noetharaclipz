@@ -20,9 +20,13 @@ and raw-table interception read-only and retains the requirement for a positive
 matching counter delta. Partial proof files now retain the target, socket errno
 and before/after counters on failure. No firewall rule is changed.
 
-The new configuration below is **built and tested locally, awaiting EC2
-preparation and a separate start approval**. It has no receipt, activation, QA
-account or running container. The successful expired trial and failed attempt
+The new configuration below is **installed on EC2 and ready for a separate
+start approval**. The operator returned `prepared=true`, `ready_for_approval=true`
+with the exact plan SHA below. The same receipt confirms no worker, approval
+receipt or new QA account was created, old evidence was preserved and network
+rules were unchanged. It has no activation or running container. Preparation
+success does not establish a successful live traffic or inference test.
+The successful expired trial and failed attempt
 retain their original containers, files and deadlines. See the
 [operator failure evidence](evidence/reliability-startup-failure.json) and
 [fresh hosted database check](evidence/reliability-post-failure-supabase.json).
@@ -59,19 +63,18 @@ receipt, create a user, create/start a container or start a systemd unit.
 The prior containers, their deadlines/receipts, private QA accounts/media and all
 old evidence remain untouched. The corrected preparation bundle contains
 fourteen hash-pinned evidence copies, including the failed admission and fresh
-read-only hosted checks, to install in its `previous-evidence/` directory.
+read-only hosted checks, installed in its `previous-evidence/` directory.
 The existing JSON files in Git are unchanged. The new trial has separate cache, temporary data, gates
 and reports. Only read-only pinned model assets and the existing file secret
 are shared. Preparation checked secret-file metadata without reading its value.
 
 ## Commands on EC2
 
-Use the supplied hash-verified, private preparation-only download block first.
-It installs only the new immutable files after read-only host checks. Its
-temporary object can be removed after the preparation receipt. No image
-rebuild/transfer, GitHub token, registry login or credential paste is needed.
-No new EC2 installation success is claimed until the operator returns its JSON.
-The commands below apply after that installation.
+The hash-verified, private preparation-only block completed successfully on EC2.
+It installed only the new immutable files after read-only host checks. Its
+temporary download object was removed after the receipt; do not rerun that
+download block. No image rebuild/transfer, GitHub token, registry login or
+credential paste was needed. The commands below apply to the installed files.
 
 Set task-specific shell variables once:
 
@@ -271,8 +274,8 @@ seconds; 32.684% sampled peak CPU, incomplete final snapshot) are **not model
 benchmarks**. Longer-input inference, crash recovery and complete peak-resource
 coverage remain unverified.
 
-The corrected plan is ready for **preparation-only EC2 installation**, followed
-by a separate start approval after its receipt passes. Approval must cover only
+The corrected EC2 preparation receipt passed, so the plan is **ready for
+separate start approval**. Approval must cover only
 this exact plan SHA, at most thirty minutes, the new
 single processing owner, long gaming input and one worker-only fault. It does not
 authorize continuous/global processing, old-upload release, merge, publication,
