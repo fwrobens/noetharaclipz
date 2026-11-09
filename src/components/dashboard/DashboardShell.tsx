@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Brand } from "@/components/Brand";
+import { focusComposer } from "@/components/dashboard/focusComposer";
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
 import { supabase } from "@/integrations/supabase/client";
 import { cn } from "@/lib/utils";
@@ -33,14 +34,6 @@ type DashboardShellProps = {
   search: string;
   onSearchChange: (value: string) => void;
 };
-
-export function focusComposer() {
-  document.getElementById("new-project")?.scrollIntoView({ behavior: "smooth", block: "center" });
-  window.setTimeout(
-    () => document.getElementById("clip-instructions")?.focus({ preventScroll: true }),
-    350,
-  );
-}
 
 export function DashboardShell({
   children,

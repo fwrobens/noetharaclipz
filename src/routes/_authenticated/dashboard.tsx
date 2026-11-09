@@ -4,7 +4,6 @@ import { formatDistanceToNow } from "date-fns";
 import {
   ArrowRight,
   ArrowUpRight,
-  CheckCircle2,
   Clapperboard,
   Clock3,
   Film,
@@ -17,7 +16,8 @@ import {
   WandSparkles,
 } from "lucide-react";
 import { useMemo, useState } from "react";
-import { DashboardShell, focusComposer } from "@/components/dashboard/DashboardShell";
+import { DashboardShell } from "@/components/dashboard/DashboardShell";
+import { focusComposer } from "@/components/dashboard/focusComposer";
 import { UploadComposer } from "@/components/dashboard/UploadComposer";
 import {
   Dialog,
