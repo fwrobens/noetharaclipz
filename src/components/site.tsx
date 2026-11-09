@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { useState, type ReactNode, type ButtonHTMLAttributes } from "react";
 import { cn } from "@/lib/utils";
+import { BorderBeam } from "@/components/ui/border-beam";
 import brandImage from "@/assets/noethara-logo.png.asset.json";
 
 export function Logo({ className }: { className?: string }) {
@@ -28,7 +29,7 @@ export function btnClass(variant: BtnProps["variant"] = "glow", size: BtnProps["
 }
 
 export function Button({ variant, size, className, ...p }: BtnProps) {
-  return <button className={cn(btnClass(variant, size), className)} {...p} />;
+  return <button className={cn(btnClass(variant, size), className)} {...p}>{p.children}{variant !== "solid" && <BorderBeam size={38} duration={6} radius={999} />}</button>;
 }
 
 export function Badge({ children }: { children: ReactNode }) {
@@ -36,6 +37,7 @@ export function Badge({ children }: { children: ReactNode }) {
     <span className="glow-border glow-border-soft inline-flex items-center gap-2 rounded-full bg-surface px-3.5 py-1.5 text-xs text-muted-foreground">
       <span className="h-1.5 w-1.5 rounded-full bg-ember animate-pulse-dot" />
       {children}
+      <BorderBeam size={50} duration={9} radius={999} />
     </span>
   );
 }
@@ -60,7 +62,7 @@ export function Nav() {
         </nav>
         <div className="hidden items-center gap-3 md:flex">
           <Link to="/login" className="text-sm text-muted-foreground hover:text-foreground">Log in</Link>
-          <Link to="/signup" className={btnClass("glow", "sm")}>Get started</Link>
+          <Link to="/signup" className={btnClass("glow", "sm")}>Get started<BorderBeam size={35} duration={6} radius={999} /></Link>
         </div>
         <button aria-label="Menu" onClick={() => setOpen(!open)} className="grid h-9 w-9 place-items-center rounded-lg border border-border md:hidden">
           <span className="flex flex-col gap-1">
@@ -77,7 +79,7 @@ export function Nav() {
             <Link to="/pricing" onClick={() => setOpen(false)}>Pricing</Link>
             <Link to="/login" onClick={() => setOpen(false)}>Log in</Link>
             <Link to="/dashboard" onClick={() => setOpen(false)}>Workspace</Link>
-            <Link to="/signup" className={btnClass("glow", "md")}>Get started</Link>
+            <Link to="/signup" className={btnClass("glow", "md")}>Get started<BorderBeam size={38} duration={6} radius={999} /></Link>
           </div>
         </div>
       )}
@@ -120,6 +122,7 @@ export const plans = [
 export function PricingCard({ p }: { p: (typeof plans)[number] }) {
   return (
     <div className={cn("glow-border flex flex-col rounded-3xl bg-card p-7", !p.featured && "glow-border-soft")}>
+      <BorderBeam duration={p.featured ? 7 : 10} size={100} radius={24} borderWidth={p.featured ? 2 : 1.5} />
       <div className="flex items-center justify-between">
         <p className="font-medium">{p.name}</p>
         {p.featured && <span className="rounded-full bg-ember/15 px-2.5 py-1 text-[11px] text-ember">Most popular</span>}
@@ -130,7 +133,7 @@ export function PricingCard({ p }: { p: (typeof plans)[number] }) {
         {p.price !== "—" && <span className="pb-2 text-sm text-muted-foreground">/mo</span>}
       </div>
       <p className="mt-1 text-sm"><span className="text-ember">{p.credits}</span> <span className="text-muted-foreground">credits · plan details pending</span></p>
-      <Link to="/signup" className={cn(btnClass(p.featured ? "glow" : "ghost", "md"), "mt-6 w-full")}>{p.cta}</Link>
+      <Link to="/signup" className={cn(btnClass(p.featured ? "glow" : "ghost", "md"), "mt-6 w-full")}>{p.cta}<BorderBeam size={45} duration={7} radius={999} /></Link>
       <ul className="mt-7 space-y-3 text-sm text-muted-foreground">
         {p.features.map((f) => (
           <li key={f} className="flex items-center gap-2.5">

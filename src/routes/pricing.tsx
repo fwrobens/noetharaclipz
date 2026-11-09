@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Footer, Nav, PricingCard, plans } from "@/components/site";
+import { BorderBeam } from "@/components/ui/border-beam";
 
 export const Route = createFileRoute("/pricing")({
   head: () => ({
@@ -34,6 +35,7 @@ function Pricing() {
         <div className="mt-8 grid gap-4 sm:grid-cols-3">
           {packs.map(([c, n]) => (
             <div key={n} className="glow-border glow-border-soft rounded-2xl bg-card p-6 text-center">
+              <BorderBeam size={70} duration={9} radius={16} />
               <p className="text-sm text-muted-foreground">{n}</p>
               <p className="mt-2 font-display text-4xl">{c}</p>
               <p className="text-xs text-ember">credits · planned pack</p>
