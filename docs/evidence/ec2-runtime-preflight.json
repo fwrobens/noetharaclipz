@@ -245,6 +245,31 @@
     "one_temporary_qa_owner": true,
     "browser_monitor": "scripts/await_ec2_qa.py waits for actual readiness, then invokes normal UI acceptance; never starts any worker",
     "protected_upload_readonly_auth_checks": "full row unchanged, queued with zero attempts; QA project/job reads empty, anonymous protocol 401, QA protocol 403, authorized protocol version 1",
-    "new_ec2_browser_acceptance_passed": false
+    "new_ec2_browser_acceptance_passed": false,
+    "private_handoff": {
+      "transfer_id": "d3d874ec-9794-4f93-abd2-289ac0f21fc7",
+      "prefix": "_worker-transfer/d3d874ec-9794-4f93-abd2-289ac0f21fc7/",
+      "objects": [
+        "_worker-transfer/d3d874ec-9794-4f93-abd2-289ac0f21fc7/start-qa.json"
+      ],
+      "created_unix": 1794183559,
+      "bytes": 54754,
+      "sha256": "b241f53639ca819e3641fd30c59f5a5444414922bf262baf9f67eb86ad4a6c7a",
+      "source_commit": "648973d36cf2fb22a2b1c9ad3dcd77ce53c42cb9",
+      "storage_before_bytes": 48627594,
+      "public": false,
+      "plaintext_credentials": false,
+      "file_sha256": {
+        "network_preflight.py": "bf4e598d9bd7e316ba907ba646e3a56c99cb612c37365ce1343a72e091a1981e",
+        "prepare_qa_assets.py": "16cbd1c5256d31412312c0ee8e151c672da88f2d73e353f1ab8a4cab65377578",
+        "credential_envelope.py": "0dff065cf5706ccbc6150027bc8a4f2ecef2dcd9b0bd4c53a1af46f3a9e68f0f",
+        "qa_deadline.py": "32f01d74f7379c02cf6825491220a7b1d67fd786c2c4cc1cf21486d8a771f394",
+        "start_qa_worker.py": "bf542cf1808237de231eaf6fb885c4bb2b90c83faa287ccd4f1867298b0b2188"
+      },
+      "expires_unix": 1794187161,
+      "signed_download_hash_verified": true,
+      "public_request_status": 400,
+      "cleanup_after_operator_receipt": true
+    }
   }
 }
