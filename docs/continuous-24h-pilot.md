@@ -1,6 +1,6 @@
-# Approved 24-hour owner-scoped EC2 pilot — awaiting launch
+# Running 24-hour owner-scoped EC2 pilot
 
-Status: **USER AUTHORIZED; PRIVATE RECEIPT ISSUED; NOT STARTED**.
+Status: **RUNNING; INITIAL WEBSITE WORKFLOW PASSED; 24H ENDURANCE/EXPIRY PENDING**.
 The 2026-11-09 21:00–21:30 UTC pilot ended safely at 21:29:46 UTC.
 Do not restart, edit, extend, renew, or reuse its expired deployment receipt,
 owner consent generation or signed active manifest. Authorization covers only
@@ -14,13 +14,19 @@ The existing identity was authenticated successfully; its previous consent
 generation is expired and will not be reused. **Fresh explicit owner consent
 was authenticated and recorded at 22:24:37 UTC**, generation
 `6b13bb7a-5b9b-4564-80d8-3904872d8c01`. Operator approval and expiry remain
-null; processing authorization is false. See [owner consent](evidence/continuous-24h-owner-consent.json).
+null in that preparation snapshot. The EC2 launcher subsequently obtained
+processing approval at **23:00:23.586181 UTC**, expiring exactly **November 10
+at 23:00 UTC**. See [owner consent](evidence/continuous-24h-owner-consent.json)
+and [live startup verification](evidence/continuous-24h-startup-supabase.json).
 All **23 fresh EC2 preflights passed at 22:28:58 UTC** after the collector fix.
 The user subsequently replied **yes** to the exact manifest/window and
 installation/start scope. The separate private authorization receipt was issued
 and verified at **22:47:13 UTC**. Database processing approval is deferred to
-the EC2 launcher inside the approved start window; installation and startup
-have **not yet occurred**.
+the EC2 launcher inside the approved start window. The operator executed the
+sealed command; Docker started the new container at **23:00:24.319486246 UTC**.
+The initial dispatcher reported `launch_requested`, not readiness. Independent
+Supabase reads at 23:01:17 UTC confirmed online/AI-ready with the exact pinned
+500M model; the subsequent read-only host snapshot confirmed actual startup.
 
 [User authorization](evidence/continuous-24h-user-authorization.json) ·
 [Private readback/access verification](evidence/continuous-24h-authorization-verification.json).
@@ -43,7 +49,7 @@ Authorization-record SHA256:
 artifacts. The activation digest is precomputed from only the candidate's
 approval flag/reference change. The candidate and review plan remain unchanged
 historical preparation artifacts; the separate receipt records the later user
-approval. An active manifest has not yet been installed. All manifest/plan
+approval. The installed active manifest matches the approved digest. All manifest/plan
 digests use canonical JSON with sorted keys and comma/colon separators. The
 launcher requires the private receipt, not just a true flag in a JSON.
 
@@ -56,6 +62,94 @@ and stop only these dedicated worker units. No host-wide Docker/network
 configuration, existing services, old trial files, queued-job release or
 database schema changes are authorized. The existing instance adds no new
 infrastructure; storage/egress remain subject to existing allowances.
+
+## Initial live result (23:00–23:13 UTC November 9)
+
+**Initial startup and functional acceptance passed. This is not a completed
+24-hour reliability result.** The service remains active until the fixed expiry
+unless safety/consent monitoring stops it earlier. SSM can disconnect; the
+existing systemd controller owns the worker, logs, cgroup sampling and shutdown.
+
+[Read-only host snapshot](evidence/continuous-24h-initial-host.json), collected
+by the operator at **23:13:47 UTC**, verifies:
+
+- Container `abb2252ebb8bf3665db5e7310d2e594e563401fa8bc85214126d862ffb9c51f9`
+  is running/healthy, with **zero restarts and no OOM**. Docker restart policy
+  remains `no`; bounded recovery is controlled by the reviewed controller.
+- Both dedicated systemd units are **active and disabled at boot**, with
+  unchanged loaded hashes, empty drop-ins and no pending daemon reload.
+- Actual cgroup files prove **8 GiB, 2 CPU quota, no extra swap and 256 PIDs**.
+  All seven private/VPC/IMDS/host/gateway/non-HTTPS denial counters increased by
+  one; public TLS and IPv6-disabled checks passed before the queue grant.
+- **398 durable samples** at this snapshot; kernel peak RAM
+  **3,011,940,352 bytes (2.805 GiB)**, sampled CPU peak **204.8667%** (one
+  core=100%), cumulative CPU **289.518277 seconds**. The short-interval CPU
+  peak is not instantaneous or clamped; the actual two-CPU quota is separately
+  proved. These totals include startup, processing/rendering and idle time.
+- Controller status was only 0.256 seconds old. Metrics JSONL, summary,
+  controller log, source/approval/install receipts and network proof files are
+  retained under the dedicated deployment. Final snapshots remain pending
+  while the worker is running.
+- Six existing Noethara/Supabase services, all four older container lifecycles,
+  old evidence and isolation are unchanged. No other application was restarted.
+
+### Fresh normal website upload/export
+
+A new **180-second authorized SuperTuxKart** upload through the unchanged
+development UI used real Supabase and this EC2 worker. It exercised sign-in,
+upload/instructions, Generate, queued local video/audio/scene/transcript
+analysis, automatic highlight, playback/select/edit/Save/refresh, normal Export,
+queued rendering and authenticated MP4 download/full FFmpeg decode. No highlight
+fixture, direct render shortcut, local queue consumer or worker restart was used.
+The public website was not published.
+
+| Actual result | Value |
+| --- | --- |
+| Upload plus analysis | **169.595 seconds** |
+| Complete normal UI workflow | **195.117 seconds** |
+| Analysis and render | Both completed on attempt one |
+| Automatic highlight | **151.967–161.967 seconds**, model choice G among eight actual videos plus none |
+| Fresh inference | **3,711 input / 12 output tokens**, all three caches missed, hosted inference false, estimated inference cost zero |
+| Evidence distinction | No complete ASR words in selected interval; five measured audio events and one scene boundary; visual observations remain separate |
+| Persisted edit | **152.1–161.967 seconds**, 9:16, verified after refresh |
+| Private output | **9.9-second H.264/AAC MP4**, **2,044,140 bytes**, full decode passed |
+| Output SHA256 | `cf4670c8baaa209384a207f63140db92aa0b936494b783449b1885af19db50e3` |
+
+Project `94f1c4e5-e8c2-414c-93ee-28395035b0e5` was created after the current
+processing approval. Analysis `5c42ac66-6b84-4527-932c-b24b719a9423` and render
+`1918a086-2bc9-44fe-89c3-585f04c990c1` demonstrate real queue consumption for
+the fresh consent generation. See [browser evidence](evidence/continuous-24h-initial-browser.json).
+This repeats a functional acceptance path on the new deployment; it is not a
+new controlled model benchmark or a broad accuracy claim. Footage attribution
+remains in [the sample source record](reliability-trial.md).
+
+At **23:11:54 UTC**, [hosted security checks](evidence/continuous-24h-initial-security.json)
+verified owner private download (206, bytes match the actual browser file),
+public/anonymous download denial (400), privileged protocol denial for anonymous
+(401) and the authenticated pilot (403), cross-user project/job denial and
+persisted edits. Both jobs remained completed, no active leases remained,
+online/AI-ready was true and the original upload retained its identical whole-row
+hash: **queued, zero attempts**. Processing approval did not grant the pilot
+operator/admin permissions.
+
+### Remaining 24-hour evidence
+
+The [read-only reconnect collector](../scripts/inspect_continuous_24h_status.py)
+has no wait loop or container/service/network mutation. Its private handoff is
+valid through November 11, and can be rerun after reconnecting or after expiry;
+it does not renew approval. Seven focused observer-boundary tests and Ruff pass.
+The reviewed worker/controller source, manifests and units remain unchanged.
+
+Suggested interim snapshots are **November 10 at 07:00 and 15:00 UTC**, plus a
+late-window inspection and final proof after **23:00 UTC**. Process only fresh
+authorized owner projects during the approved window. Record readiness,
+resource/sample continuity, restarts, consent/ownership, private download and
+original-upload/service invariants. Do not rerun the launch command, restart old
+trials, clear failure latches or extend the deadline. The controller monitors on
+EC2; no external notification route or automatic assistant follow-up is claimed.
+Final expiry/shutdown, removed grant, offline readiness, leases and retained
+final cgroup snapshots still need verification after the fixed stop. No merge,
+website publication, global release, Gemini or boot enablement is authorized.
 
 Read-only Supabase checks at 22:06:27 UTC confirmed protocol v2,
 `future-jobs-only-v1`, revocation/exclusions/audit enabled and global claims
@@ -94,10 +188,10 @@ the previously reviewed admission checks for the now-installed, disabled units:
 
 The preparation receiver cannot read the credential file, issue approval,
 install a systemd unit, change firewall rules or execute a container. The
-separate [24h launcher](../scripts/launch_continuous_24h_pilot.py) is prepared
-and tested locally. The operator's early invocation stopped at the time-window
-guard before installation/approval/start or a launch-attempt marker. It may be
-run once between 23:00:00 and 23:04:59 UTC after receipt issuance.
+separate [24h launcher](../scripts/launch_continuous_24h_pilot.py) completed its
+one approved execution inside the launch window. Earlier invocations stopped
+at the time guard before installation/approval/start or a launch-attempt
+marker. Use only the read-only status collector for subsequent snapshots.
 
 The [initial EC2 check](evidence/continuous-24h-ec2-initial-preflight.json)
 passed 22 of 23 checks at 22:23:24 UTC: 28.78 GiB available RAM, 45.64 GiB
@@ -129,8 +223,8 @@ The [sealed launch handoff](evidence/continuous-24h-launch-handoff.json) is
 It was privately uploaded and read back byte-for-byte; its public endpoint is
 denied. The one SSM command is retained privately in the preparation handoff,
 with a download link expiring November 10 at 22:34 UTC. The exact manifest and
-installation/start scope are now approved; run the same command once in the
-reviewed launch window. Its independent authorization object was issued once
+installation/start scope were approved and the command was executed once in
+the reviewed launch window. Its independent authorization object was issued once
 without overwriting any object, read back exactly, and denied to public and
 anonymous clients. The command still refuses early/late launch or a missing,
 changed or out-of-scope authorization record.

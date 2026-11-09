@@ -1,0 +1,31 @@
+{
+  "checked_utc": "2026-11-09T23:01:17.769295+00:00",
+  "deployment_id": "c25d8492-56fb-4c56-a519-e9a9e4246525",
+  "owner_id": "21b61ad1-bda4-4abd-ac35-7a0bf477ed69",
+  "consent": {
+    "owner_id": "21b61ad1-bda4-4abd-ac35-7a0bf477ed69",
+    "authorized": true,
+    "consent_id": "6b13bb7a-5b9b-4564-80d8-3904872d8c01",
+    "expires_at": "2026-11-10T23:00:00+00:00",
+    "approved_at": "2026-11-09T23:00:23.586181+00:00",
+    "future_jobs_only": true
+  },
+  "pipeline_health": {
+    "detail": "Ready: HuggingFaceTB/SmolVLM2-500M-Video-Instruct@7b375e1b73b11138ff12fe22c8f2822d8fe03467",
+    "online": true,
+    "ai_ready": true,
+    "max_bytes": 45000000,
+    "max_seconds": 300
+  },
+  "active_lease_count": 0,
+  "protected_job": {
+    "id": "9c5c8869-ec2e-4a3e-927d-697615bb58a3",
+    "status": "queued",
+    "attempts": 0,
+    "row_sha256": "deac9a0a9f311218fce3c531def81e1a3f92ff11e82132701a06e366d545dbdb",
+    "unchanged": true
+  },
+  "launch_requested": true,
+  "host_readiness_pending": true,
+  "read_only": true
+}

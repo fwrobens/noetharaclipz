@@ -1,0 +1,17 @@
+{
+  "provenance": {
+    "kind": "operator_pasted_ssm_launcher_output",
+    "direct_ec2_connection": false
+  },
+  "launch_requested": true,
+  "readiness_verified": false,
+  "systemd_detached": true,
+  "deployment_id": "c25d8492-56fb-4c56-a519-e9a9e4246525",
+  "manifest_sha256": "3918b9eb1dee06597852c016a7098a873eea914bbac8afa151557cda2c34dda0",
+  "fixed_stop_utc": "2026-11-10T23:00:00+00:00",
+  "unit": "noetharaclipz-continuous.service",
+  "boot_enabled": false,
+  "global_processing": false,
+  "gemini_enabled": false,
+  "reports_directory": "/var/lib/noetharaclipz-isolated/continuous/c25d8492-56fb-4c56-a519-e9a9e4246525/reports"
+}
