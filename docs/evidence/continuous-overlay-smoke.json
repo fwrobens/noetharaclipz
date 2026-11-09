@@ -1,0 +1,15 @@
+{
+  "passed": true,
+  "local_base_image_id": "sha256:32fd88495ceab2c59ab7bc6a0c7980c1003d9b4b6eea507131783a24be4b88a5",
+  "ec2_base_image_id": "sha256:472913bf34e918c48e5b77a56c4ea2dfd31873bdd79ecc2d1c4e7ab4cf3e5759",
+  "application_overlay_sha256": "7112fff2f36d9345cc594be09bd9bcf8e03b8a8571e451d8aa3fc51749b9efbf",
+  "overlay_files": 25,
+  "image_rebuilt": false,
+  "scope": "Changed read-only application overlay; import smoke only, no actual inference/worker/deployment.",
+  "container_result": {
+    "imports_passed": true,
+    "worker_started": false,
+    "model_loaded": false,
+    "queue_calls": false
+  }
+}
