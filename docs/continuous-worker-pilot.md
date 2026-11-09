@@ -6,6 +6,25 @@ applied. A fresh dedicated pilot account now has explicit owner consent;
 operator approval and worker startup remain pending. No completed AI/media
 benchmark was repeated. The earlier QA containers/assets/evidence are unchanged.
 
+**Current recovery status — 2026-11-09 20:30 UTC:** the previous signed download
+failed before the receiver/host collector ran. Supabase returned HTTP 400,
+`InvalidJWT`, `"exp" claim timestamp check failed`; the link had expired at
+15:41 UTC. The secondary Apport exception comes from reporting a Python stdin
+failure and is not evidence that any worker executed. Both nested downloads are
+now refreshed for about one day, with the outer link expiring **2026-11-10
+20:29 UTC** and the source link one minute later. Private readback returned 200
+with matching hashes; unsigned public access remains denied. No source/collector
+code, bucket visibility, owner approval or job was changed.
+
+The proposed **15:15–15:45 UTC window has expired, unapproved**. Its immutable
+candidate and scope remain historical evidence; do not activate them or silently
+extend them. After a successful SSM receipt/host report, prepare a new fixed
+30-minute candidate for separate review. Current host preflight status remains
+**not run**, operator authorization false, and the original upload's exact row
+remains queued with zero attempts. The refreshed copy-paste block handles
+download failures cleanly and creates only private preparation files.
+[Expired-link diagnosis and verified recovery](evidence/continuous-pilot-expired-link-recovery.json).
+
 ## Current limited pilot proposal — 2026-11-09 UTC
 
 - Deployment: `11865b83-9836-4ff3-a99e-dfac4df71f34`.
