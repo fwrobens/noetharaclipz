@@ -1,0 +1,71 @@
+{
+  "schema": 1,
+  "authorization_status": "not_issued",
+  "deployment_id": "11865b83-9836-4ff3-a99e-dfac4df71f34",
+  "owner_id": "21b61ad1-bda4-4abd-ac35-7a0bf477ed69",
+  "consent_id": "4426bdad-bc7a-4972-ace2-ae65ac3f9fa4",
+  "proposed_start_utc": "2026-11-09T15:15:00+00:00",
+  "proposed_stop_utc": "2026-11-09T15:45:00+00:00",
+  "maximum_seconds": 1800,
+  "manifest_candidate_sha256": "1cb8e39cfdd9d5f4485c05bab9837a87a1e2cc6d3e55078bb1d833c14ce34ae3",
+  "candidate_disabled_until_separate_authorization": true,
+  "source_bundle_sha256": "564a5b6a5de0664448737e0c5291c30a4d1ff2074be096b08711dce11fb381d8",
+  "image": "sha256:472913bf34e918c48e5b77a56c4ea2dfd31873bdd79ecc2d1c4e7ab4cf3e5759",
+  "model": "HuggingFaceTB/SmolVLM2-500M-Video-Instruct",
+  "instance_id": "i-0be10e530045fc650",
+  "instance_type": "m6i.2xlarge",
+  "region": "us-east-2",
+  "separate_grants_required": {
+    "operator_processing_approval": {
+      "issued": false,
+      "operation": "approve_processing_consent for this exact owner and consent only",
+      "expires_at": "2026-11-09T15:45:00+00:00",
+      "account_role_elevation": false
+    },
+    "worker_installation_and_start": {
+      "issued": false,
+      "scope": "Install only the new dedicated deployment and two reviewed units; launch this one owner-scoped controller within the fixed window, subject to all preflights; verify the normal website sample workflow; stop only this worker/controller before expiry",
+      "boot_enablement": false,
+      "forced_crash_injection": false
+    }
+  },
+  "limits": {
+    "memory_bytes": 8589934592,
+    "cpus": 2,
+    "active_jobs": 1,
+    "public_ports": [],
+    "provider": "local-smolvlm2",
+    "global_processing": false,
+    "gemini_enabled": false,
+    "restore_isolation": false,
+    "additional_paid_infrastructure": false
+  },
+  "required_preconditions": [
+    "Verified EC2 receipt and all read-only host checks pass",
+    "Unchanged reviewed source/image/model/unit hashes",
+    "Original protected upload whole-row hash unchanged and permanent exclusion retained",
+    "Separate operator processing approval recorded with the exact expiry",
+    "Separate explicit installation/start authorization",
+    "Fresh actual cgroup quotas and per-generation live denial proofs before queue/model access"
+  ],
+  "activation_manifest_changes_after_authorization": [
+    "operator_approved: false to true only after actual authorization",
+    "approval_reference: bind the actual user authorization to this candidate hash; record resulting active manifest hash"
+  ],
+  "preserve": [
+    "Existing Noethara and Supabase containers, configuration and volumes",
+    "All historical QA trials/evidence",
+    "Original upload and all old/ineligible jobs"
+  ],
+  "excluded_operations": [
+    "Global queue consumption",
+    "Migration reapplication or schema changes",
+    "EC2 resize/new infrastructure",
+    "Shared-host reboot, Docker restart or existing-service restart",
+    "Shared firewall/security-group changes",
+    "Gemini/paid inference/larger models",
+    "Website publication or PR merge"
+  ],
+  "expiry_policy": "Fixed UTC window; no automatic extension, renewal, rescheduling or approval. If missed, prepare a new candidate for separate review.",
+  "rollback": "Revoke this deployment grant, write its durable revocation marker and gracefully stop only the matching new controller/container. Preserve isolation rules, model assets, evidence and queued work."
+}

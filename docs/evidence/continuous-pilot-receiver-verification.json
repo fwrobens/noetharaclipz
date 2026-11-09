@@ -1,0 +1,20 @@
+{
+  "targeted_receiver_collector_tests_passed": 16,
+  "ruff": "passed",
+  "unchanged_original_handoff_validated": true,
+  "all_25_runtime_overlay_sources_unchanged": true,
+  "original_read_only_collector_unchanged": true,
+  "fixed_window_candidate_unapproved": true,
+  "candidate_differs_only_by_fixed_utc_timestamps": true,
+  "preserved_a10c98f_files": {
+    "docs/evidence": 67,
+    "deploy/worker": 37,
+    "worker/noetharaclipz": 10,
+    "supabase/migrations": 8
+  },
+  "ec2_preflights_passed": null,
+  "ec2_receipt_status": "pending_user_ssm_result",
+  "operator_approval_issued": false,
+  "worker_started": false,
+  "completed_benchmarks_repeated": false
+}

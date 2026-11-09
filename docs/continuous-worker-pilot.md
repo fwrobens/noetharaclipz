@@ -74,6 +74,56 @@ and eight migrations match `b883b01`. No completed benchmark was repeated.
 [Private transfer evidence](evidence/continuous-pilot-private-transfer.json) and
 [local verification](evidence/continuous-pilot-local-verification.json).
 
+## Final preparation handoff and proposed UTC scope
+
+The original 13:21 handoff link expired. At **14:42 UTC** a new one-hour signed
+download was issued for the **same unchanged object**. A separately hash-verified
+8,262-byte receiver wrapper reduces the SSM command to one short Python block.
+The wrapper expires at **15:41:04 UTC**; neither object was made public. No
+credential or signed URL is stored in Git.
+
+[Receiver source](../scripts/receive_continuous_pilot_preparation.py) verifies the
+original handoff/source/collector/proposal and every source/unit hash, writes only
+new private temporary files, and runs the unchanged reviewed collector. It saves
+`transfer-receipt.json` and `host-preflight.json` in the reported EC2 directory and
+prints both as one JSON result. No operator approval, installation, model/queue
+access or container execution is possible through this receiver. **16 targeted
+receiver/collector tests passed; Ruff passed.** Completed media benchmarks were
+not repeated. The EC2 result is still pending; do not mark the host checks passed
+from local receiver tests or signed Storage readback.
+
+Proposed final pilot window: **2026-11-09 15:15:00–15:45:00 UTC**, exactly 1,800
+seconds. [Fixed-window manifest candidate](evidence/continuous-pilot-1515-manifest-candidate.json)
+SHA256: `1cb8e39cfdd9d5f4485c05bab9837a87a1e2cc6d3e55078bb1d833c14ce34ae3`.
+It remains **unapproved**, with `operator_approved=false` and no approval reference,
+and rejects startup even inside its proposed window. The older zero-timestamp
+proposal remains unchanged as historical preparation evidence.
+
+[Exact authorization scope](evidence/continuous-pilot-final-authorization-scope.json)
+requires **two separate grants**, neither issued:
+
+1. Service-side processing approval for owner
+   `21b61ad1-bda4-4abd-ac35-7a0bf477ed69` and consent
+   `4426bdad-bc7a-4972-ace2-ae65ac3f9fa4`, expiring at 15:45 UTC. This grants no
+   administrator/operator role to the account.
+2. Installation/start of deployment `11865b83-9836-4ff3-a99e-dfac4df71f34` only
+   on the existing `i-0be10e530045fc650` m6i.2xlarge: reviewed image/source/500M
+   assets, 8 GiB / 2 vCPU / one job, no public ports, Gemini/global off. Verify the
+   normal website workflow using fresh authorized sample uploads only and stop
+   this worker/controller before the fixed expiry. No boot enablement, forced
+   crash, existing-service restart, shared firewall change, old-job release,
+   infrastructure purchase, merge or publication is included.
+
+Both grants depend on a verified EC2 receipt and passing fresh read-only host
+checks. Actual new-generation cgroup and live network-denial proofs must pass
+before model/queue access during any later authorized gated startup. After
+authorization, only approval metadata may change in the activation manifest;
+record its resulting hash. A missed window must be replaced by a separately
+reviewed candidate, never silently extended or rescheduled.
+
+[Refreshed private-link evidence](evidence/continuous-pilot-handoff-refresh.json)
+and [fresh live pending-approval/upload checks](evidence/continuous-pilot-final-preparation-supabase.json).
+
 ## Live Supabase consent migration checkpoint — 2026-11-09 UTC
 
 **Applied and verified; pilot still inactive.** The repository's exact
