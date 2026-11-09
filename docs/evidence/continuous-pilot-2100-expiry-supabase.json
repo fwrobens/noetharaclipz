@@ -1,0 +1,118 @@
+{
+  "checked_utc": "2026-11-09T21:30:06.875755+00:00",
+  "read_only": true,
+  "pilot_authorization_expired": true,
+  "pilot_status": {
+    "owner_id": "21b61ad1-bda4-4abd-ac35-7a0bf477ed69",
+    "authorized": false,
+    "consent_id": "4426bdad-bc7a-4972-ace2-ae65ac3f9fa4",
+    "expires_at": "2026-11-09T21:30:00+00:00",
+    "approved_at": "2026-11-09T21:00:03.216779+00:00",
+    "future_jobs_only": true
+  },
+  "owner_health": {
+    "detail": "Processing authorization inactive",
+    "online": false,
+    "ai_ready": false,
+    "max_bytes": 45000000,
+    "max_seconds": 300
+  },
+  "readiness_observations": [
+    {
+      "checked_utc": "2026-11-09T21:19:25.361282+00:00",
+      "authorized": true,
+      "online": true,
+      "ai_ready": true
+    },
+    {
+      "checked_utc": "2026-11-09T21:20:26.065681+00:00",
+      "authorized": true,
+      "online": true,
+      "ai_ready": true
+    },
+    {
+      "checked_utc": "2026-11-09T21:21:26.823118+00:00",
+      "authorized": true,
+      "online": true,
+      "ai_ready": true
+    },
+    {
+      "checked_utc": "2026-11-09T21:22:27.314664+00:00",
+      "authorized": true,
+      "online": true,
+      "ai_ready": true
+    },
+    {
+      "checked_utc": "2026-11-09T21:23:27.917111+00:00",
+      "authorized": true,
+      "online": true,
+      "ai_ready": true
+    },
+    {
+      "checked_utc": "2026-11-09T21:24:28.746105+00:00",
+      "authorized": true,
+      "online": true,
+      "ai_ready": true
+    },
+    {
+      "checked_utc": "2026-11-09T21:25:29.190170+00:00",
+      "authorized": true,
+      "online": true,
+      "ai_ready": true
+    },
+    {
+      "checked_utc": "2026-11-09T21:26:29.911985+00:00",
+      "authorized": true,
+      "online": true,
+      "ai_ready": true
+    },
+    {
+      "checked_utc": "2026-11-09T21:27:30.270882+00:00",
+      "authorized": true,
+      "online": true,
+      "ai_ready": true
+    },
+    {
+      "checked_utc": "2026-11-09T21:28:30.753914+00:00",
+      "authorized": true,
+      "online": true,
+      "ai_ready": true
+    },
+    {
+      "checked_utc": "2026-11-09T21:29:31.504687+00:00",
+      "authorized": true,
+      "online": true,
+      "ai_ready": true
+    },
+    {
+      "checked_utc": "2026-11-09T21:30:05.502647+00:00",
+      "authorized": false,
+      "online": false,
+      "ai_ready": false
+    }
+  ],
+  "active_unfinished_leases": 0,
+  "pilot_jobs": [
+    {
+      "id": "2c9eba52-4835-4c45-8839-2de90e99d2bf",
+      "status": "completed",
+      "attempts": 1
+    },
+    {
+      "id": "9c5b0b8d-5c7b-48c3-8308-53119010d724",
+      "status": "completed",
+      "attempts": 1
+    }
+  ],
+  "project_edits_remain_saved": true,
+  "owner_private_download_after_processing_expiry_http_status": 206,
+  "protected_upload": {
+    "status": "queued",
+    "attempts": 0,
+    "whole_row_sha256": "deac9a0a9f311218fce3c531def81e1a3f92ff11e82132701a06e366d545dbdb",
+    "unchanged": true
+  },
+  "worker_restarted": false,
+  "approval_extended": false,
+  "global_processing_enabled": false
+}

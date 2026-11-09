@@ -1,51 +1,59 @@
-# Continuous SmolVLM2-500M readiness — final QA results, 9 November 2026 UTC
+# Continuous SmolVLM2-500M readiness — completed pilot, 9 November 2026 UTC
 
-**Keep the existing m6i.2xlarge and SmolVLM2-500M. The bounded reliability stage
-passed and stopped automatically. Continuous/global processing remains disabled.**
-No resize, larger model, paid inference or new infrastructure is indicated by
-these measurements. A continuous rollout still needs reviewed boot isolation,
-ongoing monitoring and explicit queue opt-in controls. Those controls are now
-implemented and locally verified as described in the
-[continuous pilot procedure](continuous-worker-pilot.md). The consent SQL is now
-applied as `20261109124958_continuous_worker_consent`; live REST confirms protocol
-v2. A fresh pilot owner has explicitly consented. The new controller remains
-now **installed and running only for the explicitly authorized 21:00–21:30 UTC
-pilot on November 9**. Boot enablement/global processing remain disabled.
+**Keep the existing m6i.2xlarge and SmolVLM2-500M. The consent-aware systemd pilot
+passed and stopped automatically. The worker is now inactive; global processing
+and Gemini remain disabled.** No resize, larger model or new infrastructure is
+indicated by this tested single-job workload.
 
-Actual processing approval was recorded at **21:00:03 UTC**; the worker started
-at **21:00:04 UTC** and passed actual 8 GiB/2 vCPU/no-extra-swap/PID-limit and
-seven live isolation proofs before reporting local-provider readiness. The
-normal consent-aware website workflow then passed on a fresh 180-second gaming
-upload: analysis **165.848 s**, full workflow **192.495 s**, genuine automatic
-highlight, saved/refreshed edit, queued Export and private **2,044,140-byte,
-9.9-second H.264/AAC MP4** download/full decode. Both jobs completed on attempt
-one with fresh local inference and no hosted inference. Existing services and
-the original upload were preserved. Final shutdown/resource readback is pending;
-do not interpret this authorized pilot as ongoing/global deployment permission.
-[Startup proof](evidence/continuous-pilot-2100-startup.json),
-[browser result](evidence/continuous-pilot-2100-browser.json),
-[security](evidence/continuous-pilot-2100-security.json).
+The consent SQL is applied as `20261109124958_continuous_worker_consent`; it was
+not reapplied. After explicit owner consent and separate user authorization,
+processing approval was issued at **21:00:03 UTC**, expiring at **21:30 UTC**.
+The worker started **21:00:04 UTC**, proved actual **8 GiB / 2 vCPU / no extra
+swap / 256 PIDs** and all seven live network denials, then reported local readiness.
 
-At **2026-11-09 20:33 UTC**, the operator's SSM receipt confirms secure source
-transfer and **all 13 fresh read-only host preflights passed**. The existing host
-has **28.77 GiB available RAM, 45.67 GiB free disk and eight CPUs**. Docker,
-reviewed image/assets, private network/firewall isolation, secret metadata and
-absence of an active continuous unit passed. All six existing service states
-and all three old trial lifecycles match archived start/restart evidence.
-[Receipt and full report](evidence/continuous-pilot-ec2-preflight-2033.json).
+The normal development-server website against actual Supabase/EC2 passed on a
+fresh 180-second gaming upload: **165.848 s** for upload/analysis, **192.495 s**
+for the complete workflow, automatic **151.967–161.967 s** highlight, saved and
+refreshed edit, queued Export, and authenticated private **9.9-second H.264/AAC
+MP4 (2,044,140 bytes)** download/full decode. Both jobs completed on attempt one.
+Fresh local inference recorded **3,711 input / 12 output tokens**, all caches
+missed, hosted inference false and estimated provider cost zero. The public
+website was not published.
 
-The new **21:00–21:30 UTC on November 9** proposal remains disabled and requires
-separate processing-approval and installation/start grants.
-[Exact current scope](evidence/continuous-pilot-2100-authorization-scope.json).
-The earlier 15:15 candidate expired unapproved. No window was automatically
-extended, no service was started, and the original upload remains unchanged.
+Automatic expiry shutdown completed at **21:29:46.129 UTC**, Docker **exit 0**,
+no OOM, **zero restarts**, grant removed, controller closed and unit
+**inactive/disabled**. The unchanged Docker policy is `restart=no`. All **884
+samples** and the final cgroup snapshot were retained: kernel peak RAM
+**3,013,451,776 bytes (2.806 GiB)**; sampled CPU peak **203.2355%** (one core=100%);
+recorded cumulative CPU **294.954318 s**. CPU sampling is not an instantaneous
+maximum; the actual two-CPU quota was separately proved, and values are not clamped.
+
+At **21:30:05 UTC**, independent hosted checks confirm owner authorization
+expired, **online=false / ai_ready=false**, **zero active unfinished leases**, both
+jobs completed and the original upload's identical queued/zero-attempt row.
+Saved edits and authenticated private downloads remain available after processing
+expiry. Existing Noethara/Supabase services, isolation and all prior QA trials
+remain unchanged. No approval renewal or worker restart was attempted.
+
+[Startup](evidence/continuous-pilot-2100-startup.json),
+[browser workflow](evidence/continuous-pilot-2100-browser.json),
+[security](evidence/continuous-pilot-2100-security.json),
+[final host report](evidence/continuous-pilot-2100-final-host.json),
+[post-expiry hosted checks](evidence/continuous-pilot-2100-expiry-supabase.json).
+
+Before launch, **all 13 read-only EC2 preflights passed**: **28.77 GiB available
+RAM, 45.67 GiB free disk and eight host CPUs**; Docker 29.1.3/cgroup v2, reviewed
+image/assets, dedicated network/rule ordering and secret metadata. All 25 sources
+and two unit files matched their hashes. Source transfer used the existing
+private bucket; expired download links were repaired without exposing keys or
+making objects public. [Receipt](evidence/continuous-pilot-ec2-preflight-2033.json).
 
 Host observations come from operator-pasted, read-only SSM collectors; Codex has
 no direct EC2 execution connection. Browser and hosted REST checks ran from the
 development environment against actual Supabase and the actual EC2 worker.
 No public website deployment, merge or paid-service activation occurred.
 
-## Completed monitored trial
+## Earlier monitored reliability trial
 
 | Check | Final evidence |
 | --- | --- |
@@ -167,26 +175,30 @@ it. The fresh pilot owner `21b61ad1-bda4-4abd-ac35-7a0bf477ed69` explicitly
 consented to a proposed 30-minute sample-footage pilot; server processing
 authorization remains false until separate operator approval.
 
-Remaining gates are:
+The completed deployment checkpoints are:
 
-1. **Completed at 20:33 UTC:** fresh read-only EC2 resource/service/isolation
-   review and hash-verified source receipt. Operator-pasted SSM provenance is
-   retained; the collector started/executed no container and read no secret.
-2. Separately approve the consented owner and select/review the exact fixed
-   30-minute window and active immutable manifest. The current 21:00–21:30 UTC
-   proposal remains disabled with `operator_approved=false`; no approval was issued.
-3. Install only the approved final configuration and obtain
-   separate authorization to start only the new limited pilot. Verify the new
-   consent-aware website path and shutdown/revocation on EC2. Local tests do not
-   establish actual system-manager/host boot behavior or hosted v2 acceptance.
+1. Fresh EC2 read-only preflight and secure source receipt: **passed**.
+2. Explicit owner consent plus separate processing/installation/start approval:
+   **recorded and applied only within 21:00–21:30 UTC**.
+3. Actual systemd startup/security gates, normal v2 website workflow, retained
+   metrics, deadline stop, expired readiness and preserved original upload:
+   **passed**. No active processing authorization remains.
 
-The exact future commands and rollback are in the
-[pilot procedure](continuous-worker-pilot.md). Live notification delivery and
-sustained-load/maximum-input capacity remain operational checks. No new unit,
-firewall rule or continuous worker was installed or started during pilot
-preparation. One fresh dedicated account and its explicitly authorized owner
-consent were created; the already-applied schema was not changed/reapplied.
-All previous trial files/evidence remain unchanged.
+Ongoing operation requires a **new separately reviewed consent/approval window
+and activation/handover**, preserving this expired deployment/evidence. Do not
+reset the old approval, rerun its launch script or automatically extend its
+window. Boot enablement and live alert delivery require separate operational
+choices. A host reboot and forced crash of the new continuous controller were
+outside this pilot's scope: prior real worker lease recovery and local controller
+backoff tests remain evidence, not a claim of live testing those new failure paths.
+Sustained multi-user/max-input capacity and broad model accuracy are not established
+by this gaming run. No new paid monitoring/infrastructure is required by the
+measured baseline.
+
+The [pilot procedure](continuous-worker-pilot.md) records the exact completed
+scope and rollback. The two dedicated units remain installed but disabled at
+boot; the worker container is exited with automatic restart disabled. Private
+model assets, evidence, logs, projects and queued work remain preserved.
 
 Rollback must revoke the dedicated grant and gracefully stop only the matching
 worker/container/controller. Preserve assets, evidence and queued work; leave
@@ -194,20 +206,18 @@ Noethara and Supabase services untouched. The current trial already completed
 that safe stop automatically; no additional stop/restart is needed.
 
 **Recommendation:** the existing host and 500M worker are suitable candidates
-for a limited, owner-scoped continuous pilot after the prepared startup and
-queue-control rollout is reviewed, applied and separately authorized. The measured reliability
-stage is complete. General-user/global processing remains disabled, and this
-recommendation does not authorize a restart, deployment, merge or publication.
+for a separately approved, owner-scoped continuous rollout with the tested limits.
+This pilot and its normal website workflow passed; ongoing/global processing,
+boot startup, merge and website publication remain unauthorized.
 
-Validation: **229 worker tests passed, one optional sample skipped; Ruff passed.**
-The seven probe regression cases supplement the earlier reliability tests.
-Approved code/image and prior evidence hashes were unchanged during live QA;
-only verification documentation/evidence changed afterward. Existing frontend,
-TypeScript, build and lint results remain applicable; no frontend code changed.
+Current validation: **298 worker tests passed, one optional sample skipped; Ruff
+passed.** [Current suite evidence](evidence/continuous-pilot-2100-local-tests.json).
+Earlier frontend tests, TypeScript, build and lint remain applicable; no frontend
+source changed. The local test server needed `NODE_USE_ENV_PROXY=1` for SSR auth;
+that runtime correction is recorded with the failed pre-upload attempt, not hidden.
+No completed model benchmark was repeated.
 
-Continuous-control preparation validation: **272 worker tests passed, one
-optional sample skipped; Ruff passed.** Real local PostgreSQL/PGMQ tests cover
-consent, exclusions, ownership, cancellation, recovery and both revocation races.
-Unit syntax/dependency checks and an import-only overlay smoke supplement these
-tests. [Preparation evidence](evidence/continuous-worker-preparation.json) records
-the artifact and scope; no new inference or hosted deployment is claimed.
+Historical preparation also includes real PostgreSQL/PGMQ consent/permission
+checks and both concurrent revocation orders, unit syntax/dependency checks and
+an import-only overlay smoke. [Preparation evidence](evidence/continuous-worker-preparation.json).
+The earlier raw QA evidence, runtime sources and existing migrations remain unchanged.

@@ -1,4 +1,56 @@
-# Continuous local-worker pilot — implementation prepared, not deployed
+# Continuous local-worker pilot — live workflow and shutdown verified
+
+## Final outcome — approved pilot completed and stopped
+
+The authorized 21:00–21:30 UTC pilot passed the real consent-aware website
+workflow and stopped automatically at **2026-11-09 21:29:46.129 UTC**, before
+the fixed deadline. The read-only SSM collector reports **exit 0, no OOM, zero
+restarts**, Docker restart policy **no**, processing grant removed, controller
+`closed/approval_expired` and the systemd unit **inactive/disabled**. The expiry
+log agrees. All existing services, isolation rules and three historical QA
+trial states remain unchanged.
+
+| Final retained resource evidence | Actual value |
+| --- | --- |
+| Samples | **884**, final snapshot captured, no counter reset |
+| Kernel peak RAM | **3,013,451,776 bytes (2.806 GiB)** |
+| Sampled CPU peak | **203.2355%**, one core = 100%; not an instantaneous maximum |
+| Recorded cumulative CPU | **294.954318 seconds**, one retained counter domain |
+| Actual quota proof | **8 GiB, 200000/100000 CPU quota, zero extra swap, 256 PIDs** |
+| Retained samples | `metrics.jsonl`, **677,671 bytes**, summary and controller/lifecycle evidence retained privately |
+
+The sampled CPU rate is preserved without clamping; the two-CPU kernel quota was
+independently read. Totals include startup, actual processing/rendering and idle
+time, and are not model-only throughput or worst-case resource benchmarks.
+[Final host evidence](evidence/continuous-pilot-2100-final-host.json).
+
+At **21:30:05 UTC**, independent hosted checks confirm processing authorization
+expired, owner health **online=false / ai_ready=false**, **zero active unfinished
+leases**, both pilot jobs completed, and the protected upload's identical full-row
+hash, queued with zero attempts. Saved edits and authenticated private downloads
+remain available after processing expiry (HTTP 206). No approval was extended,
+reset or renewed, and no worker was restarted.
+[Post-expiry Supabase evidence](evidence/continuous-pilot-2100-expiry-supabase.json).
+
+The complete current worker suite passed **298 tests**, with **one optional
+sample skipped**; Ruff passed. The normal UI run produced a real downloaded MP4
+with fresh local inference, not a manually inserted highlight or rendering
+shortcut. [Tests](evidence/continuous-pilot-2100-local-tests.json),
+[normal workflow](evidence/continuous-pilot-2100-browser.json).
+
+**Recommendation:** keep the existing m6i.2xlarge and SmolVLM2-500M for a separately
+approved owner-scoped continuous rollout; this tested workload does not indicate
+a resize. The completed pilot is now stopped. Ongoing operation needs a new
+reviewed consent/approval window and deployment handover; do not reuse this
+expired launch. Boot enablement, live alert delivery and broader sustained/max-
+input capacity remain operational decisions. No forced crash or host reboot was
+authorized in this pilot: prior real worker lease recovery and local controller
+backoff tests remain evidence, not a claim of live testing every new controller
+failure path. Model quality is not calibrated by this one gaming run.
+
+Global processing and Gemini remain disabled. Existing services, private QA
+media/evidence and the original upload are preserved. No paid infrastructure,
+Lovable credits, merge, public website deployment or migration reapplication.
 
 ## Authorized 21:00 pilot — startup and normal website workflow passed
 
@@ -55,13 +107,10 @@ processing-approved regular owner remain denied privileged protocol operations
 upload retains its exact whole-row hash, queued/zero-attempt state. Both pilot
 jobs are completed. [Security evidence](evidence/continuous-pilot-2100-security.json).
 
-**Final shutdown/peak-resource evidence is pending the read-only end collector.**
-The pilot remains bounded by 21:30 UTC; no new footage is being submitted after
-the successful workflow. Final readback must confirm Docker exit, grant removal,
-durable CPU/RAM snapshots, unchanged existing services and expired readiness.
-The [final collector](../scripts/inspect_continuous_pilot_2100_end.py) cannot
-start/stop/execute a container or extend the deadline. Do not restart the worker
-or extend approval after expiry.
+The [read-only final collector](../scripts/inspect_continuous_pilot_2100_end.py)
+subsequently confirmed the final outcome above without starting/stopping or
+executing a container. No additional footage was submitted after this workflow.
+Do not restart the closed worker or extend its expired approval.
 
 ## Preparation checkpoint — transfer and all read-only host preflights passed
 

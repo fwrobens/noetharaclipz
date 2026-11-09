@@ -1,0 +1,137 @@
+{
+  "provenance": {
+    "kind": "operator_pasted_read_only_final_collector",
+    "normalized_material_fields": true,
+    "independent_direct_ec2_connection": false,
+    "collector_python_sha256": "42bd20b7a168909efb3bb697647f5809ffba1b629fae8863a2eb6ebc190f7bcf",
+    "collector_payload_sha256": "09f9733a9099a3b0f13ee92223460d815918e63fff28775268881e8b6b5ec253"
+  },
+  "checked_utc": "2026-11-09T21:29:48.650867+00:00",
+  "read_only": true,
+  "worker_started_stopped_restarted_or_executed": false,
+  "credential_file_contents_read": false,
+  "manifest_sha256": "0903df1cfcb68f120877ca1088f4608584bc1bddebbb1b9b4ddb41725ec3792f",
+  "fixed_stop_utc": "2026-11-09T21:30:00Z",
+  "docker_state": {
+    "Status": "exited",
+    "Running": false,
+    "Restarting": false,
+    "ExitCode": 0,
+    "OOMKilled": false,
+    "StartedAt": "2026-11-09T21:00:04.300004727Z",
+    "FinishedAt": "2026-11-09T21:29:46.129045186Z",
+    "restart_count": 0,
+    "restart_policy": {
+      "Name": "no",
+      "MaximumRetryCount": 0
+    }
+  },
+  "container_id": "bc1b8b921156a9bf52db5483dc012549f9f43daedb391bcc95a4dc954a557aac",
+  "status": {
+    "stage": "closed",
+    "at": 1794259786.2130806,
+    "global_processing": false,
+    "reason": "approval_expired"
+  },
+  "metrics": {
+    "sample_count": 884,
+    "generations": {
+      "2026-11-09T21:00:04.300004727Z": {
+        "last_usage": 294954318,
+        "last_at": 105308.058413956,
+        "cpu_usage_usec": 294954318,
+        "memory_peak_bytes": 3013451776,
+        "sampled_peak_cpu_percent": 203.23549996521396,
+        "final_snapshot_captured": true,
+        "counter_reset_observed": false,
+        "cpu_domain": "32382"
+      }
+    },
+    "peak_memory_bytes": 3013451776,
+    "sampled_peak_cpu_percent": 203.23549996521396,
+    "total_cpu_seconds": 294.954318,
+    "cpu_counter_domains": {
+      "32382": 294954318
+    },
+    "cpu_peak_is_sampled_not_instantaneous": true,
+    "final_snapshots_complete": true,
+    "retired_cpu_usec": 0,
+    "retained_generations_limit": 64,
+    "sample_retention_bytes": 20971520
+  },
+  "grant_present": false,
+  "continuous_unit": {
+    "active": "inactive",
+    "enabled": "disabled"
+  },
+  "existing_services_unchanged": true,
+  "previous_trials_all_unchanged": true,
+  "previous_trial_ids": [
+    "fbe3d4f4d9b1c95cb3cae77278a40a5cf5d52c77435eccdc3d14c60d17c06f99",
+    "af5b1136b2c734fd0c67e26918cb9d415af370db297c4d8250d2f8860ef4301d",
+    "6c66cb349cbf21ff16ee168c079289a6e17712f3beb81f2eb1da724a71e5db6e"
+  ],
+  "previous_trial_state_reference": "continuous-pilot-ec2-preflight-2033.json",
+  "isolation_unchanged": true,
+  "lifecycle_log_lines": [
+    "2026-11-09T21:29:46.121426580Z {\"continuous_generation_stopped\": true, \"reason\": \"approval_expired\"}"
+  ],
+  "generation_proofs_count": 1,
+  "all_generation_kernel_checks_passed": true,
+  "actual_cgroup_limits": {
+    "version": 2,
+    "memory_bytes": 8589934592,
+    "cpu_quota": 200000,
+    "cpu_period": 100000,
+    "extra_swap_bytes": 0,
+    "pids_max": 256
+  },
+  "all_seven_live_denials_blocked_with_counter_delta_one": true,
+  "public_tls": {
+    "zxdnjnsghdnviflahvry.supabase.co": 401,
+    "huggingface.co": 200
+  },
+  "ipv6_disabled": true,
+  "retained_report_files": [
+    {
+      "name": "container.json",
+      "bytes": 131
+    },
+    {
+      "name": "metrics.jsonl",
+      "bytes": 677671
+    },
+    {
+      "name": "user-authorization.json",
+      "bytes": 891
+    },
+    {
+      "name": "installation-2100.json",
+      "bytes": 165
+    },
+    {
+      "name": "status.json",
+      "bytes": 103
+    },
+    {
+      "name": "network-678b5c5a-6fd0-41ba-b763-6a4f4cd5c6a8.json",
+      "bytes": 890
+    },
+    {
+      "name": "network-attempt.json",
+      "bytes": 891
+    },
+    {
+      "name": "launch-requested.json",
+      "bytes": 144
+    },
+    {
+      "name": "controller.log",
+      "bytes": 88
+    },
+    {
+      "name": "metrics-summary.json",
+      "bytes": 660
+    }
+  ]
+}
