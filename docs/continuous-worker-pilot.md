@@ -1,13 +1,55 @@
 # Continuous local-worker pilot — implementation prepared, not deployed
 
-This stage builds on commit `0195e13` and its completed EC2 reliability trial.
-No completed AI/media benchmarks were repeated. No continuous worker, account,
-unit, firewall change, hosted SQL, paid service or global consumer was started.
-The earlier QA containers, model assets, receipts and evidence remain unchanged.
+The implementation builds on `0195e13` and its completed EC2 reliability trial;
+pilot preparation continues from `b883b01`. The consent migration is already
+applied. A fresh dedicated pilot account now has explicit owner consent;
+operator approval and worker startup remain pending. No completed AI/media
+benchmark was repeated. The earlier QA containers/assets/evidence are unchanged.
 
-The implementation is ready for review; deployment still requires the SQL
-proposal to be separately authorized/applied, one owner's consent and operator
-approval, a reviewed immutable pilot manifest, and a fresh host preflight.
+## Current limited pilot proposal — 2026-11-09 UTC
+
+- Deployment: `11865b83-9836-4ff3-a99e-dfac4df71f34`.
+- Fresh owner: `21b61ad1-bda4-4abd-ac35-7a0bf477ed69`; password login and identity
+  verification passed. Credentials stay in a private mode-0600 local record,
+  outside Git, chat output and the EC2 handoff.
+- Owner explicitly answered **“I consent for this pilot account”** to local
+  processing of separately authorized sample footage for a proposed 30-minute
+  pilot. The authenticated owner request was recorded at 13:13:29 UTC as consent
+  `4426bdad-bc7a-4972-ace2-ae65ac3f9fa4`, terms `local-video-v1`.
+- Server processing authorization is **false**: no operator approval or expiry
+  has been issued. No upload/job was created and no worker was started.
+- Proposed duration: **1,800 seconds**, with fixed UTC start/expiry chosen only
+  after review. No automatic renewal or boot enablement is proposed.
+- [Immutable disabled manifest proposal](evidence/continuous-pilot-manifest-proposal.json)
+  SHA256: `736b72c902eae0b65d251db69d15dedfe38e5e5b105b71849b3469c702d90d73`.
+  `operator_approved=false`; activation timestamps are zero. It deliberately
+  fails startup validation. This is **not** an activation authorization; a new
+  final hash is required after explicit operator approval/window selection.
+- [Operator approval proposal](evidence/continuous-pilot-operator-approval-proposal.json)
+  is inert: no reason/reference, start or expiry is fabricated and no approval
+  RPC is invoked during preparation.
+- Reuse the exact 184,274-byte source bundle from `4f78781`, SHA256
+  `564a5b6a5de0664448737e0c5291c30a4d1ff2074be096b08711dce11fb381d8`.
+  All 25 overlay sources and both units still match the reviewed artifact;
+  documentation/preparation changes do not rebuild the image or model.
+
+Live REST verification at 13:09 UTC returned the exact v2 contract with all
+four consent protections true, `global_claim=false` and `local-smolvlm2`.
+Anonymous privileged protocol access was denied (401), and the fresh regular
+authenticated owner was denied (403). The original upload retained its exact
+whole-row SHA256, queued with zero attempts. No migration was reapplied.
+
+This session has no AWS identity/CLI or direct EC2 execution connection. The
+private preparation handoff transfers source into a new temporary directory and
+runs `scripts/inspect_continuous_pilot_host.py` using only read-only commands.
+It checks resources, service health, reviewed image/assets, secret **metadata**,
+network ownership/rule order and stopped historical containers. It cannot read
+the secret contents, install a unit, alter rules, execute a container or access
+the queue. Live per-generation denial counters and actual new-worker cgroup
+limits remain mandatory after a separately authorized gated startup.
+
+[Owner consent receipt](evidence/continuous-pilot-owner-consent.json) and
+[preparation summary](evidence/continuous-pilot-preparation.json).
 
 ## Live Supabase consent migration checkpoint — 2026-11-09 UTC
 
@@ -118,7 +160,7 @@ project/storage cleanup or cross-owner file deletion runs in consented mode.
 
 ## Server-side opt-in SQL contract — applied; no pilot consent yet
 
-[continuous-worker-consent.sql](proposals/continuous-worker-consent.sql) is a
+[continuous-worker-consent.sql](proposals/continuous-worker-consent.sql) is the
 original review-only transactional migration source, outside
 `supabase/migrations/` as required by `AGENTS.md`. The exact approved SQL was
 applied as new live migration version `20261109124958` on 2026-11-09; no existing
@@ -166,15 +208,17 @@ claimed as durable application audit events.
    RLS, function presence, no new consent/job bindings and protected upload.
    **Do not reapply** this migration, heartbeat, or v1 queue migrations.
    The controller still fails closed until separate owner/operator opt-ins.
-2. **Select one new pilot owner.** Preserve all historical QA accounts and the
-   original upload. No fresh account was created during this preparation. The
+2. **Completed: one new pilot owner and explicit owner consent.** Preserve all
+   historical QA accounts and the original upload. The new owner and actual
+   recorded consent appear above; do not create a duplicate or re-request it. The
    first pilot deliberately uses one owner per controller; server consent records
    support separately approved owners, with one active processing lease overall.
-3. **Owner requests consent using an existing private login record**, after the
-   owner has explicitly agreed to local video processing:
+3. **Inspect the recorded consent, then obtain separate operator approval.**
+   The current owner's explicit request is already recorded; do not request it
+   again or create a replacement generation. Its existing private login record
+   can read status:
 
    ```sh
-   python scripts/continuous_consent.py request --account /secure/pilot-account.json
    python scripts/continuous_consent.py status --account /secure/pilot-account.json
    ```
 
@@ -189,7 +233,10 @@ claimed as durable application audit events.
    Those variables must contain the separately approved owner, returned consent,
    actual UTC expiry and audit reference. The command cannot manufacture owner
    consent, extend an existing approval or release old jobs.
-4. **Build the immutable source overlay from the reviewed clean commit:**
+4. **Reuse the exact reviewed bundle for this pilot.** The hash/size and source
+   commit appear above. No runtime source has changed, so no rebuild or repeated
+   inference benchmark is needed. For a future changed source revision only,
+   build a new immutable overlay from its reviewed clean commit into new paths:
 
    ```sh
    python scripts/build_continuous_bundle.py --output test-results/continuous-source.json --manifest-template test-results/continuous-manifest.json
@@ -279,9 +326,9 @@ image with no model/credential mount or network. The
 and preservation checks for all 55 earlier evidence files, 30 existing deployment
 files and eight migrations.
 
-The SQL approval/application checkpoint is complete and verified. The remaining
-deployment blockers are a fresh pilot identity with explicit owner consent,
-separate operator approval of an immutable pilot manifest/window, fresh EC2
+The SQL application and fresh pilot identity/owner-consent checkpoints are
+complete. The remaining deployment blockers are separate operator approval of
+an immutable pilot manifest/window, fresh EC2
 installation/preflights, explicit startup authorization and live v2 pilot
 verification. Production notification delivery and sustained-load/maximum-
 input capacity remain future operational checks. No infrastructure upgrade or
