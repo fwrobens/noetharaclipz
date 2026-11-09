@@ -9,6 +9,45 @@ The implementation is ready for review; deployment still requires the SQL
 proposal to be separately authorized/applied, one owner's consent and operator
 approval, a reviewed immutable pilot manifest, and a fresh host preflight.
 
+## Live Supabase consent migration checkpoint — 2026-11-09 UTC
+
+**Applied and verified; pilot still inactive.** The repository's exact
+`docs/proposals/continuous-worker-consent.sql` from commit `fa414ce`
+(blob SHA `7b546ae3511f2e84aa35fd2c28fb1b41af9940da`) was
+separately authorized by the owner and applied through the connected Supabase
+migration API to project `zxdnjnsghdnviflahvry` as version
+`20261109124958_continuous_worker_consent`. The live migration ledger confirms
+the new version; all older versions remained unchanged.
+
+Read-only post-apply checks at 2026-11-09 12:50 UTC verified:
+
+- Six new private consent tables have RLS enabled. Three historical QA owners
+  are excluded; the protected upload is explicitly excluded.
+- Exactly **zero** owner consents, pre-existing consent-bound jobs or leases,
+  active job leases, and audit entries. No pilot owner has requested or received
+  approval, and no worker has been started.
+- Service role can claim opt-in jobs and approve consent; anonymous and regular
+  authenticated callers cannot. Regular authenticated owners may request their
+  own consent. The service role no longer has global-claim EXECUTE.
+- `public.worker_continuous_protocol()` exists (v2 contract function).
+- The protected upload `9c5c8869-ec2e-4a3e-927d-697615bb58a3` remains
+  queued with zero attempts, no lease and no cancellation. Its full-row JSON
+  MD5 was `7820c45dca35993cb90f5b3fec2105f1` before and after applying.
+
+Security advisor informational findings for default-deny private RLS tables
+remain; leaked-password protection is separately disabled and was not changed.
+**Do not reapply this SQL or create another copy of the migration.** The
+review-only SQL source stays under `docs/proposals/`; no Lovable-managed
+migration file was edited. This checkpoint is a database verification, **not**
+an EC2 pilot authorization or an end-to-end hosted v2 test.
+
+**Remaining sequence:** create or select a fresh eligible pilot identity;
+obtain that identity's explicit opt-in request; separately approve the owner and
+time-bounded immutable manifest; verify private source bundle transfer and
+fresh EC2 startup isolation; then seek the separate authorization to start the
+owner-scoped continuous worker. Keep global processing disabled and the old
+upload permanently excluded.
+
 ## Startup and recovery
 
 `deploy/worker/continuous_host.py` is a dedicated controller for the existing
@@ -77,13 +116,13 @@ directories older than a day are removed; active jobs are capped at twenty minut
 Cache pruning remains the existing local provider's bounded policy. No global
 project/storage cleanup or cross-owner file deletion runs in consented mode.
 
-## Server-side opt-in proposal — not applied
+## Server-side opt-in SQL contract — applied; no pilot consent yet
 
 [continuous-worker-consent.sql](proposals/continuous-worker-consent.sql) is a
-review-only transactional migration proposal, outside `supabase/migrations/`
-as required by `AGENTS.md`. No existing migration was edited. After separate
-database authorization, the approved SQL must be recorded as a **new** actual
-Supabase migration version and deployed as one transaction, never piecemeal.
+original review-only transactional migration source, outside
+`supabase/migrations/` as required by `AGENTS.md`. The exact approved SQL was
+applied as new live migration version `20261109124958` on 2026-11-09; no existing
+migration was edited or reapplied. Keep this source as the reviewed record.
 
 The contract adds private RLS-enabled consent, exclusions, job bindings, lease
 bindings and append-only audit tables. Authenticated owners can request/revoke
@@ -122,10 +161,11 @@ claimed as durable application audit events.
 
 ## Exact limited-pilot procedure — future authorization required
 
-1. **Review the proposal and its local test evidence.** Obtain separate database
-   authorization, deploy it transactionally to the existing project, record the
-   actual new migration version and verify grants/RLS/protocol v2. Do not reapply
-   heartbeat or v1 queue migrations. Until then, the new controller fails closed.
+1. **Completed 2026-11-09:** Separately authorized exact SQL applied as live
+   migration `20261109124958_continuous_worker_consent` and verified for grants,
+   RLS, function presence, no new consent/job bindings and protected upload.
+   **Do not reapply** this migration, heartbeat, or v1 queue migrations.
+   The controller still fails closed until separate owner/operator opt-ins.
 2. **Select one new pilot owner.** Preserve all historical QA accounts and the
    original upload. No fresh account was created during this preparation. The
    first pilot deliberately uses one owner per controller; server consent records
@@ -239,8 +279,10 @@ image with no model/credential mount or network. The
 and preservation checks for all 55 earlier evidence files, 30 existing deployment
 files and eight migrations.
 
-The remaining deployment blockers are separate SQL review/application, approved
-pilot identity/consent/manifest, fresh EC2 installation/preflights and a live v2
-pilot verification. Production notification delivery and sustained-load/maximum-
+The SQL approval/application checkpoint is complete and verified. The remaining
+deployment blockers are a fresh pilot identity with explicit owner consent,
+separate operator approval of an immutable pilot manifest/window, fresh EC2
+installation/preflights, explicit startup authorization and live v2 pilot
+verification. Production notification delivery and sustained-load/maximum-
 input capacity remain future operational checks. No infrastructure upgrade or
 paid service is required for preparation or recommended by the passed baseline.
