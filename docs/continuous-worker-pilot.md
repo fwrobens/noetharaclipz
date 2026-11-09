@@ -51,6 +51,29 @@ limits remain mandatory after a separately authorized gated startup.
 [Owner consent receipt](evidence/continuous-pilot-owner-consent.json) and
 [preparation summary](evidence/continuous-pilot-preparation.json).
 
+The private preparation handoff is **214,665 bytes**, SHA256
+`0a30367d6040d53dceec7632000a0b1b48caa5d2178e75f52f098955c06a700e`.
+It is staged in the existing private `processing-artifacts` bucket, with signed
+readback matching the hash and unsigned public access denied. Existing object
+usage was 228,530,645 bytes; conservative application reservations were
+258,206,953 bytes, well below the existing 800 MB cap while preserving 100 MB
+of user headroom. No bucket setting or paid service changed. Signed URLs remain
+only in the private handoff/chat, never in Git. EC2 receipt and fresh host results
+are pending the SSM collector response.
+
+The collector only stages `manifest-proposal.json`; **do not install or start
+from it**. A future approved active manifest must have its own reviewed hash.
+Source is not activated by downloading it. No rollback action is currently
+necessary because no continuous unit/container has been installed or started.
+Owner revocation remains available through the existing authenticated helper.
+
+Local preparation checks: **54 control tests passed**, including 11 new cases
+that deny mutation/secret-reading commands and reject changed staged source;
+Ruff passed. All 60 earlier evidence files, 37 deployment files, ten worker modules
+and eight migrations match `b883b01`. No completed benchmark was repeated.
+[Private transfer evidence](evidence/continuous-pilot-private-transfer.json) and
+[local verification](evidence/continuous-pilot-local-verification.json).
+
 ## Live Supabase consent migration checkpoint — 2026-11-09 UTC
 
 **Applied and verified; pilot still inactive.** The repository's exact

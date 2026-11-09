@@ -6,8 +6,10 @@ No resize, larger model, paid inference or new infrastructure is indicated by
 these measurements. A continuous rollout still needs reviewed boot isolation,
 ongoing monitoring and explicit queue opt-in controls. Those controls are now
 implemented and locally verified as described in the
-[continuous pilot procedure](continuous-worker-pilot.md); the new controller and
-SQL proposal have **not** been deployed.
+[continuous pilot procedure](continuous-worker-pilot.md). The consent SQL is now
+applied as `20261109124958_continuous_worker_consent`; live REST confirms protocol
+v2. A fresh pilot owner has explicitly consented. The new controller remains
+**stopped and undeployed**, with operator approval still pending.
 
 Host observations come from operator-pasted, read-only SSM collectors; Codex has
 no direct EC2 execution connection. Browser and hosted REST checks ran from the
@@ -130,15 +132,21 @@ permanent original-job exclusion, revocation and append-only audit. Old queued
 jobs/projects cannot become eligible through approval or re-consent. Global
 claims are denied, and consent-aware checkpoints/completion serialize against
 revocation. Real local PostgreSQL tests cover both concurrent transaction orders.
-The proposal remains outside the migration directory and has **not been applied**.
+The reviewed source remains outside the migration directory. The SQL was
+separately applied as `20261109124958_continuous_worker_consent`; **do not reapply**
+it. The fresh pilot owner `21b61ad1-bda4-4abd-ac35-7a0bf477ed69` explicitly
+consented to a proposed 30-minute sample-footage pilot; server processing
+authorization remains false until separate operator approval.
 
 Remaining gates are:
 
-1. Separately authorize/review and transactionally deploy the SQL proposal as a
-   new migration; verify its live protocol, permissions and existing-job exclusion.
-2. Select one fresh pilot owner, obtain owner consent and operator approval, and
-   review the exact new immutable manifest/window. No approval was issued here.
-3. Transfer the small private source bundle, run fresh EC2 preflights and obtain
+1. Complete the fresh read-only EC2 resource/service/isolation review and confirm
+   receipt of the privately staged, hash-verified source bundle. This session has
+   no direct EC2 access; the SSM preparation collector starts no container.
+2. Separately approve the consented owner and select/review the exact fixed
+   30-minute window and active immutable manifest. The current proposal remains
+   disabled with zero activation timestamps. No operator approval was issued.
+3. Install only the approved final configuration and obtain
    separate authorization to start only the new limited pilot. Verify the new
    consent-aware website path and shutdown/revocation on EC2. Local tests do not
    establish actual system-manager/host boot behavior or hosted v2 acceptance.
@@ -146,8 +154,10 @@ Remaining gates are:
 The exact future commands and rollback are in the
 [pilot procedure](continuous-worker-pilot.md). Live notification delivery and
 sustained-load/maximum-input capacity remain operational checks. No new unit,
-firewall rule, account, hosted schema change or continuous worker was installed
-or started during preparation. All previous trial files/evidence remain unchanged.
+firewall rule or continuous worker was installed or started during pilot
+preparation. One fresh dedicated account and its explicitly authorized owner
+consent were created; the already-applied schema was not changed/reapplied.
+All previous trial files/evidence remain unchanged.
 
 Rollback must revoke the dedicated grant and gracefully stop only the matching
 worker/container/controller. Preserve assets, evidence and queued work; leave
