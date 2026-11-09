@@ -4,7 +4,6 @@ import { useServerFn } from "@tanstack/react-start";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { Logo, Button } from "@/components/site";
-import { BorderBeam } from "@/components/ui/border-beam";
 import { cn } from "@/lib/utils";
 import { saveOnboarding } from "@/lib/creator.functions";
 import { pageHead } from "@/lib/seo";
@@ -63,13 +62,13 @@ function Onboarding() {
         <p className="mt-2 text-muted-foreground">{cur.s}</p>
         {step === 0 && (
           <label className="mt-8 block text-sm">Creator name
-            <span className="relative mt-2 block overflow-hidden rounded-xl"><input className="h-11 w-full rounded-xl border border-input bg-surface px-4 text-sm outline-none focus:border-ember/60" required placeholder="Your name" maxLength={80} value={name} onChange={e => setName(e.target.value)} /><BorderBeam size={50} duration={7} radius={12} /></span>
+            <input className="mt-2 h-11 w-full rounded-xl border border-input bg-surface px-4 text-sm outline-none focus:border-ember/60" required placeholder="Your name" maxLength={80} value={name} onChange={e => setName(e.target.value)} />
           </label>
         )}
         <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3">
           {cur.opts.map(option => {
             const selected = picked[step]?.includes(option);
-            return <button type="button" key={option} aria-pressed={Boolean(selected)} onClick={() => toggle(option)} className={cn("relative overflow-hidden rounded-2xl bg-card px-4 py-5 text-left text-sm transition", selected ? "glow-border" : "border border-border hover:bg-accent")}>{option}{selected && <BorderBeam duration={7} size={55} radius={16} />}</button>;
+            return <button type="button" key={option} aria-pressed={Boolean(selected)} onClick={() => toggle(option)} className={cn("rounded-2xl bg-card px-4 py-5 text-left text-sm transition", selected ? "glow-border" : "border border-border hover:bg-accent")}>{option}</button>;
           })}
         </div>
         {step === 1 && <>

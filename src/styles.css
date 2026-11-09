@@ -249,25 +249,38 @@
 }
 
 /* Animated glowing border — wrap any element */
-/* Beam is drawn as an SVG dash that moves along the actual rounded outline. */
 @utility glow-border {
   position: relative;
-  overflow: hidden;
-}
-@utility glow-border-soft {
-  position: relative;
+  &::before {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    padding: 1px;
+    background: var(--gradient-glow);
+    animation: spin-angle 4s linear infinite;
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    z-index: 1;
+    pointer-events: none;
+  }
+  &::after {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    background: var(--gradient-glow);
+    animation: spin-angle 4s linear infinite;
+    filter: blur(18px);
+    opacity: 0.35;
+    z-index: -2;
+    pointer-events: none;
+  }
 }
 
-.noethara-border-beam { overflow: visible; }
-.noethara-border-beam__light {
-  animation-name: noethara-beam-orbit;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-  filter: drop-shadow(0 0 4px #76caff) drop-shadow(0 0 8px #4ca9eb);
-}
-@keyframes noethara-beam-orbit { to { stroke-dashoffset: -100; } }
-@media (prefers-reduced-motion: reduce) {
-  .noethara-border-beam__light { animation: none !important; stroke-dashoffset: 0; }
+@utility glow-border-soft {
+  &::after { opacity: 0.15; }
 }
 
 @utility text-gradient {

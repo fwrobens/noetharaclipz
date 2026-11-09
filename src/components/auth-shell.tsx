@@ -2,7 +2,6 @@ import { Link } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 import hero from "@/assets/creator-studio.jpg";
 import { Button, Logo } from "@/components/site";
-import { BorderBeam } from "@/components/ui/border-beam";
 
 export function AuthShell({ title, subtitle, children, footer, onOAuth, oauthBusy }: { title: string; subtitle: string; children: ReactNode; footer: ReactNode; onOAuth?: (provider: "google" | "twitch") => void; oauthBusy?: boolean }) {
   return (
@@ -41,10 +40,7 @@ export function Field({ label, ...p }: { label: string } & React.InputHTMLAttrib
   return (
     <label className="block space-y-1.5">
       <span className="text-xs text-muted-foreground">{label}</span>
-      <div className="relative overflow-hidden rounded-xl">
-        <input {...p} className="h-11 w-full rounded-xl border border-input bg-surface px-4 text-sm outline-none transition focus:border-ember/60 focus:ring-2 focus:ring-ember/20" />
-        <BorderBeam size={50} duration={7} radius={12} />
-      </div>
+      <input {...p} className="h-11 w-full rounded-xl border border-input bg-surface px-4 text-sm outline-none transition focus:border-ember/60 focus:ring-2 focus:ring-ember/20" />
     </label>
   );
 }
