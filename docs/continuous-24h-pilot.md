@@ -1,10 +1,126 @@
 # Proposed 24-hour owner-scoped EC2 pilot — preparation only
 
-Status: **NOT STARTED; NOT APPROVED BY AN ACTIVE CONSENT RECORD**.
+Status: **PREPARATION ONLY; NOT STARTED; NO NEW OPERATOR APPROVAL**.
 The 2026-11-09 21:00–21:30 UTC pilot ended safely at 21:29:46 UTC.
 Do not restart, edit, extend, renew, or reuse its expired deployment receipt,
 owner consent generation or signed active manifest. This document is a plan,
 not an authorization to activate processing or to enable boot startup.
+
+## Current preparation (November 9, after commit 6a3c63b)
+
+New deployment ID: `c25d8492-56fb-4c56-a519-e9a9e4246525`.
+Intended pilot owner: `21b61ad1-bda4-4abd-ac35-7a0bf477ed69`.
+The existing identity was authenticated successfully; its previous consent
+generation is expired and will not be reused. **Fresh explicit owner consent
+and the new SSM host-check output are still pending.** No owner request or
+operator approval has been fabricated. Choose the exact UTC window only after
+these inputs arrive; the final manifest and launch handoff have not been issued.
+
+Read-only Supabase checks at 22:06:27 UTC confirmed protocol v2,
+`future-jobs-only-v1`, revocation/exclusions/audit enabled and global claims
+disabled. The original upload is still queued with zero attempts and the exact
+previous whole-row hash. No migration was applied.
+
+The new private preparation handoff reuses the **unchanged** reviewed 25-file
+worker/controller overlay and both unchanged systemd units. It does not rebuild
+the image or rerun model benchmarks. Source bundle SHA256:
+
+`564a5b6a5de0664448737e0c5291c30a4d1ff2074be096b08711dce11fb381d8`
+
+The [private handoff receipt](evidence/continuous-24h-private-preparation.json)
+records its hashes and verified public-access denial, without a signed URL or
+credentials. The temporary private download was read back and verified; actual
+EC2 receipt and preflights must still be supplied by the operator in SSM. The
+receiver creates only a new private preparation directory under `/var/tmp`,
+leaving all previous deployment/configuration/evidence paths unchanged.
+
+The new [read-only collector](../scripts/inspect_continuous_24h_host.py) extends
+the previously reviewed admission checks for the now-installed, disabled units:
+
+- Pinned Docker image, actual SmolVLM2 and Whisper weight-file SHA256 values,
+  source hashes, available RAM/disk, cgroup support, existing workloads and
+  scoped firewall ordering. It loads no models and runs no containers.
+- All four older containers stopped, closed/expired previous continuous
+  manifest, removed grant and unchanged old evidence.
+- Exact installed unit hashes, no loaded drop-ins or pending daemon reload,
+  both units disabled at boot and no continuous worker running.
+- All six expected Noethara/Supabase containers present and healthy according
+  to their existing checks; the REST container has no Docker healthcheck.
+
+The preparation receiver cannot read the credential file, issue approval,
+install a systemd unit, change firewall rules or execute a container. The
+separate [24h launcher](../scripts/launch_continuous_24h_pilot.py) is prepared
+and tested locally but has not run on EC2.
+
+## Exact launch gating and SSM disconnection
+
+The final review plan will bind the fresh consent generation, disabled candidate
+manifest hash, prospective activation-manifest hash, exact UTC start/expiry,
+private source receipt and explicit installation scope. Computing a prospective
+activation hash is not approval: no active manifest is installed or processing
+approval requested without the separately issued authorization record.
+
+After explicit user approval, an immutable authorization JSON may be created
+once in the existing private bucket. It binds both hashes, owner, consent,
+deployment and UTC window. The single signed SSM launch command verifies its
+own code/payload, repeats fresh host checks, then reads that exact private
+authorization using the existing EC2 file credential. Missing authorization
+returns without installation, processing approval or startup. No new credential,
+public object or paid resource is needed.
+
+The approved installer may only:
+
+1. Install the new immutable configuration and dedicated data/report directories.
+2. Stop the old worker's `RemainAfterExit` isolation oneshot while its worker is
+   already inactive. It must not restart the expired worker.
+3. Atomically move the dedicated `continuous/current` symlink from the verified
+   expired deployment to the new one. It reuses the identical installed unit
+   files and does not rewrite the old configuration or evidence.
+4. Request operator approval for this fresh owner/consent until the exact expiry.
+5. Submit **`systemctl start --no-block noetharaclipz-continuous.service`**.
+   Systemd orders isolation before the controller; the controller verifies live
+   quotas and denial counters before granting queue access. It owns all worker
+   execution, sampling, restart/backoff, logs and final shutdown.
+
+The SSM command returns a launch-request receipt promptly. That receipt does
+**not** assert AI readiness or completed processing. Closing SSM afterward does
+not stop the service or monitoring. No foreground worker, `nohup`, shell
+background job, terminal wait loop, keepalive, timer or boot enable is used.
+Launch is allowed only within the first five minutes of the reviewed window;
+an early/late command fails without waiting or extending the expiry. If review
+or transfer takes longer, prepare a new disabled manifest for review.
+
+On an observed installation/start failure, rollback removes the new grant,
+latches that deployment, stops only the two dedicated worker units, revokes any
+new processing approval and restores the old symlink only after a successful
+stop. It never restarts the expired deployment or deletes either evidence set.
+Cleanup still attempts service stop/server revocation if the disk cannot write
+the local failure latch. A launch-attempt receipt prevents automatic retries.
+If SSM disconnects midway through installation, inspect retained receipts and
+service state on reconnect; do not rerun the installer or clear latches blindly.
+
+Both units must remain **disabled at boot**. An EC2 reboot ends this trial's
+availability; boot enable/reboot recovery testing requires separate approval.
+
+## Persistent evidence and local verification
+
+The reviewed controller retains `reports/status.json`, `controller.log`,
+`metrics-summary.json`, rotating raw cgroup samples, generation network proofs,
+installation/approval receipts and Docker logs under the new deployment ID.
+These files and their monitor survive an SSM disconnect. Lifetime peak RAM,
+sampled peak CPU, CPU totals and sample counts persist across controller and
+container restarts. Raw cgroup samples are bounded to **20 MiB** and can rotate
+during 24 hours; do not claim every original sample remains available. Controller
+transition logs, lifetime summaries and independent start/interim/end snapshots
+must support the complete-window assessment. No external alert destination has
+been configured.
+
+Local verification: **352 worker tests passed, one optional sample test
+skipped**; after additional rollback hardening, **55 focused 24h tests passed**.
+Ruff and diff checks passed. Tests exercise refusal of expired/reused consent,
+scope/hash/time changes, missing approval, boot/global enable attempts,
+nonblocking systemd startup, preservation/rollback and cleanup disk failures.
+They do not start an EC2 worker or substitute for fresh live preflights.
 
 ## The AWS SSM shell may disconnect — deployment must not depend on it
 
