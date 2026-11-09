@@ -1,0 +1,157 @@
+{
+  "source": "Selected fields transcribed from the operator-pasted read-only inspector JSON; not direct agent SSH access",
+  "checked_utc": "2026-11-09T03:29:39+00:00",
+  "instance_id": "i-0be10e530045fc650",
+  "collector_source_commit": "f63e9de46ac1d97ea717d4e3d6bc272404925bb3",
+  "collector_source_sha256": "7152e2cfe3947d09ef2ab01ea8b8b46278dc22be1e87d78aaf8e05152aae792a",
+  "read_only": true,
+  "worker_started_restarted_or_executed": false,
+  "credentials_read": false,
+  "qa_container": {
+    "id": "fbe3d4f4d9b1c95cb3cae77278a40a5cf5d52c77435eccdc3d14c60d17c06f99",
+    "name": "noetharaclipz-isolated-worker-1",
+    "image": "sha256:472913bf34e918c48e5b77a56c4ea2dfd31873bdd79ecc2d1c4e7ab4cf3e5759",
+    "status": "exited",
+    "running": false,
+    "paused": false,
+    "restarting": false,
+    "oom_killed": false,
+    "dead": false,
+    "pid": 0,
+    "exit_code": 0,
+    "started_at": "2026-11-09T00:22:12.56201159Z",
+    "finished_at": "2026-11-09T00:50:37.70991314Z",
+    "error": "",
+    "health": "unhealthy",
+    "restart_count": 0,
+    "restart_policy": {
+      "Name": "on-failure",
+      "MaximumRetryCount": 3
+    },
+    "project": "noetharaclipz-isolated",
+    "trial": "9563aeb9-2620-4e05-acf2-1e69ce18b819",
+    "entrypoint": [
+      "python",
+      "/run/qa-deadline.py"
+    ]
+  },
+  "safe_qa_environment": {
+    "GEMINI_FREE_TIER_VERIFIED": "false",
+    "NC_AI_PROVIDER": "local",
+    "NC_DEPLOY_MODE": "qa",
+    "NC_GLOBAL_QUEUE_APPROVED": "false",
+    "NC_QA_STOP_AT": "1794185532",
+    "NC_QA_TRIAL_ID": "9563aeb9-2620-4e05-acf2-1e69ce18b819",
+    "NC_WORKER_OWNER_ID": "c7ade7f9-2003-4a38-ae19-393fffae8452"
+  },
+  "wrapper_permissions": {
+    "uid": 0,
+    "gid": 62001,
+    "mode": "0o440"
+  },
+  "deadline_wrapper_matches_reviewed_sha256": true,
+  "restart_findings": {
+    "docker_container_stopped": true,
+    "normal_exit_without_oom": true,
+    "finished_within_approved_window": true,
+    "docker_on_failure_policy_does_not_restart_this_normal_exit": true,
+    "unchanged_expired_wrapper_blocks_processing_before_models_or_credentials": true,
+    "root_can_explicitly_change_configuration": true
+  },
+  "startup_kernel_log": {
+    "at": "2026-11-09T00:22:12.801472517Z",
+    "actual_cgroup_limits": {
+      "version": 2,
+      "memory_bytes": 8589934592,
+      "cpu_quota": 200000,
+      "cpu_period": 100000,
+      "extra_swap_bytes": 0,
+      "pids_max": 256
+    },
+    "passed": true,
+    "source": "current process cgroup files, not requested Docker flags"
+  },
+  "shutdown_log": {
+    "at": "2026-11-09T00:50:37.701107733Z",
+    "qa_window_stopped": true,
+    "deadline": 1794185532
+  },
+  "logs_tail_lines_read": 46,
+  "raw_logs_not_printed": true,
+  "retained_lifecycle_events": {
+    "events": [],
+    "retention_may_be_incomplete": true
+  },
+  "resource_usage": {
+    "available": false,
+    "peak_ram_bytes": null,
+    "cpu_usage_seconds": null,
+    "peak_cpu_percent": null,
+    "reason": "Stopped container cgroup not retained; Docker inspect and zero stopped stats do not reconstruct historical peaks"
+  },
+  "existing_services": [
+    {
+      "name": "supabase_rest_wwgwnlhmbmrspmzdptzh",
+      "id": "3c1d7f471d1bbcf0693826ded3908f63190d33556e99d5b7c604b17610eda56a",
+      "started_at": "2026-11-08T16:14:45.641681033Z",
+      "status": "running",
+      "running": true,
+      "oom_killed": false,
+      "health": "none",
+      "restart_count": 0
+    },
+    {
+      "name": "supabase_inbucket_wwgwnlhmbmrspmzdptzh",
+      "id": "9168f3846a6709c2661447393dd00a269389818c9a0bfeffc1a16175263d15e3",
+      "started_at": "2026-11-08T16:14:45.643536514Z",
+      "status": "running",
+      "running": true,
+      "oom_killed": false,
+      "health": "healthy",
+      "restart_count": 0
+    },
+    {
+      "name": "supabase_auth_wwgwnlhmbmrspmzdptzh",
+      "id": "20f1292598a0adf47cd0c656889a3c80d269080f70bc3df8502036f9c116bcd7",
+      "started_at": "2026-11-08T16:14:46.725518326Z",
+      "status": "running",
+      "running": true,
+      "oom_killed": false,
+      "health": "healthy",
+      "restart_count": 2
+    },
+    {
+      "name": "supabase_kong_wwgwnlhmbmrspmzdptzh",
+      "id": "c8486407222d9c6262343641156de583efa7b2696abacad54f3c4edf6fa14d25",
+      "started_at": "2026-11-08T16:14:45.647515406Z",
+      "status": "running",
+      "running": true,
+      "oom_killed": false,
+      "health": "healthy",
+      "restart_count": 0
+    },
+    {
+      "name": "supabase_db_wwgwnlhmbmrspmzdptzh",
+      "id": "37221a93ce4da260b6f06bd464e431700b6be3acfc28dc8682897b179346b0ab",
+      "started_at": "2026-11-08T16:14:45.679613892Z",
+      "status": "running",
+      "running": true,
+      "oom_killed": false,
+      "health": "healthy",
+      "restart_count": 0
+    },
+    {
+      "name": "noethara-ec2-staging-worker-1",
+      "id": "a53220a17ba9defd7a4a4635e93ce16651e696528660427117d32abb03850d4b",
+      "started_at": "2026-11-08T16:14:45.655929741Z",
+      "status": "running",
+      "running": true,
+      "oom_killed": false,
+      "health": "healthy",
+      "restart_count": 0
+    }
+  ],
+  "missing_expected_services": [],
+  "expected_services_running_with_no_reported_health_failures": true,
+  "rest_container_has_no_docker_healthcheck_in_baseline": true
+}

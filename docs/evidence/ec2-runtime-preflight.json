@@ -123,9 +123,9 @@
     }
   },
   "automated_checks": {
-    "worker_passed": 155,
+    "worker_passed": 178,
     "worker_skipped": 1,
-    "worker_seconds": 23.26,
+    "worker_seconds": 22.49,
     "skip_reason": "optional authorized-sample test not selected",
     "network_scope_policy_tests_passed": 26,
     "ruff": "passed",
@@ -136,7 +136,8 @@
     "frontend_tests_passed": 15,
     "typescript": "passed",
     "build": "passed",
-    "lint": "0 errors, 11 existing warnings"
+    "lint": "0 errors, 11 existing warnings",
+    "shutdown_inspector_and_deadline_targeted_tests": 43
   },
   "worker_started": true,
   "models_loaded_on_ec2": true,
@@ -231,7 +232,7 @@
   },
   "qa_owner_id": "c7ade7f9-2003-4a38-ae19-393fffae8452",
   "qa_startup": {
-    "status": "running owner-scoped bounded EC2 QA; normal UI acceptance passed on three distinct samples and one cached repeat",
+    "status": "completed: container exited normally before deadline; read-only host verification at 03:29 UTC",
     "source": "deploy/worker/start_qa_worker.py",
     "mode": "qa",
     "provider": "local-smolvlm2",
@@ -278,7 +279,15 @@
     "recovery_evidence": "ec2-qa-lease-recovery.json",
     "quality_evidence": "ec2-qa-model-quality.json",
     "direct_container_crash_restart_tested": false,
-    "actual_peak_ram_cpu_measurements": "pending operator read-only counters",
-    "scheduled_shutdown_observation": "pending at report time; read-only local monitor running"
-  }
+    "actual_peak_ram_cpu_measurements": "unavailable: stopped cgroup counters not retained; limits are not observed usage",
+    "scheduled_shutdown_observation": "direct operator Docker evidence confirms exited/exit 0/PID 0/no OOM; qa_window_stopped log matches fixed deadline",
+    "shutdown_evidence": "ec2-qa-shutdown-host.json",
+    "post_trial_database_evidence": "ec2-post-trial-supabase.json",
+    "continuous_processing_enabled": false
+  },
+  "worker_running": false,
+  "qa_worker_stopped": true,
+  "qa_container_exit_code": 0,
+  "qa_container_restart_count": 0,
+  "qa_stop_observed_utc": "2026-11-09T00:50:37.70991314Z"
 }

@@ -125,12 +125,15 @@ separate evaluation task.
 ## Trial lifecycle and remaining work
 
 The immutable deadline is **00:52:12 UTC on 9 November 2026**; graceful shutdown
-starts before it and crash retries retain the same deadline. No new work may
-extend this window. A read-only monitor is watching for the scoped stopped
-heartbeat. At report time exact Docker exit, Docker crash restart, host reboot
-recovery and actual peak CPU/RAM counters have not been directly observed by
-this agent. The operator has been asked for read-only cgroup usage counters.
-Do not equate resource limits with measured consumption.
+starts before it and crash retries retain the same deadline. The trial is now
+closed: read-only Docker inspection confirms exit 0 at 00:50:37.710 UTC, PID 0,
+no OOM and zero restarts. The stopped heartbeat was also observed. Five existing
+containers are healthy; REST remains running without a configured health check.
+Peak CPU/RAM counters were not retained after cgroup removal, so actual
+consumption cannot be inferred from the proven limits. A process-crash restart
+and continuous-startup isolation review remain outstanding. See the
+[final shutdown evidence and continuous-readiness recommendation](ec2-continuous-readiness.md).
+The expired trial was not restarted or extended.
 
 Always-on/global deployment is not enabled. It still needs an authorized rollout
 with host restart/firewall persistence reviewed, runtime resource evidence and

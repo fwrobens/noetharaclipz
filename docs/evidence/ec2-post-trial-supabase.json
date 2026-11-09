@@ -1,0 +1,54 @@
+{
+  "checked_utc": "2026-11-09T03:29:13.941584+00:00",
+  "source": "read-only hosted REST and worker_protocol; no private table query",
+  "protected_upload": {
+    "id": "9c5c8869-ec2e-4a3e-927d-697615bb58a3",
+    "status": "queued",
+    "attempts": 0,
+    "lease_token_is_null": true,
+    "lease_until": null,
+    "cancel_requested": false,
+    "full_row_matches_original_sha256": true
+  },
+  "active_unfinished_leases_count": 0,
+  "qa_jobs_count": 10,
+  "qa_unfinished_jobs_count": 0,
+  "worker_protocol": {
+    "version": 1,
+    "providers": [
+      "gemini",
+      "local-smolvlm2"
+    ],
+    "scoped_claim": true,
+    "scoped_health": true
+  },
+  "worker_claim_or_heartbeat_called": false,
+  "database_or_queue_changes": false,
+  "operator_database_check": {
+    "reported_check_utc": "2026-11-09T00:59:00+00:00",
+    "source": "user-provided independent live Supabase check",
+    "recent_scoped_heartbeats": 0,
+    "last_scoped_heartbeat_utc": "2026-11-09T00:50:37+00:00",
+    "active_job_leases": 0
+  },
+  "retained_readonly_monitor": {
+    "stage": "scoped_stopped_heartbeat_observed",
+    "expected_deadline_utc": "2026-11-09T00:52:12+00:00",
+    "deadline": 1794185532,
+    "writes_to_remote_services": false,
+    "claims_or_workers_started": false,
+    "direct_docker_exit_observed": false,
+    "last_health": {
+      "detail": "Worker stopped",
+      "online": true,
+      "ai_ready": false,
+      "max_bytes": 45000000,
+      "max_seconds": 300
+    },
+    "last_checked_unix": 1794185441,
+    "stop_observed_unix": 1794185441,
+    "within_approved_window": true,
+    "near_scheduled_shutdown": true,
+    "protected_original_identical_queued_zero_attempts": true
+  }
+}

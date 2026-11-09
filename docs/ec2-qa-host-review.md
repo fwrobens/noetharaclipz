@@ -828,3 +828,15 @@ See [the actual run report](ec2-live-qa.md) for evidence, measured times, model
 quality limitations and remaining lifecycle/resource checks. This is still a
 bounded owner-scoped QA worker, with a fixed 00:52:12 UTC deadline; it does not
 enable the global queue or the protected original upload.
+
+
+## Final closure of the bounded QA trial
+
+Read-only operator inspection at 03:29 UTC confirms the QA container exited
+normally at 00:50:37.710 UTC with exit 0, PID 0, no OOM and zero restarts. The
+reviewed deadline wrapper and on-failure:3 policy remain unchanged. Existing
+services are running (five healthy; REST has no healthcheck). The protected
+Supabase row remains identical, queued with zero attempts, and no unfinished
+leases remain. Actual historical CPU/RAM usage was not retained. See the
+[continuous-readiness report](ec2-continuous-readiness.md) for the remaining
+monitored crash-test and startup-isolation gates. No trial was restarted.
