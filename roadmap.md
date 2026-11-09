@@ -3,5 +3,5 @@
 - [x] Do NOT connect GitHub connector (user request)
 - [ ] Build Noethara Clipz landing page and premium charcoal design
 - [ ] Connect email authentication and creator onboarding to existing Supabase
-- [ ] Redesign dashboard with real projects and upload flow
+- [ ] Build premium responsive dashboard with real projects and upload flow
 - [ ] Verify navigation and mobile layouts

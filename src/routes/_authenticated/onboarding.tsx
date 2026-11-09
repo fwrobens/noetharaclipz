@@ -45,7 +45,7 @@ function Onboarding() {
       toast.error(error instanceof Error ? error.message : "Couldn't save your setup");
     } finally { setBusy(false); }
   }
-  const cur = steps[step];
+  const cur = steps[step]!;
   return <div className="clipspark-skin relative min-h-screen overflow-hidden px-5 py-8">
     <div className="grid-bg pointer-events-none absolute inset-0" />
     <div className="ember-orb pointer-events-none absolute left-1/2 top-1/3 h-80 w-[520px] -translate-x-1/2" />
