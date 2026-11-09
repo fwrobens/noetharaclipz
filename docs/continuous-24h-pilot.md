@@ -111,6 +111,19 @@ private source receipt and explicit installation scope. Computing a prospective
 activation hash is not approval: no active manifest is installed or processing
 approval requested without the separately issued authorization record.
 
+The [sealed launch handoff](evidence/continuous-24h-launch-handoff.json) is
+24,176 bytes, SHA256
+`6148a90f924e0008fe0e5cfab7052029bf552df328a42912cc77c8339bd71b21`.
+It was privately uploaded and read back byte-for-byte; its public endpoint is
+denied. The one SSM command is retained privately in the preparation handoff,
+with a download link expiring November 10 at 22:34 UTC. Do not run it until the
+exact manifest and installation/start scope are separately approved, then run
+it once in the reviewed launch window. Its independent authorization object
+does not yet exist, and the command refuses to install/start without it.
+That download link is needed only for installation, not for continued service
+execution or monitoring after SSM disconnects. No signed URL or credential is
+committed to GitHub.
+
 After explicit user approval, an immutable authorization JSON may be created
 once in the existing private bucket. It binds both hashes, owner, consent,
 deployment and UTC window. The single signed SSM launch command verifies its
@@ -166,7 +179,7 @@ transition logs, lifetime summaries and independent start/interim/end snapshots
 must support the complete-window assessment. No external alert destination has
 been configured.
 
-Local verification: **353 worker tests passed, one optional sample test
+Local verification: **354 worker tests passed, one optional sample test
 skipped**; **56 focused 24h tests passed** after the read-only collector fix.
 Ruff and diff checks passed. Tests exercise refusal of expired/reused consent,
 scope/hash/time changes, missing approval, boot/global enable attempts,

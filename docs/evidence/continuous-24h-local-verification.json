@@ -6,9 +6,9 @@
   "image_rebuilt": false,
   "model_benchmarks_repeated": false,
   "full_worker_suite": {
-    "passed": 353,
+    "passed": 354,
     "skipped": 1,
-    "seconds": 28.42
+    "seconds": 27.87
   },
   "focused_24h_suite_after_cleanup_hardening": {
     "passed": 56,
@@ -23,7 +23,7 @@
   "launcher_sha256": "f043d31e4082f9839fb0edc9d4e904b62e1068829a6924e29fb30e5f90299d86",
   "new_deployment_id": "c25d8492-56fb-4c56-a519-e9a9e4246525",
   "ec2_preflight_recheck_pending": false,
-  "updated_utc": "2026-11-09T22:33:17.857485+00:00",
+  "updated_utc": "2026-11-09T22:37:57.176341+00:00",
   "ec2_preflights_passed": 23,
   "final_manifest_approval_pending": true
 }

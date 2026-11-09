@@ -1,0 +1,20 @@
+{
+  "checked_utc": "2026-11-09T22:35:49.052165+00:00",
+  "fresh_consent_status": {
+    "owner_id": "21b61ad1-bda4-4abd-ac35-7a0bf477ed69",
+    "authorized": false,
+    "consent_id": "6b13bb7a-5b9b-4564-80d8-3904872d8c01",
+    "expires_at": null,
+    "approved_at": null,
+    "future_jobs_only": true
+  },
+  "operator_authorization_object_absent": true,
+  "active_leases": 0,
+  "protected_job_status": "queued",
+  "protected_job_attempts": 0,
+  "protected_job_row_sha256": "deac9a0a9f311218fce3c531def81e1a3f92ff11e82132701a06e366d545dbdb",
+  "sealed_handoff_matches_committed_code_and_review_plan": true,
+  "worker_started": false,
+  "ec2_installation_performed": false,
+  "operator_approval_issued": false
+}
