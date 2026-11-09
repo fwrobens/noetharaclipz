@@ -14,8 +14,11 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as BrandKitRouteImport } from './routes/brand-kit'
 import { Route as LibraryRouteImport } from './routes/library'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as ProjectsRouteImport } from './routes/projects'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as SignupRouteImport } from './routes/signup'
 import { Route as TemplatesRouteImport } from './routes/templates'
 import { Route as TrashRouteImport } from './routes/trash'
 import { Route as AuthenticatedOnboardingRouteImport } from './routes/_authenticated/onboarding'
@@ -46,6 +49,16 @@ const LibraryRoute = LibraryRouteImport.update({
   path: '/library',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PricingRoute = PricingRouteImport.update({
+  id: '/pricing',
+  path: '/pricing',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProjectsRoute = ProjectsRouteImport.update({
   id: '/projects',
   path: '/projects',
@@ -54,6 +67,11 @@ const ProjectsRoute = ProjectsRouteImport.update({
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
   id: '/reset-password',
   path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SignupRoute = SignupRouteImport.update({
+  id: '/signup',
+  path: '/signup',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TemplatesRoute = TemplatesRouteImport.update({
@@ -87,8 +105,11 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/brand-kit': typeof BrandKitRoute
   '/library': typeof LibraryRoute
+  '/login': typeof LoginRoute
+  '/pricing': typeof PricingRoute
   '/projects': typeof ProjectsRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/signup': typeof SignupRoute
   '/templates': typeof TemplatesRoute
   '/trash': typeof TrashRoute
   '/onboarding': typeof AuthenticatedOnboardingRoute
@@ -100,8 +121,11 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/brand-kit': typeof BrandKitRoute
   '/library': typeof LibraryRoute
+  '/login': typeof LoginRoute
+  '/pricing': typeof PricingRoute
   '/projects': typeof ProjectsRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/signup': typeof SignupRoute
   '/templates': typeof TemplatesRoute
   '/trash': typeof TrashRoute
   '/onboarding': typeof AuthenticatedOnboardingRoute
@@ -115,8 +139,11 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/brand-kit': typeof BrandKitRoute
   '/library': typeof LibraryRoute
+  '/login': typeof LoginRoute
+  '/pricing': typeof PricingRoute
   '/projects': typeof ProjectsRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/signup': typeof SignupRoute
   '/templates': typeof TemplatesRoute
   '/trash': typeof TrashRoute
   '/_authenticated/onboarding': typeof AuthenticatedOnboardingRoute
@@ -130,8 +157,11 @@ export interface FileRouteTypes {
     | '/auth'
     | '/brand-kit'
     | '/library'
+    | '/login'
+    | '/pricing'
     | '/projects'
     | '/reset-password'
+    | '/signup'
     | '/templates'
     | '/trash'
     | '/onboarding'
@@ -143,8 +173,11 @@ export interface FileRouteTypes {
     | '/auth'
     | '/brand-kit'
     | '/library'
+    | '/login'
+    | '/pricing'
     | '/projects'
     | '/reset-password'
+    | '/signup'
     | '/templates'
     | '/trash'
     | '/onboarding'
@@ -157,8 +190,11 @@ export interface FileRouteTypes {
     | '/auth'
     | '/brand-kit'
     | '/library'
+    | '/login'
+    | '/pricing'
     | '/projects'
     | '/reset-password'
+    | '/signup'
     | '/templates'
     | '/trash'
     | '/_authenticated/onboarding'
@@ -172,8 +208,11 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   BrandKitRoute: typeof BrandKitRoute
   LibraryRoute: typeof LibraryRoute
+  LoginRoute: typeof LoginRoute
+  PricingRoute: typeof PricingRoute
   ProjectsRoute: typeof ProjectsRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
+  SignupRoute: typeof SignupRoute
   TemplatesRoute: typeof TemplatesRoute
   TrashRoute: typeof TrashRoute
   EditorIdRoute: typeof EditorIdRoute
@@ -217,6 +256,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LibraryRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pricing': {
+      id: '/pricing'
+      path: '/pricing'
+      fullPath: '/pricing'
+      preLoaderRoute: typeof PricingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/projects': {
       id: '/projects'
       path: '/projects'
@@ -229,6 +282,13 @@ declare module '@tanstack/react-router' {
       path: '/reset-password'
       fullPath: '/reset-password'
       preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/signup': {
+      id: '/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof SignupRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/templates': {
@@ -286,8 +346,11 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   BrandKitRoute: BrandKitRoute,
   LibraryRoute: LibraryRoute,
+  LoginRoute: LoginRoute,
+  PricingRoute: PricingRoute,
   ProjectsRoute: ProjectsRoute,
   ResetPasswordRoute: ResetPasswordRoute,
+  SignupRoute: SignupRoute,
   TemplatesRoute: TemplatesRoute,
   TrashRoute: TrashRoute,
   EditorIdRoute: EditorIdRoute,
