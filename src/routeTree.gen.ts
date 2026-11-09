@@ -13,11 +13,16 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as BrandKitRouteImport } from './routes/brand-kit'
+import { Route as DashboardVisualCheckRouteImport } from './routes/dashboard-visual-check'
 import { Route as LibraryRouteImport } from './routes/library'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as ProjectsRouteImport } from './routes/projects'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as SignupRouteImport } from './routes/signup'
 import { Route as TemplatesRouteImport } from './routes/templates'
 import { Route as TrashRouteImport } from './routes/trash'
+import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedOnboardingRouteImport } from './routes/_authenticated/onboarding'
 import { Route as EditorIdRouteImport } from './routes/editor.$id'
 import { Route as ProjectIdRouteImport } from './routes/project.$id'
@@ -41,9 +46,24 @@ const BrandKitRoute = BrandKitRouteImport.update({
   path: '/brand-kit',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DashboardVisualCheckRoute = DashboardVisualCheckRouteImport.update({
+  id: '/dashboard-visual-check',
+  path: '/dashboard-visual-check',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LibraryRoute = LibraryRouteImport.update({
   id: '/library',
   path: '/library',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PricingRoute = PricingRouteImport.update({
+  id: '/pricing',
+  path: '/pricing',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProjectsRoute = ProjectsRouteImport.update({
@@ -56,6 +76,11 @@ const ResetPasswordRoute = ResetPasswordRouteImport.update({
   path: '/reset-password',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SignupRoute = SignupRouteImport.update({
+  id: '/signup',
+  path: '/signup',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TemplatesRoute = TemplatesRouteImport.update({
   id: '/templates',
   path: '/templates',
@@ -65,6 +90,11 @@ const TrashRoute = TrashRouteImport.update({
   id: '/trash',
   path: '/trash',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedOnboardingRoute = AuthenticatedOnboardingRouteImport.update({
   id: '/onboarding',
@@ -86,11 +116,16 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/brand-kit': typeof BrandKitRoute
+  '/dashboard-visual-check': typeof DashboardVisualCheckRoute
   '/library': typeof LibraryRoute
+  '/login': typeof LoginRoute
+  '/pricing': typeof PricingRoute
   '/projects': typeof ProjectsRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/signup': typeof SignupRoute
   '/templates': typeof TemplatesRoute
   '/trash': typeof TrashRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
   '/onboarding': typeof AuthenticatedOnboardingRoute
   '/editor/$id': typeof EditorIdRoute
   '/project/$id': typeof ProjectIdRoute
@@ -99,11 +134,16 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/brand-kit': typeof BrandKitRoute
+  '/dashboard-visual-check': typeof DashboardVisualCheckRoute
   '/library': typeof LibraryRoute
+  '/login': typeof LoginRoute
+  '/pricing': typeof PricingRoute
   '/projects': typeof ProjectsRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/signup': typeof SignupRoute
   '/templates': typeof TemplatesRoute
   '/trash': typeof TrashRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
   '/onboarding': typeof AuthenticatedOnboardingRoute
   '/editor/$id': typeof EditorIdRoute
   '/project/$id': typeof ProjectIdRoute
@@ -114,11 +154,16 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/brand-kit': typeof BrandKitRoute
+  '/dashboard-visual-check': typeof DashboardVisualCheckRoute
   '/library': typeof LibraryRoute
+  '/login': typeof LoginRoute
+  '/pricing': typeof PricingRoute
   '/projects': typeof ProjectsRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/signup': typeof SignupRoute
   '/templates': typeof TemplatesRoute
   '/trash': typeof TrashRoute
+  '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/onboarding': typeof AuthenticatedOnboardingRoute
   '/editor/$id': typeof EditorIdRoute
   '/project/$id': typeof ProjectIdRoute
@@ -129,11 +174,16 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/brand-kit'
+    | '/dashboard-visual-check'
     | '/library'
+    | '/login'
+    | '/pricing'
     | '/projects'
     | '/reset-password'
+    | '/signup'
     | '/templates'
     | '/trash'
+    | '/dashboard'
     | '/onboarding'
     | '/editor/$id'
     | '/project/$id'
@@ -142,11 +192,16 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/brand-kit'
+    | '/dashboard-visual-check'
     | '/library'
+    | '/login'
+    | '/pricing'
     | '/projects'
     | '/reset-password'
+    | '/signup'
     | '/templates'
     | '/trash'
+    | '/dashboard'
     | '/onboarding'
     | '/editor/$id'
     | '/project/$id'
@@ -156,11 +211,16 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/auth'
     | '/brand-kit'
+    | '/dashboard-visual-check'
     | '/library'
+    | '/login'
+    | '/pricing'
     | '/projects'
     | '/reset-password'
+    | '/signup'
     | '/templates'
     | '/trash'
+    | '/_authenticated/dashboard'
     | '/_authenticated/onboarding'
     | '/editor/$id'
     | '/project/$id'
@@ -171,9 +231,13 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
   BrandKitRoute: typeof BrandKitRoute
+  DashboardVisualCheckRoute: typeof DashboardVisualCheckRoute
   LibraryRoute: typeof LibraryRoute
+  LoginRoute: typeof LoginRoute
+  PricingRoute: typeof PricingRoute
   ProjectsRoute: typeof ProjectsRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
+  SignupRoute: typeof SignupRoute
   TemplatesRoute: typeof TemplatesRoute
   TrashRoute: typeof TrashRoute
   EditorIdRoute: typeof EditorIdRoute
@@ -210,11 +274,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BrandKitRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dashboard-visual-check': {
+      id: '/dashboard-visual-check'
+      path: '/dashboard-visual-check'
+      fullPath: '/dashboard-visual-check'
+      preLoaderRoute: typeof DashboardVisualCheckRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/library': {
       id: '/library'
       path: '/library'
       fullPath: '/library'
       preLoaderRoute: typeof LibraryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pricing': {
+      id: '/pricing'
+      path: '/pricing'
+      fullPath: '/pricing'
+      preLoaderRoute: typeof PricingRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/projects': {
@@ -231,6 +316,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ResetPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/signup': {
+      id: '/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof SignupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/templates': {
       id: '/templates'
       path: '/templates'
@@ -244,6 +336,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/trash'
       preLoaderRoute: typeof TrashRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/dashboard': {
+      id: '/_authenticated/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/onboarding': {
       id: '/_authenticated/onboarding'
@@ -270,10 +369,12 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedOnboardingRoute: typeof AuthenticatedOnboardingRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedOnboardingRoute: AuthenticatedOnboardingRoute,
 }
 
@@ -285,9 +386,13 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
   BrandKitRoute: BrandKitRoute,
+  DashboardVisualCheckRoute: DashboardVisualCheckRoute,
   LibraryRoute: LibraryRoute,
+  LoginRoute: LoginRoute,
+  PricingRoute: PricingRoute,
   ProjectsRoute: ProjectsRoute,
   ResetPasswordRoute: ResetPasswordRoute,
+  SignupRoute: SignupRoute,
   TemplatesRoute: TemplatesRoute,
   TrashRoute: TrashRoute,
   EditorIdRoute: EditorIdRoute,

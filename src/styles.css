@@ -337,3 +337,52 @@
   filter: blur(40px);
 }
 @media (prefers-reduced-motion: reduce) { .clipspark-skin *, .clipspark-skin *::before, .clipspark-skin *::after { animation: none !important; transition: none !important; } }
+
+/* Creator workspace: charcoal surfaces, restrained chrome-blue light, tactile elevation */
+.dashboard-skin {
+  --background: oklch(0.15 0.005 260);
+  --surface: oklch(0.185 0.006 260);
+  --card: oklch(0.18 0.006 260);
+  --card-foreground: oklch(0.97 0.003 260);
+  --sidebar: oklch(0.14 0.005 260);
+  --muted: oklch(0.235 0.006 260);
+  --accent: oklch(0.25 0.012 250);
+  --border: oklch(1 0 0 / 8%);
+  --sh-soft: 0 1px 2px oklch(0 0 0 / 0.24), 0 8px 22px -12px oklch(0 0 0 / 0.5);
+  --sh-pop: 0 2px 4px oklch(0 0 0 / 0.25), 0 20px 40px -18px oklch(0 0 0 / 0.65);
+  --sh-float: 0 4px 12px oklch(0 0 0 / 0.25), 0 32px 70px -24px oklch(0 0 0 / 0.8);
+}
+
+.project-visual {
+  background:
+    radial-gradient(70% 100% at 50% 110%, color-mix(in oklab, var(--ember) 16%, transparent), transparent 72%),
+    linear-gradient(135deg, var(--surface), var(--cover-background));
+}
+.project-visual::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, oklch(1 0 0 / 3%) 1px, transparent 1px),
+    linear-gradient(to bottom, oklch(1 0 0 / 3%) 1px, transparent 1px);
+  background-size: 32px 32px;
+  mask-image: linear-gradient(to bottom, #000, transparent 90%);
+}
+.project-visual::after {
+  content: "";
+  position: absolute;
+  inset: -40% 20%;
+  background: radial-gradient(circle, color-mix(in oklab, var(--glow) 14%, transparent), transparent 65%);
+  filter: blur(28px);
+  opacity: 0;
+  transition: opacity 400ms ease;
+}
+.group:hover .project-visual::after { opacity: 1; }
+
+@keyframes upload-progress {
+  from { transform: translateX(-110%); }
+  to { transform: translateX(410%); }
+}
+.upload-progress { animation: upload-progress 1.5s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) { .upload-progress { animation: none; width: 100%; } }
+
