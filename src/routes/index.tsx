@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import hero from "@/assets/creator-studio.jpg";
 import { Badge, btnClass, Footer, Nav, PricingCard, plans } from "@/components/site";
+import { BorderBeam } from "@/components/ui/border-beam";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -51,6 +52,7 @@ function Index() {
               <div className="glow-border glow-border-soft flex h-12 flex-1 items-center rounded-full bg-surface pl-5 pr-1.5">
                 <input placeholder="Upload a video in your workspace" className="min-w-0 flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground" />
                 <Link to="/signup" className={btnClass("solid", "sm")}>Start</Link>
+                <BorderBeam size={75} duration={7} radius={999} />
               </div>
             </div>
             <p className="mt-4 text-xs text-muted-foreground">Video uploads available · Credits and link imports coming soon</p>
@@ -59,6 +61,7 @@ function Index() {
           <div className="animate-in-up relative" style={{ animationDelay: "200ms" }}>
             <img src={hero} alt="Chrome film strip" width={1280} height={1024} className="w-full rounded-3xl" />
             <div className="glow-border absolute -bottom-6 left-2 w-60 rounded-2xl bg-card/90 p-3 backdrop-blur-xl sm:left-6">
+              <BorderBeam size={70} duration={8} radius={16} />
               <div className="flex items-center justify-between text-xs">
                 <span className="text-muted-foreground">Analyzing VOD</span>
                 <span className="text-ember">3:42:10</span>
@@ -71,6 +74,7 @@ function Index() {
               </div>
             </div>
             <div className="glow-border glow-border-soft absolute -top-4 right-2 rounded-2xl bg-card/90 px-4 py-3 backdrop-blur-xl sm:right-6">
+              <BorderBeam size={60} duration={9} radius={16} reverse />
               <p className="text-xs text-muted-foreground">Clips found</p>
               <p className="font-display text-3xl">24 <span className="text-sm text-ember">🔥 8 viral</span></p>
             </div>
@@ -114,6 +118,7 @@ function Index() {
       {/* HOW */}
       <section id="how" className="mx-auto max-w-6xl px-5 pb-24">
         <div className="glow-border glow-border-soft rounded-3xl bg-card p-8 md:p-14">
+          <BorderBeam size={115} duration={12} radius={24} />
           <h2 className="text-center text-4xl font-medium tracking-tight">Three steps. <span className="text-shimmer">Less scrubbing.</span></h2>
           <div className="mt-12 grid gap-10 md:grid-cols-3">
             {[
@@ -147,7 +152,7 @@ function Index() {
       <section className="relative mx-auto max-w-6xl px-5 pb-28 text-center">
         <div className="ember-orb absolute left-1/2 top-0 -z-10 h-72 w-[500px] -translate-x-1/2" />
         <h2 className="text-4xl font-medium tracking-tight sm:text-6xl"><span className="text-gradient">Less scrubbing.</span><br /><span className="font-display italic text-ember">Start posting.</span></h2>
-        <Link to="/signup" className={btnClass("glow", "lg") + " mt-10"}>Get started →</Link>
+        <Link to="/signup" className={btnClass("glow", "lg") + " mt-10"}>Get started →<BorderBeam size={45} duration={6} radius={999} /></Link>
       </section>
 
       <Footer />
