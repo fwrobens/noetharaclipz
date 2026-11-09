@@ -1,0 +1,112 @@
+{
+  "passed": true,
+  "source_sha256": "988596de4e539c1c200ab1a76421d3e66aa7c73b8b1bc13e1a33febd61ebf1d7",
+  "project_id": "9695d512-e81d-48ee-a5c4-afd4af54768b",
+  "upload_and_analysis_seconds": 109.012,
+  "usage": [
+    {
+      "id": "8ecd14b3-2efc-4f34-84e1-28f8eafa3fea",
+      "job_id": "2023b349-8197-48b1-94aa-a342dbb7c3ee",
+      "project_id": "9695d512-e81d-48ee-a5c4-afd4af54768b",
+      "request_key": "local:2023b349-8197-48b1-94aa-a342dbb7c3ee",
+      "provider": "local-smolvlm2",
+      "model": "HuggingFaceTB/SmolVLM2-500M-Video-Instruct@7b375e1b73b11138ff12fe22c8f2822d8fe03467",
+      "status": "completed",
+      "input_tokens": 4193,
+      "output_tokens": 15,
+      "estimated_cost": 0,
+      "created_at": "2026-11-09T00:25:49.954954+00:00"
+    }
+  ],
+  "provider_model": "HuggingFaceTB/SmolVLM2-500M-Video-Instruct@7b375e1b73b11138ff12fe22c8f2822d8fe03467",
+  "local_metrics": {
+    "admission_rejected": false,
+    "analysis_cache_hit": false,
+    "prepared_cache_hit": false,
+    "transcript_cache_hit": false,
+    "source_inference_input_tokens": 4193
+  },
+  "model_evidence": {
+    "decision": {
+      "choice": "G",
+      "relative_choice_scores": {
+        "A": 0.014535414054989815,
+        "B": 0.007353288121521473,
+        "C": 0.030752548947930336,
+        "D": 0.037807997316122055,
+        "E": 0.21591082215309143,
+        "F": 0.11421671509742737,
+        "G": 0.37397199869155884,
+        "H": 0.18799446523189545,
+        "Z": 0.01745683327317238
+      },
+      "video_tensor_shape": [
+        8,
+        4,
+        3,
+        512,
+        512
+      ],
+      "input_tokens": 3824,
+      "video_tensor_sha256": "03d7e0a1ba13fd2c89fd27fef1a7f5408959d5cc1af680ae47682cc3b77f6a47",
+      "model_window": [
+        50.0,
+        60.0
+      ],
+      "speech_completed_interval": [
+        50.0,
+        60.0
+      ]
+    },
+    "source_hash": "988596de4e539c1c200ab1a76421d3e66aa7c73b8b1bc13e1a33febd61ebf1d7",
+    "hosted_inference": false,
+    "original_inference_usage": {
+      "input_tokens": 4193,
+      "output_tokens": 15
+    }
+  },
+  "provider": "local-smolvlm2",
+  "analysis_job_id": "2023b349-8197-48b1-94aa-a342dbb7c3ee",
+  "render_job_id": "f10a0743-05e0-40b4-a1f4-33242528d7b7",
+  "analysis_attempts": 1,
+  "render_attempts": 1,
+  "highlights": [
+    {
+      "id": "79c06937-37dd-42a9-8b90-4e53b37ac542",
+      "project_id": "9695d512-e81d-48ee-a5c4-afd4af54768b",
+      "start_time": 50,
+      "end_time": 60,
+      "title": "I don't think so. You? I'm okay. Get up. Emo. It's not...",
+      "category": "Other",
+      "score": 37,
+      "explanation": "Timestamped speech excerpt: I don't think so. You? I'm okay. Get up. Emo. It's not.... Local multimodal model chose candidate G among 8 actual videos plus a none option. Measured evidence: 3 speech segments, 0 audio events, 2 scene boundaries. Scores are relative choices, not calibrated quality or virality.",
+      "evidence": {
+        "visual": "Four decoded frames per candidate; selected interval with measured speech context 50.000\u201360.000s. Comparison tensor SHA256 03d7e0a1ba13fd2c89fd27fef1a7f5408959d5cc1af680ae47682cc3b77f6a47."
+      },
+      "created_at": "2026-11-09T00:25:49.954954+00:00"
+    }
+  ],
+  "clip_id": "e56406a9-2ea9-4300-986e-358c80a0dd1e",
+  "persisted_edit": {
+    "end": 60,
+    "font": "Instrument Sans",
+    "ratio": "9:16",
+    "start": 50.1,
+    "crop_x": 0.5,
+    "crop_y": 0.5,
+    "volume": 1,
+    "version": 1,
+    "captions": true,
+    "caption_size": 28,
+    "caption_color": "#FFFFFF",
+    "caption_style": "Bold pop",
+    "caption_overrides": {}
+  },
+  "output_path": "c7ade7f9-2003-4a38-ae19-393fffae8452/9695d512-e81d-48ee-a5c4-afd4af54768b/f10a0743-05e0-40b4-a1f4-33242528d7b7.mp4",
+  "output_bytes": 1760385,
+  "output_sha256": "f1c2627028543fa3c2e5253efb3303e31447927353ca65a1bdd0371b29ed7f6d",
+  "output_duration": 9.9,
+  "elapsed_seconds": 130.786,
+  "unhandled_browser_errors": [],
+  "ui_steps": "login, upload, instructions, generate, select, edit, save, refresh, Export button, Download MP4 button"
+}

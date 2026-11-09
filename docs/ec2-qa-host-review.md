@@ -816,3 +816,15 @@ They do not substitute for the pending EC2 worker/browser trial. At this commit
 the actual QA worker has not started; EC2 website acceptance, live cancellation,
 recovery and resource measurements remain pending. Nothing is merged, published
 or enabled for normal users. No infrastructure or paid service was added.
+
+
+## Actual EC2 website QA result
+
+The approved worker started and reported ready on 9 November 2026. The normal
+browser workflow passed on dialogue, gaming, quiet visual footage and one cached
+gaming repeat, with real private MP4 downloads. Live cancellation/retry, expired
+lease recovery, invalid-media rejection and access-control checks passed.
+See [the actual run report](ec2-live-qa.md) for evidence, measured times, model
+quality limitations and remaining lifecycle/resource checks. This is still a
+bounded owner-scoped QA worker, with a fixed 00:52:12 UTC deadline; it does not
+enable the global queue or the protected original upload.

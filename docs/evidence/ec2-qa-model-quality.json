@@ -1,0 +1,83 @@
+{
+  "review_scope": "three distinct authorized samples; three sampled frames manually inspected for the selected gaming interval; no calibrated accuracy dataset",
+  "score_interpretation": "relative candidate-choice scores, not probability of quality, accuracy, humor or virality",
+  "samples": [
+    {
+      "sample": "Elephants Dream dialogue",
+      "source_sha256": "988596de4e539c1c200ab1a76421d3e66aa7c73b8b1bc13e1a33febd61ebf1d7",
+      "inference_seconds": 63.682,
+      "raw_visual_observation": "A man in a green shirt is smiling and looking to the side.",
+      "visual_observation_warning": "Model descriptions may hallucinate; measured evidence and raw scores are retained for review",
+      "quality_metrics": {
+        "speech_boundary_cuts": 0,
+        "selected_count": 1
+      },
+      "selected_window": [
+        50.0,
+        60.0
+      ],
+      "model_window": [
+        50.0,
+        60.0
+      ],
+      "candidate_count": 8,
+      "hosted_inference": false,
+      "raw_narration_kept_separate_from_saved_evidence": true
+    },
+    {
+      "sample": "SuperTuxKart racing",
+      "source_sha256": "1a9326264a3c8ef29db2dfadb818725b06ecd5bc7caf0ddd54dafd9fcb8080b5",
+      "inference_seconds": 60.28,
+      "raw_visual_observation": "A character is running along a path, holding a gun, and shooting at a target.",
+      "visual_observation_warning": "Model descriptions may hallucinate; measured evidence and raw scores are retained for review",
+      "quality_metrics": {
+        "speech_boundary_cuts": 0,
+        "selected_count": 1
+      },
+      "selected_window": [
+        36.6,
+        46.6
+      ],
+      "model_window": [
+        36.6,
+        46.6
+      ],
+      "candidate_count": 8,
+      "hosted_inference": false,
+      "raw_narration_kept_separate_from_saved_evidence": true
+    },
+    {
+      "sample": "Muted Sintel visual",
+      "source_sha256": "92c4957d7d2032c92aefc1794092b108c39151127c5e31e5afecd437e0677d3e",
+      "inference_seconds": 45.692,
+      "raw_visual_observation": "A woman with red hair is speaking in a dimly lit room.",
+      "visual_observation_warning": "Model descriptions may hallucinate; measured evidence and raw scores are retained for review",
+      "quality_metrics": {
+        "speech_boundary_cuts": 0,
+        "selected_count": 1
+      },
+      "selected_window": [
+        8.691,
+        15.209
+      ],
+      "model_window": [
+        8.691,
+        15.209
+      ],
+      "candidate_count": 6,
+      "hosted_inference": false,
+      "raw_narration_kept_separate_from_saved_evidence": true
+    }
+  ],
+  "human_gaming_review": {
+    "visible": "kart racing with boost trails and bends/rock arch",
+    "unsupported_model_narration": "gunfire/shooting description is not supported by the sampled racing frames",
+    "unverified_raw_narration_promoted_into_highlight": false
+  },
+  "limitations": [
+    "Funny moments, spoken reactions and semantic completeness are not established by these samples.",
+    "Zero ASR boundary-cut metrics do not guarantee complete meaning; the dialogue excerpt ends at the source boundary.",
+    "Internal timestamp validation uses the worker FFprobe duration; the 15-second Sintel derivative is reported as 15.209s by the EC2 media toolchain and 15.083s by the cloud toolchain. Its exported duration remains within the acceptance 0.25s tolerance.",
+    "Model rank/order can differ from earlier hardware runs. No larger model was installed."
+  ]
+}

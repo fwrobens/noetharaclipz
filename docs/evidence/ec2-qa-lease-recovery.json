@@ -1,0 +1,28 @@
+{
+  "passed": true,
+  "checks": {
+    "only_new_qa_job_claimed_once_then_abandoned": true,
+    "ec2_reclaimed_with_new_token_and_second_attempt": true,
+    "stale_lease_cannot_update_or_revive_job": true,
+    "invalid_media_rejected_without_highlights_or_inference_usage": true,
+    "protected_original_unchanged": true
+  },
+  "global_claim_used": false,
+  "docker_or_host_crash_tested": false,
+  "scenario": "one abandoned QA lease; real EC2 reclaim; malformed test media rejected",
+  "project_id": "9b49a92a-687d-410e-a7b4-64747c504f5d",
+  "job_id": "a78c0665-34b6-4a8d-9f13-3bfd0ff4dcae",
+  "initial_attempts": 1,
+  "initial_lease_until": "2026-11-09T00:34:57.169159+00:00",
+  "reclaim_wait_seconds": 123.138,
+  "final_status": "failed",
+  "final_attempts": 3,
+  "worker_error": "Media operation failed: [mov,mp4,m4a,3gp,3g2,mj2 @ 0x58568bdba280] moov atom not found\n/data/tmp/noetharaclipz-wbo4e2v5/source.mp4: Invalid data found when processing input\n{\n\n}\n",
+  "attempt_limit": {
+    "third_attempt_processed_by_ec2": true,
+    "fourth_attempt_retry_denied": true,
+    "final_status": "failed",
+    "final_attempts": 3
+  },
+  "recovered_failure_attempts": 2
+}

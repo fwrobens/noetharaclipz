@@ -125,7 +125,7 @@
   "automated_checks": {
     "worker_passed": 155,
     "worker_skipped": 1,
-    "worker_seconds": 23.18,
+    "worker_seconds": 23.26,
     "skip_reason": "optional authorized-sample test not selected",
     "network_scope_policy_tests_passed": 26,
     "ruff": "passed",
@@ -138,8 +138,8 @@
     "build": "passed",
     "lint": "0 errors, 11 existing warnings"
   },
-  "worker_started": false,
-  "models_loaded_on_ec2": false,
+  "worker_started": true,
+  "models_loaded_on_ec2": true,
   "qa_account_created": true,
   "global_consumption_enabled": false,
   "gemini_enabled": false,
@@ -231,7 +231,7 @@
   },
   "qa_owner_id": "c7ade7f9-2003-4a38-ae19-393fffae8452",
   "qa_startup": {
-    "status": "prepared and tested; operator startup pending",
+    "status": "running owner-scoped bounded EC2 QA; normal UI acceptance passed on three distinct samples and one cached repeat",
     "source": "deploy/worker/start_qa_worker.py",
     "mode": "qa",
     "provider": "local-smolvlm2",
@@ -245,7 +245,7 @@
     "one_temporary_qa_owner": true,
     "browser_monitor": "scripts/await_ec2_qa.py waits for actual readiness, then invokes normal UI acceptance; never starts any worker",
     "protected_upload_readonly_auth_checks": "full row unchanged, queued with zero attempts; QA project/job reads empty, anonymous protocol 401, QA protocol 403, authorized protocol version 1",
-    "new_ec2_browser_acceptance_passed": false,
+    "new_ec2_browser_acceptance_passed": true,
     "private_handoff": {
       "transfer_id": "d3d874ec-9794-4f93-abd2-289ac0f21fc7",
       "prefix": "_worker-transfer/d3d874ec-9794-4f93-abd2-289ac0f21fc7/",
@@ -269,7 +269,16 @@
       "expires_unix": 1794187161,
       "signed_download_hash_verified": true,
       "public_request_status": 400,
-      "cleanup_after_operator_receipt": true
-    }
+      "cleanup_after_operator_receipt": false,
+      "owned_objects_deleted_after_receipt": 1
+    },
+    "host_ready_evidence": "ec2-qa-host-ready.json",
+    "actual_deadline_utc": "2026-11-09T00:52:12+00:00",
+    "security_evidence": "ec2-qa-security.json",
+    "recovery_evidence": "ec2-qa-lease-recovery.json",
+    "quality_evidence": "ec2-qa-model-quality.json",
+    "direct_container_crash_restart_tested": false,
+    "actual_peak_ram_cpu_measurements": "pending operator read-only counters",
+    "scheduled_shutdown_observation": "pending at report time; read-only local monitor running"
   }
 }

@@ -108,8 +108,52 @@ def main():
             page.wait_for_url("**/project/*", timeout=60000)
             pid = page.url.rsplit("/", 1)[-1]
             evidence["project_id"] = pid
+            (output.parent / "acceptance-progress.json").write_text(json.dumps(evidence, indent=2) + "\n")
             print("Actual upload accepted; waiting for live video analysis", flush=True)
+            if os.getenv("NC_TEST_CANCEL_RETRY") == "1":
+                # Exercise the real UI against an actually running local job.
+                # This option never claims work or writes highlights/leases.
+                until = time.monotonic() + 300
+                while time.monotonic() < until:
+                    active = rows("processing_jobs", project_id="eq." + pid, kind="eq.analysis")[0]
+                    if active["status"] == "analyzing" and active["progress"] >= 50:
+                        break
+                    assert active["status"] not in ("completed", "failed", "cancelled")
+                    time.sleep(1)
+                else:
+                    raise AssertionError("Local analysis did not reach cancellable model inference")
+                page.get_by_role("button", name="Cancel processing", exact=True).click()
+                cancelled_at = time.monotonic()
+                while time.monotonic() - cancelled_at < 60:
+                    cancelled = rows("processing_jobs", project_id="eq." + pid, kind="eq.analysis")[0]
+                    if cancelled["status"] == "cancelled":
+                        break
+                    time.sleep(1)
+                else:
+                    raise AssertionError("Actual worker did not acknowledge UI cancellation")
+                assert cancelled["cancel_requested"] and cancelled["attempts"] >= 1
+                evidence["cancellation"] = {"job_id": cancelled["id"], "attempts": cancelled["attempts"],
+                    "acknowledged_seconds": round(time.monotonic() - cancelled_at, 3),
+                    "during_local_analysis": True, "status": cancelled["status"]}
+                (output.parent / "acceptance-progress.json").write_text(json.dumps(evidence, indent=2) + "\n")
+                page.get_by_role("button", name="Retry processing", exact=True).click()
+                # React event completion precedes the asynchronous retry RPC.
+                # Wait for server acknowledgement instead of reading stale cancelled state.
+                until = time.monotonic() + 30
+                while time.monotonic() < until:
+                    retry = rows("processing_jobs", project_id="eq." + pid, kind="eq.analysis")[0]
+                    if not retry["cancel_requested"] and retry["status"] != "cancelled":
+                        break
+                    time.sleep(0.25)
+                else:
+                    raise AssertionError("UI retry was not acknowledged by the server")
+                print("Actual model analysis cancelled by the UI and retried through the normal queue", flush=True)
             analysis_job = wait_job(pid, "analysis")
+            if "cancellation" in evidence:
+                assert analysis_job["id"] == evidence["cancellation"]["job_id"]
+                assert analysis_job["attempts"] == evidence["cancellation"]["attempts"] + 1
+                assert analysis_job["cancel_requested"] is False
+                evidence["cancellation"]["retry_attempts"] = analysis_job["attempts"]
             evidence["upload_and_analysis_seconds"] = round(
                 time.monotonic() - started, 3
             )
