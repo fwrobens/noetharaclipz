@@ -19,6 +19,22 @@ and its fixed 05:32:30 deadline are preserved. Its short startup measurements do
 not supply the missing AI peak-resource or crash-recovery evidence. See the
 [current trial procedure and actual results](reliability-trial.md).
 
+**05:50 UTC authorized follow-up:** corrected trial
+`f3fc3665-76e9-4cc5-b6e6-2c437873a6a4` is active under the fixed
+**05:34:44–06:04:44 UTC** approval. The operator confirmed actual startup,
+one automatic worker-only crash restart, two independently passing kernel and
+network proofs, 118.672-second reclaim and stale-token rejection. The 180-second
+gaming job completed on attempt two; the normal website then saved/refreshed an
+edit, queued Export and privately downloaded a decoded MP4. A sequential cached
+repeat also passed (43.574 s total; zero new inference tokens), as did live
+auth/storage, duplicate prevention, invalid-input and protected-row checks.
+All four QA jobs completed with no active unfinished leases. Provisional peak
+RAM was 2.53 GiB and sampled CPU 205.439%, with an independently proved 2 vCPU
+quota. The 05:54 host snapshot confirms completed-job `recovery_verified=true`
+and exactly one restart. Final deadline exit and complete resource snapshots
+still await the waiting read-only collector. Continuous/global mode
+remains disabled. [Actual follow-up evidence and limits](reliability-trial.md#actual-authorized-follow-up-results).
+
 The normal browser workflow already passed on three distinct authorized videos
 and a cached repeat. [Workflow results and quality limits](ec2-live-qa.md) remain
 valid. This review adds actual shutdown/host evidence; it does not rerun the
@@ -150,10 +166,12 @@ EC2 trial or substituted for the reviewed active-worker test.
 
 ## Remaining gates before continuous processing
 
-1. **Measured resource and restart evidence:** a new authorized monitored trial
-   must establish peak RAM/CPU, actual automatic crash recovery and stability on
-   longer representative inputs near the supported size/duration limits. Three
-   short-source successes are not a continuous-load capacity benchmark.
+1. **Final measured lifecycle evidence:** the newly authorized 180-second trial
+   has demonstrated automatic restart/reclaim and the real browser workflow;
+   retain the final deadline exit and both generations' final resource snapshots.
+   The intermediate kernel peak is measured, but final coverage is still open.
+   One longer gaming source is not a continuous-load or 300-second maximum-input
+   capacity benchmark.
 2. **Safe boot and recovery ordering:** review and implement worker-specific
    firewall/network persistence and startup preflights before queue access. The
    present QA approval does not authorize unattended host/daemon reboot startup.
@@ -168,6 +186,35 @@ EC2 trial or substituted for the reviewed active-worker test.
    resource pressure, preserve temporary-file cleanup, define recovery/rollback
    and review storage/egress allowances under expected traffic. Do not enable
    paid monitoring or providers as a side effect.
+
+### Startup-order review of the existing configuration
+
+- `compose.yaml` starts in standby and its supervisor loads no credential or
+  queue in that mode. Its `unless-stopped` policy can resume a container after
+  a Docker/host restart. Active continuous rollout therefore needs a dedicated
+  host controller that verifies isolation before permitting model/credential
+  loading; the base Compose profile is not yet approved for that rollout.
+- The active QA controller uses `on-failure:3`, a fixed expiry and a separate
+  transient monitor with `Restart=no`. Every generation must obtain a fresh
+  root-owned, short-lived nonce grant after kernel and live network proofs.
+  Revocation/staleness stops processing. The crash trial proved the new-generation
+  path; host/daemon reboot ordering was not tested or authorized.
+- A future worker-specific boot service should require Docker, dedicated mounts
+  and a reviewed worker-isolation unit before startup. It must check bridge
+  ownership/collisions, restore only its approved hooks/rules if authorized,
+  verify their actual order and rejection counters, then issue fresh grants.
+  Periodic verification must remain active after startup. Do not flush shared
+  chains, alter host-wide Docker settings or reuse another app's network.
+- The current trial's hard 1,800-second policy and receipt are retained intact.
+  A continuous rollout needs a newly reviewed controller, scope/revocation
+  configuration, bounded restart/backoff and durable log/metric retention. It
+  cannot be obtained by disabling this trial's deadline or reusing its receipt.
+- Rollback revokes the dedicated grant and gracefully stops only the matching
+  worker container/controller, leaving model assets, evidence, queued work and
+  existing services in place. Global consumption and existing-owner backlog
+  release remain blocked until their separate atomic server-side opt-in policy
+  is reviewed and authorized. No boot unit, firewall restoration or database
+  policy was installed during this review.
 
 Model quality is also limited: unverified narration can hallucinate, rank scores
 are not calibrated accuracy, and a quiet derivative showed a small media-tool

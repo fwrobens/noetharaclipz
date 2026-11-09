@@ -2,12 +2,12 @@
   "schema": 1,
   "trial_id": "f3fc3665-76e9-4cc5-b6e6-2c437873a6a4",
   "plan_sha256": "80acdb44a931f6cfeba318d58b034b7232a3b7e1032866f6cd1827656536529d",
-  "state": "ec2_prepared_waiting_for_separate_start_approval",
+  "state": "qa_workflow_and_crash_recovery_passed_awaiting_deadline_shutdown",
   "host_preparation_receipt_received": true,
-  "approval_issued": false,
-  "activation_issued": false,
-  "new_qa_account_created": false,
-  "worker_created_or_started": false,
+  "approval_issued": true,
+  "activation_issued": true,
+  "new_qa_account_created": true,
+  "worker_created_or_started": true,
   "old_deadlines_extended": false,
   "old_configurations_or_evidence_overwritten": false,
   "old_containers_restarted": false,
@@ -23,8 +23,10 @@
     "archived_evidence_hashes_verified": 14,
     "historical_plan_unchanged": true,
     "operator_command_python_and_shell_syntax": "passed",
-    "live_network_probe_fix_verified_on_ec2": false,
-    "long_video_inference_and_crash_recovery": "not_run"
+    "live_network_probe_fix_verified_on_ec2": true,
+    "long_video_inference_and_crash_recovery": "Passed: one automatic restart, completed same-job recovery, stale-token rejection and normal website MP4 export/download.",
+    "cache_repeat_and_live_security": "passed",
+    "final_deadline_exit_and_resource_coverage": "pending"
   },
   "private_transfer": {
     "existing_bucket": "processing-artifacts",
@@ -55,5 +57,7 @@
     "network_rules_changed": false
   },
   "receipt_provenance": "Operator-pasted SSM preparation result in this chat; no direct EC2 connection is available to Codex.",
-  "receipt_recorded_utc": "2026-11-09T05:33:01.091400+00:00"
+  "receipt_recorded_utc": "2026-11-09T05:33:01.091400+00:00",
+  "authorization_evidence": "reliability-followup-authorization.json",
+  "verification_evidence": "reliability-followup-monitor-0554.json"
 }

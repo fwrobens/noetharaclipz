@@ -20,12 +20,26 @@ and raw-table interception read-only and retains the requirement for a positive
 matching counter delta. Partial proof files now retain the target, socket errno
 and before/after counters on failure. No firewall rule is changed.
 
-The new configuration below is **installed on EC2 and ready for a separate
-start approval**. The operator returned `prepared=true`, `ready_for_approval=true`
-with the exact plan SHA below. The same receipt confirms no worker, approval
-receipt or new QA account was created, old evidence was preserved and network
-rules were unchanged. It has no activation or running container. Preparation
-success does not establish a successful live traffic or inference test.
+The new configuration below is **installed on EC2 and separately authorized**.
+The user approved one bounded trial with one worker-only crash test. Its fixed
+window is **05:34:44–06:04:44 UTC on November 9**; the shutdown reserve is
+included and the deadline cannot be recalculated. One fresh QA identity and its
+root-private approval receipt were issued. The normal browser test observed
+scoped readiness for the pinned 500M model, uploaded the real 180-second sample,
+and a live first-attempt analysis lease was observed. The operator confirmed
+startup and one automatic restart; both generations passed actual kernel and
+network proofs. The same analysis job completed on attempt two, and normal
+Edit/Save/Refresh/Export/private MP4 Download passed. A sequential cached repeat
+and live authentication/storage/invalid-input checks also passed. Final
+shutdown/resource coverage still awaits the post-deadline operator collector.
+See the [authorization record](evidence/reliability-followup-authorization.json);
+no server credentials or QA password appear in that file.
+
+The operator returned `prepared=true`, `ready_for_approval=true` with the exact
+plan SHA below. That preparation receipt confirms no worker, approval receipt
+or new QA account was created **during preparation**, old evidence was preserved
+and network rules were unchanged. Preparation success does not itself establish
+a successful live traffic or inference test.
 The successful expired trial and failed attempt
 retain their original containers, files and deadlines. See the
 [operator failure evidence](evidence/reliability-startup-failure.json) and
@@ -54,9 +68,9 @@ record the exact artifact hashes without including the temporary signed URL.
 pins all nine host code files and fourteen prior evidence files. The original
 [failed plan](../deploy/worker/reliability-plan.json) remains byte-for-byte
 unchanged; its historical code is retained in commit `75e3b83` and its installed
-immutable EC2 directory. The new absolute deadline and QA
-identity deliberately do not exist yet. After separate authorization they are
-bound once in a root-private approval receipt and write-once activation. Docker
+immutable EC2 directory. The new absolute deadline and QA identity are now
+bound once in the separately authorized root-private approval receipt. EC2
+launch binds that receipt to a write-once activation. Docker
 restarts cannot recalculate or extend that deadline. Preparation cannot issue the
 receipt, create a user, create/start a container or start a systemd unit.
 
@@ -92,11 +106,11 @@ sudo -n python3 "$NC_RELIABILITY_CTL" status --trial-id "$NC_RELIABILITY_TRIAL"
 
 Expected stage after preparation: `prepared_not_authorized`, `worker_started=false`.
 
-**Launch requires a later approval and verified receipt.** No placeholder launch
-command is supplied: the previous operator attempt showed that running one just
-fails with a missing receipt. After separate approval, a single handoff will
-install the actual root-private receipt and supply its verified SHA. The expired
-receipt is invalid for the corrected plan and cannot be used to obtain more time.
+**The separately authorized launch block was supplied.** It installs the actual
+hash-verified root-private receipt and invokes the installed controller once.
+No placeholder launch command is supplied. The expired receipt is invalid for
+the corrected plan and cannot be used to obtain more time. Rerunning launch
+cannot reopen an activated trial or recalculate its absolute deadline.
 
 The launcher rechecks host headroom, stopped old container, existing services,
 image, assets, network policy, protected row and fresh empty QA identity before
@@ -254,6 +268,74 @@ fixture is inserted directly into the database during preparation.
 
 ## Preparation verification and next decision
 
+### Actual authorized follow-up results
+
+The operator's [05:41 monitor report](evidence/reliability-followup-monitor-0541.json)
+confirms one automatic restart of container
+`6c66cb349cbf21ff16ee168c079289a6e17712f3beb81f2eb1da724a71e5db6e`
+after the one guarded runner SIGKILL. Both container generations proved actual
+8 GiB / 2 vCPU / no-swap / 256-PID controls, IPv6 disabled, public DNS/TLS, and
+all seven matching private/IMDS/host/gateway/non-HTTPS REJECT-counter increases.
+The old containers remained exited with zero restarts, and all existing services
+matched their baseline. Reclaim was observed after **118.672 seconds**, with a
+new token, second attempt and stale-token rejection.
+The [05:54 host snapshot](evidence/reliability-followup-monitor-0554.json)
+subsequently confirms `status=completed`, `recovery_verified=true`, exactly one
+restart, unchanged pinned code and the original fixed stop time. The active
+grant and missing final report at that pre-deadline timestamp are expected.
+
+| Normal website run | Upload + analysis | Full workflow | Actual downloaded file |
+| --- | ---: | ---: | --- |
+| 180 s gaming; forced crash/recovery | 286.988 s | 310.965 s | 9.9 s H.264/AAC MP4; 2,044,140 bytes |
+| Same source/prompt; sequential cached repeat | 18.267 s | 43.574 s | Same decoded MP4 SHA256 |
+
+The first run recorded genuine new local multimodal inference: **3,711 input
+and 12 output tokens**, one completed local provenance record, and one automatic
+highlight at **151.967–161.967 s**. The model compared eight four-frame candidate
+videos plus a none option. The result reports measured zero speech segments,
+five audio events and one scene boundary; its relative choice score 0.354 is not
+calibrated accuracy. Prepared-media and transcript caches survived the crash.
+The repeat used the prepared, transcript and analysis caches and recorded zero
+new inference tokens, preserving original inference provenance separately.
+These timings include upload, queue, recovery, edit and rendering overhead;
+they are not a controlled model-only speedup measurement.
+
+Both browser runs selected the generated highlight, played it, saved an edit,
+refreshed, used the normal Export button, and privately downloaded and decoded
+the queued FFmpeg render. The persisted edit trims its start to 152.1 s and uses
+9:16 framing/captions. Output SHA256:
+`971241b594bc54bb617d5b753e2ab32f3cce64a31cc00fa79cf0599ee949e8e5`.
+No highlights were inserted by a fixture or rendering shortcut. The frontend was
+the existing development server against hosted Supabase and the real EC2 worker;
+the public website was not deployed. These are QA-account results.
+
+[Crash-run browser evidence](evidence/reliability-followup-live-acceptance.json),
+[cached repeat](evidence/reliability-followup-cached-acceptance.json), and
+[live security evidence](evidence/reliability-followup-security.json) preserve
+the actual results. Security checks deny anonymous/authenticated privileged
+worker calls (401/403), cross-owner rows and private source access/signing, and
+public rendered-file access. Owner downloads work. Duplicate Export returns the
+existing job; forged completion and invalid uploads are rejected. No account,
+worker or global claim is created by those security checks.
+
+At **05:50:50 UTC**, [read-only hosted checks](evidence/reliability-followup-api-checks.json)
+confirmed all four QA jobs completed, one highlight/clip per project, only local
+provider records with zero recorded provider cost, no active unfinished leases,
+and the original upload's identical full row: queued, zero attempts, no lease
+or cancellation. Temporary preparation and approval download objects were
+removed after receipt, with unrelated objects untouched.
+
+The intermediate resource report measured peak RAM **2,719,240,192 bytes
+(2.53 GiB)**, sampled peak CPU **205.439%** (one core = 100%) and **264.933 CPU
+seconds** across two distinct cgroups. Preserve that observed CPU rate without
+clamping; each generation independently proved a 200000/100000 CPU quota.
+Interval CPU samples are not instantaneous capacity measurements. The first
+generation's final snapshot was captured, while the second was still running.
+These are provisional, not the final peaks or complete final-snapshot coverage.
+The 05:54 cumulative CPU total is 303.602 seconds, with the same measured RAM/CPU
+peaks. Automatic deadline exit, no unexpected resumption and final
+resource/service verification remain pending the waiting read-only collector.
+
 **229 worker tests passed; one optional sample test skipped; Ruff passed.** The
 reliability checks cover immutable limits, absent approval/no startup, expired/stale
 grants, fresh-owner/old-backlog rejection, scoped signal targets, real harmless
@@ -271,13 +353,12 @@ whole row remained identical: queued, zero attempts, no lease and no cancellatio
 There were no active unfinished leases or projects for the failed trial's fresh
 owner. Its startup-only measurements (26,980,352 bytes peak memory; 0.704408 CPU
 seconds; 32.684% sampled peak CPU, incomplete final snapshot) are **not model
-benchmarks**. Longer-input inference, crash recovery and complete peak-resource
-coverage remain unverified.
+benchmarks**. Longer-input browser processing now passed as above; the final
+deadline/shutdown resource coverage remains unverified.
 
-The corrected EC2 preparation receipt passed, so the plan is **ready for
-separate start approval**. Approval must cover only
-this exact plan SHA, at most thirty minutes, the new
-single processing owner, long gaming input and one worker-only fault. It does not
+The corrected EC2 preparation receipt passed and the user separately authorized
+this exact plan SHA, the fixed **05:34:44–06:04:44 UTC** window, one fresh
+processing owner, long gaming input and one worker-only fault. This does not
 authorize continuous/global processing, old-upload release, merge, publication,
 paid services, a larger model, resize or other infrastructure changes. None of
 those actions occurred during preparation.

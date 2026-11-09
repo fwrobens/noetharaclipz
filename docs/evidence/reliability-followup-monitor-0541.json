@@ -1,0 +1,318 @@
+{
+  "schema": 1,
+  "provenance": "Selected, normalized fields from the operator-pasted read-only SSM monitoring JSON; not a direct Codex AWS observation.",
+  "checked_utc": "2026-11-09T05:41:37.481754+00:00",
+  "read_only": true,
+  "trial_id": "f3fc3665-76e9-4cc5-b6e6-2c437873a6a4",
+  "container_id": "6c66cb349cbf21ff16ee168c079289a6e17712f3beb81f2eb1da724a71e5db6e",
+  "docker_state": {
+    "Status": "running",
+    "Running": true,
+    "Restarting": false,
+    "ExitCode": 0,
+    "OOMKilled": false,
+    "StartedAt": "2026-11-09T05:38:48.859415196Z",
+    "FinishedAt": "2026-11-09T05:38:48.806224759Z",
+    "restart_count": 1
+  },
+  "status": {
+    "stage": "monitoring",
+    "running": true,
+    "ai_ready": true,
+    "restart_count": 1,
+    "phase": "running",
+    "at_unix": 1794202896.7632098,
+    "fixed_stop_at_unix": 1794204284,
+    "global_processing": false
+  },
+  "final": null,
+  "metrics": {
+    "sample_count": 141,
+    "generations": {
+      "0:2026-11-09T05:36:53.039721023Z": {
+        "last_usage": 165124374,
+        "last_at": 48250.612936358,
+        "cpu_usage_usec": 165124374,
+        "memory_peak_bytes": 1322946560,
+        "sampled_peak_cpu_percent": 205.43862825783376,
+        "final_snapshot_captured": true,
+        "counter_reset_observed": false,
+        "cpu_domain": "19498"
+      },
+      "1:2026-11-09T05:38:48.859415196Z": {
+        "last_usage": 99808460,
+        "last_at": 48418.65148142,
+        "cpu_usage_usec": 99808460,
+        "memory_peak_bytes": 2719240192,
+        "sampled_peak_cpu_percent": 202.8371375540058,
+        "final_snapshot_captured": false,
+        "counter_reset_observed": false,
+        "cpu_domain": "19585"
+      }
+    },
+    "peak_memory_bytes": 2719240192,
+    "sampled_peak_cpu_percent": 205.43862825783376,
+    "total_cpu_seconds": 264.932834,
+    "cpu_counter_domains": {
+      "19498": 165124374,
+      "19585": 99808460
+    },
+    "cpu_peak_is_sampled_not_instantaneous": true,
+    "final_snapshots_complete": false
+  },
+  "crash_verification": {
+    "injected": true,
+    "job_id": "d19af413-3046-4765-8319-30bdd95eec8a",
+    "container_restart_count": 1,
+    "injected_at_unix": 1794202721.8850536,
+    "first_reclaim_observed_at_unix": 1794202840.5566876,
+    "recovery_observed_seconds": 118.67163395881653,
+    "new_generation_network_granted": true,
+    "attempts": 2,
+    "new_token_sha256": "811f3a1a5396e37dcdd759734e56d663747141d8d7c329c8a1940b1f73e17c6c",
+    "status": "analyzing",
+    "recovery_verified": false,
+    "stale_token_rejected": true
+  },
+  "network_generations": [
+    {
+      "report": "network-1b5026d9-4895-4fc7-897f-370a65be412f.json",
+      "passed": true,
+      "actual_cgroup_limits": {
+        "version": 2,
+        "memory_bytes": 8589934592,
+        "cpu_quota": 200000,
+        "cpu_period": 100000,
+        "extra_swap_bytes": 0,
+        "pids_max": 256
+      },
+      "all_kernel_checks_passed": true,
+      "public_tls": {
+        "zxdnjnsghdnviflahvry.supabase.co": 401,
+        "huggingface.co": 200
+      },
+      "ipv6_disabled": true,
+      "denials": [
+        {
+          "target": "staging",
+          "address": "172.18.255.254",
+          "port": 8080,
+          "chain": "NCZQA_EGRESS",
+          "counter_before": 6,
+          "counter_after": 7,
+          "reject_counter_delta": 1,
+          "blocked": true,
+          "socket_errno": 113,
+          "passed": true
+        },
+        {
+          "target": "supabase",
+          "address": "172.19.255.254",
+          "port": 8000,
+          "chain": "NCZQA_EGRESS",
+          "counter_before": 7,
+          "counter_after": 8,
+          "reject_counter_delta": 1,
+          "blocked": true,
+          "socket_errno": 113,
+          "passed": true
+        },
+        {
+          "target": "vpc",
+          "address": "172.31.255.254",
+          "port": 443,
+          "chain": "NCZQA_EGRESS",
+          "counter_before": 8,
+          "counter_after": 9,
+          "reject_counter_delta": 1,
+          "blocked": true,
+          "socket_errno": 113,
+          "passed": true
+        },
+        {
+          "target": "imds",
+          "address": "169.254.169.254",
+          "port": 80,
+          "chain": "NCZQA_EGRESS",
+          "counter_before": 2,
+          "counter_after": 3,
+          "reject_counter_delta": 1,
+          "blocked": true,
+          "socket_errno": 113,
+          "passed": true
+        },
+        {
+          "target": "host",
+          "address": "172.31.32.48",
+          "port": 8080,
+          "chain": "INPUT",
+          "counter_before": 4,
+          "counter_after": 5,
+          "reject_counter_delta": 1,
+          "blocked": true,
+          "socket_errno": 113,
+          "passed": true
+        },
+        {
+          "target": "gateway",
+          "address": "172.20.0.1",
+          "port": 443,
+          "chain": "INPUT",
+          "counter_before": 5,
+          "counter_after": 6,
+          "reject_counter_delta": 1,
+          "blocked": true,
+          "socket_errno": 113,
+          "passed": true
+        },
+        {
+          "target": "non_https",
+          "address": "1.1.1.1",
+          "port": 80,
+          "chain": "NCZQA_EGRESS",
+          "counter_before": 3,
+          "counter_after": 4,
+          "reject_counter_delta": 1,
+          "blocked": true,
+          "socket_errno": 113,
+          "passed": true
+        }
+      ]
+    },
+    {
+      "report": "network-c73a431e-5006-42c0-b1f2-6614e2931a23.json",
+      "passed": true,
+      "actual_cgroup_limits": {
+        "version": 2,
+        "memory_bytes": 8589934592,
+        "cpu_quota": 200000,
+        "cpu_period": 100000,
+        "extra_swap_bytes": 0,
+        "pids_max": 256
+      },
+      "all_kernel_checks_passed": true,
+      "public_tls": {
+        "zxdnjnsghdnviflahvry.supabase.co": 401,
+        "huggingface.co": 200
+      },
+      "ipv6_disabled": true,
+      "denials": [
+        {
+          "target": "staging",
+          "address": "172.18.255.254",
+          "port": 8080,
+          "chain": "NCZQA_EGRESS",
+          "counter_before": 3,
+          "counter_after": 4,
+          "reject_counter_delta": 1,
+          "blocked": true,
+          "socket_errno": 113,
+          "passed": true
+        },
+        {
+          "target": "supabase",
+          "address": "172.19.255.254",
+          "port": 8000,
+          "chain": "NCZQA_EGRESS",
+          "counter_before": 4,
+          "counter_after": 5,
+          "reject_counter_delta": 1,
+          "blocked": true,
+          "socket_errno": 113,
+          "passed": true
+        },
+        {
+          "target": "vpc",
+          "address": "172.31.255.254",
+          "port": 443,
+          "chain": "NCZQA_EGRESS",
+          "counter_before": 5,
+          "counter_after": 6,
+          "reject_counter_delta": 1,
+          "blocked": true,
+          "socket_errno": 113,
+          "passed": true
+        },
+        {
+          "target": "imds",
+          "address": "169.254.169.254",
+          "port": 80,
+          "chain": "NCZQA_EGRESS",
+          "counter_before": 1,
+          "counter_after": 2,
+          "reject_counter_delta": 1,
+          "blocked": true,
+          "socket_errno": 113,
+          "passed": true
+        },
+        {
+          "target": "host",
+          "address": "172.31.32.48",
+          "port": 8080,
+          "chain": "INPUT",
+          "counter_before": 2,
+          "counter_after": 3,
+          "reject_counter_delta": 1,
+          "blocked": true,
+          "socket_errno": 113,
+          "passed": true
+        },
+        {
+          "target": "gateway",
+          "address": "172.20.0.1",
+          "port": 443,
+          "chain": "INPUT",
+          "counter_before": 3,
+          "counter_after": 4,
+          "reject_counter_delta": 1,
+          "blocked": true,
+          "socket_errno": 113,
+          "passed": true
+        },
+        {
+          "target": "non_https",
+          "address": "1.1.1.1",
+          "port": 80,
+          "chain": "NCZQA_EGRESS",
+          "counter_before": 2,
+          "counter_after": 3,
+          "reject_counter_delta": 1,
+          "blocked": true,
+          "socket_errno": 113,
+          "passed": true
+        }
+      ]
+    }
+  ],
+  "existing_services_unchanged": true,
+  "previous_containers": {
+    "fbe3d4f4d9b1c95cb3cae77278a40a5cf5d52c77435eccdc3d14c60d17c06f99": {
+      "Status": "exited",
+      "Running": false,
+      "Restarting": false,
+      "ExitCode": 0,
+      "OOMKilled": false,
+      "StartedAt": "2026-11-09T00:22:12.56201159Z",
+      "FinishedAt": "2026-11-09T00:50:37.70991314Z",
+      "restart_count": 0
+    },
+    "af5b1136b2c734fd0c67e26918cb9d415af370db297c4d8250d2f8860ef4301d": {
+      "Status": "exited",
+      "Running": false,
+      "Restarting": false,
+      "ExitCode": 0,
+      "OOMKilled": false,
+      "StartedAt": "2026-11-09T05:07:19.254948936Z",
+      "FinishedAt": "2026-11-09T05:07:23.150744756Z",
+      "restart_count": 0
+    }
+  },
+  "lifecycle_log_lines": [
+    "2026-11-09T05:38:48.725067856Z {\"trial_generation_stopped\": true, \"nonce\": \"c73a431e-5006-42c0-b1f2-6614e2931a23\", \"reason\": \"child_failure\", \"exit_code\": 1}"
+  ],
+  "limitations": [
+    "Live intermediate snapshot; current generation still running and final counters not captured yet.",
+    "CPU is a sampled interval rate, one core = 100 percent; the observed value is preserved without clamping. Both generations independently proved cpu.max=200000 100000.",
+    "Reclaim and stale-token checks passed; completed-job provenance, Export/download and final coverage not yet verified at this timestamp."
+  ]
+}
