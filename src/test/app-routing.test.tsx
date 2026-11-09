@@ -15,6 +15,11 @@ describe("App routing", () => {
     expect(matches.at(-1)?.routeId).not.toBe(rootRouteId);
   });
 
+  it("matches the read-only public dashboard demo separately from the protected dashboard", () => {
+    const router = createRouter({ routeTree, context: { queryClient: new QueryClient() } });
+    expect(router.matchRoutes("/dashboard-visual-check").at(-1)?.routeId).toBe("/dashboard-visual-check");
+  });
+
   it("matches the authenticated creator dashboard", () => {
     const router = createRouter({ routeTree, context: { queryClient: new QueryClient() } });
 

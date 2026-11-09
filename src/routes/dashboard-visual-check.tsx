@@ -2,11 +2,11 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Clapperboard, FolderOpen, Layers3, Play, Sparkles, WandSparkles } from "lucide-react";
 import { useState } from "react";
 import { DashboardShell } from "@/components/dashboard/DashboardShell";
-import { UploadComposer } from "@/components/dashboard/UploadComposer";
+import { Link } from "@tanstack/react-router";
 import { pageHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/dashboard-visual-check")({
-  head: () => pageHead("Dashboard visual check", "Temporary isolated dashboard layout check."),
+  head: () => pageHead("Dashboard design preview", "Read-only sample workspace. No sign-in required."),
   component: DashboardVisualCheck,
 });
 
@@ -19,10 +19,11 @@ const projects = [
 function DashboardVisualCheck() {
   const [search, setSearch] = useState("");
   return (
-    <DashboardShell displayName="Robens" email="creator@example.com" projectCount={3} search={search} onSearchChange={setSearch}>
+    <DashboardShell displayName="Demo Creator" projectCount={3} search={search} onSearchChange={setSearch} demoMode>
       <section id="overview" className="animate-in-up scroll-mt-28">
+        <p className="mb-4 inline-flex rounded-full border border-border bg-surface px-3 py-1 text-xs text-ember">DESIGN DEMO · SAMPLE DATA ONLY</p>
         <p className="mb-2 flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.18em] text-ember"><span className="h-1.5 w-1.5 rounded-full bg-ember animate-pulse-dot" /> Your creative space</p>
-        <h1 className="text-[1.75rem] font-medium leading-tight tracking-[-0.035em] sm:text-4xl">Welcome back, <span className="font-display italic text-ember">Robens.</span></h1>
+        <h1 className="text-[1.75rem] font-medium leading-tight tracking-[-0.035em] sm:text-4xl">Welcome, <span className="font-display italic text-ember">Creator.</span></h1>
         <p className="mt-2 text-sm text-muted-foreground sm:text-base">Your next standout moment is already in the footage.</p>
         <div className="mt-7 grid grid-cols-3 gap-2.5 sm:gap-4">
           {[[FolderOpen, "Projects", "3"], [Clapperboard, "Clips found", "10"], [WandSparkles, "Processing", "1"]].map(([Icon, label, value]) => {
@@ -32,7 +33,16 @@ function DashboardVisualCheck() {
         </div>
       </section>
       <div className="mt-6 grid items-start gap-5 xl:grid-cols-[minmax(0,1.65fr)_minmax(280px,.7fr)]">
-        <UploadComposer onUploaded={async () => {}} />
+        <section id="new-project" className="rounded-[24px] border border-border bg-card p-6 shadow-float">
+          <p className="mb-2 text-xs font-medium uppercase tracking-[.14em] text-ember">Clipping studio preview</p>
+          <h2 className="text-xl font-medium">Create something worth watching</h2>
+          <p className="mt-2 text-sm text-muted-foreground">The real workspace lets you upload recordings and request highlights. This demo is read-only and never accesses accounts or uploads files.</p>
+          <div className="mt-6 rounded-2xl border border-dashed border-border bg-surface px-6 py-12 text-center">
+            <Clapperboard className="mx-auto h-7 w-7 text-ember" />
+            <p className="mt-3 text-sm text-muted-foreground">MP4, MOV, WebM · Available after sign-in</p>
+          </div>
+          <Link to="/auth" className="mt-6 inline-flex h-11 items-center rounded-full bg-primary px-5 text-sm font-medium text-primary-foreground">Sign in to start clipping</Link>
+        </section>
         <aside id="activity" className="rounded-[24px] border border-border bg-card/80 p-5 shadow-pop sm:p-6">
           <div className="flex items-center justify-between"><div><p className="text-sm font-medium">Weekly activity</p><p className="mt-1 text-xs text-muted-foreground">Projects created in the last 7 days</p></div><Layers3 className="h-4 w-4 text-ember" /></div>
           <div className="mt-6 flex h-[104px] items-end justify-between gap-2">{[20, 45, 30, 75, 45, 90, 60].map((height, i) => <div key={i} className="flex h-full flex-1 flex-col items-center justify-end gap-2"><div className="flex h-[72px] w-full max-w-7 items-end rounded-full bg-muted/70"><div className="w-full rounded-full bg-ember" style={{ height: `${height}%` }} /></div><span className="text-[10px] text-muted-foreground">{["M", "T", "W", "T", "F", "S", "S"][i]}</span></div>)}</div>

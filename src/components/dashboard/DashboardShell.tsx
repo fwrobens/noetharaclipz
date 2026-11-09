@@ -33,6 +33,7 @@ type DashboardShellProps = {
   projectCount: number;
   search: string;
   onSearchChange: (value: string) => void;
+  demoMode?: boolean;
 };
 
 export function DashboardShell({
@@ -43,6 +44,7 @@ export function DashboardShell({
   projectCount,
   search,
   onSearchChange,
+  demoMode = false,
 }: DashboardShellProps) {
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -75,6 +77,8 @@ export function DashboardShell({
     await navigate({ to: "/auth", replace: true });
   };
 
+  const startNew = () => demoMode ? void navigate({ to: "/auth" }) : focusComposer();
+
   const sidebar = (mobile = false) => (
     <SidebarContent
       collapsed={!mobile && collapsed}
@@ -84,12 +88,13 @@ export function DashboardShell({
       avatarUrl={avatarUrl}
       projectCount={projectCount}
       onGoTo={goTo}
-      onSignOut={() => void signOut()}
+      onSignOut={() => demoMode ? void navigate({ to: "/auth" }) : void signOut()}
+      demoMode={demoMode}
     />
   );
 
   return (
-    <div className="clipspark-skin dashboard-skin min-h-screen bg-background text-foreground">
+    <div className="clipspark-skin dashboard-skin flex min-h-screen bg-background text-foreground">
       <aside
         className={cn(
           "sticky top-0 hidden h-screen shrink-0 flex-col border-r border-border bg-sidebar/80 backdrop-blur-xl transition-[width] duration-300 lg:flex",
@@ -165,11 +170,11 @@ export function DashboardShell({
             </label>
             <button
               type="button"
-              onClick={focusComposer}
+              onClick={startNew}
               className="glow-border glow-border-soft inline-flex h-10 items-center justify-center gap-2 rounded-full bg-primary px-3 text-sm font-medium text-primary-foreground shadow-pop transition hover:-translate-y-0.5 sm:px-4"
             >
               <Plus className="h-4 w-4" />
-              <span className="hidden sm:inline">New project</span>
+              <span className="hidden sm:inline">{demoMode ? "Sign in to create" : "New project"}</span>
             </button>
           </div>
         </header>
@@ -193,6 +198,7 @@ type SidebarContentProps = {
   projectCount: number;
   onGoTo: (id: (typeof navigation)[number]["id"]) => void;
   onSignOut: () => void;
+  demoMode?: boolean;
 };
 
 function SidebarContent({
@@ -204,13 +210,14 @@ function SidebarContent({
   projectCount,
   onGoTo,
   onSignOut,
+  demoMode = false,
 }: SidebarContentProps) {
   const initials = displayName.trim().slice(0, 1).toUpperCase() || "N";
   return (
     <div className={cn("flex min-h-0 flex-1 flex-col p-3", collapsed && "items-center px-2")}>
       <button
         type="button"
-        onClick={focusComposer}
+        onClick={demoMode ? onSignOut : focusComposer}
         className={cn(
           "mb-7 mt-3 inline-flex h-11 shrink-0 items-center justify-center gap-2 rounded-xl border border-ember/20 bg-ember/10 text-sm font-medium text-foreground shadow-soft transition hover:border-ember/40 hover:bg-ember/15",
           collapsed ? "w-11" : "w-full",
@@ -218,7 +225,7 @@ function SidebarContent({
         title="Create a clip"
       >
         <Sparkles className="h-4 w-4 text-ember" />
-        {!collapsed && "Create a clip"}
+        {!collapsed && (demoMode ? "Sign in to create" : "Create a clip")}
       </button>
 
       <p
@@ -265,7 +272,7 @@ function SidebarContent({
             <div className="flex items-center justify-between gap-3">
               <p className="text-xs font-medium">Your workspace</p>
               <span className="rounded-full bg-ember/10 px-2 py-0.5 text-[10px] text-ember">
-                Live
+                {demoMode ? "DEMO" : "Live"}
               </span>
             </div>
             <p className="mt-3 font-display text-3xl">{projectCount}</p>
@@ -307,15 +314,15 @@ function SidebarContent({
               <div className="min-w-0 flex-1">
                 <p className="truncate text-xs font-medium">{displayName}</p>
                 <p className="truncate text-[10px] text-muted-foreground">
-                  {email || "Creator account"}
+                  {demoMode ? "Sample data only" : email || "Creator account"}
                 </p>
               </div>
               <button
                 type="button"
                 onClick={onSignOut}
                 className="grid h-8 w-8 shrink-0 place-items-center rounded-lg text-muted-foreground transition hover:bg-accent hover:text-foreground"
-                aria-label="Sign out"
-                title="Sign out"
+                aria-label={demoMode ? "Sign in" : "Sign out"}
+                title={demoMode ? "Sign in" : "Sign out"}
               >
                 <LogOut className="h-3.5 w-3.5" />
               </button>

@@ -1,6 +1,5 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, type ErrorComponentProps } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { formatDistanceToNow } from "date-fns";
 import {
   ArrowRight,
   ArrowUpRight,
@@ -40,6 +39,9 @@ export const Route = createFileRoute("/_authenticated/dashboard")({
       "Upload recordings, find standout moments, and review your Noethara Clipz projects.",
     ),
   loader: ({ context }) => context.queryClient.ensureQueryData(creatorQuery()),
+  pendingComponent: DashboardLoading,
+  pendingMs: 300,
+  errorComponent: DashboardLoadError,
   component: DashboardPage,
 });
 
@@ -56,10 +58,10 @@ function DashboardPage() {
   const queryClient = Route.useRouteContext().queryClient;
 
   const projects = useMemo(
-    () => data.projects.filter((project) => !project.deleted_at),
+    () => (data.projects ?? []).filter((project) => project && !project.deleted_at),
     [data.projects],
   );
-  const totalHighlights = projects.reduce((total, project) => total + project.highlights.length, 0);
+  const totalHighlights = projects.reduce((total, project) => total + (project.highlights?.length ?? 0), 0);
   const activeProjects = projects.filter((project) => isProjectActive(project));
   const displayName =
     data.profile?.display_name?.trim() ||
@@ -427,12 +429,12 @@ function ProjectCard({
         </div>
         <div className="mt-3 flex items-center justify-between gap-3 text-[11px] text-muted-foreground">
           <span className="flex items-center gap-1.5">
-            <Clapperboard className="h-3.5 w-3.5" /> {project.highlights.length}{" "}
-            {project.highlights.length === 1 ? "clip" : "clips"}
+            <Clapperboard className="h-3.5 w-3.5" /> {(project.highlights?.length ?? 0)}{" "}
+            {(project.highlights?.length ?? 0) === 1 ? "clip" : "clips"}
           </span>
           <span className="flex items-center gap-1.5">
             <Clock3 className="h-3.5 w-3.5" />{" "}
-            {formatDistanceToNow(new Date(project.updated_at), { addSuffix: true })}
+            {formatProjectAge(project.updated_at)}
           </span>
         </div>
       </div>
@@ -469,7 +471,7 @@ function ProjectDialog({
               </div>
               <DialogTitle className="text-xl font-medium">{project.title}</DialogTitle>
               <DialogDescription>
-                Updated {formatDistanceToNow(new Date(project.updated_at), { addSuffix: true })}
+                Updated {formatProjectAge(project.updated_at)}
               </DialogDescription>
             </DialogHeader>
             {progress !== null && (
@@ -498,13 +500,13 @@ function ProjectDialog({
               <div className="flex items-center justify-between gap-3">
                 <h3 className="text-sm font-medium">Detected moments</h3>
                 <span className="text-xs text-muted-foreground">
-                  {project.highlights.length} total
+                  {(project.highlights?.length ?? 0)} total
                 </span>
               </div>
-              {project.highlights.length ? (
+              {(project.highlights?.length ?? 0) ? (
                 <div className="mt-3 space-y-2">
-                  {[...project.highlights]
-                    .sort((a, b) => b.score - a.score)
+                  {[...(project.highlights ?? [])]
+                    .sort((a, b) => Number(b.score ?? 0) - Number(a.score ?? 0))
                     .map((highlight, index) => (
                       <div
                         key={highlight.id}
@@ -521,7 +523,7 @@ function ProjectDialog({
                           </p>
                         </div>
                         <span className="rounded-full border border-border bg-card px-2.5 py-1 text-[10px] text-ember">
-                          {Math.round(highlight.score)} score
+                          {Math.round(Number(highlight.score ?? 0))} score
                         </span>
                       </div>
                     ))}
@@ -546,15 +548,15 @@ function ProjectDialog({
 function isProjectActive(project: CreatorProject) {
   return (
     ["queued", "processing", "uploading", "analyzing"].includes(project.status) ||
-    project.processing_jobs.some((job) => ["queued", "running", "processing"].includes(job.status))
+    (project.processing_jobs ?? []).some((job) => ["queued", "running", "processing"].includes(job.status))
   );
 }
 
 function getProjectProgress(project: CreatorProject) {
-  const job = project.processing_jobs.find((item) =>
+  const job = (project.processing_jobs ?? []).find((item) =>
     ["queued", "running", "processing"].includes(item.status),
   );
-  return job ? Math.max(0, Math.min(100, Math.round(job.progress))) : null;
+  return job ? Math.max(0, Math.min(100, Math.round(Number(job.progress ?? 0)))) : null;
 }
 
 function getProjectStatus(project: CreatorProject) {
@@ -564,7 +566,7 @@ function getProjectStatus(project: CreatorProject) {
       active: false,
       className: "border-success/20 bg-success/10 text-success",
     };
-  if (project.status === "failed" || project.processing_jobs.some((job) => job.status === "failed"))
+  if (project.status === "failed" || (project.processing_jobs ?? []).some((job) => job.status === "failed"))
     return {
       label: "Needs attention",
       active: false,
@@ -612,4 +614,45 @@ function buildWeeklyActivity(projects: CreatorProject[]) {
     total: days.reduce((sum, day) => sum + day.count, 0),
     max: Math.max(1, ...days.map((day) => day.count)),
   };
+}
+
+
+// Route-scoped fallbacks keep the actual authenticated workspace from going blank
+// when its initial query or a newly optimized module fails to load.
+function DashboardLoading() {
+  return <div className="clipspark-skin flex min-h-screen items-center justify-center bg-background px-6 text-foreground" role="status">
+    <div className="flex items-center gap-3 rounded-2xl border border-border bg-card px-6 py-5 text-sm text-muted-foreground">
+      <Loader2 className="h-5 w-5 animate-spin text-ember" /> Loading your workspace…
+    </div>
+  </div>;
+}
+
+function DashboardLoadError({ reset }: ErrorComponentProps) {
+  return <div className="clipspark-skin flex min-h-screen items-center justify-center bg-background px-6 text-foreground">
+    <div className="max-w-md rounded-3xl border border-border bg-card p-7 text-center shadow-pop">
+      <h1 className="text-xl font-medium">Your workspace didn't load.</h1>
+      <p className="mt-3 text-sm leading-6 text-muted-foreground">This can happen during a preview reload or a temporary connection issue. Your saved projects haven't been changed.</p>
+      <div className="mt-6 flex flex-wrap justify-center gap-3">
+        <button type="button" className="rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground" onClick={() => { reset(); window.location.reload(); }}>Try again</button>
+        <a href="/dashboard-visual-check" className="rounded-full border border-border bg-surface px-5 py-2.5 text-sm">View design demo</a>
+      </div>
+    </div>
+  </div>;
+}
+
+function formatProjectAge(value: string | null | undefined): string {
+  if (!value) return "Recently";
+  const timestamp = new Date(value).getTime();
+  if (!Number.isFinite(timestamp)) return "Recently";
+  const minutes = Math.round((timestamp - Date.now()) / 60_000);
+  if (Math.abs(minutes) < 1) return "Just now";
+  const formatter = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
+  if (Math.abs(minutes) < 60) return formatter.format(minutes, "minute");
+  const hours = Math.round(minutes / 60);
+  if (Math.abs(hours) < 24) return formatter.format(hours, "hour");
+  const days = Math.round(hours / 24);
+  if (Math.abs(days) < 30) return formatter.format(days, "day");
+  const months = Math.round(days / 30);
+  if (Math.abs(months) < 12) return formatter.format(months, "month");
+  return formatter.format(Math.round(months / 12), "year");
 }
