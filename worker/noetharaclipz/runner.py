@@ -9,6 +9,7 @@ import time
 from pathlib import Path
 from .backend import Backend
 from .config import Settings
+from .consent import CONTRACT, ConsentedBackend, ProcessingRevoked
 from .media import Cancelled, ffmpeg, prepare, render, run, transcribe
 from .models import Candidate, Edit, rank_candidates
 from .providers import build_provider
@@ -81,12 +82,35 @@ class Worker:
     def __init__(self, settings=None, backend=None, provider=None, stop_event=None):
         self.stop_event = stop_event or threading.Event()
         self.settings = settings or Settings()
-        self.backend = backend or Backend(self.settings)
+        self.backend = backend or (
+            ConsentedBackend(self.settings)
+            if self.settings.queue_mode == "consented"
+            else Backend(self.settings)
+        )
         self.provider = provider or build_provider(self.settings)
         self.protocol_checked = False
         self.last_cycle = time.monotonic()
 
     def check_protocol(self):
+        if self.settings.queue_mode == "consented" and not self.protocol_checked:
+            protocol = self.backend.rpc("worker_continuous_protocol")
+            if (
+                protocol.get("version") != 2
+                or protocol.get("contract") != CONTRACT
+                or protocol.get("global_claim") is not False
+                or not all(
+                    protocol.get(k) is True
+                    for k in ("future_jobs_only", "revocable", "job_exclusions", "audit")
+                )
+            ):
+                raise RuntimeError(
+                    "Reviewed consent protocol is not deployed; no legacy queue fallback"
+                )
+            status = self.backend.rpc("worker_consent_status")
+            if not status.get("authorized"):
+                raise ProcessingRevoked("Owner consent is not active")
+            self.protocol_checked = True
+            return
         if not self.protocol_checked and (
             self.settings.provider == "local" or self.settings.scope_owner
         ):
@@ -103,7 +127,11 @@ class Worker:
             self.protocol_checked = True
 
     def heartbeat(self, ready, detail):
-        if self.settings.scope_owner:
+        if self.settings.queue_mode == "consented":
+            result = self.backend.rpc("worker_heartbeat_optin", ai_ready=ready, detail=detail)
+            if ready and result is not True:
+                raise ProcessingRevoked("Processing authorization no longer active")
+        elif self.settings.scope_owner:
             result = self.backend.rpc(
                 "worker_heartbeat_scoped",
                 owner=self.settings.scope_owner,
@@ -123,7 +151,9 @@ class Worker:
                         "pid": os.getpid(),
                         "at": time.time(),
                         "ai_ready": ready,
-                        "mode": "qa" if self.settings.scope_owner else "global",
+                        "mode": "continuous"
+                        if self.settings.queue_mode == "consented"
+                        else ("qa" if self.settings.scope_owner else "global"),
                         "main_age_seconds": time.monotonic() - self.last_cycle,
                     }
                 )
@@ -194,7 +224,16 @@ class Worker:
                 "source_hash": data["source_hash"],
             }
             lease.tick(True)
-            self.backend.update("videos", metadata, project_id="eq." + job["project_id"])
+            if self.settings.queue_mode == "consented":
+                self.backend.rpc(
+                    "worker_checkpoint_optin",
+                    jid=job["id"],
+                    token=job["lease_token"],
+                    metadata=metadata,
+                    artifacts=None,
+                )
+            else:
+                self.backend.update("videos", metadata, project_id="eq." + job["project_id"])
             lease.stage("analyzing", 25, "Transcribing spoken audio locally")
             transcript = (
                 self.provider.transcript(data, lease.tick)
@@ -214,7 +253,15 @@ class Worker:
             }
             existing = self.backend.rows("analysis_artifacts", project_id="eq." + job["project_id"])
             # Checkpoints contain only actual extracted evidence; no placeholder highlights.
-            if not existing:
+            if self.settings.queue_mode == "consented":
+                self.backend.rpc(
+                    "worker_checkpoint_optin",
+                    jid=job["id"],
+                    token=job["lease_token"],
+                    metadata=None,
+                    artifacts=artifact,
+                )
+            elif not existing:
                 r = self.backend.client.post(
                     self.backend.base + "/rest/v1/analysis_artifacts",
                     json={"project_id": job["project_id"], **artifact},
@@ -395,16 +442,21 @@ class Worker:
     def once(self):
         self.last_cycle = time.monotonic()
         self.check_protocol()
-        job = (
-            self.backend.rpc("worker_claim_scoped", owner=self.settings.scope_owner)
-            if self.settings.scope_owner
-            else self.backend.rpc("worker_claim")
-        )
+        if self.settings.queue_mode == "consented":
+            job = self.backend.rpc("worker_claim_optin")
+        else:
+            job = (
+                self.backend.rpc("worker_claim_scoped", owner=self.settings.scope_owner)
+                if self.settings.scope_owner
+                else self.backend.rpc("worker_claim")
+            )
         if not job:
             return False
         try:
             self.process(job)
-        except InterruptedError:
+        except InterruptedError as error:
+            if isinstance(error, ProcessingRevoked):
+                self.stop_event.set()
             log.info("Job %s released through lease expiry after worker shutdown", job["id"])
         except Exception as e:
             # Redact credentials and avoid logging provider request bodies / private media.
@@ -446,6 +498,9 @@ def main():
         worker.provider.preflight()
         ready = True
         detail = "Ready: " + getattr(worker.provider, "model", settings.model)
+    except ProcessingRevoked:
+        stop.set()
+        detail = "Processing authorization inactive"
     except Exception as exc:
         detail = "Selected provider unavailable: " + type(exc).__name__
         log.error("Provider startup failed: %s", detail)
@@ -454,6 +509,8 @@ def main():
         while not stop.is_set():
             try:
                 worker.heartbeat(ready, detail)
+            except ProcessingRevoked:
+                stop.set()
             except Exception:
                 log.error("Worker health update failed")
             stop.wait(30)
@@ -479,6 +536,8 @@ def main():
                     last_cleanup = time.monotonic()
                 if not worker.once():
                     stop.wait(3)
+            except ProcessingRevoked:
+                stop.set()
             except Exception:
                 log.exception("Worker connection failed")
                 stop.wait(10)

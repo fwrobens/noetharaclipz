@@ -1,0 +1,22 @@
+# REVIEW ONLY. Installation/enabling requires separate pilot authorization.
+[Unit]
+Description=Verify or restore approved NoetharaClipz worker-only isolation
+Requires=docker.service
+After=docker.service network-online.target
+Wants=network-online.target
+RequiresMountsFor=/etc/noetharaclipz-isolated/continuous /var/lib/noetharaclipz-isolated/continuous /var/lib/noetharaclipz-isolated/models
+Before=noetharaclipz-continuous.service
+ConditionPathExists=/etc/noetharaclipz-isolated/continuous/current/public/manifest.json
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+UMask=0077
+UnsetEnvironment=DOCKER_HOST DOCKER_CONTEXT DOCKER_TLS DOCKER_TLS_VERIFY DOCKER_CERT_PATH
+ExecStart=/usr/bin/python3 /etc/noetharaclipz-isolated/continuous/current/code/host/continuous_host.py isolation --manifest /etc/noetharaclipz-isolated/continuous/current/public/manifest.json
+TimeoutStartSec=120
+NoNewPrivileges=yes
+PrivateTmp=yes
+
+[Install]
+WantedBy=multi-user.target

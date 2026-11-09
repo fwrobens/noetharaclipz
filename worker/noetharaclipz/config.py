@@ -36,6 +36,8 @@ def server_key_headers(key):
 class Settings:
     provider: str = field(default_factory=lambda: os.getenv("NC_AI_PROVIDER", "gemini"))
     scope_owner: str | None = field(default_factory=lambda: os.getenv("NC_WORKER_OWNER_ID") or None)
+    queue_mode: str = field(default_factory=lambda: os.getenv("NC_QUEUE_MODE", "legacy"))
+    consent_id: str | None = field(default_factory=lambda: os.getenv("NC_OWNER_CONSENT_ID") or None)
     cache_dir: str = field(
         default_factory=lambda: os.getenv(
             "NC_WORKER_CACHE_DIR",
@@ -75,6 +77,26 @@ class Settings:
             from uuid import UUID
 
             object.__setattr__(self, "scope_owner", str(UUID(self.scope_owner)))
+        if self.queue_mode not in ("legacy", "consented"):
+            raise ValueError("Unknown queue mode; no fallback to global claims")
+        if os.getenv("NC_DEPLOY_MODE") == "continuous" and self.queue_mode != "consented":
+            raise ValueError("Continuous deployment requires the explicit consented queue")
+        if self.queue_mode == "consented":
+            from uuid import UUID
+
+            if (
+                self.provider != "local"
+                or not self.scope_owner
+                or not self.consent_id
+                or self.free_verified
+                or os.getenv("NC_GLOBAL_QUEUE_APPROVED", "false") != "false"
+            ):
+                raise ValueError(
+                    "Consented processing requires explicit local owner/consent and disabled global/Gemini"
+                )
+            object.__setattr__(self, "consent_id", str(UUID(self.consent_id)))
+        elif self.consent_id:
+            raise ValueError("Consent IDs cannot be used with the legacy queue")
 
     def check_project(self):
         if self.supabase_url.rstrip("/") != f"https://{PROJECT}.supabase.co":

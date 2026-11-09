@@ -4,7 +4,10 @@
 passed and stopped automatically. Continuous/global processing remains disabled.**
 No resize, larger model, paid inference or new infrastructure is indicated by
 these measurements. A continuous rollout still needs reviewed boot isolation,
-ongoing monitoring and explicit queue opt-in controls.
+ongoing monitoring and explicit queue opt-in controls. Those controls are now
+implemented and locally verified as described in the
+[continuous pilot procedure](continuous-worker-pilot.md); the new controller and
+SQL proposal have **not** been deployed.
 
 Host observations come from operator-pasted, read-only SSM collectors; Codex has
 no direct EC2 execution connection. Browser and hosted REST checks ran from the
@@ -112,29 +115,39 @@ counters. The corrected unused-IP probes were then verified on the actual host,
 without changing firewall rules. See [original shutdown](evidence/ec2-qa-shutdown-host.json)
 and [failed startup evidence](evidence/reliability-startup-failure.json).
 
-## Remaining gates before continuous processing
+## Prepared continuous controls and remaining deployment gates
 
-1. **Safe boot and isolation ordering.** The active crash trial proved
-   generation restart/regrant, not host/daemon boot ordering. The base Compose
-   profile defaults to standby; its `unless-stopped` policy needs a dedicated
-   isolation-before-queue controller for active continuous rollout. Require
-   Docker, dedicated mounts and a reviewed worker-only isolation unit, verify
-   bridge ownership/collisions, actual hook order and live rejection counters,
-   then issue fresh grants. Keep periodic verification/revocation active. Restore
-   only explicitly approved worker rules; do not flush shared chains, modify
-   host-wide Docker settings or reboot this shared host without authorization.
-2. **Explicit queue opt-in.** Keep global off. Existing SQL atomically scopes
-   claims by owner. The protected old upload must remain held. Existing-owner
-   or individual old-job release remains blocked until a reviewed server-side
-   atomic release protocol enforces consent, source revision, protected-job
-   exclusion, revocation and audit. No schema/RLS change was made here.
-3. **Continuous operations configuration.** Prepare a separately reviewed
-   controller/scope configuration with bounded restart/backoff, durable bounded
-   log/metric retention, stale-readiness/resource alerts, disk headroom and
-   temporary-file cleanup. Retain one job, 8 GiB, 2 vCPU, private file secrets,
-   no public ports and explicit local provenance. The current hard 30-minute
-   policy and receipt remain intact. No monitoring subscription or persistent
-   boot unit was installed during this QA stage.
+The new controller orders Docker, private mounts and isolation before any queue
+access. Every generation requires fresh kernel/network proofs and a short-lived
+grant; missing security checks, consent or monitoring stops work. Bounded
+restart/backoff, a durable failure latch and rotating resource/log retention
+survive controller restarts. The reviewed base image is reused with a new,
+hash-pinned read-only application overlay. It is a changed application artifact.
+
+The [server-side SQL proposal](proposals/continuous-worker-consent.sql) adds
+owner consent plus separate operator approval, future-job-only input bindings,
+permanent original-job exclusion, revocation and append-only audit. Old queued
+jobs/projects cannot become eligible through approval or re-consent. Global
+claims are denied, and consent-aware checkpoints/completion serialize against
+revocation. Real local PostgreSQL tests cover both concurrent transaction orders.
+The proposal remains outside the migration directory and has **not been applied**.
+
+Remaining gates are:
+
+1. Separately authorize/review and transactionally deploy the SQL proposal as a
+   new migration; verify its live protocol, permissions and existing-job exclusion.
+2. Select one fresh pilot owner, obtain owner consent and operator approval, and
+   review the exact new immutable manifest/window. No approval was issued here.
+3. Transfer the small private source bundle, run fresh EC2 preflights and obtain
+   separate authorization to start only the new limited pilot. Verify the new
+   consent-aware website path and shutdown/revocation on EC2. Local tests do not
+   establish actual system-manager/host boot behavior or hosted v2 acceptance.
+
+The exact future commands and rollback are in the
+[pilot procedure](continuous-worker-pilot.md). Live notification delivery and
+sustained-load/maximum-input capacity remain operational checks. No new unit,
+firewall rule, account, hosted schema change or continuous worker was installed
+or started during preparation. All previous trial files/evidence remain unchanged.
 
 Rollback must revoke the dedicated grant and gracefully stop only the matching
 worker/container/controller. Preserve assets, evidence and queued work; leave
@@ -142,8 +155,8 @@ Noethara and Supabase services untouched. The current trial already completed
 that safe stop automatically; no additional stop/restart is needed.
 
 **Recommendation:** the existing host and 500M worker are suitable candidates
-for a limited, owner-scoped continuous pilot after the dedicated startup and
-queue-control rollout is prepared and authorized. The measured reliability
+for a limited, owner-scoped continuous pilot after the prepared startup and
+queue-control rollout is reviewed, applied and separately authorized. The measured reliability
 stage is complete. General-user/global processing remains disabled, and this
 recommendation does not authorize a restart, deployment, merge or publication.
 
@@ -152,3 +165,10 @@ The seven probe regression cases supplement the earlier reliability tests.
 Approved code/image and prior evidence hashes were unchanged during live QA;
 only verification documentation/evidence changed afterward. Existing frontend,
 TypeScript, build and lint results remain applicable; no frontend code changed.
+
+Continuous-control preparation validation: **272 worker tests passed, one
+optional sample skipped; Ruff passed.** Real local PostgreSQL/PGMQ tests cover
+consent, exclusions, ownership, cancellation, recovery and both revocation races.
+Unit syntax/dependency checks and an import-only overlay smoke supplement these
+tests. [Preparation evidence](evidence/continuous-worker-preparation.json) records
+the artifact and scope; no new inference or hosted deployment is claimed.

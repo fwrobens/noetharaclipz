@@ -1,0 +1,33 @@
+# REVIEW ONLY. No unit is installed/enabled by building this repository.
+[Unit]
+Description=Owner-consented local NoetharaClipz AI pilot
+Requires=docker.service noetharaclipz-isolation.service
+BindsTo=docker.service noetharaclipz-isolation.service
+After=docker.service noetharaclipz-isolation.service network-online.target
+RequiresMountsFor=/etc/noetharaclipz-isolated/continuous /var/lib/noetharaclipz-isolated/continuous /var/lib/noetharaclipz-isolated/models
+ConditionPathExists=/etc/noetharaclipz-isolated/continuous/current/public/manifest.json
+StartLimitIntervalSec=900
+StartLimitBurst=3
+
+[Service]
+Type=exec
+UMask=0077
+UnsetEnvironment=DOCKER_HOST DOCKER_CONTEXT DOCKER_TLS DOCKER_TLS_VERIFY DOCKER_CERT_PATH
+ExecStart=/usr/bin/python3 /etc/noetharaclipz-isolated/continuous/current/code/host/continuous_host.py run --manifest /etc/noetharaclipz-isolated/continuous/current/public/manifest.json
+Restart=on-failure
+RestartSec=15
+TimeoutStopSec=110
+KillSignal=SIGTERM
+KillMode=control-group
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectHome=yes
+ProtectSystem=strict
+ReadWritePaths=/etc/noetharaclipz-isolated/continuous /var/lib/noetharaclipz-isolated/continuous
+ReadWritePaths=/run/xtables.lock
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=noetharaclipz-continuous
+
+[Install]
+WantedBy=multi-user.target
