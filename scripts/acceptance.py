@@ -25,8 +25,8 @@ def main():
     password = os.environ["NC_TEST_PASSWORD"]
     sample = Path(os.environ["NC_SAMPLE_VIDEO"]).resolve(strict=True)
     base = os.getenv("NC_BASE_URL", "http://127.0.0.1:8080").rstrip("/")
-    output = Path("test-results/acceptance.mp4").resolve()
-    output.parent.mkdir(exist_ok=True)
+    output = (Path(os.getenv("NC_ACCEPTANCE_OUTPUT_DIR", "test-results")) / "acceptance.mp4").resolve()
+    output.parent.mkdir(parents=True, exist_ok=True)
     evidence = {
         "passed": False,
         "source_sha256": hashlib.sha256(sample.read_bytes()).hexdigest(),

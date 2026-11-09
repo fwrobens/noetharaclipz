@@ -759,6 +759,60 @@ public key in a later step; no plaintext service credential should be pasted
 into SSM/chat or put in the artifact bucket. Delete the transport private key
 after successful unsealing. Do not start the worker until the key file and a
 new explicit QA owner are configured and the 30-minute stop procedure is armed.
-At this commit the asset helper has not yet run on EC2; download and credential
-readiness are still pending. Gemini/global consumption and paid services remain
-disabled. No new AWS resources or instance resize are involved.
+The operator has now confirmed successful asset seeding under actual kernel
+limits, pinned revisions, and unchanged existing services. No queue or inference
+was used by the seed. The temporary asset handoff object was deleted after that
+receipt. Gemini/global consumption and paid services remain disabled.
+
+## Start the approved 30-minute QA worker
+
+`deploy/worker/start_qa_worker.py` starts the real reviewed image after rechecking
+the host, image identity, owned network receipt, live firewall rules, private
+volume ownership, model manifest and original service state. It does not rebuild
+or pull an image, reapply SQL or change another application. The original image
+manifest remains `sha256:472913bf34e918c48e5b77a56c4ea2dfd31873bdd79ecc2d1c4e7ab4cf3e5759`.
+The new tested QA deadline wrapper is a read-only bind mount; it does not claim
+to be part of the original image build.
+
+The existing ready vault credential is encrypted with RSA4096-OAEP-SHA256 to the
+public transport key returned by EC2. The encryption label binds the project,
+instance, image, QA owner and trial UUID. Only ciphertext is included in the
+small private signed-URL handoff, alongside hash-checked startup sources. No
+plaintext service key, QA password or transport private key is uploaded. The
+controller decrypts only on that host, verifies the authorized worker protocol
+without claiming jobs, and installs the secret root:62001 mode 0440. It never
+puts that value into Docker configuration environment metadata. The transport
+private key is deleted after successful worker readiness.
+
+One temporary QA account exists. Fresh read-only auth checks confirmed it cannot
+read the original project/job or call the privileged worker protocol; anonymous
+calls also fail. The protected job's full-row digest still matches queued with
+zero attempts. The QA worker uses only `worker_claim_scoped` and scoped health;
+global approval and Gemini remain false. Scoped runtime skips global cleanup.
+
+The controller writes one fixed stop timestamp before container creation. It
+validates the real merged Compose profile and created-container limits before
+starting. `qa_deadline.py` checks actual kernel quotas in the worker container
+before credentials or models load, sends process-group shutdown in time for
+graceful termination, and kills remaining descendants before the absolute
+30-minute deadline. An expired or completed window exits normally. Crash
+restarts preserve the same timestamp; an existing trial receipt cannot reset it.
+There is no unattended host/daemon reboot startup and no public port.
+
+`scripts/await_ec2_qa.py` is running on the development machine, waiting for this
+QA owner's actual local-model readiness. It then invokes the existing normal
+browser acceptance: login, real upload, instructions, automatic highlight,
+edit/save/refresh, normal Export queue, authenticated private MP4 download and
+full FFmpeg decode. It creates no worker and inserts no highlight fixtures.
+New evidence is isolated under `test-results/ec2-qa-acceptance/` to preserve old
+results. The protected original row is checked read-only before and after.
+
+Verification: 155 worker tests passed, one optional sample test skipped; 15
+frontend tests, TypeScript, build and Ruff passed. ESLint has zero errors and 11
+existing warnings. Twenty new startup checks include real RSA round-trip and
+owner-label rejection, real Compose parsing, forbidden configuration rejection,
+deadline persistence, and termination of a harmless real child process group.
+They do not substitute for the pending EC2 worker/browser trial. At this commit
+the actual QA worker has not started; EC2 website acceptance, live cancellation,
+recovery and resource measurements remain pending. Nothing is merged, published
+or enabled for normal users. No infrastructure or paid service was added.

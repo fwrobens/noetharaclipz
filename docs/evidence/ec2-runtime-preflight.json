@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-08",
+  "date": "2026-11-09",
   "instance_id": "i-0be10e530045fc650",
   "region": "us-east-2",
   "source": "operator-pasted SSM result; no direct agent EC2 access",
@@ -123,19 +123,24 @@
     }
   },
   "automated_checks": {
-    "worker_passed": 135,
+    "worker_passed": 155,
     "worker_skipped": 1,
-    "worker_seconds": 19.09,
+    "worker_seconds": 23.18,
     "skip_reason": "optional authorized-sample test not selected",
     "network_scope_policy_tests_passed": 26,
     "ruff": "passed",
     "error_reporting_and_network_targeted_passed": 24,
     "asset_preparation_tests_passed": 15,
-    "actual_compose_seed_profile_validation": "passed without starting containers; selected seed has no secret mounts and only /models"
+    "actual_compose_seed_profile_validation": "passed without starting containers; selected seed has no secret mounts and only /models",
+    "qa_startup_tests_passed": 20,
+    "frontend_tests_passed": 15,
+    "typescript": "passed",
+    "build": "passed",
+    "lint": "0 errors, 11 existing warnings"
   },
   "worker_started": false,
   "models_loaded_on_ec2": false,
-  "qa_account_created": false,
+  "qa_account_created": true,
   "global_consumption_enabled": false,
   "gemini_enabled": false,
   "paid_services_activated": false,
@@ -183,7 +188,7 @@
     "all_admission_policy_and_cleanup_functions_unchanged": true
   },
   "asset_preparation": {
-    "status": "prepared, not yet executed on EC2",
+    "status": "passed on EC2 via operator SSM output: pinned assets downloaded under actual 8 GiB / 2 vCPU / no-swap / 256-PID limits",
     "model": "HuggingFaceTB/SmolVLM2-500M-Video-Instruct",
     "model_revision": "7b375e1b73b11138ff12fe22c8f2822d8fe03467",
     "whisper_revision": "536b0662742c02347bc0e980a01041f333bce120",
@@ -213,12 +218,33 @@
       "signed_download_hash_verified": true,
       "public_request_status": 400,
       "public": false,
-      "cleanup_required_after_receipt": true
+      "cleanup_required_after_receipt": false,
+      "owned_objects_deleted_after_receipt": 1
     },
     "protected_job_readonly_before_step": {
       "status": "queued",
       "attempts": 0,
       "row_identical": true
-    }
+    },
+    "existing_services_unchanged": true,
+    "models_downloaded_not_inference_loaded": true
+  },
+  "qa_owner_id": "c7ade7f9-2003-4a38-ae19-393fffae8452",
+  "qa_startup": {
+    "status": "prepared and tested; operator startup pending",
+    "source": "deploy/worker/start_qa_worker.py",
+    "mode": "qa",
+    "provider": "local-smolvlm2",
+    "model": "HuggingFaceTB/SmolVLM2-500M-Video-Instruct",
+    "image": "sha256:472913bf34e918c48e5b77a56c4ea2dfd31873bdd79ecc2d1c4e7ab4cf3e5759",
+    "credential_transport": "existing vault credential encrypted RSA4096-OAEP-SHA256 to EC2 root-only transport key; no plaintext in storage/chat/repository",
+    "public_key_der_sha256": "f8a4b9c28bf8fa9510a368d126454f19b973a45dc3142ab2dc909abe82d46d04",
+    "fixed_deadline_seconds": 1800,
+    "restart_can_extend_trial": false,
+    "real_kernel_probe_before_credential_or_model_load": true,
+    "one_temporary_qa_owner": true,
+    "browser_monitor": "scripts/await_ec2_qa.py waits for actual readiness, then invokes normal UI acceptance; never starts any worker",
+    "protected_upload_readonly_auth_checks": "full row unchanged, queued with zero attempts; QA project/job reads empty, anonymous protocol 401, QA protocol 403, authorized protocol version 1",
+    "new_ec2_browser_acceptance_passed": false
   }
 }
