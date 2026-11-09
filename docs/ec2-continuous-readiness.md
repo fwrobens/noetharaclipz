@@ -1,237 +1,154 @@
-# Continuous SmolVLM2-500M readiness — 9 November 2026 UTC
+# Continuous SmolVLM2-500M readiness — final QA results, 9 November 2026 UTC
 
-**Recommendation: keep the existing EC2 instance and 500M model; hold continuous
-production/global processing until the remaining lifecycle and monitoring checks
-pass.** The expired QA trial is closed and must not be restarted or extended.
-No new infrastructure, larger model or paid inference is recommended.
+**Keep the existing m6i.2xlarge and SmolVLM2-500M. The bounded reliability stage
+passed and stopped automatically. Continuous/global processing remains disabled.**
+No resize, larger model, paid inference or new infrastructure is indicated by
+these measurements. A continuous rollout still needs reviewed boot isolation,
+ongoing monitoring and explicit queue opt-in controls.
 
-**05:07 UTC follow-up:** the separately authorized monitored attempt stopped at
-its pre-model network gate. Docker's raw PREROUTING drops on live container IPs
-prevented the diagnostic's filter counter from increasing. The network policy
-remained unchanged; no AI work or crash injection ran. The corrected probe uses
-unused private destinations, rejects allocated/raw-shadowed targets read-only,
-and still requires matching counter increases. All 229 worker tests pass, with
-one optional skip. The operator has now confirmed successful installation of
-the corrected immutable configuration with matching plan SHA; no worker,
-approval receipt or QA account was created. Its temporary private download was
-removed after receipt. Separate start authorization remains pending. The failed attempt
-and its fixed 05:32:30 deadline are preserved. Its short startup measurements do
-not supply the missing AI peak-resource or crash-recovery evidence. See the
-[current trial procedure and actual results](reliability-trial.md).
+Host observations come from operator-pasted, read-only SSM collectors; Codex has
+no direct EC2 execution connection. Browser and hosted REST checks ran from the
+development environment against actual Supabase and the actual EC2 worker.
+No public website deployment, merge or paid-service activation occurred.
 
-**05:50 UTC authorized follow-up:** corrected trial
-`f3fc3665-76e9-4cc5-b6e6-2c437873a6a4` is active under the fixed
-**05:34:44–06:04:44 UTC** approval. The operator confirmed actual startup,
-one automatic worker-only crash restart, two independently passing kernel and
-network proofs, 118.672-second reclaim and stale-token rejection. The 180-second
-gaming job completed on attempt two; the normal website then saved/refreshed an
-edit, queued Export and privately downloaded a decoded MP4. A sequential cached
-repeat also passed (43.574 s total; zero new inference tokens), as did live
-auth/storage, duplicate prevention, invalid-input and protected-row checks.
-All four QA jobs completed with no active unfinished leases. Provisional peak
-RAM was 2.53 GiB and sampled CPU 205.439%, with an independently proved 2 vCPU
-quota. The 05:54 host snapshot confirms completed-job `recovery_verified=true`
-and exactly one restart. Final deadline exit and complete resource snapshots
-still await the waiting read-only collector. Continuous/global mode
-remains disabled. [Actual follow-up evidence and limits](reliability-trial.md#actual-authorized-follow-up-results).
+## Completed monitored trial
 
-The normal browser workflow already passed on three distinct authorized videos
-and a cached repeat. [Workflow results and quality limits](ec2-live-qa.md) remain
-valid. This review adds actual shutdown/host evidence; it does not rerun the
-worker or imply that a continuously running service was enabled.
-
-## Final post-trial evidence
-
-The operator ran the hash-verified read-only collector at **03:29:39 UTC**. The
-agent has no direct EC2/SSM execution connection; host observations below come
-from that pasted JSON, with selected fields preserved in
-[the host evidence](evidence/ec2-qa-shutdown-host.json).
-
-| Check | Actual result |
+| Check | Final evidence |
 | --- | --- |
-| Container | `noetharaclipz-isolated-worker-1`, ID `fbe3d4f4d9b1c95cb3cae77278a40a5cf5d52c77435eccdc3d14c60d17c06f99` |
-| Image | Reviewed manifest `sha256:472913bf34e918c48e5b77a56c4ea2dfd31873bdd79ecc2d1c4e7ab4cf3e5759` |
-| Started | 00:22:12.562 UTC |
-| Finished | **00:50:37.710 UTC**, before the 00:52:12 deadline |
-| Docker state | `exited`, running/restarting false, PID 0, exit code **0** |
-| Crash/OOM/restarts | No OOM kill, empty Docker error, restart count **0** |
-| Shutdown log | `qa_window_stopped=true`, logged at 00:50:37.701 UTC, original deadline unchanged |
-| Actual startup kernel controls | 8,589,934,592 memory bytes; CPU quota 200000/100000; no extra swap; PID cap 256; all checks passed |
-| Existing applications | All six running; five healthy; REST has no configured Docker health check, as in the baseline |
-| Original upload | Full-row digest unchanged; queued, zero attempts, no cancellation or lease |
-| Active unfinished leases / unfinished QA jobs | **0 / 0** at the agent's 03:29:13 UTC REST check |
+| Instance | `i-0be10e530045fc650`, m6i.2xlarge, us-east-2; 8 vCPU / 32 GiB host |
+| Trial | `f3fc3665-76e9-4cc5-b6e6-2c437873a6a4` |
+| Approved window | 05:34:44–06:04:44 UTC; never reset or extended |
+| Plan SHA256 | `80acdb44a931f6cfeba318d58b034b7232a3b7e1032866f6cd1827656536529d` |
+| Reviewed image | `sha256:472913bf34e918c48e5b77a56c4ea2dfd31873bdd79ecc2d1c4e7ab4cf3e5759`, Linux amd64; reused without rebuild/pull |
+| Actual controls in both generations | 8 GiB; CPU quota 200000/100000; no extra swap; 256 PIDs; one active processing job |
+| Actual shutdown | **06:03:11.648 UTC**, automatic `deadline` reason, exit **0**, no OOM |
+| Restart count | **1**, caused by the single authorized runner-only SIGKILL |
+| Recovery | Same job completed on attempt two; reclaim observed after **118.672 s**; new token and stale-token rejection |
+| Network proofs | Both generations passed kernel controls, IPv6 disabled, public DNS/TLS and all seven scoped denial-counter checks |
+| Final controller | `closed`; no error or cleanup error; processing grant removed; approved code hashes unchanged |
+| Resources | **2,719,240,192 bytes (2.53 GiB) kernel peak RAM; 205.439% sampled peak CPU; 306.891388 CPU seconds** |
+| Coverage | **781 samples**, both generations' final snapshots captured, `resource_coverage_complete=true` |
+| Existing services | All six match their admission baseline; five Docker health checks healthy, REST has no health check as before |
+| Earlier containers | Successful expired trial and failed startup attempt both remain exited, zero restarts, unchanged start/finish times |
+| Protected upload | Whole row unchanged; queued, zero attempts, no cancellation or lease |
 
-All existing service start times remain before the QA trial. Noethara staging's
-restart count is zero. Supabase Auth's count of two was already present in the
-operator's pre-trial report; its start time remains 8 November, 16:14:46 UTC.
-The collector did not restart services, enter containers, read credential files,
-change firewall rules or alter Docker settings.
+[Final host report](evidence/reliability-followup-final.json),
+[authorization and launch receipts](evidence/reliability-followup-authorization.json),
+[dual-generation isolation proof](evidence/reliability-followup-monitor-0541.json).
 
-The stopped QA container reports health `unhealthy`. This label alone does not
-show a runtime crash: upstream [Moby closes its health monitor with an unhealthy
-compatibility state](https://github.com/moby/moby/blob/v28.5.2/container/health.go#L70-L81).
-That reference explains why stopped health labels need care; it is not an audit
-of this host's exact Docker build. The actual exit code, PID, no-OOM state and
-deadline log establish this clean stop. Do not restart a stopped QA container to
-clear its health label. Retained Docker lifecycle events were empty and may be
-incomplete; zero restarts comes from Docker inspect, not the empty event list.
+At **06:07:51 UTC**, [post-deadline hosted checks](evidence/reliability-followup-post-shutdown-supabase.json)
+independently confirm the QA owner reports `online=false`, `ai_ready=false`,
+all four QA jobs remain completed, zero active unfinished leases and the original
+upload's identical queued/zero-attempt row. The expired scoped health falls back
+to stale global detail text; no heartbeat or queue mutation was issued to refresh it.
 
-The agent's retained monitor independently observed a fresh scoped
-`Worker stopped` heartbeat at 00:50:41 UTC. The user's independent private-table
-check at 00:59 UTC found the last heartbeat at 00:50:37, no recent scoped
-heartbeats and no active leases. The later REST check confirmed the protected
-job and zero active leases without calling a claim or heartbeat function.
-[Database and monitor evidence](evidence/ec2-post-trial-supabase.json) distinguishes
-those sources; the agent did not query the private table directly.
+CPU peak is the maximum observed interval rate, with one core = 100%; it is not
+an instantaneous hardware maximum. Preserve the measured 205.439% without
+clamping; the actual two-CPU quota was separately read from both cgroups.
+CPU counters were summed across distinct domains without restart double-counting.
+Totals include preprocessing, crash/recovery, rendering, the cached repeat and
+idle time. These observations establish this bounded workload's usage; they do
+not establish sustained production throughput or worst-case 300-second input use.
 
-## Restart safeguards now verified
+## Normal website workflow and security
 
-Docker's actual policy is `on-failure` with three maximum retries. A normal exit
-code of zero does not trigger that policy. The container has not restarted.
+The new authorized input was a genuine contiguous **180-second SuperTuxKart**
+video, H.264/AAC, 18,575,024 bytes. The first run performed new local multimodal
+inference, selected a 151.967–161.967 s highlight, survived the controlled crash,
+and completed the ordinary website workflow. One fresh QA processing owner was
+used throughout; the existing user's queued upload was outside that scope.
 
-The installed entrypoint is the reviewed deadline wrapper. Its SHA256 matches,
-it is root-owned mode 0440, and its environment retains the original deadline,
-QA owner/trial, explicit local provider, Gemini false and global approval false.
-After expiry the unchanged wrapper exits zero **before** loading a credential,
-model or supervisor. The startup controller also refuses an existing trial
-receipt rather than resetting it. Unit tests exercised expiry and rejected
-changed scope/deadline settings; the EC2 container was never started to test this.
+| Website run | Upload + analysis | Full workflow | Download |
+| --- | ---: | ---: | --- |
+| Long gaming with forced crash/recovery | 286.988 s | 310.965 s | 9.9 s, 720×1280 H.264/AAC MP4, 2,044,140 bytes |
+| Sequential cached repeat | 18.267 s | 43.574 s | Same decoded MP4 hash; zero new inference tokens |
 
-These safeguards prevent automatic resumption of processing under the verified
-configuration. A root administrator can deliberately replace the configuration;
-this review does not claim to make privileged manual changes impossible. No new
-deadline, Compose override, scheduled start or restart policy was installed.
+Both runs used sign-in, real upload/instructions, scoped job queue, genuine
+highlight, playback/edit/save/refresh, normal Export, queued FFmpeg rendering
+and authenticated private MP4 download/full decode. No manually inserted
+highlight or isolated rendering shortcut. The local model recorded 3,711 input
+and 12 output tokens on the recovered inference run, with one completed local
+provenance record. Prepared-media/transcript caches survived the crash; the
+repeat reused all three caches while retaining original provenance separately.
+Timings include different recovery/control paths and are not a controlled
+model-only speedup estimate.
 
-## Actual CPU/RAM consumption
+Live security checks passed: anonymous and regular authenticated privileged
+worker calls denied (401/403); cross-owner rows/source access/signing denied;
+public rendered-file access denied; owner downloads permitted; duplicate Export
+reuses the existing job; forged completion and invalid uploads rejected.
+All four QA jobs completed, with local provider records and zero recorded
+provider cost. Gemini stayed disabled and no provider fallback was used.
 
-Historical peaks are **unavailable from the retained Docker/cgroup evidence**.
-The stopped container's inspected cgroup paths no longer retain `memory.peak`
-or `cpu.stat`; no earlier sampling record was supplied. Docker's stopped stats
-cannot reconstruct usage. The proven 8 GiB / 2 vCPU limits are not measurements
-of consumption, and no OOM event does not establish a peak.
+[Recovery browser result](evidence/reliability-followup-live-acceptance.json),
+[cached repeat](evidence/reliability-followup-cached-acceptance.json),
+[live security](evidence/reliability-followup-security.json),
+[hosted checks](evidence/reliability-followup-api-checks.json), and
+[full trial procedure, actual results and footage attribution](reliability-trial.md).
 
-For the next separately authorized trial, start a small host-side sampler before
-the worker. Record `memory.current`, `memory.peak`, `memory.events`, `cpu.stat`,
-time and container start generation every two seconds into a bounded private
-file. Preserve samples before container stop/removal and across crash restart,
-handling counter resets explicitly. CPU usage deltas divided by elapsed time
-measure average cores over an interval; cumulative `cpu.stat` is not peak CPU.
-This can use existing tools and disk, without CloudWatch agents or paid services.
-No monitoring service was installed in this review.
+The earlier [three-source browser results](ec2-live-qa.md) remain valid. The
+frontend was the existing development server against live Supabase and EC2;
+the public website was not published. These are verified QA-owner results.
+Model scores are not calibrated accuracy, and raw narration can hallucinate.
+The gaming explanation separates measured audio/scene evidence from visual
+observations. No larger model was installed to conceal those limits.
 
-## Reviewed future crash-restart procedure — not executed
+## Closed-trial restart safeguards
 
-This is a plan for a **new, separately authorized bounded QA trial**, not
-permission to start one now. Do not use the expired container or rewrite/delete
-its receipt to reopen the old window. The current controller intentionally
-rejects reuse; prepare and review a new trial configuration/receipt first.
+The actual policy remains `on-failure:3`; normal exit 0 does not trigger it.
+The dedicated transient controller was launched with `Restart=no`. The final
+read-only collector confirms no running/restarting worker and no processing
+grant. The approved entrypoint and nine pinned files remain unchanged. Every
+new generation checks the original expiry before models/credentials and needs
+a fresh, short-lived root-owned network grant. There is no fresh approval or
+automatic deadline reset. Do not restart this closed container or reuse its
+receipt for a continuous service.
 
-1. Preserve the old exit/log evidence. Prepare a fresh trial UUID, immutable
-   deadline and dedicated writable paths. Reuse only the reviewed image and
-   pinned read-only assets. Keep the same one temporary QA owner, 8 GiB / 2 vCPU,
-   one active job, no ports, Gemini false and global approval false. Confirm no
-   other AI worker is active and retain the original upload's complete row hash.
-2. After renewed authorization, recheck host headroom, exact image, kernel quotas,
-   owned network/firewall policy and current service start/restart/health state.
-   Start metrics collection first. No daemon/host restart or other service change
-   belongs in this test.
-3. Start only the newly approved owner-scoped worker. Wait for real model-ready
-   scoped heartbeat and at least ten seconds of container uptime so Docker's
-   restart-policy monitoring has become active.
-4. Upload authorized footage through the normal UI. Use a new prompt if necessary
-   to require fresh inference. Wait for its actual analysis job and live lease.
-   Record job ID, attempts and a hash of the lease token; do not publish tokens.
-5. Verify the **new** container ID, project/trial labels, image and deadline. Read
-   its own local health file to identify the exact runner PID. Inject one failure
-   only into that runner child. Do not kill Docker's PID 1, the host, other Python
-   processes or the daemon. `docker kill` is not the desired fault injection:
-   explicit Docker stops/kills can suppress automatic policy restart.
-6. Observe the supervisor and wrapper exit nonzero, Docker automatically restart
-   the same new container, and its restart count increase to one. Model readiness
-   must recover with the same immutable deadline and owner. Docker health status
-   alone does not restart anything; the supervisor must actually exit.
-7. Allow the abandoned lease/queue visibility to expire naturally. The real
-   worker must reclaim the same QA job with a new token and next attempt, reject
-   stale updates, and create one final highlight/provenance result. Do not edit
-   leases, shorten database timeouts or claim the global queue for the test.
-8. Finish normal Edit/Save/Export/private Download. Recheck original-row hash,
-   one-active-job behavior, other services and retained resource samples. Verify
-   the new trial also exits zero at its own deadline and stays stopped.
-
-The prior 123.138-second abandoned-lease test already verified real queue
-recovery, stale-token rejection, invalid-media failure and retry limits. It did
-not inject a Docker/worker process crash; that distinction remains explicit.
-The existing local standby smoke script must not be redirected at this expired
-EC2 trial or substituted for the reviewed active-worker test.
+Both earlier trials and all archived evidence remain untouched. The first
+successful trial stopped cleanly at 00:50:37 UTC; its historical resource peaks
+were unavailable. The failed 05:07 trial never loaded AI or claimed work: Docker
+raw PREROUTING drops intercepted probes to live container IPs before the filter
+counters. The corrected unused-IP probes were then verified on the actual host,
+without changing firewall rules. See [original shutdown](evidence/ec2-qa-shutdown-host.json)
+and [failed startup evidence](evidence/reliability-startup-failure.json).
 
 ## Remaining gates before continuous processing
 
-1. **Final measured lifecycle evidence:** the newly authorized 180-second trial
-   has demonstrated automatic restart/reclaim and the real browser workflow;
-   retain the final deadline exit and both generations' final resource snapshots.
-   The intermediate kernel peak is measured, but final coverage is still open.
-   One longer gaming source is not a continuous-load or 300-second maximum-input
-   capacity benchmark.
-2. **Safe boot and recovery ordering:** review and implement worker-specific
-   firewall/network persistence and startup preflights before queue access. The
-   present QA approval does not authorize unattended host/daemon reboot startup.
-   Docker alone will not restore the reviewed isolation policy in the required
-   order. Do not reboot this shared host to test it without separate approval.
-3. **Explicit queue scope:** keep global consumption off. The current claim API
-   scopes by owner; global claiming would make the protected queued upload
-   eligible. Continuous operation should begin with the dedicated QA/opt-in owner
-   scope. A global rollout needs an explicitly approved release/hold/exclusion
-   policy for the old upload; no database resource was changed to create one.
-4. **Operational readiness:** retain logs/metrics, alert on stale readiness and
-   resource pressure, preserve temporary-file cleanup, define recovery/rollback
-   and review storage/egress allowances under expected traffic. Do not enable
-   paid monitoring or providers as a side effect.
+1. **Safe boot and isolation ordering.** The active crash trial proved
+   generation restart/regrant, not host/daemon boot ordering. The base Compose
+   profile defaults to standby; its `unless-stopped` policy needs a dedicated
+   isolation-before-queue controller for active continuous rollout. Require
+   Docker, dedicated mounts and a reviewed worker-only isolation unit, verify
+   bridge ownership/collisions, actual hook order and live rejection counters,
+   then issue fresh grants. Keep periodic verification/revocation active. Restore
+   only explicitly approved worker rules; do not flush shared chains, modify
+   host-wide Docker settings or reboot this shared host without authorization.
+2. **Explicit queue opt-in.** Keep global off. Existing SQL atomically scopes
+   claims by owner. The protected old upload must remain held. Existing-owner
+   or individual old-job release remains blocked until a reviewed server-side
+   atomic release protocol enforces consent, source revision, protected-job
+   exclusion, revocation and audit. No schema/RLS change was made here.
+3. **Continuous operations configuration.** Prepare a separately reviewed
+   controller/scope configuration with bounded restart/backoff, durable bounded
+   log/metric retention, stale-readiness/resource alerts, disk headroom and
+   temporary-file cleanup. Retain one job, 8 GiB, 2 vCPU, private file secrets,
+   no public ports and explicit local provenance. The current hard 30-minute
+   policy and receipt remain intact. No monitoring subscription or persistent
+   boot unit was installed during this QA stage.
 
-### Startup-order review of the existing configuration
+Rollback must revoke the dedicated grant and gracefully stop only the matching
+worker/container/controller. Preserve assets, evidence and queued work; leave
+Noethara and Supabase services untouched. The current trial already completed
+that safe stop automatically; no additional stop/restart is needed.
 
-- `compose.yaml` starts in standby and its supervisor loads no credential or
-  queue in that mode. Its `unless-stopped` policy can resume a container after
-  a Docker/host restart. Active continuous rollout therefore needs a dedicated
-  host controller that verifies isolation before permitting model/credential
-  loading; the base Compose profile is not yet approved for that rollout.
-- The active QA controller uses `on-failure:3`, a fixed expiry and a separate
-  transient monitor with `Restart=no`. Every generation must obtain a fresh
-  root-owned, short-lived nonce grant after kernel and live network proofs.
-  Revocation/staleness stops processing. The crash trial proved the new-generation
-  path; host/daemon reboot ordering was not tested or authorized.
-- A future worker-specific boot service should require Docker, dedicated mounts
-  and a reviewed worker-isolation unit before startup. It must check bridge
-  ownership/collisions, restore only its approved hooks/rules if authorized,
-  verify their actual order and rejection counters, then issue fresh grants.
-  Periodic verification must remain active after startup. Do not flush shared
-  chains, alter host-wide Docker settings or reuse another app's network.
-- The current trial's hard 1,800-second policy and receipt are retained intact.
-  A continuous rollout needs a newly reviewed controller, scope/revocation
-  configuration, bounded restart/backoff and durable log/metric retention. It
-  cannot be obtained by disabling this trial's deadline or reusing its receipt.
-- Rollback revokes the dedicated grant and gracefully stops only the matching
-  worker container/controller, leaving model assets, evidence, queued work and
-  existing services in place. Global consumption and existing-owner backlog
-  release remain blocked until their separate atomic server-side opt-in policy
-  is reviewed and authorized. No boot unit, firewall restoration or database
-  policy was installed during this review.
+**Recommendation:** the existing host and 500M worker are suitable candidates
+for a limited, owner-scoped continuous pilot after the dedicated startup and
+queue-control rollout is prepared and authorized. The measured reliability
+stage is complete. General-user/global processing remains disabled, and this
+recommendation does not authorize a restart, deployment, merge or publication.
 
-Model quality is also limited: unverified narration can hallucinate, rank scores
-are not calibrated accuracy, and a quiet derivative showed a small media-tool
-duration discrepancy. Those findings remain in the workflow report; they were
-not concealed by installing a larger model or changing the reviewed image.
-
-The existing **m6i.2xlarge** remains the best hosting candidate for SmolVLM2-500M
-with one job, 8 GiB and 2 vCPU. No resize or new paid compute is justified by the
-current evidence. A limited continuous owner-scoped pilot is appropriate only
-after the new monitored restart trial and startup-isolation review pass. Global
-production processing is **not ready to enable now**. This is a readiness
-recommendation, not a request or authorization to restart the expired worker.
-
-Validation for this review: **178 worker tests passed, one optional sample
-skipped; 43 targeted inspector/deadline checks and Ruff passed.** Application and
-worker runtime sources/image were unchanged; the previously passing frontend,
-TypeScript, build and lint results remain applicable. The only staged handoff was
-a 10,864-byte private read-only inspector, deleted after its receipt. No QA
-restart, global processing, migration, merge, publication or paid-service
-activation occurred.
+Validation: **229 worker tests passed, one optional sample skipped; Ruff passed.**
+The seven probe regression cases supplement the earlier reliability tests.
+Approved code/image and prior evidence hashes were unchanged during live QA;
+only verification documentation/evidence changed afterward. Existing frontend,
+TypeScript, build and lint results remain applicable; no frontend code changed.

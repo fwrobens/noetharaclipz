@@ -20,7 +20,7 @@
   "browser_monitor_armed": true,
   "ec2_activation_confirmation_received": true,
   "cloud_worker_started": false,
-  "ec2_worker_start_status": "Operator confirmed running/ai_ready with this trial, container and fixed deadline.",
+  "ec2_worker_start_status": "Authorized trial completed and automatically stopped with deadline reason and exit 0; no restart or extension performed.",
   "receipt_values_include_server_credentials_or_qa_password": false,
   "launch_receipt": {
     "launch_requested": true,
@@ -40,5 +40,6 @@
     "fixed_stop_at_unix": 1794204284,
     "global_processing": false
   },
-  "temporary_approval_object_removed_after_receipt": true
+  "temporary_approval_object_removed_after_receipt": true,
+  "final_verification_evidence": "reliability-followup-final.json"
 }

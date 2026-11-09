@@ -1,0 +1,185 @@
+{
+  "schema": 1,
+  "provenance": "Selected, normalized fields from the operator-pasted read-only SSM monitoring JSON; not a direct Codex AWS observation.",
+  "checked_utc": "2026-11-09T06:03:13.891676+00:00",
+  "read_only": true,
+  "trial_id": "f3fc3665-76e9-4cc5-b6e6-2c437873a6a4",
+  "container_id": "6c66cb349cbf21ff16ee168c079289a6e17712f3beb81f2eb1da724a71e5db6e",
+  "docker_state": {
+    "Status": "exited",
+    "Running": false,
+    "Restarting": false,
+    "ExitCode": 0,
+    "OOMKilled": false,
+    "StartedAt": "2026-11-09T05:38:48.859415196Z",
+    "FinishedAt": "2026-11-09T06:03:11.648091066Z",
+    "restart_count": 1,
+    "restart_policy": {
+      "Name": "on-failure",
+      "MaximumRetryCount": 3
+    }
+  },
+  "final": {
+    "stage": "closed",
+    "container_id": "6c66cb349cbf21ff16ee168c079289a6e17712f3beb81f2eb1da724a71e5db6e",
+    "trial_id": "f3fc3665-76e9-4cc5-b6e6-2c437873a6a4",
+    "error_type": null,
+    "cleanup_error_type": null,
+    "metrics": {
+      "sample_count": 781,
+      "generations": {
+        "0:2026-11-09T05:36:53.039721023Z": {
+          "last_usage": 165124374,
+          "last_at": 48250.612936358,
+          "cpu_usage_usec": 165124374,
+          "memory_peak_bytes": 1322946560,
+          "sampled_peak_cpu_percent": 205.43862825783376,
+          "final_snapshot_captured": true,
+          "counter_reset_observed": false,
+          "cpu_domain": "19498"
+        },
+        "1:2026-11-09T05:38:48.859415196Z": {
+          "last_usage": 141767014,
+          "last_at": 49713.533061764,
+          "cpu_usage_usec": 141767014,
+          "memory_peak_bytes": 2719240192,
+          "sampled_peak_cpu_percent": 202.8371375540058,
+          "final_snapshot_captured": true,
+          "counter_reset_observed": false,
+          "cpu_domain": "19585"
+        }
+      },
+      "peak_memory_bytes": 2719240192,
+      "sampled_peak_cpu_percent": 205.43862825783376,
+      "total_cpu_seconds": 306.891388,
+      "cpu_counter_domains": {
+        "19498": 165124374,
+        "19585": 141767014
+      },
+      "cpu_peak_is_sampled_not_instantaneous": true,
+      "final_snapshots_complete": true
+    },
+    "global_processing": false,
+    "network_generations_verified": 2,
+    "state": {
+      "Status": "exited",
+      "Running": false,
+      "ExitCode": 0,
+      "OOMKilled": false,
+      "StartedAt": "2026-11-09T05:38:48.859415196Z",
+      "FinishedAt": "2026-11-09T06:03:11.648091066Z"
+    },
+    "restart_count": 1,
+    "resource_coverage_complete": true,
+    "existing_services_unchanged": true,
+    "old_container_untouched": true,
+    "protected_upload_unchanged": true,
+    "crash_verification": {
+      "injected": true,
+      "job_id": "d19af413-3046-4765-8319-30bdd95eec8a",
+      "container_restart_count": 1,
+      "injected_at_unix": 1794202721.8850536,
+      "first_reclaim_observed_at_unix": 1794202840.5566876,
+      "recovery_observed_seconds": 118.67163395881653,
+      "new_generation_network_granted": true,
+      "attempts": 2,
+      "new_token_sha256": "811f3a1a5396e37dcdd759734e56d663747141d8d7c329c8a1940b1f73e17c6c",
+      "status": "completed",
+      "recovery_verified": true,
+      "stale_token_rejected": true
+    }
+  },
+  "metrics": {
+    "sample_count": 781,
+    "generations": {
+      "0:2026-11-09T05:36:53.039721023Z": {
+        "last_usage": 165124374,
+        "last_at": 48250.612936358,
+        "cpu_usage_usec": 165124374,
+        "memory_peak_bytes": 1322946560,
+        "sampled_peak_cpu_percent": 205.43862825783376,
+        "final_snapshot_captured": true,
+        "counter_reset_observed": false,
+        "cpu_domain": "19498"
+      },
+      "1:2026-11-09T05:38:48.859415196Z": {
+        "last_usage": 141767014,
+        "last_at": 49713.533061764,
+        "cpu_usage_usec": 141767014,
+        "memory_peak_bytes": 2719240192,
+        "sampled_peak_cpu_percent": 202.8371375540058,
+        "final_snapshot_captured": true,
+        "counter_reset_observed": false,
+        "cpu_domain": "19585"
+      }
+    },
+    "peak_memory_bytes": 2719240192,
+    "sampled_peak_cpu_percent": 205.43862825783376,
+    "total_cpu_seconds": 306.891388,
+    "cpu_counter_domains": {
+      "19498": 165124374,
+      "19585": 141767014
+    },
+    "cpu_peak_is_sampled_not_instantaneous": true,
+    "final_snapshots_complete": true
+  },
+  "crash_verification": {
+    "injected": true,
+    "job_id": "d19af413-3046-4765-8319-30bdd95eec8a",
+    "container_restart_count": 1,
+    "injected_at_unix": 1794202721.8850536,
+    "first_reclaim_observed_at_unix": 1794202840.5566876,
+    "recovery_observed_seconds": 118.67163395881653,
+    "new_generation_network_granted": true,
+    "attempts": 2,
+    "new_token_sha256": "811f3a1a5396e37dcdd759734e56d663747141d8d7c329c8a1940b1f73e17c6c",
+    "status": "completed",
+    "recovery_verified": true,
+    "stale_token_rejected": true
+  },
+  "existing_services_unchanged": true,
+  "previous_containers": {
+    "fbe3d4f4d9b1c95cb3cae77278a40a5cf5d52c77435eccdc3d14c60d17c06f99": {
+      "Status": "exited",
+      "Running": false,
+      "Restarting": false,
+      "ExitCode": 0,
+      "OOMKilled": false,
+      "StartedAt": "2026-11-09T00:22:12.56201159Z",
+      "FinishedAt": "2026-11-09T00:50:37.70991314Z",
+      "restart_count": 0,
+      "restart_policy": {
+        "Name": "on-failure",
+        "MaximumRetryCount": 3
+      }
+    },
+    "af5b1136b2c734fd0c67e26918cb9d415af370db297c4d8250d2f8860ef4301d": {
+      "Status": "exited",
+      "Running": false,
+      "Restarting": false,
+      "ExitCode": 0,
+      "OOMKilled": false,
+      "StartedAt": "2026-11-09T05:07:19.254948936Z",
+      "FinishedAt": "2026-11-09T05:07:23.150744756Z",
+      "restart_count": 0,
+      "restart_policy": {
+        "Name": "on-failure",
+        "MaximumRetryCount": 3
+      }
+    }
+  },
+  "lifecycle_log_lines": [
+    "2026-11-09T05:38:48.725067856Z {\"trial_generation_stopped\": true, \"nonce\": \"c73a431e-5006-42c0-b1f2-6614e2931a23\", \"reason\": \"child_failure\", \"exit_code\": 1}",
+    "2026-11-09T06:03:11.640069010Z {\"trial_generation_stopped\": true, \"nonce\": \"1b5026d9-4895-4fc7-897f-370a65be412f\", \"reason\": \"deadline\", \"exit_code\": 0}"
+  ],
+  "limitations": [
+    "Operator-run read-only EC2 collector output; Codex has no direct EC2 execution connection.",
+    "Measured peaks/totals cover the bounded authorized trial, including crash recovery, a cached repeat and idle time; not an instantaneous CPU maximum or a sustained production-load benchmark.",
+    "No host/daemon reboot test or continuous/global deployment was performed."
+  ],
+  "plan_sha256": "80acdb44a931f6cfeba318d58b034b7232a3b7e1032866f6cd1827656536529d",
+  "pinned_code_unchanged": true,
+  "fixed_stop_at_unix": 1794204284,
+  "grant_present": false,
+  "previous_network_evidence": "reliability-followup-monitor-0541.json"
+}

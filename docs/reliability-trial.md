@@ -1,4 +1,4 @@
-# Monitored reliability trial: corrected probe prepared
+# Monitored reliability trial: completed and stopped
 
 The existing m6i.2xlarge remains the host. The reviewed SmolVLM2-500M image and
 pinned Whisper assets are reused; no new image, larger model, infrastructure or
@@ -30,8 +30,10 @@ and a live first-attempt analysis lease was observed. The operator confirmed
 startup and one automatic restart; both generations passed actual kernel and
 network proofs. The same analysis job completed on attempt two, and normal
 Edit/Save/Refresh/Export/private MP4 Download passed. A sequential cached repeat
-and live authentication/storage/invalid-input checks also passed. Final
-shutdown/resource coverage still awaits the post-deadline operator collector.
+and live authentication/storage/invalid-input checks also passed. The final
+collector confirms automatic deadline stop at **06:03:11.648 UTC**, exit 0,
+no OOM, no remaining grant, both generations' final snapshots captured and
+complete resource coverage. See [the final host evidence](evidence/reliability-followup-final.json).
 See the [authorization record](evidence/reliability-followup-authorization.json);
 no server credentials or QA password appear in that file.
 
@@ -97,14 +99,16 @@ NC_RELIABILITY_TRIAL=f3fc3665-76e9-4cc5-b6e6-2c437873a6a4
 NC_RELIABILITY_CTL=/etc/noetharaclipz-isolated/trials/$NC_RELIABILITY_TRIAL/code/reliability_host.py
 ```
 
-**Safe now — show preparation status.** This does not read a credential or start
+**Safe now — show final status.** This does not read a credential or start
 anything:
 
 ```sh
 sudo -n python3 "$NC_RELIABILITY_CTL" status --trial-id "$NC_RELIABILITY_TRIAL"
 ```
 
-Expected stage after preparation: `prepared_not_authorized`, `worker_started=false`.
+Expected current stage: `closed`, Docker `exited`, exit code 0, one controlled
+restart and `resource_coverage_complete=true`. The approved window is finished;
+do not rerun its launch block or try to extend/reset its receipt.
 
 **The separately authorized launch block was supplied.** It installs the actual
 hash-verified root-private receipt and invokes the installed controller once.
@@ -256,7 +260,8 @@ Prepared `test-results/supertuxkart-long-180s.mp4`: **180.000 s, 18,575,024 byte
 H.264/AAC, 640×360, 24 fps. SHA256:
 `08ce51d71e20d7119a9b3800f1b152d6d98d672ff31974c42edf28ade03861cb`.
 Full FFmpeg decoding passed and a sampled frame was manually checked as actual
-kart racing. It has not been analyzed by AI or submitted to the queue.
+kart racing. The two normal browser uploads below processed this exact source:
+one genuine multimodal inference run with crash recovery and one cached repeat.
 
 Source: [SuperTuxKart 2.x GP with 24% handicap and road tracks](https://commons.wikimedia.org/wiki/File:SuperTuxKart_2.x_GP_with_24%25_handicap_and_road_tracks_(open_source_Mario_Kart-like_Linux_game).webm),
 **kimden STK**, [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/). Used the
@@ -325,16 +330,37 @@ and the original upload's identical full row: queued, zero attempts, no lease
 or cancellation. Temporary preparation and approval download objects were
 removed after receipt, with unrelated objects untouched.
 
-The intermediate resource report measured peak RAM **2,719,240,192 bytes
-(2.53 GiB)**, sampled peak CPU **205.439%** (one core = 100%) and **264.933 CPU
-seconds** across two distinct cgroups. Preserve that observed CPU rate without
-clamping; each generation independently proved a 200000/100000 CPU quota.
-Interval CPU samples are not instantaneous capacity measurements. The first
-generation's final snapshot was captured, while the second was still running.
-These are provisional, not the final peaks or complete final-snapshot coverage.
-The 05:54 cumulative CPU total is 303.602 seconds, with the same measured RAM/CPU
-peaks. Automatic deadline exit, no unexpected resumption and final
-resource/service verification remain pending the waiting read-only collector.
+The [final collector](evidence/reliability-followup-final.json), checked at
+**06:03:13.892 UTC**, confirms automatic deadline stop at **06:03:11.648 UTC**,
+inside the configured shutdown reserve before the fixed 06:04:44 deadline.
+Container exit is 0, no OOM, restart count one, and the processing grant is
+absent. Controller error/cleanup fields are null. Both old containers remain
+exited with zero restarts and unchanged start/finish times; existing services
+match admission, and the protected upload remains unchanged.
+
+At **06:07:51 UTC**, [fresh hosted checks after the fixed deadline](evidence/reliability-followup-post-shutdown-supabase.json)
+confirmed `online=false`, `ai_ready=false`, four completed QA jobs, zero active
+unfinished leases and the protected upload's identical queued/zero-attempt row.
+The RPC's detail falls back to an older global heartbeat description after the
+scoped row expires; that text is stale, and no heartbeat was issued by this check.
+
+**781 durable samples** cover both generations, each with a captured final
+snapshot and distinct CPU counter domain. Kernel peak RAM is
+**2,719,240,192 bytes (2.53 GiB)**, sampled peak CPU **205.439%** (one core =
+100%) and cumulative CPU **306.891388 seconds**. The controller confirms
+`resource_coverage_complete=true`, `final_snapshots_complete=true`, two verified
+network generations and completed-job `recovery_verified=true`. Preserve the
+observed CPU rate without clamping; both generations independently proved a
+200000/100000 CPU quota. Interval CPU samples are not instantaneous maxima.
+These totals include preprocessing, crash/recovery, the cached repeat and idle
+time; they are not a sustained throughput or calibrated model-accuracy benchmark.
+
+The on-failure:3 policy does not restart the normal exit. The dedicated monitor
+was launched with `Restart=no`, its grant is removed, and the unchanged pinned
+entrypoint checks the original expiry before models/credentials on any new
+generation. No trial receipt/deadline or old container was reset or restarted.
+Continuous/global mode remains disabled; safe boot ordering and atomic
+existing-owner opt-in/release remain separate rollout requirements.
 
 **229 worker tests passed; one optional sample test skipped; Ruff passed.** The
 reliability checks cover immutable limits, absent approval/no startup, expired/stale
@@ -353,8 +379,8 @@ whole row remained identical: queued, zero attempts, no lease and no cancellatio
 There were no active unfinished leases or projects for the failed trial's fresh
 owner. Its startup-only measurements (26,980,352 bytes peak memory; 0.704408 CPU
 seconds; 32.684% sampled peak CPU, incomplete final snapshot) are **not model
-benchmarks**. Longer-input browser processing now passed as above; the final
-deadline/shutdown resource coverage remains unverified.
+benchmarks**. Longer-input browser processing and final deadline/shutdown
+resource coverage now passed as above.
 
 The corrected EC2 preparation receipt passed and the user separately authorized
 this exact plan SHA, the fixed **05:34:44–06:04:44 UTC** window, one fresh
