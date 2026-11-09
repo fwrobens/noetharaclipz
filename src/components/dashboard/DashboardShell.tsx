@@ -36,7 +36,10 @@ type DashboardShellProps = {
 
 export function focusComposer() {
   document.getElementById("new-project")?.scrollIntoView({ behavior: "smooth", block: "center" });
-  window.setTimeout(() => document.getElementById("clip-instructions")?.focus({ preventScroll: true }), 350);
+  window.setTimeout(
+    () => document.getElementById("clip-instructions")?.focus({ preventScroll: true }),
+    350,
+  );
 }
 
 export function DashboardShell({
@@ -100,7 +103,12 @@ export function DashboardShell({
           collapsed ? "w-[76px]" : "w-[248px]",
         )}
       >
-        <div className={cn("flex h-[72px] items-center border-b border-border px-5", collapsed ? "justify-center px-0" : "justify-between")}>
+        <div
+          className={cn(
+            "flex h-[72px] items-center border-b border-border px-5",
+            collapsed ? "justify-center px-0" : "justify-between",
+          )}
+        >
           {!collapsed && <Brand />}
           <button
             type="button"
@@ -115,9 +123,14 @@ export function DashboardShell({
       </aside>
 
       <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
-        <SheetContent side="left" className="clipspark-skin dashboard-skin w-[290px] border-border bg-sidebar p-0 text-foreground">
+        <SheetContent
+          side="left"
+          className="clipspark-skin dashboard-skin w-[290px] border-border bg-sidebar p-0 text-foreground"
+        >
           <SheetTitle className="sr-only">Workspace navigation</SheetTitle>
-          <div className="flex h-[72px] items-center border-b border-border px-5"><Brand /></div>
+          <div className="flex h-[72px] items-center border-b border-border px-5">
+            <Brand />
+          </div>
           {sidebar(true)}
         </SheetContent>
       </Sheet>
@@ -153,7 +166,9 @@ export function DashboardShell({
                 aria-label="Search projects"
                 className="min-w-0 flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground/70"
               />
-              <kbd className="hidden rounded-md border border-border bg-muted px-1.5 py-0.5 text-[10px] text-muted-foreground sm:block">⌘ K</kbd>
+              <kbd className="hidden rounded-md border border-border bg-muted px-1.5 py-0.5 text-[10px] text-muted-foreground sm:block">
+                ⌘ K
+              </kbd>
             </label>
             <button
               type="button"
@@ -167,7 +182,9 @@ export function DashboardShell({
         </header>
         <main className="relative min-w-0 flex-1 overflow-hidden">
           <div className="ember-orb pointer-events-none absolute -top-40 left-1/3 h-[420px] w-[560px] opacity-40" />
-          <div className="relative mx-auto w-full max-w-[1480px] px-4 py-6 sm:px-6 sm:py-8 lg:px-8 lg:py-10">{children}</div>
+          <div className="relative mx-auto w-full max-w-[1480px] px-4 py-6 sm:px-6 sm:py-8 lg:px-8 lg:py-10">
+            {children}
+          </div>
         </main>
       </div>
     </div>
@@ -211,7 +228,14 @@ function SidebarContent({
         {!collapsed && "Create a clip"}
       </button>
 
-      <p className={cn("mb-2 px-3 text-[10px] font-medium uppercase tracking-[0.18em] text-muted-foreground", collapsed && "sr-only")}>Workspace</p>
+      <p
+        className={cn(
+          "mb-2 px-3 text-[10px] font-medium uppercase tracking-[0.18em] text-muted-foreground",
+          collapsed && "sr-only",
+        )}
+      >
+        Workspace
+      </p>
       <nav className="flex w-full flex-col gap-1" aria-label="Workspace">
         {navigation.map((item) => (
           <button
@@ -228,9 +252,16 @@ function SidebarContent({
               collapsed && "justify-center px-0",
             )}
           >
-            <item.icon className={cn("h-[17px] w-[17px] shrink-0", activeSection === item.id && "text-ember")} />
+            <item.icon
+              className={cn(
+                "h-[17px] w-[17px] shrink-0",
+                activeSection === item.id && "text-ember",
+              )}
+            />
             {!collapsed && item.label}
-            {!collapsed && activeSection === item.id && <span className="ml-auto h-1.5 w-1.5 rounded-full bg-ember shadow-[0_0_10px_var(--ember)]" />}
+            {!collapsed && activeSection === item.id && (
+              <span className="ml-auto h-1.5 w-1.5 rounded-full bg-ember shadow-[0_0_10px_var(--ember)]" />
+            )}
           </button>
         ))}
       </nav>
@@ -240,33 +271,59 @@ function SidebarContent({
           <div className="mb-4 rounded-2xl border border-border bg-card/70 p-4 shadow-soft">
             <div className="flex items-center justify-between gap-3">
               <p className="text-xs font-medium">Your workspace</p>
-              <span className="rounded-full bg-ember/10 px-2 py-0.5 text-[10px] text-ember">Live</span>
+              <span className="rounded-full bg-ember/10 px-2 py-0.5 text-[10px] text-ember">
+                Live
+              </span>
             </div>
             <p className="mt-3 font-display text-3xl">{projectCount}</p>
-            <p className="mt-1 text-xs text-muted-foreground">{projectCount === 1 ? "project" : "projects"}, one creative home.</p>
+            <p className="mt-1 text-xs text-muted-foreground">
+              {projectCount === 1 ? "project" : "projects"}, one creative home.
+            </p>
           </div>
         )}
         <Link
           to="/"
           title="Back to website"
-          className={cn("mb-2 flex h-10 w-full items-center gap-3 rounded-xl px-3 text-sm text-muted-foreground transition hover:bg-accent hover:text-foreground", collapsed && "justify-center px-0")}
+          className={cn(
+            "mb-2 flex h-10 w-full items-center gap-3 rounded-xl px-3 text-sm text-muted-foreground transition hover:bg-accent hover:text-foreground",
+            collapsed && "justify-center px-0",
+          )}
         >
           <Clapperboard className="h-4 w-4 shrink-0" />
           {!collapsed && "Back to website"}
         </Link>
-        <div className={cn("flex w-full items-center gap-2 rounded-2xl border border-border bg-card/50 p-2", collapsed && "justify-center border-0 bg-transparent")}>
+        <div
+          className={cn(
+            "flex w-full items-center gap-2 rounded-2xl border border-border bg-card/50 p-2",
+            collapsed && "justify-center border-0 bg-transparent",
+          )}
+        >
           {avatarUrl ? (
-            <img src={avatarUrl} alt="" className="h-9 w-9 shrink-0 rounded-full border border-border object-cover" />
+            <img
+              src={avatarUrl}
+              alt=""
+              className="h-9 w-9 shrink-0 rounded-full border border-border object-cover"
+            />
           ) : (
-            <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-ember/20 bg-ember/10 text-xs font-semibold text-ember">{initials}</span>
+            <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-ember/20 bg-ember/10 text-xs font-semibold text-ember">
+              {initials}
+            </span>
           )}
           {!collapsed && (
             <>
               <div className="min-w-0 flex-1">
                 <p className="truncate text-xs font-medium">{displayName}</p>
-                <p className="truncate text-[10px] text-muted-foreground">{email || "Creator account"}</p>
+                <p className="truncate text-[10px] text-muted-foreground">
+                  {email || "Creator account"}
+                </p>
               </div>
-              <button type="button" onClick={onSignOut} className="grid h-8 w-8 shrink-0 place-items-center rounded-lg text-muted-foreground transition hover:bg-accent hover:text-foreground" aria-label="Sign out" title="Sign out">
+              <button
+                type="button"
+                onClick={onSignOut}
+                className="grid h-8 w-8 shrink-0 place-items-center rounded-lg text-muted-foreground transition hover:bg-accent hover:text-foreground"
+                aria-label="Sign out"
+                title="Sign out"
+              >
                 <LogOut className="h-3.5 w-3.5" />
               </button>
             </>
