@@ -5,6 +5,7 @@ flush rules. Docker changes are confined to a new name and checked trial label.
 """
 
 import hashlib
+import ipaddress
 import json
 import os
 import shlex
@@ -104,6 +105,32 @@ def verify_network():
             or net["Labels"].get("io.noetharaclipz.preflight") != NETWORK_OWNER
             or [v["Subnet"] for v in net["IPAM"]["Config"]] != ["172.20.0.0/24"]):
         raise ValueError("Existing dedicated network changed; no network settings will be applied")
+
+
+def verify_probe_destinations(targets):
+    """Read-only admission: never probe an application's allocated container IP.
+
+    Raw Docker drops precede our filter rules. Do not remove those drops, accept
+    a timeout instead of a matching counter, or contact a live app to work around
+    that ordering. Reject an unsuitable diagnostic destination before startup.
+    """
+    ids = docker("network", "ls", "-q").split()
+    networks = json.loads(docker("network", "inspect", *ids)) if ids else []
+    allocated = {str(ipaddress.ip_interface(container["IPv4Address"]).ip)
+        for network in networks for container in (network.get("Containers") or {}).values()
+        if container.get("IPv4Address")}
+    raw = run(["iptables", "--wait", "5", "-t", "raw", "-S"])
+    dropped = []
+    for line in raw.splitlines():
+        fields = shlex.split(line)
+        if (fields[:2] == ["-A", "PREROUTING"] and "-d" in fields and "-j" in fields
+                and fields[fields.index("-j") + 1] in ("DROP", "REJECT")):
+            dropped.append(ipaddress.ip_network(fields[fields.index("-d") + 1], strict=False))
+    for name, address, _port, _chain, _destination in targets:
+        if address in allocated:
+            raise ValueError("Probe target " + name + " is allocated to a Docker application; use an unused destination")
+        if any(ipaddress.ip_address(address) in network for network in dropped):
+            raise ValueError("Probe target " + name + " is intercepted by raw PREROUTING before the scoped counter")
 
 
 def firewall_fingerprint(verify=False):

@@ -318,3 +318,80 @@ def test_real_harmless_child_stops_on_deadline_or_revocation_without_a_worker(mo
 def test_unrelated_http_failure_is_not_misreported_as_stale_lease_rejection(status, body, expected):
     error = urllib.error.HTTPError("https://example.invalid", status, "test", {}, io.BytesIO(json.dumps(body).encode()))
     assert host.expected_stale_rejection(error) is expected
+
+
+def test_actual_ec2_raw_drops_do_not_shadow_corrected_subnet_probes(monkeypatch):
+    evidence = json.loads((ROOT.parents[1] / "docs/evidence/reliability-startup-failure.json").read_text())
+    raw = "\n".join(evidence["operator_diagnostics"]["raw_prerouting_rules"])
+    monkeypatch.setattr(platform, "run", lambda command: raw if command ==
+        ["iptables", "--wait", "5", "-t", "raw", "-S"] else pytest.fail("Firewall write or unexpected command"))
+    def docker(*args):
+        if args == ("network", "ls", "-q"):
+            return "existing-network"
+        assert args == ("network", "inspect", "existing-network")
+        return json.dumps([{"Containers": {"app": {"IPv4Address": "172.18.0.2/16"}}}])
+    monkeypatch.setattr(platform, "docker", docker)
+    platform.verify_probe_destinations(probe.TARGETS)
+    for address, message in (("172.18.0.2", "allocated"), ("172.19.0.5", "raw PREROUTING")):
+        with pytest.raises(ValueError, match=message):
+            platform.verify_probe_destinations([("old-live-target", address, 443, "NCZQA_EGRESS", "172.16.0.0/12")])
+
+
+def test_selected_unused_probe_address_becoming_allocated_aborts_read_only(monkeypatch):
+    def docker(*args):
+        if args == ("network", "ls", "-q"):
+            return "one"
+        assert args == ("network", "inspect", "one")
+        return json.dumps([{"Containers": {"future-app": {"IPv4Address": probe.TARGETS[0][1] + "/16"}}}])
+    monkeypatch.setattr(platform, "docker", docker)
+    monkeypatch.setattr(platform, "run", lambda _command: "-P PREROUTING ACCEPT\n")
+    with pytest.raises(ValueError, match="allocated"):
+        platform.verify_probe_destinations(probe.TARGETS)
+
+
+@pytest.mark.parametrize("blocked,delta,wrong_target", [(True, 0, False), (True, -1, False),
+    (False, 1, False), (True, 1, True)])
+def test_failed_network_gate_retains_target_counters_and_never_accepts_timeout_alone(
+        monkeypatch, tmp_path, blocked, delta, wrong_target):
+    target = probe.TARGETS[0]
+    monkeypatch.setattr(host, "verify_probe_destinations", lambda _targets: None)
+    counts = iter([3, 3 + delta])
+    monkeypatch.setattr(host, "reject_counter", lambda *_args: next(counts))
+    def docker(*args, **_kwargs):
+        if args[-1] == "public":
+            return json.dumps({"public_tls": {"supabase": 401, "huggingface": 200}})
+        assert args[-2:] == ("deny", "0")
+        return json.dumps({"target": "other" if wrong_target else target[0], "address": target[1],
+                           "port": target[2], "blocked": blocked, "socket_errno": None})
+    monkeypatch.setattr(host, "docker", docker)
+    monkeypatch.setattr(host, "atomic", lambda path, value, **_kw: path.write_text(json.dumps(value)))
+    report = tmp_path / "attempt.json"
+    with pytest.raises(ValueError, match="staging.*delta=" + str(delta)):
+        host.prove_network("new-cid", report)
+    proof = json.loads(report.read_text())
+    assert not proof["passed"] and len(proof["denials"]) == 1
+    assert proof["denials"][0] == {"target": target[0], "address": target[1], "port": target[2],
+        "chain": "NCZQA_EGRESS", "counter_before": 3, "counter_after": 3 + delta,
+        "reject_counter_delta": delta, "blocked": blocked, "socket_errno": None, "passed": False}
+
+
+def test_every_network_target_requires_its_own_counter_increase(monkeypatch, tmp_path):
+    monkeypatch.setattr(host, "verify_probe_destinations", lambda _targets: None)
+    calls = []
+    def docker(*args, **_kwargs):
+        if args[-1] == "public":
+            return json.dumps({"public_tls": {"supabase": 401, "huggingface": 200}})
+        target = probe.TARGETS[int(args[-1])]
+        return json.dumps({"target": target[0], "address": target[1], "port": target[2], "blocked": True, "socket_errno": 113})
+    def counter(chain, destination):
+        calls.append((chain, destination))
+        return len(calls)
+    monkeypatch.setattr(host, "docker", docker)
+    monkeypatch.setattr(host, "reject_counter", counter)
+    monkeypatch.setattr(host, "atomic", lambda path, value, **_kw: path.write_text(json.dumps(value)))
+    report = tmp_path / "attempt.json"
+    proof = host.prove_network("new-cid", report)
+    assert proof["passed"] and proof == json.loads(report.read_text())
+    assert len(proof["denials"]) == len(probe.TARGETS)
+    assert calls == [(target[3], target[4]) for target in probe.TARGETS for _ in range(2)]
+    assert all(row["passed"] and row["reject_counter_delta"] == 1 for row in proof["denials"])

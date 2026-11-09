@@ -5,6 +5,18 @@ production/global processing until the remaining lifecycle and monitoring checks
 pass.** The expired QA trial is closed and must not be restarted or extended.
 No new infrastructure, larger model or paid inference is recommended.
 
+**05:07 UTC follow-up:** the separately authorized monitored attempt stopped at
+its pre-model network gate. Docker's raw PREROUTING drops on live container IPs
+prevented the diagnostic's filter counter from increasing. The network policy
+remained unchanged; no AI work or crash injection ran. The corrected probe uses
+unused private destinations, rejects allocated/raw-shadowed targets read-only,
+and still requires matching counter increases. All 229 worker tests pass, with
+one optional skip. A new immutable preparation bundle is ready; its EC2
+installation and separate start authorization remain pending. The failed attempt
+and its fixed 05:32:30 deadline are preserved. Its short startup measurements do
+not supply the missing AI peak-resource or crash-recovery evidence. See the
+[current trial procedure and actual results](reliability-trial.md).
+
 The normal browser workflow already passed on three distinct authorized videos
 and a cached repeat. [Workflow results and quality limits](ec2-live-qa.md) remain
 valid. This review adds actual shutdown/host evidence; it does not rerun the

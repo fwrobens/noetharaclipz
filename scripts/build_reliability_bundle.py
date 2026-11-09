@@ -6,8 +6,9 @@ import json
 import subprocess
 from datetime import datetime, timezone
 from pathlib import Path
+from uuid import UUID
 
-TRIAL = "bebbf5ad-094f-4b6f-964f-c7ac22e1f760"
+ARCHIVED_TRIALS = {"9563aeb9-2620-4e05-acf2-1e69ce18b819", "bebbf5ad-094f-4b6f-964f-c7ac22e1f760"}
 ROOT = Path(__file__).resolve().parents[1]
 CODE = ["reliability_host.py", "reliability_platform.py", "reliability_entry.py", "reliability_probe.py",
         "reliability_policy.py", "reliability_metrics.py", "check_cgroup_limits.py", "egress_policy.py", "credential_envelope.py"]
@@ -15,11 +16,16 @@ CODE = ["reliability_host.py", "reliability_platform.py", "reliability_entry.py"
 
 def main():
     p = argparse.ArgumentParser(description=__doc__)
+    p.add_argument("--trial-id", type=UUID, required=True, help="New configuration ID; never reuse an activated trial")
     p.add_argument("--sample", type=Path, required=True)
     p.add_argument("--source-metadata", type=Path, required=True)
     p.add_argument("--output", type=Path, required=True)
     p.add_argument("--plan-output", type=Path, required=True)
+    p.add_argument("--additional-evidence", type=Path, action="append", default=[])
     args = p.parse_args()
+    trial = str(args.trial_id)
+    if trial in ARCHIVED_TRIALS:
+        raise ValueError("An archived trial cannot be rebuilt or reactivated")
     if args.output.exists() or args.plan_output.exists():
         raise ValueError("A prepared immutable bundle/plan must not be overwritten")
     raw = args.sample.read_bytes()
@@ -31,8 +37,11 @@ def main():
     code = {name: (ROOT / "deploy/worker" / name).read_text() for name in CODE}
     evidence_paths = sorted((ROOT / "docs/evidence").glob("ec2-qa-*.json"))
     evidence_paths += [ROOT / "docs/evidence" / name for name in ("ec2-post-trial-supabase.json", "ec2-runtime-preflight.json")]
+    evidence_paths += args.additional_evidence
+    if len({path.name for path in evidence_paths}) != len(evidence_paths):
+        raise ValueError("Evidence filenames must be unique; never replace historical evidence")
     old = {path.name: path.read_text() for path in evidence_paths}
-    plan = {"schema": 1, "trial_id": TRIAL, "prepared_utc": datetime.now(timezone.utc).isoformat(),
+    plan = {"schema": 1, "trial_id": trial, "prepared_utc": datetime.now(timezone.utc).isoformat(),
         "instance": "i-0be10e530045fc650", "instance_type": "m6i.2xlarge", "region": "us-east-2",
         "image": "sha256:472913bf34e918c48e5b77a56c4ea2dfd31873bdd79ecc2d1c4e7ab4cf3e5759",
         "model": "HuggingFaceTB/SmolVLM2-500M-Video-Instruct", "model_revision": "7b375e1b73b11138ff12fe22c8f2822d8fe03467",
@@ -57,7 +66,7 @@ def main():
     payload = {"format": "noetharaclipz-reliability-preparation-v1", "plan": plan, "code": code, "previous_evidence": old}
     with args.output.open("x") as stream:
         json.dump(payload, stream, separators=(",", ":"))
-    print(json.dumps({"trial_id": TRIAL, "plan_sha256": hashlib.sha256(encoded.encode()).hexdigest(),
+    print(json.dumps({"trial_id": trial, "plan_sha256": hashlib.sha256(encoded.encode()).hexdigest(),
                       "sample_bytes": len(raw), "duration": duration, "approval_issued": False, "worker_started": False}))
 
 

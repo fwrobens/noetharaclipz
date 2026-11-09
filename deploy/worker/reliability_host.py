@@ -22,7 +22,7 @@ from uuid import UUID
 from reliability_metrics import Measurements, append_sample, cgroup_path, read_sample
 from reliability_platform import (API, DATA, DOCKER, ETC, IMAGE, INSTANCE, KEY, MODELS, NETWORK, OLD_CID,
     atomic, container_state_file, docker, firewall_fingerprint, inspect, mkdir, reject_counter,
-    require_host, run, service_snapshot, verify_network, write_once)
+    require_host, run, service_snapshot, verify_network, verify_probe_destinations, write_once)
 from reliability_policy import PROTECTED_HASH, PROTECTED_JOB, validate_approval, validate_fresh_owner
 from reliability_probe import TARGETS
 
@@ -85,6 +85,7 @@ def admission():
     if ram < 10 * 1024**3 or shutil.disk_usage("/var/lib").free < 20 * 1024**3:
         raise ValueError("Insufficient spare host RAM or disk")
     verify_network()
+    verify_probe_destinations(TARGETS)
     return {"firewall_fingerprint": firewall_fingerprint(verify=True), "services": service_snapshot(),
             "available_ram_bytes": ram, "free_disk_bytes": shutil.disk_usage("/var/lib").free}
 
@@ -249,17 +250,30 @@ def validate_created(info, plan, activation):
         raise ValueError("Created Docker profile violates immutable trial controls")
 
 
-def prove_network(cid):
-    proof = json.loads(docker("exec", cid, "python", "/run/trial-code/reliability_probe.py", "public", timeout=30))
-    checks = []
+def prove_network(cid, report_path):
+    # Keep the attempted target and counters even if the gate fails. Nothing in
+    # this function can grant permission; the caller grants only after return.
+    proof = {"passed": False, "public": None, "denials": []}
+    atomic(report_path, proof)
+    verify_probe_destinations(TARGETS)
+    proof["public"] = json.loads(docker("exec", cid, "python", "/run/trial-code/reliability_probe.py", "public", timeout=30))
+    atomic(report_path, proof)
     for index, target in enumerate(TARGETS):
         before = reject_counter(target[3], target[4])
         result = json.loads(docker("exec", cid, "python", "/run/trial-code/reliability_probe.py", "deny", str(index)))
-        delta = reject_counter(target[3], target[4]) - before
-        if not result["blocked"] or delta <= 0:
-            raise ValueError("Network denial lacks a matching scoped rejection counter")
-        checks.append({"target": target[0], "reject_counter_delta": delta})
-    return {"public": proof, "denials": checks}
+        after = reject_counter(target[3], target[4])
+        delta = after - before
+        matched = result.get("target") == target[0] and result.get("address") == target[1] and result.get("port") == target[2]
+        passed = matched and result.get("blocked") is True and delta > 0
+        proof["denials"].append({"target": target[0], "address": target[1], "port": target[2],
+            "chain": target[3], "counter_before": before, "counter_after": after, "reject_counter_delta": delta,
+            "blocked": result.get("blocked"), "socket_errno": result.get("socket_errno"), "passed": passed})
+        atomic(report_path, proof)
+        if not passed:
+            raise ValueError("Network probe " + target[0] + " (" + target[1] + ") failed scoped REJECT proof; delta=" + str(delta))
+    proof["passed"] = True
+    atomic(report_path, proof)
+    return proof
 
 
 class Sampler:
@@ -418,7 +432,7 @@ def monitor(trial):
                 nonce = state["nonce"]
                 if nonce not in granted:
                     verify_network()
-                    proof = prove_network(cid)
+                    proof = prove_network(cid, reports / ("network-attempt-" + nonce + ".json"))
                     write_once(reports / ("network-" + nonce + ".json"), proof)
                     granted.add(nonce)
                 atomic(cfg / "gates/grant.json", {"trial_id": trial, "owner_id": approval["owner_id"], "nonce": nonce,

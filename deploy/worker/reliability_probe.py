@@ -13,8 +13,11 @@ from pathlib import Path
 
 from check_cgroup_limits import evaluate, read_limits
 
-TARGETS = [("staging", "172.18.0.2", 8080, "NCZQA_EGRESS", "172.16.0.0/12"),
-    ("supabase", "172.19.0.5", 8000, "NCZQA_EGRESS", "172.16.0.0/12"),
+# Exercise our private-subnet REJECT rules using unused destinations. Docker's
+# raw PREROUTING drops live container IPs before the filter-table counters, so
+# targeting an application's real IP cannot prove which isolation rule fired.
+TARGETS = [("staging", "172.18.255.254", 8080, "NCZQA_EGRESS", "172.16.0.0/12"),
+    ("supabase", "172.19.255.254", 8000, "NCZQA_EGRESS", "172.16.0.0/12"),
     ("vpc", "172.31.255.254", 443, "NCZQA_EGRESS", "172.16.0.0/12"),
     ("imds", "169.254.169.254", 80, "NCZQA_EGRESS", "169.254.0.0/16"),
     ("host", "172.31.32.48", 8080, "INPUT", None),
@@ -55,14 +58,19 @@ def main():
         print(json.dumps({"kernel": proof, "public_tls": statuses, "ipv6_disabled": True}))
     elif mode == "deny":
         target = TARGETS[int(sys.argv[2])]
+        error_number = None
         with socket.socket() as connection:
             connection.settimeout(2)
             try:
                 connection.connect((target[1], target[2]))
                 blocked = False
-            except OSError:
+            except OSError as error:
                 blocked = True
-        print(json.dumps({"target": target[0], "blocked": blocked}))
+                error_number = error.errno
+        # A connection failure alone is never sufficient proof. The host must
+        # also observe an increase in this target's scoped REJECT counter.
+        print(json.dumps({"target": target[0], "address": target[1], "port": target[2],
+                          "blocked": blocked, "socket_errno": error_number}))
     elif mode == "crash-runner":
         pid = int(sys.argv[2])
         health = json.loads(Path("/run/worker/health.json").read_text())

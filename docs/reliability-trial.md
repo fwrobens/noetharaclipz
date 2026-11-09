@@ -1,23 +1,40 @@
-# Final reliability trial: prepared, not authorized or started
+# Monitored reliability trial: corrected probe prepared
 
 The existing m6i.2xlarge remains the host. The reviewed SmolVLM2-500M image and
 pinned Whisper assets are reused; no new image, larger model, infrastructure or
 paid service is required. Normal website clipping already passed on EC2.
-This stage prepares the remaining monitored crash/recovery test.
+The authorized monitored attempt `bebbf5ad-094f-4b6f-964f-c7ac22e1f760`
+failed its startup network gate at **05:07:23 UTC on November 9** and stopped
+with container exit 0, no OOM and no restart. Its controller exited 1 because
+the gate failed. No model loaded, job was claimed, highlight was generated or
+crash was injected. Its absolute approval deadline remains **05:32:30 UTC**;
+neither that receipt nor its installed configuration is rewritten or reused.
 
-The operator has run the preparation-only command on EC2 and returned:
-`prepared=true`, `ready_for_approval=true`, `worker_started=false`,
-`approval_receipt_created=false`, `new_qa_account_created=false`,
-`old_evidence_preserved=true`, `network_rules_changed=false`.
-That is **preparation success**, not a new live reliability result. No start
-approval is inferred from the preparation receipt.
+The operator's raw-table output confirms the cause: Docker drops traffic to
+live staging/Supabase container IPs before the filter-table worker REJECT
+counter. The probe mistakenly used those live IPs. This was a diagnostic error,
+not evidence of successful network access. The reviewed filter policy still
+matches admission. The correction uses unused addresses in the same private
+subnets, as the earlier successful preflight did. It checks Docker allocations
+and raw-table interception read-only and retains the requirement for a positive
+matching counter delta. Partial proof files now retain the target, socket errno
+and before/after counters on failure. No firewall rule is changed.
+
+The new configuration below is **built and tested locally, awaiting EC2
+preparation and a separate start approval**. It has no receipt, activation, QA
+account or running container. The successful expired trial and failed attempt
+retain their original containers, files and deadlines. See the
+[operator failure evidence](evidence/reliability-startup-failure.json) and
+[fresh hosted database check](evidence/reliability-post-failure-supabase.json).
+[Corrected bundle verification and private-transfer metadata](evidence/reliability-followup-preparation.json)
+record the exact artifact hashes without including the temporary signed URL.
 
 ## Immutable scope
 
 | Item | Prepared value |
 | --- | --- |
-| New trial ID | `bebbf5ad-094f-4b6f-964f-c7ac22e1f760` |
-| Canonical plan SHA256 | `f61e6a59341a82bfb136a098f9fd0465590cad727b31a8f7170bb3d8c9630947` |
+| New trial ID | `f3fc3665-76e9-4cc5-b6e6-2c437873a6a4` |
+| Canonical plan SHA256 | `80acdb44a931f6cfeba318d58b034b7232a3b7e1032866f6cd1827656536529d` |
 | Host | `i-0be10e530045fc650`, m6i.2xlarge, us-east-2 |
 | Image | `sha256:472913bf34e918c48e5b77a56c4ea2dfd31873bdd79ecc2d1c4e7ab4cf3e5759`, Linux amd64 |
 | Provider/model | Explicit local SmolVLM2-500M, existing pinned revision |
@@ -29,31 +46,37 @@ approval is inferred from the preparation receipt.
 | Fault | One SIGKILL to the new worker's exact runner child during approved-source analysis |
 | Measurement | Durable host-side cgroup samples every two seconds and final-snapshot acknowledgement |
 
-[The canonical plan](../deploy/worker/reliability-plan.json) pins all nine host
-code files and twelve prior evidence files. The absolute deadline and new QA
+[The corrected canonical plan](../deploy/worker/reliability-followup-plan.json)
+pins all nine host code files and fourteen prior evidence files. The original
+[failed plan](../deploy/worker/reliability-plan.json) remains byte-for-byte
+unchanged; its historical code is retained in commit `75e3b83` and its installed
+immutable EC2 directory. The new absolute deadline and QA
 identity deliberately do not exist yet. After separate authorization they are
 bound once in a root-private approval receipt and write-once activation. Docker
 restarts cannot recalculate or extend that deadline. Preparation cannot issue the
 receipt, create a user, create/start a container or start a systemd unit.
 
-The prior container, its deadline/receipt, private QA account/media and all old
-evidence remain untouched. Twelve evidence copies were verified and installed
-under the new configuration's `previous-evidence/` directory. The old JSON files
-in Git are unchanged. The new trial has separate cache, temporary data, gates
+The prior containers, their deadlines/receipts, private QA accounts/media and all
+old evidence remain untouched. The corrected preparation bundle contains
+fourteen hash-pinned evidence copies, including the failed admission and fresh
+read-only hosted checks, to install in its `previous-evidence/` directory.
+The existing JSON files in Git are unchanged. The new trial has separate cache, temporary data, gates
 and reports. Only read-only pinned model assets and the existing file secret
 are shared. Preparation checked secret-file metadata without reading its value.
 
 ## Commands on EC2
 
-The private preparation bundle was hash-verified and installed through SSM; its
-temporary download object was removed after the successful receipt. No GitHub
-token, registry login, release asset, image upload or service credential paste
-is needed. This file is the command reference after installation.
+Use the supplied hash-verified, private preparation-only download block first.
+It installs only the new immutable files after read-only host checks. Its
+temporary object can be removed after the preparation receipt. No image
+rebuild/transfer, GitHub token, registry login or credential paste is needed.
+No new EC2 installation success is claimed until the operator returns its JSON.
+The commands below apply after that installation.
 
 Set task-specific shell variables once:
 
 ```sh
-NC_RELIABILITY_TRIAL=bebbf5ad-094f-4b6f-964f-c7ac22e1f760
+NC_RELIABILITY_TRIAL=f3fc3665-76e9-4cc5-b6e6-2c437873a6a4
 NC_RELIABILITY_CTL=/etc/noetharaclipz-isolated/trials/$NC_RELIABILITY_TRIAL/code/reliability_host.py
 ```
 
@@ -64,31 +87,25 @@ anything:
 sudo -n python3 "$NC_RELIABILITY_CTL" status --trial-id "$NC_RELIABILITY_TRIAL"
 ```
 
-Expected current stage: `prepared_not_authorized`, `worker_started=false`.
+Expected stage after preparation: `prepared_not_authorized`, `worker_started=false`.
 
-**Future only — do not run until separate authorization and a verified receipt
-are supplied.** There is no approval file now; the following intentionally
-cannot launch this prepared trial. A later handoff will install the root-private
-receipt and supply its real SHA, without exposing credentials:
-
-```sh
-sudo -n python3 "$NC_RELIABILITY_CTL" launch \
-  --trial-id "$NC_RELIABILITY_TRIAL" \
-  --approval-file "/etc/noetharaclipz-isolated/trials/$NC_RELIABILITY_TRIAL/approval-receipt.json" \
-  --approval-sha256 'ISSUED_ONLY_AFTER_SEPARATE_AUTHORIZATION'
-```
+**Launch requires a later approval and verified receipt.** No placeholder launch
+command is supplied: the previous operator attempt showed that running one just
+fails with a missing receipt. After separate approval, a single handoff will
+install the actual root-private receipt and supply its verified SHA. The expired
+receipt is invalid for the corrected plan and cannot be used to obtain more time.
 
 The launcher rechecks host headroom, stopped old container, existing services,
 image, assets, network policy, protected row and fresh empty QA identity before
 activation. It then starts only a dedicated transient monitor unit and one new
-container, named `nccz-reliability-bebbf5ad094f-worker`. It never runs the expired
+container, named `nccz-reliability-f3fc366576e9-worker`. It never runs the expired
 container. A failed or expired activation cannot be reopened by rerunning launch.
 
 **After an authorized launch — status and own-unit logs:**
 
 ```sh
 sudo -n python3 "$NC_RELIABILITY_CTL" status --trial-id "$NC_RELIABILITY_TRIAL"
-sudo -n journalctl -u nccz-reliability-bebbf5ad094f --no-pager -n 60
+sudo -n journalctl -u nccz-reliability-f3fc366576e9 --no-pager -n 60
 ```
 
 Wait for `ai_ready=true`, not merely `running=true`. The approved browser test
@@ -115,11 +132,12 @@ this procedure.
 Public reports are under:
 
 ```text
-/var/lib/noetharaclipz-isolated/trials/bebbf5ad-094f-4b6f-964f-c7ac22e1f760/reports/
+/var/lib/noetharaclipz-isolated/trials/f3fc3665-76e9-4cc5-b6e6-2c437873a6a4/reports/
 ```
 
 Use the status command or read `final.json`, `metrics-summary.json`,
-`metrics.jsonl`, `crash-result.json` and `network-*.json`. Do not paste
+`metrics.jsonl`, `crash-result.json`, `network-*.json` and partial
+`network-attempt-*.json`. Do not paste
 `crash-private.json`: it contains a short-lived lease token used to test stale
 updates. Server credentials and QA passwords are never printed in reports.
 
@@ -233,15 +251,29 @@ fixture is inserted directly into the database during preparation.
 
 ## Preparation verification and next decision
 
-**222 worker tests passed; one optional sample test skipped; Ruff passed.** The
-44 new checks cover immutable limits, absent approval/no startup, expired/stale
+**229 worker tests passed; one optional sample test skipped; Ruff passed.** The
+reliability checks cover immutable limits, absent approval/no startup, expired/stale
 grants, fresh-owner/old-backlog rejection, scoped signal targets, real harmless
 process-group shutdown, final-sample ordering and resource counters across reset
 and retained cgroups. These unit/simulation checks do not substitute for a live
-new trial. Application/worker-image sources and the previous frontend are unchanged.
+new trial. Seven additional regression cases replay the operator's actual raw
+DROP rules, reject a newly occupied probe IP, require each target's own counter
+increase, reject timeouts/incorrect responses/decreasing counters and retain
+partial failure evidence. Application/worker-image sources and the frontend are
+unchanged. The existing image digest is reused with newly hash-pinned read-only
+startup scripts; this is not a claim that the mounted configuration is identical.
 
-EC2 preparation passed, so this new plan is **ready for separate approval**.
-Approval should cover only this exact plan SHA, at most thirty minutes, the new
+At **05:24:19 UTC**, hosted read-only checks confirmed the protected upload's
+whole row remained identical: queued, zero attempts, no lease and no cancellation.
+There were no active unfinished leases or projects for the failed trial's fresh
+owner. Its startup-only measurements (26,980,352 bytes peak memory; 0.704408 CPU
+seconds; 32.684% sampled peak CPU, incomplete final snapshot) are **not model
+benchmarks**. Longer-input inference, crash recovery and complete peak-resource
+coverage remain unverified.
+
+The corrected plan is ready for **preparation-only EC2 installation**, followed
+by a separate start approval after its receipt passes. Approval must cover only
+this exact plan SHA, at most thirty minutes, the new
 single processing owner, long gaming input and one worker-only fault. It does not
 authorize continuous/global processing, old-upload release, merge, publication,
 paid services, a larger model, resize or other infrastructure changes. None of
