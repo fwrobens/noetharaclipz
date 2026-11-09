@@ -9,7 +9,22 @@ implemented and locally verified as described in the
 [continuous pilot procedure](continuous-worker-pilot.md). The consent SQL is now
 applied as `20261109124958_continuous_worker_consent`; live REST confirms protocol
 v2. A fresh pilot owner has explicitly consented. The new controller remains
-**stopped and undeployed**, with operator approval still pending.
+now **installed and running only for the explicitly authorized 21:00–21:30 UTC
+pilot on November 9**. Boot enablement/global processing remain disabled.
+
+Actual processing approval was recorded at **21:00:03 UTC**; the worker started
+at **21:00:04 UTC** and passed actual 8 GiB/2 vCPU/no-extra-swap/PID-limit and
+seven live isolation proofs before reporting local-provider readiness. The
+normal consent-aware website workflow then passed on a fresh 180-second gaming
+upload: analysis **165.848 s**, full workflow **192.495 s**, genuine automatic
+highlight, saved/refreshed edit, queued Export and private **2,044,140-byte,
+9.9-second H.264/AAC MP4** download/full decode. Both jobs completed on attempt
+one with fresh local inference and no hosted inference. Existing services and
+the original upload were preserved. Final shutdown/resource readback is pending;
+do not interpret this authorized pilot as ongoing/global deployment permission.
+[Startup proof](evidence/continuous-pilot-2100-startup.json),
+[browser result](evidence/continuous-pilot-2100-browser.json),
+[security](evidence/continuous-pilot-2100-security.json).
 
 At **2026-11-09 20:33 UTC**, the operator's SSM receipt confirms secure source
 transfer and **all 13 fresh read-only host preflights passed**. The existing host

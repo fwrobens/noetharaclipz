@@ -1,6 +1,69 @@
 # Continuous local-worker pilot — implementation prepared, not deployed
 
-## Current checkpoint — transfer and all read-only host preflights passed
+## Authorized 21:00 pilot — startup and normal website workflow passed
+
+The user explicitly authorized **both** timed processing approval and isolated
+installation/start for the reviewed 21:00–21:30 UTC scope. The authorization is
+[recorded verbatim](evidence/continuous-pilot-2100-user-authorization.json).
+Only approval metadata changed from candidate
+`a2974efc290782d52d16acef2b1814548b3756908af017247dec5450d7ad29ce`;
+the active manifest SHA256 is
+`0903df1cfcb68f120877ca1088f4608584bc1bddebbb1b9b4ddb41725ec3792f`.
+
+The operator's SSM block waited until 21:00 and repeated the read-only host
+checks before reading the existing file credential. Live Supabase records
+processing approval at **21:00:03.216779 UTC**, expiring **21:30:00 UTC**.
+The worker generation started at **21:00:04.300004727 UTC** and reported ready
+by **21:00:13.492 UTC**. Actual kernel reads prove **8 GiB, 2 vCPU, zero extra
+swap and 256 PIDs**. Seven private/IMDS/host/gateway/non-HTTPS probes each
+incremented the matching rejection counter by one; public TLS and IPv6-disabled
+checks passed. Existing services were unchanged. No boot startup was enabled.
+[Launch code](../scripts/launch_continuous_pilot_2100.py),
+[private handoff metadata](evidence/continuous-pilot-2100-launch-handoff.json),
+[actual startup proof](evidence/continuous-pilot-2100-startup.json).
+
+The normal website workflow passed on a fresh **180-second SuperTuxKart** upload
+after processing approval. Both actual queue jobs completed on **attempt one**:
+
+| Check | Actual result |
+| --- | --- |
+| Normal browser path | Sign-in, upload/instructions, Generate, automatic highlight, playback/select/edit/Save/refresh, normal Export, Download MP4 |
+| Upload plus analysis | **165.848 seconds** |
+| Complete workflow | **192.495 seconds** |
+| Highlight | **151.967–161.967 seconds**, candidate G among eight actual videos plus none |
+| Evidence | No complete ASR speech in the selected interval; five measured audio events and one scene boundary, separate from model observations |
+| Fresh local inference | **3,711 input / 12 output tokens**, prepared/transcript/analysis cache misses; hosted inference false, recorded estimated provider cost zero |
+| Saved edit | Start **152.1 s**, end **161.967 s**, 9:16; saved values survive browser refresh |
+| Download | **9.9-second H.264/AAC MP4**, **2,044,140 bytes**, authenticated private Storage; full FFmpeg decode passes |
+| Output SHA256 | `971241b594bc54bb617d5b753e2ab32f3cce64a31cc00fa79cf0599ee949e8e5` |
+
+There were no inserted highlight fixtures or rendering shortcuts. This is the
+existing development-server UI against actual hosted Supabase and EC2; the
+public website was not published. The first browser attempt stopped at Library
+before upload because the local Node server lacked `NODE_USE_ENV_PROXY=1` for
+SSR authentication. Adding that runtime setting (preserving CA trust) fixed
+the test server; frontend/worker source and the EC2 worker were not restarted
+or changed. The failed attempt is retained separately, not counted as a pass.
+[Browser evidence](evidence/continuous-pilot-2100-browser.json),
+[runtime correction](evidence/continuous-pilot-2100-browser-runtime.json).
+
+Read-only live security checks passed: the owner can read/download its project,
+anonymous access and public rendered downloads are denied, the pilot owner
+cannot read the original owner's project/job, and both anonymous and the
+processing-approved regular owner remain denied privileged protocol operations
+(401/403). Processing approval did not elevate the account's role. The original
+upload retains its exact whole-row hash, queued/zero-attempt state. Both pilot
+jobs are completed. [Security evidence](evidence/continuous-pilot-2100-security.json).
+
+**Final shutdown/peak-resource evidence is pending the read-only end collector.**
+The pilot remains bounded by 21:30 UTC; no new footage is being submitted after
+the successful workflow. Final readback must confirm Docker exit, grant removal,
+durable CPU/RAM snapshots, unchanged existing services and expired readiness.
+The [final collector](../scripts/inspect_continuous_pilot_2100_end.py) cannot
+start/stop/execute a container or extend the deadline. Do not restart the worker
+or extend approval after expiry.
+
+## Preparation checkpoint — transfer and all read-only host preflights passed
 
 The operator's SSM receiver completed at **2026-11-09 20:33:56 UTC** on the exact
 existing instance `i-0be10e530045fc650`. All **25 source files and two unit files**
