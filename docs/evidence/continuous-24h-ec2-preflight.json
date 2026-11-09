@@ -1,0 +1,58 @@
+{
+  "provenance": {
+    "kind": "operator_pasted_hash_verified_read_only_collector",
+    "normalized_material_fields": true,
+    "direct_ec2_connection": false
+  },
+  "checked_utc": "2026-11-09T22:28:58.418858+00:00",
+  "host_preparation_checks_passed": true,
+  "checks_passed": 23,
+  "checks_total": 23,
+  "recheck_receipt": {
+    "checked_utc": "2026-11-09T22:28:58.422134+00:00",
+    "deployment_id": "c25d8492-56fb-4c56-a519-e9a9e4246525",
+    "collector_name": "inspect_continuous_24h_host_v2.py",
+    "collector_sha256": "7f1b81ce79264e33d8980d6b9dc670ab51c83838c6d05e192d8309eb1766cf67",
+    "report_name": "host-preflight-v2.json",
+    "report_sha256": "ebbad19cc4658d682b6248f473f496208574830cf619be41d7e151913d4b66c5",
+    "initial_preflight_preserved": true,
+    "initial_preflight_sha256": "066889b2b4a667ef6f78756e48d279a5fa0f598e0c9b097dc1e13ccc280d84bf",
+    "worker_started": false,
+    "operator_approval_issued": false,
+    "network_rules_changed": false,
+    "unit_files_changed": false
+  },
+  "instance_id": "i-0be10e530045fc650",
+  "host_cpu_count": 8,
+  "memory_bytes": {
+    "MemTotal": 33083965440,
+    "MemAvailable": 30920699904,
+    "SwapTotal": 0
+  },
+  "free_disk_bytes": 49007538176,
+  "load_average": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "docker_version": "29.1.3",
+  "cgroup_version": 2,
+  "actual_model_weight_hashes_verified": true,
+  "previous_evidence": {
+    "files": 46,
+    "sha256": "f42143987246ba8f4796dd3bdb9a1a7399c0c9b7c36c4140542c887e910e7416"
+  },
+  "firewall_fingerprint": "4489b256c620398c44a4d1c66a75ee60319444c27d072dc24e81a87d5d5b102b",
+  "six_existing_services_unchanged_and_healthy": true,
+  "rest_has_no_healthcheck": true,
+  "four_previous_containers_stopped": true,
+  "both_units_disabled": true,
+  "continuous_unit_inactive": true,
+  "installed_unit_hashes_match": true,
+  "systemd_drop_in_paths": "",
+  "systemd_need_daemon_reload": "no",
+  "network_rules_changed": false,
+  "credential_contents_read": false,
+  "worker_started": false,
+  "operator_approval_issued": false
+}

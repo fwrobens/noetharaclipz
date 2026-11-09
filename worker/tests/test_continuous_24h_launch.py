@@ -269,3 +269,59 @@ def test_disk_failure_during_cleanup_cannot_skip_service_stop_or_server_revocati
     assert ("stop", launch.UNIT) in events
     assert "revoke_owner_processing" in events
     assert (host.ETC / "current").resolve() == old
+
+
+def test_received_supplemental_collector_and_report_must_match_reviewed_hashes(
+    monkeypatch, tmp_path
+):
+    p = plan()
+    root = tmp_path / "received"
+    root.mkdir(mode=0o700)
+    (root / "handoff").mkdir()
+    base = root / "handoff/base.py"
+    base.write_bytes(b"# original immutable helper\n")
+    updated = root / "handoff/collector-v2.py"
+    updated.write_bytes(b"# separately reviewed corrected helper\n")
+    report = root / "report-v2.json"
+    report.write_bytes(b'{"host_preparation_checks_passed":true}')
+    m = p["manifest_candidate"]
+    bundle = {
+        "sha256": m["files"],
+        "unit_sha256": m["unit_sha256"],
+        "source_commit": m["source_commit"],
+    }
+    raw = launch.canonical(bundle)
+    (root / "bundle.json").write_bytes(raw)
+    monkeypatch.setattr(launch, "SOURCE_SHA", launch.sha(raw))
+    payload = {
+        "deployment_id": m["deployment_id"],
+        "owner_id": m["owner_id"],
+        "operator_approved": False,
+        "helper_sha256": {base.name: launch.sha(base.read_bytes())},
+    }
+    raw = launch.canonical(payload)
+    (root / "preparation.json").write_bytes(raw)
+    p.update(
+        preparation_sha256=launch.sha(raw),
+        admission_helper_name=updated.name,
+        admission_helper_sha256=launch.sha(updated.read_bytes()),
+        admission_report_name=report.name,
+        admission_report_sha256=launch.sha(report.read_bytes()),
+    )
+    # Metadata fixture only: the workspace test runner need not be root.
+    original_stat = Path.stat
+
+    def stat(path, *args, **kwargs):
+        info = original_stat(path, *args, **kwargs)
+        return SimpleNamespace(st_uid=0, st_mode=info.st_mode)
+
+    monkeypatch.setattr(Path, "stat", stat)
+    launch.verify_preparation(root, p)
+    original = updated.read_bytes()
+    updated.write_bytes(original + b"# changed")
+    with pytest.raises(ValueError, match="supplemental admission"):
+        launch.verify_preparation(root, p)
+    updated.write_bytes(original)
+    report.write_bytes(b"{}")
+    with pytest.raises(ValueError, match="supplemental admission"):
+        launch.verify_preparation(root, p)

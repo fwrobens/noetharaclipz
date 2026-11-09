@@ -11,8 +11,8 @@
     "seconds": 28.42
   },
   "focused_24h_suite_after_cleanup_hardening": {
-    "passed": 55,
-    "seconds": 0.07
+    "passed": 56,
+    "seconds": 0.1
   },
   "ruff": "passed",
   "git_diff_check": "passed",
@@ -22,6 +22,8 @@
   "ec2_preflight_result_pending": false,
   "launcher_sha256": "f043d31e4082f9839fb0edc9d4e904b62e1068829a6924e29fb30e5f90299d86",
   "new_deployment_id": "c25d8492-56fb-4c56-a519-e9a9e4246525",
-  "ec2_preflight_recheck_pending": true,
-  "updated_utc": "2026-11-09T22:27:19.425842+00:00"
+  "ec2_preflight_recheck_pending": false,
+  "updated_utc": "2026-11-09T22:33:17.857485+00:00",
+  "ec2_preflights_passed": 23,
+  "final_manifest_approval_pending": true
 }

@@ -15,8 +15,37 @@ generation is expired and will not be reused. **Fresh explicit owner consent
 was authenticated and recorded at 22:24:37 UTC**, generation
 `6b13bb7a-5b9b-4564-80d8-3904872d8c01`. Operator approval and expiry remain
 null; processing authorization is false. See [owner consent](evidence/continuous-24h-owner-consent.json).
-Choose the exact UTC window after the remaining host check passes; the final
-manifest and launch handoff have not been issued.
+All **23 fresh EC2 preflights passed at 22:28:58 UTC** after the collector fix.
+The immutable review plan is prepared; operator approval, installation and
+startup are still **not authorized or performed**.
+
+| Review item | Exact proposed value |
+| --- | --- |
+| UTC window | **2026-11-09 23:00:00 → 2026-11-10 23:00:00** (86,400 seconds) |
+| Launch permitted | 23:00:00–23:04:59 UTC November 9; no waiting/extension |
+| Disabled candidate SHA256 | `0d3dd0f3e1ce7a74712bb555f85104e4c661543e20677a652882bc47bd277bb8` |
+| Activation manifest SHA256, only after approval | `3918b9eb1dee06597852c016a7098a873eea914bbac8afa151557cda2c34dda0` |
+| Immutable review plan SHA256 (canonical JSON) | `1b0e2436c5a93b65ce73e4cfabfd8625ad87c4c5019458605ada6e85f2875912` |
+| Kernel limits required at startup | 8 GiB, 2 CPU, no extra swap, 256 PIDs, one job |
+| Owner/provider | This fresh pilot consent only; pinned local SmolVLM2-500M |
+| Boot/global/Gemini | Disabled; no reboot test or general-user processing |
+
+[Disabled candidate](evidence/continuous-24h-manifest-candidate.json) and
+[review plan](evidence/continuous-24h-review-plan.json) are the exact review
+artifacts. The activation digest is precomputed from only the candidate's
+approval flag/reference change; it does not assert approval exists. No active
+manifest or authorization object has been installed/issued. The launcher also
+requires a separately issued private receipt, not just a true flag in a JSON.
+
+The proposed installation scope is restricted to this new deployment's
+configuration/data/report paths, the dedicated `continuous/current` symlink,
+stopping the old isolation oneshot and starting the existing reviewed worker
+unit without enabling it. It reuses the existing image, models, key file and
+identical installed units. Failure rollback may revoke only the new consent
+and stop only these dedicated worker units. No host-wide Docker/network
+configuration, existing services, old trial files, queued-job release or
+database schema changes are authorized. The existing instance adds no new
+infrastructure; storage/egress remain subject to existing allowances.
 
 Read-only Supabase checks at 22:06:27 UTC confirmed protocol v2,
 `future-jobs-only-v1`, revocation/exclusions/audit enabled and global claims
@@ -67,7 +96,12 @@ omits empty properties without `--all`. The corrected collector explicitly
 requests all properties; it does not relax the empty-value check. The original
 source/report are retained; a [preparation-only recheck](../scripts/recheck_continuous_24h_host.py)
 writes new diagnostic files alongside them. No unit or firewall fix is needed
-or attempted. Deployment stays blocked until the corrected live check passes.
+or attempted. The [corrected live check](evidence/continuous-24h-ec2-preflight.json)
+then passed all 23 gates with explicitly empty drop-in paths, no daemon reload
+needed, 28.80 GiB available RAM and 45.64 GiB free disk. Its canonical report
+SHA256 is `ebbad19cc4658d682b6248f473f496208574830cf619be41d7e151913d4b66c5`.
+Both the failed and passing reports remain on EC2. The final launch repeats
+admission and checks the passing report/helper hashes before credential access.
 
 ## Exact launch gating and SSM disconnection
 
@@ -133,7 +167,7 @@ must support the complete-window assessment. No external alert destination has
 been configured.
 
 Local verification: **353 worker tests passed, one optional sample test
-skipped**; **55 focused 24h tests passed** after the read-only collector fix.
+skipped**; **56 focused 24h tests passed** after the read-only collector fix.
 Ruff and diff checks passed. Tests exercise refusal of expired/reused consent,
 scope/hash/time changes, missing approval, boot/global enable attempts,
 nonblocking systemd startup, preservation/rollback and cleanup disk failures.
