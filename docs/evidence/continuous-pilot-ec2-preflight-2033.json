@@ -1,0 +1,205 @@
+{
+  "transfer_receipt": {
+    "received_utc": "2026-11-09T20:33:56.613056+00:00",
+    "instance_id": "i-0be10e530045fc650",
+    "deployment_id": "11865b83-9836-4ff3-a99e-dfac4df71f34",
+    "source_received": true,
+    "directory": "/tmp/nccz-continuous-pilot-0qkrd0gd",
+    "handoff_sha256": "0a30367d6040d53dceec7632000a0b1b48caa5d2178e75f52f098955c06a700e",
+    "bundle_sha256": "564a5b6a5de0664448737e0c5291c30a4d1ff2074be096b08711dce11fb381d8",
+    "collector_sha256": "7bba366d6bb5ade982feb94668e127396e043ed5a10bad50c9b4efbf21918efc",
+    "manifest_proposal_sha256": "736b72c902eae0b65d251db69d15dedfe38e5e5b105b71849b3469c702d90d73",
+    "source_files_verified": 25,
+    "unit_files_verified": 2,
+    "worker_started": false,
+    "operator_approval_issued": false
+  },
+  "host_report": {
+    "checked_utc": "2026-11-09T20:33:58.941397+00:00",
+    "read_only": true,
+    "host_preparation_checks_passed": true,
+    "deployment_id": "11865b83-9836-4ff3-a99e-dfac4df71f34",
+    "instance_id": "i-0be10e530045fc650",
+    "host_cpu_count": 8,
+    "load_average": [
+      0.00439453125,
+      0.00244140625,
+      0.0
+    ],
+    "memory_bytes": {
+      "MemTotal": 33083965440,
+      "MemAvailable": 30895718400,
+      "SwapTotal": 0
+    },
+    "free_disk_bytes": 49042776064,
+    "docker": {
+      "version": "29.1.3",
+      "cgroup": "2",
+      "security_options": [
+        "name=apparmor",
+        "name=seccomp,profile=builtin",
+        "name=cgroupns"
+      ]
+    },
+    "container_resource_snapshot": [
+      {
+        "Container": "3c1d7f471d1bbcf0693826ded3908f63190d33556e99d5b7c604b17610eda56a",
+        "Name": "supabase_rest_wwgwnlhmbmrspmzdptzh",
+        "CPUPerc": "0.04%",
+        "MemUsage": "35.48MiB / 30.81GiB",
+        "MemPerc": "0.11%",
+        "PIDs": "24"
+      },
+      {
+        "Container": "9168f3846a6709c2661447393dd00a269389818c9a0bfeffc1a16175263d15e3",
+        "Name": "supabase_inbucket_wwgwnlhmbmrspmzdptzh",
+        "CPUPerc": "0.00%",
+        "MemUsage": "28.73MiB / 30.81GiB",
+        "MemPerc": "0.09%",
+        "PIDs": "11"
+      },
+      {
+        "Container": "20f1292598a0adf47cd0c656889a3c80d269080f70bc3df8502036f9c116bcd7",
+        "Name": "supabase_auth_wwgwnlhmbmrspmzdptzh",
+        "CPUPerc": "0.02%",
+        "MemUsage": "13.25MiB / 30.81GiB",
+        "MemPerc": "0.04%",
+        "PIDs": "14"
+      },
+      {
+        "Container": "c8486407222d9c6262343641156de583efa7b2696abacad54f3c4edf6fa14d25",
+        "Name": "supabase_kong_wwgwnlhmbmrspmzdptzh",
+        "CPUPerc": "0.01%",
+        "MemUsage": "118.7MiB / 30.81GiB",
+        "MemPerc": "0.38%",
+        "PIDs": "2"
+      },
+      {
+        "Container": "37221a93ce4da260b6f06bd464e431700b6be3acfc28dc8682897b179346b0ab",
+        "Name": "supabase_db_wwgwnlhmbmrspmzdptzh",
+        "CPUPerc": "0.00%",
+        "MemUsage": "103.1MiB / 30.81GiB",
+        "MemPerc": "0.33%",
+        "PIDs": "11"
+      },
+      {
+        "Container": "a53220a17ba9defd7a4a4635e93ce16651e696528660427117d32abb03850d4b",
+        "Name": "noethara-ec2-staging-worker-1",
+        "CPUPerc": "0.00%",
+        "MemUsage": "124.4MiB / 1GiB",
+        "MemPerc": "12.15%",
+        "PIDs": "8"
+      }
+    ],
+    "existing_services": [
+      {
+        "id": "20f1292598a0adf47cd0c656889a3c80d269080f70bc3df8502036f9c116bcd7",
+        "started_at": "2026-11-08T16:14:46.725518326Z",
+        "restart_count": 2,
+        "health": "healthy"
+      },
+      {
+        "id": "37221a93ce4da260b6f06bd464e431700b6be3acfc28dc8682897b179346b0ab",
+        "started_at": "2026-11-08T16:14:45.679613892Z",
+        "restart_count": 0,
+        "health": "healthy"
+      },
+      {
+        "id": "3c1d7f471d1bbcf0693826ded3908f63190d33556e99d5b7c604b17610eda56a",
+        "started_at": "2026-11-08T16:14:45.641681033Z",
+        "restart_count": 0,
+        "health": "none"
+      },
+      {
+        "id": "9168f3846a6709c2661447393dd00a269389818c9a0bfeffc1a16175263d15e3",
+        "started_at": "2026-11-08T16:14:45.643536514Z",
+        "restart_count": 0,
+        "health": "healthy"
+      },
+      {
+        "id": "a53220a17ba9defd7a4a4635e93ce16651e696528660427117d32abb03850d4b",
+        "started_at": "2026-11-08T16:14:45.655929741Z",
+        "restart_count": 0,
+        "health": "healthy"
+      },
+      {
+        "id": "c8486407222d9c6262343641156de583efa7b2696abacad54f3c4edf6fa14d25",
+        "started_at": "2026-11-08T16:14:45.647515406Z",
+        "restart_count": 0,
+        "health": "healthy"
+      }
+    ],
+    "previous_trials": {
+      "fbe3d4f4d9b1c95cb3cae77278a40a5cf5d52c77435eccdc3d14c60d17c06f99": {
+        "status": "exited",
+        "running": "false",
+        "exit_code": "0",
+        "oom_killed": "false",
+        "restart_count": "0",
+        "started_at": "2026-11-09T00:22:12.56201159Z",
+        "finished_at": "2026-11-09T00:50:37.70991314Z",
+        "expected_stopped_state": true
+      },
+      "af5b1136b2c734fd0c67e26918cb9d415af370db297c4d8250d2f8860ef4301d": {
+        "status": "exited",
+        "running": "false",
+        "exit_code": "0",
+        "oom_killed": "false",
+        "restart_count": "0",
+        "started_at": "2026-11-09T05:07:19.254948936Z",
+        "finished_at": "2026-11-09T05:07:23.150744756Z",
+        "expected_stopped_state": true
+      },
+      "6c66cb349cbf21ff16ee168c079289a6e17712f3beb81f2eb1da724a71e5db6e": {
+        "status": "exited",
+        "running": "false",
+        "exit_code": "0",
+        "oom_killed": "false",
+        "restart_count": "1",
+        "started_at": "2026-11-09T05:38:48.859415196Z",
+        "finished_at": "2026-11-09T06:03:11.648091066Z",
+        "expected_stopped_state": true
+      }
+    },
+    "checks": {
+      "at_least_10gib_available_ram": true,
+      "at_least_20gib_free_disk": true,
+      "at_least_8_host_cpus": true,
+      "cgroup_v2": true,
+      "reviewed_image_identity": true,
+      "pinned_assets_manifest": true,
+      "secret_file_metadata_valid": true,
+      "new_deployment_paths_absent": true,
+      "no_continuous_worker_running": true,
+      "no_unattended_unit_enabled": true,
+      "previous_trials_remain_stopped": true,
+      "existing_services_unchanged_during_collection": true,
+      "isolation_unchanged_during_collection": true
+    },
+    "firewall_fingerprint": "4489b256c620398c44a4d1c66a75ee60319444c27d072dc24e81a87d5d5b102b",
+    "continuous_unit": {
+      "active": "inactive",
+      "enabled": "not-found"
+    },
+    "worker_started_or_executed": false,
+    "credential_contents_read": false,
+    "network_rules_changed": false,
+    "queue_access": false,
+    "models_loaded": false,
+    "units_installed": false,
+    "pending": [
+      "Final operator approval and immutable active manifest",
+      "Separately authorized startup",
+      "Fresh per-generation live denial proofs and actual new cgroup quota measurements"
+    ]
+  },
+  "provenance": {
+    "kind": "operator_pasted_read_only_ssm_receipt",
+    "source_file_sha256": "e2cb5ce7b256e6a10e11921f2b02c142c43d01631212b8b507e734944bf5df2b",
+    "independent_direct_ec2_connection": false,
+    "validated_utc": "2026-11-09T20:37:51.531363+00:00",
+    "hashes_and_identity_match_reviewed_artifact": true,
+    "all_six_service_start_times_restart_counts_and_health_match_archived_baseline": true,
+    "all_three_previous_trial_start_finish_times_and_restart_counts_match_archive": true
+  }
+}

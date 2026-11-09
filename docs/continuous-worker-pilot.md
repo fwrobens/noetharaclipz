@@ -1,12 +1,81 @@
 # Continuous local-worker pilot — implementation prepared, not deployed
 
+## Current checkpoint — transfer and all read-only host preflights passed
+
+The operator's SSM receiver completed at **2026-11-09 20:33:56 UTC** on the exact
+existing instance `i-0be10e530045fc650`. All **25 source files and two unit files**
+matched their pinned hashes. Verified source is privately staged at
+`/tmp/nccz-continuous-pilot-0qkrd0gd`; nothing was installed or started.
+
+The host collector completed at **20:33:58 UTC** with **all 13 checks true**:
+
+- **8 host CPUs**, **28.77 GiB available RAM**, **45.67 GiB free disk**, low load.
+- Docker **29.1.3**, cgroup **v2**, reviewed Linux amd64 image identity and pinned
+  SmolVLM2-500M/Whisper asset manifest match.
+- Dedicated network ownership, probe-target admission, required firewall rules
+  and hook ordering passed; isolation was unchanged during collection. The
+  fingerprint is `4489b256c620398c44a4d1c66a75ee60319444c27d072dc24e81a87d5d5b102b`.
+- Existing secret **metadata** matches; its contents were not read.
+- All six existing service start times/restart counts/health match the archived
+  baseline. Five are healthy; REST remains running with no Docker health check.
+- All three historical QA container start/finish times and restart counts match
+  their archive; all remain exited. New deployment paths are absent, the
+  continuous unit is inactive/not-found and no continuous worker is running.
+
+[Full EC2 receipt and report](evidence/continuous-pilot-ec2-preflight-2033.json)
+records operator-pasted provenance; Codex did not gain direct EC2 access. Hashes,
+identity and archived service/trial states were checked locally. Fresh Supabase
+reads at **20:37:51 UTC** confirm v2/global off, the pilot's processing approval
+still false, and the original upload's exact unchanged queued/zero-attempt row.
+[Post-host Supabase evidence](evidence/continuous-pilot-post-host-supabase.json).
+
+### New candidate for separate authorization — 21:00–21:30 UTC
+
+The expired 15:15 candidate remains unchanged. A **new unapproved proposal** covers
+**2026-11-09 21:00:00–21:30:00 UTC**, exactly 30 minutes. It is not scheduled and
+does not extend any old authorization. Candidate SHA256:
+`a2974efc290782d52d16acef2b1814548b3756908af017247dec5450d7ad29ce`.
+
+[New manifest candidate](evidence/continuous-pilot-2100-manifest-candidate.json)
+and [exact authorization scope](evidence/continuous-pilot-2100-authorization-scope.json)
+still have `operator_approved=false` and no approval reference. They cannot start
+a worker. Required separate grants are:
+
+1. Processing approval for owner `21b61ad1-bda4-4abd-ac35-7a0bf477ed69` and consent
+   `4426bdad-bc7a-4972-ace2-ae65ac3f9fa4`, issued **no earlier than 21:00 UTC**
+   and expiring at **21:30 UTC**. No account administrator/operator role is granted.
+2. Install/start only deployment `11865b83-9836-4ff3-a99e-dfac4df71f34` on the
+   existing instance within that window, subject to fresh startup checks. Keep
+   the reviewed image/source, SmolVLM2-500M, **8 GiB / 2 vCPU / one job**, private
+   volumes/secrets, no public ports, Gemini/global false and restore-isolation
+   false. Test only fresh authorized pilot sample uploads through the normal
+   website and stop this worker/controller by the fixed deadline.
+
+Upload pilot footage only after processing approval is actually recorded;
+pre-approval projects/jobs remain ineligible. Early installation/start commands
+also fail the manifest's fixed `not_before` guard. Approval now would authorize
+preparing the bounded handoff, not processing before 21:00 UTC.
+
+No boot enablement, forced crash, existing-service restart, shared networking
+change, original-upload/old-job release, paid infrastructure, merge or website
+publication is included. Rollback revokes this deployment's grant and stops only
+its matching controller/container, preserving existing services/assets/evidence.
+
+**All read-only preparation checks passed.** Actual new-container cgroup limits,
+per-generation live denial-counter proofs and consent-aware hosted website
+acceptance still belong to the separately authorized gated startup/pilot. No
+processing approval, active manifest, installed unit or running worker exists
+yet. If this new window is missed, prepare another candidate for separate review.
+
+## Earlier preparation and recovery history
+
 The implementation builds on `0195e13` and its completed EC2 reliability trial;
 pilot preparation continues from `b883b01`. The consent migration is already
 applied. A fresh dedicated pilot account now has explicit owner consent;
 operator approval and worker startup remain pending. No completed AI/media
 benchmark was repeated. The earlier QA containers/assets/evidence are unchanged.
 
-**Current recovery status — 2026-11-09 20:30 UTC:** the previous signed download
+**Recovery status at 2026-11-09 20:30 UTC:** the previous signed download
 failed before the receiver/host collector ran. Supabase returned HTTP 400,
 `InvalidJWT`, `"exp" claim timestamp check failed`; the link had expired at
 15:41 UTC. The secondary Apport exception comes from reporting a Python stdin
@@ -19,13 +88,13 @@ code, bucket visibility, owner approval or job was changed.
 The proposed **15:15–15:45 UTC window has expired, unapproved**. Its immutable
 candidate and scope remain historical evidence; do not activate them or silently
 extend them. After a successful SSM receipt/host report, prepare a new fixed
-30-minute candidate for separate review. Current host preflight status remains
+30-minute candidate for separate review. At 20:30 the host preflight status was
 **not run**, operator authorization false, and the original upload's exact row
 remains queued with zero attempts. The refreshed copy-paste block handles
 download failures cleanly and creates only private preparation files.
 [Expired-link diagnosis and verified recovery](evidence/continuous-pilot-expired-link-recovery.json).
 
-## Current limited pilot proposal — 2026-11-09 UTC
+## Original pilot identity and proposal record — 2026-11-09 UTC
 
 - Deployment: `11865b83-9836-4ff3-a99e-dfac4df71f34`.
 - Fresh owner: `21b61ad1-bda4-4abd-ac35-7a0bf477ed69`; password login and identity

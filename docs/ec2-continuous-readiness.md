@@ -11,6 +11,20 @@ applied as `20261109124958_continuous_worker_consent`; live REST confirms protoc
 v2. A fresh pilot owner has explicitly consented. The new controller remains
 **stopped and undeployed**, with operator approval still pending.
 
+At **2026-11-09 20:33 UTC**, the operator's SSM receipt confirms secure source
+transfer and **all 13 fresh read-only host preflights passed**. The existing host
+has **28.77 GiB available RAM, 45.67 GiB free disk and eight CPUs**. Docker,
+reviewed image/assets, private network/firewall isolation, secret metadata and
+absence of an active continuous unit passed. All six existing service states
+and all three old trial lifecycles match archived start/restart evidence.
+[Receipt and full report](evidence/continuous-pilot-ec2-preflight-2033.json).
+
+The new **21:00–21:30 UTC on November 9** proposal remains disabled and requires
+separate processing-approval and installation/start grants.
+[Exact current scope](evidence/continuous-pilot-2100-authorization-scope.json).
+The earlier 15:15 candidate expired unapproved. No window was automatically
+extended, no service was started, and the original upload remains unchanged.
+
 Host observations come from operator-pasted, read-only SSM collectors; Codex has
 no direct EC2 execution connection. Browser and hosted REST checks ran from the
 development environment against actual Supabase and the actual EC2 worker.
@@ -140,12 +154,12 @@ authorization remains false until separate operator approval.
 
 Remaining gates are:
 
-1. Complete the fresh read-only EC2 resource/service/isolation review and confirm
-   receipt of the privately staged, hash-verified source bundle. This session has
-   no direct EC2 access; the SSM preparation collector starts no container.
+1. **Completed at 20:33 UTC:** fresh read-only EC2 resource/service/isolation
+   review and hash-verified source receipt. Operator-pasted SSM provenance is
+   retained; the collector started/executed no container and read no secret.
 2. Separately approve the consented owner and select/review the exact fixed
-   30-minute window and active immutable manifest. The current proposal remains
-   disabled with zero activation timestamps. No operator approval was issued.
+   30-minute window and active immutable manifest. The current 21:00–21:30 UTC
+   proposal remains disabled with `operator_approved=false`; no approval was issued.
 3. Install only the approved final configuration and obtain
    separate authorization to start only the new limited pilot. Verify the new
    consent-aware website path and shutdown/revocation on EC2. Local tests do not
