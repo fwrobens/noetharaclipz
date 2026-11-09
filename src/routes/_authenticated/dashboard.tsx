@@ -48,8 +48,9 @@ function DashboardPage() {
   const projects = useMemo(() => data.projects.filter((project) => !project.deleted_at), [data.projects]);
   const totalHighlights = projects.reduce((total, project) => total + project.highlights.length, 0);
   const activeProjects = projects.filter((project) => isProjectActive(project));
-  const displayName = data.profile?.display_name?.trim() || user?.user_metadata?.full_name || user?.email?.split("@")[0] || "Creator";
+  const displayName = data.profile?.display_name?.trim() || user?.user_metadata?.["full_name"] || user?.email?.split("@")[0] || "Creator";
   const firstName = displayName.split(" ")[0] || "Creator";
+  const latestProjectId = projects[0]?.id;
 
   const visibleProjects = useMemo(() => {
     const query = search.trim().toLowerCase();
@@ -83,8 +84,8 @@ function DashboardPage() {
             <h1 className="text-[1.75rem] font-medium leading-tight tracking-[-0.035em] sm:text-4xl">Welcome back, <span className="font-display italic text-ember">{firstName}.</span></h1>
             <p className="mt-2 text-sm text-muted-foreground sm:text-base">Your next standout moment is already in the footage.</p>
           </div>
-          <button type="button" onClick={() => selectedProject ? setSelectedProjectId(selectedProject.id) : focusComposer()} className="hidden h-10 items-center gap-2 rounded-full border border-border bg-card px-4 text-sm text-muted-foreground shadow-soft transition hover:-translate-y-0.5 hover:text-foreground sm:flex">
-            {projects[0] ? "Latest project" : "Quick start"}<ArrowUpRight className="h-4 w-4" />
+          <button type="button" onClick={() => latestProjectId ? setSelectedProjectId(latestProjectId) : focusComposer()} className="hidden h-10 items-center gap-2 rounded-full border border-border bg-card px-4 text-sm text-muted-foreground shadow-soft transition hover:-translate-y-0.5 hover:text-foreground sm:flex">
+            {latestProjectId ? "Latest project" : "Quick start"}<ArrowUpRight className="h-4 w-4" />
           </button>
         </div>
 
@@ -208,7 +209,7 @@ function StepNumber({ number }: { number: number }) {
 
 function ProjectCard({ project, index, onOpen }: { project: CreatorProject; index: number; onOpen: () => void }) {
   const status = getProjectStatus(project);
-  const video = project.videos[0];
+  const video = project.videos;
   const progress = getProjectProgress(project);
   return (
     <button
