@@ -495,7 +495,20 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      approve_processing_consent: {
+        Args: {
+          consent: string
+          expires_at: string
+          owner: string
+          reason: string
+        }
+        Returns: Json
+      }
       cancel_job: { Args: { jid: string }; Returns: undefined }
+      exclude_processing_job: {
+        Args: { jid: string; reason: string }
+        Returns: undefined
+      }
       export_clip: {
         Args: { cid: string; expected_revision: number }
         Returns: string
@@ -512,6 +525,11 @@ export type Database = {
         }
         Returns: Json
       }
+      processing_consent: { Args: never; Returns: Json }
+      request_processing_consent: {
+        Args: { request_id: string; terms_version: string }
+        Returns: Json
+      }
       reserve_inference: {
         Args: {
           daily_limit: number
@@ -523,6 +541,11 @@ export type Database = {
         Returns: string
       }
       retry_job: { Args: { jid: string }; Returns: string }
+      revoke_owner_processing: {
+        Args: { consent: string; owner: string; reason: string }
+        Returns: boolean
+      }
+      revoke_processing_consent: { Args: { consent: string }; Returns: boolean }
       save_clip: {
         Args: { edit: Json; expected_revision?: number; hid: string }
         Returns: string
@@ -531,8 +554,32 @@ export type Database = {
         Args: { deleted: boolean; pid: string }
         Returns: undefined
       }
+      worker_authorize_optin: {
+        Args: { consent: string; jid: string; owner: string; token: string }
+        Returns: boolean
+      }
+      worker_checkpoint_optin: {
+        Args: {
+          artifacts: Json
+          consent: string
+          jid: string
+          metadata: Json
+          owner: string
+          token: string
+        }
+        Returns: boolean
+      }
       worker_claim: { Args: never; Returns: Json }
+      worker_claim_optin: {
+        Args: { consent: string; owner: string }
+        Returns: Json
+      }
       worker_claim_scoped: { Args: { owner: string }; Returns: Json }
+      worker_consent_status: {
+        Args: { consent: string; owner: string }
+        Returns: Json
+      }
+      worker_continuous_protocol: { Args: never; Returns: Json }
       worker_finish_analysis: {
         Args: {
           artifacts: Json
@@ -543,13 +590,45 @@ export type Database = {
         }
         Returns: undefined
       }
+      worker_finish_analysis_optin: {
+        Args: {
+          artifacts: Json
+          consent: string
+          highlights: Json
+          jid: string
+          metadata: Json
+          owner: string
+          token: string
+        }
+        Returns: undefined
+      }
       worker_finish_render: {
         Args: { bytes: number; jid: string; path: string; token: string }
+        Returns: undefined
+      }
+      worker_finish_render_optin: {
+        Args: {
+          bytes: number
+          consent: string
+          jid: string
+          owner: string
+          path: string
+          token: string
+        }
         Returns: undefined
       }
       worker_heartbeat: {
         Args: { ai_ready: boolean; detail: string }
         Returns: undefined
+      }
+      worker_heartbeat_optin: {
+        Args: {
+          ai_ready: boolean
+          consent: string
+          detail: string
+          owner: string
+        }
+        Returns: boolean
       }
       worker_heartbeat_scoped: {
         Args: { ai_ready: boolean; detail: string; owner: string }
@@ -561,6 +640,19 @@ export type Database = {
           detail: string
           error_message?: string
           jid: string
+          pct: number
+          state: string
+          token: string
+        }
+        Returns: boolean
+      }
+      worker_tick_optin: {
+        Args: {
+          consent: string
+          detail: string
+          error_message?: string
+          jid: string
+          owner: string
           pct: number
           state: string
           token: string
