@@ -1,0 +1,23 @@
+{
+  "approved_window_seconds": 86400,
+  "observed_container_runtime_seconds": 86362.908351,
+  "shutdown_before_deadline_seconds": 12.772163,
+  "single_generation": true,
+  "restart_count": 0,
+  "oom_killed": false,
+  "normal_exit": true,
+  "final_snapshots_complete": true,
+  "lifetime_recorded_samples": 42792,
+  "all_original_raw_samples_retained": false,
+  "raw_retention_bounded_bytes": 20971520,
+  "initial_real_ui_workflow": "passed",
+  "operational_soak_and_expiry": "verified for the approved window at light load",
+  "later_window_fresh_job_processing": "not exercised; hosted job inventory contains only the initial analysis/render pair",
+  "independent_07_and_15_utc_checks": "not recorded in this task",
+  "production_general_release": "not authorized or established",
+  "current_worker_state": "stopped",
+  "new_processing_requires": "Fresh owner consent generation, reviewed immutable window/manifest and explicit installation/start authorization; no automatic renewal",
+  "collector_full_24h_test_passed_field_is_automatic_grade": false,
+  "boot_global_gemini_enabled": false,
+  "host_source": "operator read-only collector; independently corroborated by hosted Supabase reads"
+}

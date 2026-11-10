@@ -1,0 +1,121 @@
+{
+  "provenance": {
+    "kind": "operator_pasted_hash_verified_read_only_final_status",
+    "normalized_material_fields": true,
+    "direct_ec2_connection": false,
+    "collector_sha256": "c727c0e9394c56de3f060245a52bc96372f699d8d76915332df173e720b7b6d5",
+    "payload_sha256": "5eea9885b1aa7393638a8bb82997f98f7f963fa592689c5cac9121253e21b37d"
+  },
+  "checked_utc": "2026-11-10T23:29:10.497877+00:00",
+  "read_only": true,
+  "worker_started_stopped_restarted_or_executed": false,
+  "credential_file_contents_read": false,
+  "deployment_id": "c25d8492-56fb-4c56-a519-e9a9e4246525",
+  "manifest_sha256": "3918b9eb1dee06597852c016a7098a873eea914bbac8afa151557cda2c34dda0",
+  "fixed_stop_utc": "2026-11-10T23:00:00Z",
+  "container_id": "abb2252ebb8bf3665db5e7310d2e594e563401fa8bc85214126d862ffb9c51f9",
+  "docker_state": {
+    "Status": "exited",
+    "Running": false,
+    "Restarting": false,
+    "ExitCode": 0,
+    "OOMKilled": false,
+    "StartedAt": "2026-11-09T23:00:24.319486246Z",
+    "FinishedAt": "2026-11-10T22:59:47.227837418Z",
+    "health": "unhealthy",
+    "restart_count": 0,
+    "restart_policy": {
+      "Name": "no",
+      "MaximumRetryCount": 0
+    }
+  },
+  "status": {
+    "stage": "closed",
+    "at": 1794351587.3186107,
+    "global_processing": false,
+    "reason": "approval_expired"
+  },
+  "status_age_seconds": 1763.189,
+  "metrics": {
+    "sample_count": 42792,
+    "generations": {
+      "2026-11-09T23:00:24.319486246Z": {
+        "last_usage": 800173477,
+        "last_at": 197109.174199455,
+        "cpu_usage_usec": 800173477,
+        "memory_peak_bytes": 3011940352,
+        "sampled_peak_cpu_percent": 204.86674718218788,
+        "final_snapshot_captured": true,
+        "counter_reset_observed": false,
+        "cpu_domain": "34123"
+      }
+    },
+    "peak_memory_bytes": 3011940352,
+    "sampled_peak_cpu_percent": 204.86674718218788,
+    "total_cpu_seconds": 800.173477,
+    "cpu_counter_domains": {
+      "34123": 800173477
+    },
+    "cpu_peak_is_sampled_not_instantaneous": true,
+    "final_snapshots_complete": true,
+    "retired_cpu_usec": 0,
+    "retained_generations_limit": 64,
+    "sample_retention_bytes": 20971520
+  },
+  "grant_present": false,
+  "both_units_active": false,
+  "both_units_disabled_at_boot": true,
+  "both_loaded_unit_hashes_match": true,
+  "systemd_dropins_empty": true,
+  "systemd_need_daemon_reload": false,
+  "six_existing_services_unchanged": true,
+  "rest_container_has_no_healthcheck": true,
+  "previous_four_container_lifecycles_unchanged": true,
+  "previous_evidence_unchanged": true,
+  "isolation_unchanged": true,
+  "generation_proofs": {
+    "count": 1,
+    "all_passed": true,
+    "seven_targets_blocked_with_counter_delta_one": [
+      "staging",
+      "supabase",
+      "vpc",
+      "imds",
+      "host",
+      "gateway",
+      "non_https"
+    ],
+    "actual_cgroup_limits": {
+      "version": 2,
+      "memory_bytes": 8589934592,
+      "cpu_quota": 200000,
+      "cpu_period": 100000,
+      "extra_swap_bytes": 0,
+      "pids_max": 256
+    },
+    "all_kernel_checks_passed": true,
+    "source": "current process cgroup files, not requested Docker flags",
+    "public_tls": {
+      "zxdnjnsghdnviflahvry.supabase.co": 401,
+      "huggingface.co": 200
+    },
+    "ipv6_disabled": true
+  },
+  "retained_metrics_jsonl_bytes": 1526368,
+  "retained_metrics_summary_bytes": 662,
+  "retained_controller_log_bytes": 88,
+  "full_24h_test_passed": false,
+  "worker_unit_active": "inactive",
+  "isolation_unit_active": "active",
+  "isolation_unit_remain_after_exit": true,
+  "rotated_metrics_jsonl_bytes": {
+    "metrics.jsonl.1": 5243217,
+    "metrics.jsonl.2": 5243365,
+    "metrics.jsonl.3": 5243320
+  },
+  "lifecycle_log_lines": [
+    "2026-11-10T22:59:47.219599684Z {\"continuous_generation_stopped\": true, \"reason\": \"approval_expired\"}"
+  ],
+  "collector_grade_note": "This field is a constant false in the read-only collector; it does not automatically assess acceptance. See separate assessment.",
+  "initial_generation_proof_unchanged": true
+}

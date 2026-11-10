@@ -1,6 +1,9 @@
-# Running 24-hour owner-scoped EC2 pilot
+# Closed 24-hour owner-scoped EC2 pilot
 
-Status: **RUNNING; INITIAL WEBSITE WORKFLOW PASSED; 24H ENDURANCE/EXPIRY PENDING**.
+Status: **STOPPED AFTER SCHEDULED EXPIRY; LIGHT-LOAD SOAK AND SHUTDOWN VERIFIED**.
+Broader workload coverage and the planned independent mid-window checks were
+not completed. No restart, renewal, global release, merge or publication is
+authorized.
 The 2026-11-09 21:00–21:30 UTC pilot ended safely at 21:29:46 UTC.
 Do not restart, edit, extend, renew, or reuse its expired deployment receipt,
 owner consent generation or signed active manifest. Authorization covers only
@@ -63,12 +66,78 @@ configuration, existing services, old trial files, queued-job release or
 database schema changes are authorized. The existing instance adds no new
 infrastructure; storage/egress remain subject to existing allowances.
 
+## Final result (November 10)
+
+The operator's [final read-only host snapshot](evidence/continuous-24h-final-host.json)
+at **23:29:10 UTC** confirms automatic `approval_expired` shutdown at
+**22:59:47.227837418 UTC**, before the immutable **23:00 UTC** deadline.
+The worker remained in a single container generation with **zero restarts,
+no OOM event and exit code 0**. Actual container runtime was **23h 59m
+22.908s** across the approved 24-hour window; startup and the planned shutdown
+reserve account for the difference. The dispatcher, source, image and deadline
+were not changed.
+
+| Final observation | Recorded value |
+| --- | --- |
+| Controller / container | Closed for `approval_expired` / exited normally |
+| Processing grant | Removed |
+| Worker unit / boot startup | Inactive / disabled |
+| Docker restart policy | `no`, restart count zero |
+| Lifetime sampling | **42,792 recorded samples**, one CPU domain, no counter reset |
+| Kernel peak RAM | **3,011,940,352 bytes (2.805 GiB)**; unchanged from the initial workload peak |
+| Sampled CPU peak / cumulative CPU | **204.8667%** (one core=100%) / **800.173477 seconds** |
+| Final resource snapshots | Captured and complete |
+| Existing services / four prior trials / isolation / evidence | Unchanged |
+
+CPU peak is the recorded short-interval statistic, not an instantaneous limit;
+actual kernel quota remained two CPUs. Lifetime summaries and final peaks are
+retained; the bounded 20 MiB raw-sample files rotated as designed, so not every
+original raw sample remains. The isolation oneshot remains active through its
+reviewed `RemainAfterExit` setting, with boot startup disabled; it is not a queue
+consumer. The stopped container's retained Docker `unhealthy` flag does not
+override the exit-zero/expiry-log evidence.
+
+The collector's `full_24h_test_passed: false` is a constant conservative field
+in its source, not an automatic pass/fail assessment. The separate
+[outcome assessment](evidence/continuous-24h-outcome.json) distinguishes observed
+operational endurance from unexercised workload coverage.
+
+Independent [hosted Supabase reads at 23:32:32 UTC](evidence/continuous-24h-final-supabase.json)
+confirm the same consent generation is expired/unauthorized, protocol v2 and
+global-claim denial remain intact, **zero active leases**, and the original
+upload's exact unchanged row hash: **queued, zero attempts**. The saved edit
+and both initial completed jobs remain intact. Inventory shows **one fresh
+pilot project and only its initial analysis/render pair**; no later-window
+processing was exercised and no 07:00/15:00 checkpoint was independently
+recorded in this task.
+
+At **23:35:19 UTC**, an [authenticated owner check after expiry](evidence/continuous-24h-expired-owner-access.json)
+confirmed **online=false / ai_ready=false**, `Processing authorization inactive`,
+and normal authenticated role. The private MP4 remained downloadable (200,
+2,044,140 bytes, exact original SHA256), saved edits persisted, public/anonymous
+access remained denied (400), and privileged protocol access remained denied
+(403). The resumed cloud workspace no longer had the private QA password file;
+verification used an ephemeral native magic-link session for the existing
+dedicated QA identity, without email delivery, password reset, new user or new
+processing consent. That local verification session was logged out (204).
+
+**Recommendation:** retain the existing m6i.2xlarge and pinned SmolVLM2-500M for
+a separately approved, owner-scoped rollout; this light-load run does not
+indicate a need to resize. Initial real UI processing, unattended service
+survival through the window and safe expiry are verified. Sustained late-window
+workloads, repeated fresh jobs at intermediate points, broad model quality,
+max-input throughput, boot recovery and external alert delivery remain outside
+this result. Keep the worker stopped. Further processing requires fresh owner
+consent, a new immutable window/manifest and explicit authorization; do not
+reuse or extend this expired approval. No paid services, Gemini, global queue,
+boot startup, merge or website publication were enabled.
+
 ## Initial live result (23:00–23:13 UTC November 9)
 
 **Initial startup and functional acceptance passed. This is not a completed
-24-hour reliability result.** The service remains active until the fixed expiry
-unless safety/consent monitoring stops it earlier. SSM can disconnect; the
-existing systemd controller owns the worker, logs, cgroup sampling and shutdown.
+24-hour reliability result.** This historical initial snapshot was taken while
+the service was active. The independent systemd controller owned the worker,
+logs, cgroup sampling and eventual scheduled shutdown; SSM did not own execution.
 
 [Read-only host snapshot](evidence/continuous-24h-initial-host.json), collected
 by the operator at **23:13:47 UTC**, verifies:
@@ -132,7 +201,7 @@ online/AI-ready was true and the original upload retained its identical whole-ro
 hash: **queued, zero attempts**. Processing approval did not grant the pilot
 operator/admin permissions.
 
-### Remaining 24-hour evidence
+### Planned intermediate checks and retained evidence
 
 The [read-only reconnect collector](../scripts/inspect_continuous_24h_status.py)
 has no wait loop or container/service/network mutation. Its private handoff is
@@ -140,15 +209,15 @@ valid through November 11, and can be rerun after reconnecting or after expiry;
 it does not renew approval. Seven focused observer-boundary tests and Ruff pass.
 The reviewed worker/controller source, manifests and units remain unchanged.
 
-Suggested interim snapshots are **November 10 at 07:00 and 15:00 UTC**, plus a
+The planned interim snapshots were **November 10 at 07:00 and 15:00 UTC**, plus a
 late-window inspection and final proof after **23:00 UTC**. Process only fresh
 authorized owner projects during the approved window. Record readiness,
 resource/sample continuity, restarts, consent/ownership, private download and
 original-upload/service invariants. Do not rerun the launch command, restart old
 trials, clear failure latches or extend the deadline. The controller monitors on
 EC2; no external notification route or automatic assistant follow-up is claimed.
-Final expiry/shutdown, removed grant, offline readiness, leases and retained
-final cgroup snapshots still need verification after the fixed stop. No merge,
+The final section above records expiry/shutdown, removed grant, offline
+readiness, leases and retained final cgroup snapshots. No merge,
 website publication, global release, Gemini or boot enablement is authorized.
 
 Read-only Supabase checks at 22:06:27 UTC confirmed protocol v2,
