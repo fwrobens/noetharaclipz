@@ -25,6 +25,8 @@ import { Route as AuthenticatedDashboardRouteImport } from './routes/_authentica
 import { Route as AuthenticatedOnboardingRouteImport } from './routes/_authenticated/onboarding'
 import { Route as EditorIdRouteImport } from './routes/editor.$id'
 import { Route as ProjectIdRouteImport } from './routes/project.$id'
+import { Route as AuthenticatedDashboardActivityRouteImport } from './routes/_authenticated/dashboard_.activity'
+import { Route as AuthenticatedDashboardProjectsRouteImport } from './routes/_authenticated/dashboard_.projects'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -105,6 +107,18 @@ const ProjectIdRoute = ProjectIdRouteImport.update({
   path: '/project/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedDashboardActivityRoute =
+  AuthenticatedDashboardActivityRouteImport.update({
+    id: '/dashboard_/activity',
+    path: '/dashboard/activity',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedDashboardProjectsRoute =
+  AuthenticatedDashboardProjectsRouteImport.update({
+    id: '/dashboard_/projects',
+    path: '/dashboard/projects',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -122,6 +136,8 @@ export interface FileRoutesByFullPath {
   '/onboarding': typeof AuthenticatedOnboardingRoute
   '/editor/$id': typeof EditorIdRoute
   '/project/$id': typeof ProjectIdRoute
+  '/dashboard/activity': typeof AuthenticatedDashboardActivityRoute
+  '/dashboard/projects': typeof AuthenticatedDashboardProjectsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -139,6 +155,8 @@ export interface FileRoutesByTo {
   '/onboarding': typeof AuthenticatedOnboardingRoute
   '/editor/$id': typeof EditorIdRoute
   '/project/$id': typeof ProjectIdRoute
+  '/dashboard/activity': typeof AuthenticatedDashboardActivityRoute
+  '/dashboard/projects': typeof AuthenticatedDashboardProjectsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -158,6 +176,8 @@ export interface FileRoutesById {
   '/_authenticated/onboarding': typeof AuthenticatedOnboardingRoute
   '/editor/$id': typeof EditorIdRoute
   '/project/$id': typeof ProjectIdRoute
+  '/_authenticated/dashboard_/activity': typeof AuthenticatedDashboardActivityRoute
+  '/_authenticated/dashboard_/projects': typeof AuthenticatedDashboardProjectsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -177,6 +197,8 @@ export interface FileRouteTypes {
     | '/onboarding'
     | '/editor/$id'
     | '/project/$id'
+    | '/dashboard/activity'
+    | '/dashboard/projects'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -194,6 +216,8 @@ export interface FileRouteTypes {
     | '/onboarding'
     | '/editor/$id'
     | '/project/$id'
+    | '/dashboard/activity'
+    | '/dashboard/projects'
   id:
     | '__root__'
     | '/'
@@ -212,6 +236,8 @@ export interface FileRouteTypes {
     | '/_authenticated/onboarding'
     | '/editor/$id'
     | '/project/$id'
+    | '/_authenticated/dashboard_/activity'
+    | '/_authenticated/dashboard_/projects'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -345,17 +371,35 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProjectIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/dashboard_/activity': {
+      id: '/_authenticated/dashboard_/activity'
+      path: '/dashboard/activity'
+      fullPath: '/dashboard/activity'
+      preLoaderRoute: typeof AuthenticatedDashboardActivityRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/dashboard_/projects': {
+      id: '/_authenticated/dashboard_/projects'
+      path: '/dashboard/projects'
+      fullPath: '/dashboard/projects'
+      preLoaderRoute: typeof AuthenticatedDashboardProjectsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedOnboardingRoute: typeof AuthenticatedOnboardingRoute
+  AuthenticatedDashboardActivityRoute: typeof AuthenticatedDashboardActivityRoute
+  AuthenticatedDashboardProjectsRoute: typeof AuthenticatedDashboardProjectsRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedOnboardingRoute: AuthenticatedOnboardingRoute,
+  AuthenticatedDashboardActivityRoute: AuthenticatedDashboardActivityRoute,
+  AuthenticatedDashboardProjectsRoute: AuthenticatedDashboardProjectsRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
