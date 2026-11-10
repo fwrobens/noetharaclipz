@@ -292,7 +292,7 @@ export function DashboardLoadError({ reset }: ErrorComponentProps) {
       <p className="mt-3 text-sm leading-6 text-muted-foreground">This can happen during a preview reload or a temporary connection issue. Your saved projects haven't been changed.</p>
       <div className="mt-6 flex flex-wrap justify-center gap-3">
         <button type="button" className="rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground" onClick={() => { reset(); window.location.reload(); }}>Try again</button>
-        <a href="/dashboard-visual-check" className="rounded-full border border-border bg-surface px-5 py-2.5 text-sm">View design demo</a>
+        
       </div>
     </div>
   </div>;
