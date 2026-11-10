@@ -13,7 +13,6 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as BrandKitRouteImport } from './routes/brand-kit'
-import { Route as DashboardVisualCheckRouteImport } from './routes/dashboard-visual-check'
 import { Route as LibraryRouteImport } from './routes/library'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as PricingRouteImport } from './routes/pricing'
@@ -26,6 +25,8 @@ import { Route as AuthenticatedDashboardRouteImport } from './routes/_authentica
 import { Route as AuthenticatedOnboardingRouteImport } from './routes/_authenticated/onboarding'
 import { Route as EditorIdRouteImport } from './routes/editor.$id'
 import { Route as ProjectIdRouteImport } from './routes/project.$id'
+import { Route as AuthenticatedDashboardActivityRouteImport } from './routes/_authenticated/dashboard_.activity'
+import { Route as AuthenticatedDashboardProjectsRouteImport } from './routes/_authenticated/dashboard_.projects'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -44,11 +45,6 @@ const AuthRoute = AuthRouteImport.update({
 const BrandKitRoute = BrandKitRouteImport.update({
   id: '/brand-kit',
   path: '/brand-kit',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DashboardVisualCheckRoute = DashboardVisualCheckRouteImport.update({
-  id: '/dashboard-visual-check',
-  path: '/dashboard-visual-check',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LibraryRoute = LibraryRouteImport.update({
@@ -111,12 +107,23 @@ const ProjectIdRoute = ProjectIdRouteImport.update({
   path: '/project/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedDashboardActivityRoute =
+  AuthenticatedDashboardActivityRouteImport.update({
+    id: '/dashboard_/activity',
+    path: '/dashboard/activity',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedDashboardProjectsRoute =
+  AuthenticatedDashboardProjectsRouteImport.update({
+    id: '/dashboard_/projects',
+    path: '/dashboard/projects',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/brand-kit': typeof BrandKitRoute
-  '/dashboard-visual-check': typeof DashboardVisualCheckRoute
   '/library': typeof LibraryRoute
   '/login': typeof LoginRoute
   '/pricing': typeof PricingRoute
@@ -129,12 +136,13 @@ export interface FileRoutesByFullPath {
   '/onboarding': typeof AuthenticatedOnboardingRoute
   '/editor/$id': typeof EditorIdRoute
   '/project/$id': typeof ProjectIdRoute
+  '/dashboard/activity': typeof AuthenticatedDashboardActivityRoute
+  '/dashboard/projects': typeof AuthenticatedDashboardProjectsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/brand-kit': typeof BrandKitRoute
-  '/dashboard-visual-check': typeof DashboardVisualCheckRoute
   '/library': typeof LibraryRoute
   '/login': typeof LoginRoute
   '/pricing': typeof PricingRoute
@@ -147,6 +155,8 @@ export interface FileRoutesByTo {
   '/onboarding': typeof AuthenticatedOnboardingRoute
   '/editor/$id': typeof EditorIdRoute
   '/project/$id': typeof ProjectIdRoute
+  '/dashboard/activity': typeof AuthenticatedDashboardActivityRoute
+  '/dashboard/projects': typeof AuthenticatedDashboardProjectsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -154,7 +164,6 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/brand-kit': typeof BrandKitRoute
-  '/dashboard-visual-check': typeof DashboardVisualCheckRoute
   '/library': typeof LibraryRoute
   '/login': typeof LoginRoute
   '/pricing': typeof PricingRoute
@@ -167,6 +176,8 @@ export interface FileRoutesById {
   '/_authenticated/onboarding': typeof AuthenticatedOnboardingRoute
   '/editor/$id': typeof EditorIdRoute
   '/project/$id': typeof ProjectIdRoute
+  '/_authenticated/dashboard_/activity': typeof AuthenticatedDashboardActivityRoute
+  '/_authenticated/dashboard_/projects': typeof AuthenticatedDashboardProjectsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -174,7 +185,6 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/brand-kit'
-    | '/dashboard-visual-check'
     | '/library'
     | '/login'
     | '/pricing'
@@ -187,12 +197,13 @@ export interface FileRouteTypes {
     | '/onboarding'
     | '/editor/$id'
     | '/project/$id'
+    | '/dashboard/activity'
+    | '/dashboard/projects'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/auth'
     | '/brand-kit'
-    | '/dashboard-visual-check'
     | '/library'
     | '/login'
     | '/pricing'
@@ -205,13 +216,14 @@ export interface FileRouteTypes {
     | '/onboarding'
     | '/editor/$id'
     | '/project/$id'
+    | '/dashboard/activity'
+    | '/dashboard/projects'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
     | '/auth'
     | '/brand-kit'
-    | '/dashboard-visual-check'
     | '/library'
     | '/login'
     | '/pricing'
@@ -224,6 +236,8 @@ export interface FileRouteTypes {
     | '/_authenticated/onboarding'
     | '/editor/$id'
     | '/project/$id'
+    | '/_authenticated/dashboard_/activity'
+    | '/_authenticated/dashboard_/projects'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -231,7 +245,6 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
   BrandKitRoute: typeof BrandKitRoute
-  DashboardVisualCheckRoute: typeof DashboardVisualCheckRoute
   LibraryRoute: typeof LibraryRoute
   LoginRoute: typeof LoginRoute
   PricingRoute: typeof PricingRoute
@@ -272,13 +285,6 @@ declare module '@tanstack/react-router' {
       path: '/brand-kit'
       fullPath: '/brand-kit'
       preLoaderRoute: typeof BrandKitRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/dashboard-visual-check': {
-      id: '/dashboard-visual-check'
-      path: '/dashboard-visual-check'
-      fullPath: '/dashboard-visual-check'
-      preLoaderRoute: typeof DashboardVisualCheckRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/library': {
@@ -365,17 +371,35 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProjectIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/dashboard_/activity': {
+      id: '/_authenticated/dashboard_/activity'
+      path: '/dashboard/activity'
+      fullPath: '/dashboard/activity'
+      preLoaderRoute: typeof AuthenticatedDashboardActivityRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/dashboard_/projects': {
+      id: '/_authenticated/dashboard_/projects'
+      path: '/dashboard/projects'
+      fullPath: '/dashboard/projects'
+      preLoaderRoute: typeof AuthenticatedDashboardProjectsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedOnboardingRoute: typeof AuthenticatedOnboardingRoute
+  AuthenticatedDashboardActivityRoute: typeof AuthenticatedDashboardActivityRoute
+  AuthenticatedDashboardProjectsRoute: typeof AuthenticatedDashboardProjectsRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedOnboardingRoute: AuthenticatedOnboardingRoute,
+  AuthenticatedDashboardActivityRoute: AuthenticatedDashboardActivityRoute,
+  AuthenticatedDashboardProjectsRoute: AuthenticatedDashboardProjectsRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
@@ -386,7 +410,6 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
   BrandKitRoute: BrandKitRoute,
-  DashboardVisualCheckRoute: DashboardVisualCheckRoute,
   LibraryRoute: LibraryRoute,
   LoginRoute: LoginRoute,
   PricingRoute: PricingRoute,

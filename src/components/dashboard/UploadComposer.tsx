@@ -1,6 +1,9 @@
 import { useServerFn } from "@tanstack/react-start";
 import {
-  ArrowUpRight,
+  ArrowUp,
+  Flame,
+  Laugh,
+  Timer,
   Clapperboard,
   FileVideo2,
   Link2,
@@ -137,55 +140,20 @@ export function UploadComposer({ onUploaded }: UploadComposerProps) {
           : "";
 
   return (
-    <section
-      id="new-project"
-      className="glow-border glow-border-soft scroll-mt-28 rounded-[24px] bg-card shadow-float"
-    >
-      <div className="p-4 sm:p-6 lg:p-7">
-        <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3">
-          <div className="flex min-w-0 items-center gap-3">
-            <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-ember/20 bg-ember/10 text-ember shadow-soft">
-              <Sparkles className="h-[18px] w-[18px]" />
-            </span>
-            <div className="min-w-0">
-              <h2 className="truncate text-base font-medium tracking-tight sm:text-lg">
-                Create something worth watching
-              </h2>
-              <p className="mt-0.5 truncate text-xs text-muted-foreground">
-                Upload a recording. Describe the moments you want.
-              </p>
-            </div>
-          </div>
-          <span className="hidden rounded-full border border-border bg-surface px-3 py-1 text-[10px] uppercase tracking-[0.14em] text-muted-foreground sm:block">
-            AI clipping
-          </span>
-        </div>
-
-        <div className="mt-6 flex items-center gap-5 border-b border-border text-sm">
-          <span className="flex items-center gap-2 border-b border-ember pb-3 font-medium text-foreground">
-            <UploadCloud className="h-4 w-4 text-ember" /> Upload video
-          </span>
-          <span
-            className="flex items-center gap-2 pb-3 text-muted-foreground/60"
-            title="Link imports are coming soon"
-          >
-            <Link2 className="h-4 w-4" /> Paste link{" "}
-            <span className="rounded-full bg-muted px-1.5 py-0.5 text-[9px]">SOON</span>
-          </span>
-        </div>
-
-        <div
-          onDragOver={(event) => {
-            event.preventDefault();
-            if (!busy) setDragging(true);
-          }}
-          onDragLeave={() => setDragging(false)}
-          onDrop={handleDrop}
-          className={cn(
-            "mt-5 rounded-2xl border border-dashed transition-all duration-300",
-            dragging ? "border-ember bg-ember/10 shadow-pop" : "border-border bg-surface/60",
-          )}
-        >
+    <section id="new-project" className="scroll-mt-28">
+      <div
+        onDragOver={(event) => {
+          event.preventDefault();
+          if (!busy) setDragging(true);
+        }}
+        onDragLeave={() => setDragging(false)}
+        onDrop={handleDrop}
+        className={cn(
+          "prompt-shell rounded-[18px] p-1.5 transition-all duration-300",
+          dragging && "prompt-shell-active",
+        )}
+      >
+        <div className="rounded-[14px] border border-border bg-card shadow-float transition focus-within:border-ember/40">
           <input
             ref={inputRef}
             type="file"
@@ -194,118 +162,126 @@ export function UploadComposer({ onUploaded }: UploadComposerProps) {
             aria-label="Choose a video file"
             onChange={(event) => chooseFile(event.target.files?.[0])}
           />
-          {file ? (
-            <div className="flex items-center gap-3 p-3 sm:p-4">
-              <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl border border-ember/20 bg-ember/10 text-ember">
-                <FileVideo2 className="h-5 w-5" />
-              </span>
-              <div className="min-w-0 flex-1">
-                <p className="truncate text-sm font-medium">{file.name}</p>
-                <p className="mt-1 text-xs text-muted-foreground">
-                  {(file.size / 1_000_000).toFixed(1)} MB · Ready to upload
-                </p>
+          <div className="px-4 pt-4 sm:px-5">
+            {file && (
+              <div className="mb-3 inline-flex max-w-full items-center gap-2 rounded-lg border border-border bg-surface py-1.5 pl-2 pr-1 text-xs shadow-soft">
+                <FileVideo2 className="h-4 w-4 shrink-0 text-ember" />
+                <span className="truncate font-medium">{file.name}</span>
+                <span className="shrink-0 text-muted-foreground">
+                  {(file.size / 1_000_000).toFixed(1)} MB
+                </span>
+                <button
+                  type="button"
+                  disabled={busy}
+                  onClick={() => {
+                    setFile(null);
+                    requestIdRef.current = null;
+                    if (inputRef.current) inputRef.current.value = "";
+                  }}
+                  className="grid h-6 w-6 shrink-0 place-items-center rounded-md text-muted-foreground transition hover:bg-accent hover:text-foreground disabled:opacity-40"
+                  aria-label="Remove selected video"
+                >
+                  <X className="h-3.5 w-3.5" />
+                </button>
               </div>
-              <button
-                type="button"
-                disabled={busy}
-                onClick={() => {
-                  setFile(null);
-                  requestIdRef.current = null;
-                  if (inputRef.current) inputRef.current.value = "";
+            )}
+            {busy ? (
+              <p className="shimmer-text min-h-[96px] text-sm sm:text-base" aria-live="polite">
+                {stageLabel}
+              </p>
+            ) : (
+              <textarea
+                id="clip-instructions"
+                value={instructions}
+                onChange={(event) => setInstructions(event.target.value)}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter" && (event.metaKey || event.ctrlKey)) void startUpload();
                 }}
-                className="grid h-9 w-9 shrink-0 place-items-center rounded-full text-muted-foreground transition hover:bg-accent hover:text-foreground disabled:opacity-40"
-                aria-label="Remove selected video"
-              >
-                <X className="h-4 w-4" />
-              </button>
-            </div>
-          ) : (
+                maxLength={2000}
+                rows={3}
+                placeholder={
+                  dragging
+                    ? "Drop your recording to attach it…"
+                    : "Describe the clips you want… e.g. find my funniest reactions, under 30 seconds"
+                }
+                className="min-h-[96px] w-full resize-none bg-transparent text-sm leading-relaxed outline-none placeholder:text-muted-foreground/70 sm:text-base"
+              />
+            )}
+          </div>
+          <div className="flex items-center gap-1 px-2.5 pb-2.5 pt-1 sm:px-3">
             <button
               type="button"
-              onClick={() => inputRef.current?.click()}
               disabled={busy}
-              className="flex w-full flex-col items-center px-4 py-7 text-center sm:py-8"
+              onClick={() => inputRef.current?.click()}
+              className="grid h-9 w-9 place-items-center rounded-lg text-muted-foreground transition hover:bg-accent hover:text-foreground disabled:opacity-40"
+              aria-label="Attach a video"
+              title="Attach a video (MP4, MOV, WebM · up to 45 MB)"
             >
-              <span className="grid h-11 w-11 place-items-center rounded-full border border-border bg-card text-muted-foreground shadow-soft transition group-hover:text-ember">
-                <Plus className="h-5 w-5" />
-              </span>
-              <span className="mt-3 text-sm font-medium">
-                Drop your recording here, or <span className="text-ember">browse</span>
-              </span>
-              <span className="mt-1.5 text-xs text-muted-foreground">
-                MP4, MOV or WebM · up to 45 MB
-              </span>
+              <Plus className="h-[18px] w-[18px]" />
             </button>
-          )}
-        </div>
-
-        <div className="relative mt-3 rounded-2xl border border-border bg-surface/80 p-4 shadow-soft transition focus-within:border-ember/40 focus-within:shadow-pop">
-          <textarea
-            id="clip-instructions"
-            value={instructions}
-            onChange={(event) => setInstructions(event.target.value)}
-            maxLength={2000}
-            rows={3}
-            disabled={busy}
-            placeholder="Tell AI what to look for… e.g. Find my funniest reactions and keep each clip under 30 seconds."
-            className="min-h-[76px] w-full resize-none bg-transparent text-sm leading-relaxed outline-none placeholder:text-muted-foreground/70"
-          />
-          <div className="flex items-end justify-between gap-3">
-            <span className="hidden items-center gap-1.5 text-[11px] text-muted-foreground sm:flex">
-              <Clapperboard className="h-3.5 w-3.5" /> Vertical clips with captions
+            <span className="mx-1 h-5 w-px bg-border" />
+            <button
+              type="button"
+              disabled
+              className="grid h-9 w-9 place-items-center rounded-lg text-muted-foreground/50"
+              title="Paste a stream link — coming soon"
+              aria-label="Paste a link (coming soon)"
+            >
+              <Link2 className="h-[17px] w-[17px]" />
+            </button>
+            <span className="ml-1 hidden items-center gap-1.5 text-[11px] text-muted-foreground sm:flex">
+              <Clapperboard className="h-3.5 w-3.5" />
+              {file ? "Vertical clips with captions" : "Attach a recording to begin"}
             </span>
-            <span className="ml-auto text-[10px] text-muted-foreground/70">
+            <span className="ml-auto mr-2 hidden text-[10px] text-muted-foreground/70 sm:block">
               {instructions.length}/2000
             </span>
+            <button
+              type="button"
+              onClick={() => void startUpload()}
+              disabled={busy}
+              className="ml-auto grid h-10 w-10 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground shadow-pop transition hover:-translate-y-0.5 disabled:translate-y-0 disabled:opacity-70 sm:ml-0"
+              aria-label={file ? "Start clipping" : "Choose a video"}
+              title={file ? "Start clipping" : "Choose a video"}
+            >
+              {busy ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : file ? (
+                <ArrowUp className="h-4 w-4" />
+              ) : (
+                <UploadCloud className="h-4 w-4" />
+              )}
+            </button>
           </div>
         </div>
+        {busy && (
+          <div className="flex items-center justify-between px-3 pb-1 pt-2 text-[11px] text-muted-foreground">
+            <span className="flex items-center gap-1.5">
+              <Sparkles className="h-3.5 w-3.5 text-ember" /> Working on it…
+            </span>
+            <div className="h-1 w-24 overflow-hidden rounded-full bg-muted">
+              <div className="upload-progress h-full w-1/3 rounded-full bg-ember" />
+            </div>
+          </div>
+        )}
+      </div>
 
-        <div className="no-scrollbar mt-3 flex gap-2 overflow-x-auto pb-1">
-          {prompts.map((prompt) => (
+      <div className="no-scrollbar mt-3 flex gap-2 overflow-x-auto pb-1 sm:flex-wrap sm:justify-center">
+        {prompts.map((prompt, index) => {
+          const Icon = [Laugh, Flame, Timer][index] ?? Sparkles;
+          return (
             <button
               type="button"
               key={prompt.label}
               disabled={busy}
               onClick={() => setInstructions(prompt.value)}
-              className="shrink-0 rounded-full border border-border bg-card px-3 py-1.5 text-xs text-muted-foreground shadow-soft transition hover:-translate-y-0.5 hover:border-ember/30 hover:text-foreground"
+              className="flex shrink-0 items-center gap-1.5 rounded-lg border border-border bg-card px-3 py-1.5 text-xs text-muted-foreground shadow-soft transition hover:-translate-y-0.5 hover:border-ember/30 hover:text-foreground"
             >
+              <Icon className="h-3.5 w-3.5 text-ember" />
               {prompt.label}
             </button>
-          ))}
-        </div>
-
-        {busy && (
-          <div className="mt-4" aria-live="polite">
-            <div className="flex items-center gap-2 text-xs text-muted-foreground">
-              <Loader2 className="h-3.5 w-3.5 animate-spin text-ember" /> {stageLabel}
-            </div>
-            <div className="mt-2 h-1 overflow-hidden rounded-full bg-muted">
-              <div className="upload-progress h-full w-1/3 rounded-full bg-ember" />
-            </div>
-          </div>
-        )}
-
-        <div className="mt-5 flex items-center justify-between gap-4">
-          <p className="hidden text-xs text-muted-foreground md:block">
-            Your video stays private to your workspace.
-          </p>
-          <button
-            type="button"
-            onClick={() => void startUpload()}
-            disabled={busy}
-            className="glow-border inline-flex h-11 w-full items-center justify-center gap-2 rounded-full bg-primary px-5 text-sm font-medium text-primary-foreground shadow-pop transition hover:-translate-y-0.5 disabled:translate-y-0 disabled:opacity-60 sm:w-auto md:ml-auto"
-          >
-            {busy ? (
-              <Loader2 className="h-4 w-4 animate-spin" />
-            ) : file ? (
-              <Sparkles className="h-4 w-4" />
-            ) : (
-              <Plus className="h-4 w-4" />
-            )}
-            {busy ? "Creating project…" : file ? "Start clipping" : "Choose a video"}
-            {!busy && <ArrowUpRight className="h-4 w-4" />}
-          </button>
-        </div>
+          );
+        })}
       </div>
     </section>
   );

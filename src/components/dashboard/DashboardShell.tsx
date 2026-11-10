@@ -1,4 +1,4 @@
-import { Link, useNavigate, useRouteContext } from "@tanstack/react-router";
+import { Link, useNavigate, useRouteContext, useRouterState } from "@tanstack/react-router";
 import {
   Activity,
   Clapperboard,
@@ -20,9 +20,9 @@ import { supabase } from "@/integrations/supabase/client";
 import { cn } from "@/lib/utils";
 
 const navigation = [
-  { id: "overview", label: "Overview", icon: LayoutDashboard },
-  { id: "projects", label: "Projects", icon: FolderOpen },
-  { id: "activity", label: "Activity", icon: Activity },
+  { id: "/dashboard", label: "New clip", icon: LayoutDashboard },
+  { id: "/dashboard/projects", label: "Projects", icon: FolderOpen },
+  { id: "/dashboard/activity", label: "Activity", icon: Activity },
 ] as const;
 
 type DashboardShellProps = {
@@ -31,8 +31,8 @@ type DashboardShellProps = {
   email?: string | undefined;
   avatarUrl?: string | null | undefined;
   projectCount: number;
-  search: string;
-  onSearchChange: (value: string) => void;
+  search?: string;
+  onSearchChange?: (value: string) => void;
   demoMode?: boolean;
 };
 
@@ -42,13 +42,13 @@ export function DashboardShell({
   email,
   avatarUrl,
   projectCount,
-  search,
+  search = "",
   onSearchChange,
   demoMode = false,
 }: DashboardShellProps) {
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState<(typeof navigation)[number]["id"]>("overview");
+  const activeSection = useRouterState({ select: (r) => r.location.pathname.replace(/\/$/, "") }) as (typeof navigation)[number]["id"];
   const searchRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
   const { queryClient } = useRouteContext({ from: "__root__" });
@@ -65,9 +65,8 @@ export function DashboardShell({
   }, []);
 
   const goTo = (id: (typeof navigation)[number]["id"]) => {
-    setActiveSection(id);
     setMobileOpen(false);
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    void navigate({ to: id });
   };
 
   const signOut = async () => {
@@ -77,7 +76,12 @@ export function DashboardShell({
     await navigate({ to: "/auth", replace: true });
   };
 
-  const startNew = () => demoMode ? void navigate({ to: "/auth" }) : focusComposer();
+  const startNew = () => {
+    setMobileOpen(false);
+    if (demoMode) return void navigate({ to: "/auth" });
+    if (activeSection === "/dashboard") return focusComposer();
+    void navigate({ to: "/dashboard" }).then(() => setTimeout(focusComposer, 50));
+  };
 
   const sidebar = (mobile = false) => (
     <SidebarContent
@@ -88,6 +92,7 @@ export function DashboardShell({
       avatarUrl={avatarUrl}
       projectCount={projectCount}
       onGoTo={goTo}
+      onCreate={startNew}
       onSignOut={() => demoMode ? void navigate({ to: "/auth" }) : void signOut()}
       demoMode={demoMode}
     />
@@ -148,7 +153,7 @@ export function DashboardShell({
               <Clapperboard className="h-4 w-4 text-ember" />
               <span>Creator workspace</span>
             </div>
-            <label className="mx-auto flex h-10 w-full max-w-md items-center gap-2.5 rounded-full border border-border bg-card px-4 shadow-soft transition focus-within:border-ember/40 focus-within:shadow-pop">
+            {onSearchChange ? <label className="mx-auto flex h-10 w-full max-w-md items-center gap-2.5 rounded-xl border border-border bg-card px-4 shadow-soft transition focus-within:border-ember/40 focus-within:shadow-pop">
               <Search className="h-4 w-4 shrink-0 text-muted-foreground" />
               <input
                 ref={searchRef}
@@ -167,11 +172,11 @@ export function DashboardShell({
               <kbd className="hidden rounded-md border border-border bg-muted px-1.5 py-0.5 text-[10px] text-muted-foreground sm:block">
                 ⌘ K
               </kbd>
-            </label>
+            </label> : <div />}
             <button
               type="button"
               onClick={startNew}
-              className="glow-border glow-border-soft inline-flex h-10 items-center justify-center gap-2 rounded-full bg-primary px-3 text-sm font-medium text-primary-foreground shadow-pop transition hover:-translate-y-0.5 sm:px-4"
+              className="glow-border glow-border-soft inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-primary px-3 text-sm font-medium text-primary-foreground shadow-pop transition hover:-translate-y-0.5 sm:px-4"
             >
               <Plus className="h-4 w-4" />
               <span className="hidden sm:inline">{demoMode ? "Sign in to create" : "New project"}</span>
@@ -198,6 +203,7 @@ type SidebarContentProps = {
   projectCount: number;
   onGoTo: (id: (typeof navigation)[number]["id"]) => void;
   onSignOut: () => void;
+  onCreate: () => void;
   demoMode?: boolean;
 };
 
@@ -210,6 +216,7 @@ function SidebarContent({
   projectCount,
   onGoTo,
   onSignOut,
+  onCreate,
   demoMode = false,
 }: SidebarContentProps) {
   const initials = displayName.trim().slice(0, 1).toUpperCase() || "N";
@@ -217,7 +224,7 @@ function SidebarContent({
     <div className={cn("flex min-h-0 flex-1 flex-col p-3", collapsed && "items-center px-2")}>
       <button
         type="button"
-        onClick={demoMode ? onSignOut : focusComposer}
+        onClick={onCreate}
         className={cn(
           "mb-7 mt-3 inline-flex h-11 shrink-0 items-center justify-center gap-2 rounded-xl border border-ember/20 bg-ember/10 text-sm font-medium text-foreground shadow-soft transition hover:border-ember/40 hover:bg-ember/15",
           collapsed ? "w-11" : "w-full",

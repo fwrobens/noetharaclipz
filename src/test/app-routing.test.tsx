@@ -15,9 +15,10 @@ describe("App routing", () => {
     expect(matches.at(-1)?.routeId).not.toBe(rootRouteId);
   });
 
-  it("matches the read-only public dashboard demo separately from the protected dashboard", () => {
+  it("gives dashboard projects and activity their own pages", () => {
     const router = createRouter({ routeTree, context: { queryClient: new QueryClient() } });
-    expect(router.matchRoutes("/dashboard-visual-check").at(-1)?.routeId).toBe("/dashboard-visual-check");
+    expect(router.matchRoutes("/dashboard/projects").at(-1)?.routeId).toBe("/_authenticated/dashboard_/projects");
+    expect(router.matchRoutes("/dashboard/activity").at(-1)?.routeId).toBe("/_authenticated/dashboard_/activity");
   });
 
   it("matches the authenticated creator dashboard", () => {
