@@ -25,6 +25,13 @@ describe("App routing", () => {
     );
   });
 
+  it("matches the production PKCE callback instead of the not-found page", () => {
+    const router = createRouter({ routeTree, context: { queryClient: new QueryClient() } });
+    const match = router.matchRoutes("/auth/callback").at(-1);
+    expect(match?.routeId).toBe("/auth/callback");
+    expect(match?.fullPath).toBe("/auth/callback");
+  });
+
   it("matches the authenticated creator dashboard", () => {
     const router = createRouter({ routeTree, context: { queryClient: new QueryClient() } });
 

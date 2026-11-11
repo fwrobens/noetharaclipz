@@ -4,6 +4,7 @@ import { supabase } from "@/lib/supabase/client";
 import { AuthShell, Field } from "@/components/auth-shell";
 import { Button } from "@/components/site";
 import { Loader2 } from "lucide-react";
+import { authCallbackUrl } from "@/lib/auth-callback";
 import { betaEnabled } from "@/lib/beta";
 import { fetchIdentity } from "@/lib/auth.functions";
 
@@ -32,7 +33,7 @@ export function ClipSparkAuth({ initialMode = "signin" }: { initialMode?: "signi
     try {
       const { error } = await supabase.auth.signInWithOAuth({
         provider,
-        options: { redirectTo: window.location.origin + "/auth/callback" },
+        options: { redirectTo: authCallbackUrl(window.location.origin) },
       });
       if (error) throw error;
     } catch (e) {
@@ -57,7 +58,7 @@ export function ClipSparkAuth({ initialMode = "signin" }: { initialMode?: "signi
           email,
           password,
           options: {
-            emailRedirectTo: window.location.origin + "/auth/callback",
+            emailRedirectTo: authCallbackUrl(window.location.origin),
             data: { name: name.trim() },
           },
         });

@@ -4,7 +4,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { useStore, must } from "@/lib/store";
 import { supabase } from "@/lib/supabase/client";
 import { defaultEdit, editSchema, type ClipEdit, activeJob } from "@/lib/editor";
-import { signedMedia } from "@/lib/media";
+import { downloadRenderedClip } from "@/lib/media";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 export function ExportDialog({
@@ -76,16 +76,7 @@ export function ExportDialog({
   }
   async function download(path: string) {
     try {
-      const url = await signedMedia("rendered-clips", path);
-      const response = await fetch(url);
-      if (!response.ok) throw new Error("Download failed");
-      const blob = await response.blob();
-      const object = URL.createObjectURL(blob),
-        a = document.createElement("a");
-      a.href = object;
-      a.download = "noetharaclipz.mp4";
-      a.click();
-      setTimeout(() => URL.revokeObjectURL(object), 30000);
+      await downloadRenderedClip(path);
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Download failed");
     }

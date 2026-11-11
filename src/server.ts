@@ -2,8 +2,9 @@ import "./lib/error-capture";
 
 import { consumeLastCapturedError } from "./lib/error-capture";
 import { renderErrorPage } from "./lib/error-page";
-import { betaEnabled, releaseInfo } from "./lib/beta";
-import { authorizeBetaRequest, betaAccessIdentity } from "./lib/beta-access.server";
+import { betaEnabled } from "./lib/beta";
+import { authorizeBetaRequest } from "./lib/beta-access.server";
+import { isReleasePath, publicReleaseDocument } from "./lib/release";
 
 type ServerEntry = {
   fetch: (request: Request, env: unknown, ctx: unknown) => Promise<Response> | Response;
@@ -51,7 +52,7 @@ function isH3SwallowedErrorBody(body: string): boolean {
 // twice and renders garbled.
 export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
-    if (new URL(request.url).pathname === "/api/release") {
+    if (isReleasePath(request)) {
       const headers = {
         "Content-Type": "application/json",
         "Cache-Control": "no-store",
@@ -60,17 +61,9 @@ export default {
       };
       if (!["GET", "HEAD"].includes(request.method))
         return new Response(null, { status: 405, headers });
-      return new Response(
-        request.method === "HEAD"
-          ? null
-          : JSON.stringify({
-              ...releaseInfo(),
-              access: betaEnabled() ? betaAccessIdentity() : { mode: "inactive" },
-            }),
-        {
-          headers,
-        },
-      );
+      return new Response(request.method === "HEAD" ? null : JSON.stringify(publicReleaseDocument()), {
+        headers,
+      });
     }
     try {
       const access = await authorizeBetaRequest(request);

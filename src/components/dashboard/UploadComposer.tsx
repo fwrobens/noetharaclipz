@@ -243,7 +243,7 @@ export function UploadComposer({ onUploaded }: UploadComposerProps) {
             </span>
             {file && (
               <span className="mr-2 rounded-md bg-ember/10 px-2 py-1 text-[10px] text-ember">
-                ~{Math.max(1, Math.ceil(file.size / 5_000_000))} credits
+                ~{Math.max(1, Math.ceil(file.size / 5_000_000))} demo credits
               </span>
             )}
             <button

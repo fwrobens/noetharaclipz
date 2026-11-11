@@ -1,5 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
+import { fetchIdentity } from "@/lib/auth.functions";
+import { finishAuthCallback, readAuthCallback } from "@/lib/auth-callback";
+import { betaEnabled } from "@/lib/beta";
 import { supabase } from "@/lib/supabase/client";
 export const Route = createFileRoute("/auth/callback")({ component: Callback });
 function Callback() {
@@ -8,18 +11,32 @@ function Callback() {
   useEffect(() => {
     if (started.current) return;
     started.current = true;
-    const params = new URL(window.location.href).searchParams;
-    const code = params.get("code");
-    const flowId = params.get("sb_flow_id");
+    const { code, flowId, error } = readAuthCallback(window.location.href);
+    if (error) {
+      setNote(error);
+      return;
+    }
     if (!code) {
       setNote("This sign-in link is missing its code. Return to sign in.");
       return;
     }
     void supabase.auth
       .exchangeCodeForSession(code, flowId ? { flowId } : undefined)
-      .then(({ error }) => {
-        if (error) setNote(error.message);
-        else window.location.replace("/dashboard");
+      .then(async ({ error: exchangeError }) => {
+        if (exchangeError) {
+          setNote(exchangeError.message);
+          return;
+        }
+        if (betaEnabled()) {
+          try {
+            if (!(await fetchIdentity())) throw new Error("Uninvited account");
+          } catch {
+            await supabase.auth.signOut({ scope: "local" });
+            setNote("Beta access could not be verified. Use your invited account or retry later.");
+            return;
+          }
+        }
+        finishAuthCallback();
       })
       .catch(() => setNote("Sign in could not be completed. Return to sign in and try again."));
   }, []);
