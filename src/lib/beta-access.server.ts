@@ -10,6 +10,7 @@ export const betaAccessPolicy = {
   owners: ["21b61ad1-bda4-4abd-ac35-7a0bf477ed69"],
   confirmed_email_required: true,
   anonymous_allowed: false,
+  routing: "private-by-default-including-server-functions-v1",
 };
 export function betaAccessIdentity() {
   return {
@@ -29,14 +30,19 @@ export function betaOwnerAllowed(
     betaAccessPolicy.owners.includes(user.id)
   );
 }
-const workspace =
-  /^\/(?:library|projects|project|editor|settings|trash|brand-kit|templates)(?:\/|$)/;
+// A new route cannot silently bypass the beta gate. Only the current public
+// entry pages and build assets are exempt; server functions remain protected.
+const publicPath =
+  /^(?:\/$|\/login\/?$|\/auth\/callback\/?$|\/api\/release\/?$|\/assets\/|\/favicon\.(?:ico|png)$|\/robots\.txt$)/;
 
 export async function authorizeBetaRequest(
   request: Request,
 ): Promise<{ response?: Response; request?: Request; cookies: string[] }> {
   const cookies: string[] = [];
-  if (!betaEnabled() || !workspace.test(decodeURIComponent(new URL(request.url).pathname)))
+  const url = new URL(request.url);
+  const decodedPath = decodeURIComponent(url.pathname);
+  const normalizedPath = new URL(decodedPath, url.origin).pathname;
+  if (!betaEnabled() || (!/[?#]/.test(decodedPath) && publicPath.test(normalizedPath)))
     return { cookies };
   const headers = {
     "Cache-Control": "private, no-store",

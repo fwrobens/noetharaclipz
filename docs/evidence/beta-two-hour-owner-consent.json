@@ -1,0 +1,22 @@
+{
+  "recorded_utc": "2026-11-11T09:53:04.064255+00:00",
+  "explicit_owner_consent": true,
+  "owner_response_reference": "call_94b4cfb27bc84ba5bbcf9b093fd7c88f: I consent to this two-hour beta",
+  "authenticated_role": "authenticated",
+  "authentication_method": "Native verified existing QA session; no mail delivery, new user or password reset",
+  "consent": {
+    "owner_id": "21b61ad1-bda4-4abd-ac35-7a0bf477ed69",
+    "consent_id": "0e8f4eb3-53a9-4ad0-8aa0-d0b0a19dc2a2",
+    "expires_at": null,
+    "request_id": "b1abe760-4629-49da-a744-0545ab4ef122",
+    "revoked_at": null,
+    "approved_at": null,
+    "requested_at": "2026-11-11T09:53:03.879924+00:00",
+    "terms_version": "local-video-v1",
+    "approval_reason": null
+  },
+  "processing_approval_issued": false,
+  "worker_started": false,
+  "publication_authorized": false,
+  "monitoring_install_authorized": false
+}

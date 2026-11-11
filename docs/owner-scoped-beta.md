@@ -1,5 +1,11 @@
 # Limited owner-scoped beta — preparation, November 11
 
+The [release-gates follow-up](beta-release-gates.md) supersedes pending-consent
+and alert-selection details below: fresh owner consent is recorded, the attended
+local-log proposal is prepared, and publication awaits source alignment, exact
+rollback/Auth inventory and separate operational approvals. The earlier artifact
+and results below remain historical evidence.
+
 **Prepared, not deployed.** The expired 24-hour deployment remains stopped.
 This plan proposes an operator-attended **120-minute workload trial** of the
 current website and reviewed worker, followed by automatic expiry. No new

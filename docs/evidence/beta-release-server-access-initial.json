@@ -1,0 +1,38 @@
+{
+  "checked_utc": "2026-11-11T10:00:15.956406+00:00",
+  "production_artifact_unchanged": true,
+  "transport": "Pinned Miniflare/workerd; proxy-aware outboundService forwards real Supabase TLS requests; no mocked auth responses",
+  "origin": "http://127.0.0.1:8082",
+  "identity": {
+    "app": "NoetharaClipz",
+    "build": "aa22a09dcad2f112123378024ce76d80d66e04f8",
+    "mode": "owner-scoped-beta",
+    "access": {
+      "mode": "authenticated-owner-allowlist-v1",
+      "owners": 1,
+      "sha256": "2745f1e409bde91364ff2a009732c15872960cd89ea3f73723f26380666fcf3f"
+    }
+  },
+  "owner": {
+    "status": 200,
+    "location": null,
+    "cache_control": "private, no-store",
+    "vary": "Cookie",
+    "contains_private_settings": true
+  },
+  "uninvited": {
+    "status": 403,
+    "location": null,
+    "cache_control": "private, no-store",
+    "vary": "Cookie",
+    "contains_private_settings": false
+  },
+  "forged": {
+    "status": 302,
+    "location": "/login",
+    "cache_control": "private, no-store",
+    "vary": "Cookie",
+    "contains_private_settings": false
+  },
+  "missing_cookie_status": 302
+}

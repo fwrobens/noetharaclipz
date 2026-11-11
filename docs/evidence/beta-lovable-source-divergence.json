@@ -1,0 +1,285 @@
+{
+  "comparison_basis": "56bc531...0714528508a7f835a4d4f4455087c6e234d52569",
+  "status": "diverged",
+  "editor_only_commits": 35,
+  "pr_only_commits": 71,
+  "changed_editor_files": [
+    {
+      "changes": 6,
+      "filename": ".env",
+      "status": "added"
+    },
+    {
+      "changes": 6,
+      "filename": "AGENTS.md",
+      "status": "modified"
+    },
+    {
+      "changes": 23,
+      "filename": "bun.lock",
+      "status": "modified"
+    },
+    {
+      "changes": 1,
+      "filename": "package.json",
+      "status": "modified"
+    },
+    {
+      "changes": 0,
+      "filename": "public/favicon.ico",
+      "status": "removed"
+    },
+    {
+      "changes": 0,
+      "filename": "public/favicon.png",
+      "status": "added"
+    },
+    {
+      "changes": 4,
+      "filename": "roadmap.md",
+      "status": "modified"
+    },
+    {
+      "changes": 0,
+      "filename": "src/assets/creator-studio.jpg",
+      "status": "added"
+    },
+    {
+      "changes": 11,
+      "filename": "src/assets/noethara-logo.png.asset.json",
+      "status": "added"
+    },
+    {
+      "changes": 10,
+      "filename": "src/components/Brand.tsx",
+      "status": "added"
+    },
+    {
+      "changes": 92,
+      "filename": "src/components/ClipSparkAuth.tsx",
+      "status": "added"
+    },
+    {
+      "changes": 18,
+      "filename": "src/components/Marketing.tsx",
+      "status": "added"
+    },
+    {
+      "changes": 82,
+      "filename": "src/components/PublicNav.tsx",
+      "status": "added"
+    },
+    {
+      "changes": 48,
+      "filename": "src/components/auth-shell.tsx",
+      "status": "added"
+    },
+    {
+      "changes": 342,
+      "filename": "src/components/dashboard/DashboardShell.tsx",
+      "status": "added"
+    },
+    {
+      "changes": 288,
+      "filename": "src/components/dashboard/UploadComposer.tsx",
+      "status": "added"
+    },
+    {
+      "changes": 7,
+      "filename": "src/components/dashboard/focusComposer.ts",
+      "status": "added"
+    },
+    {
+      "changes": 316,
+      "filename": "src/components/dashboard/projects.tsx",
+      "status": "added"
+    },
+    {
+      "changes": 32,
+      "filename": "src/components/dashboard/useWorkspace.ts",
+      "status": "added"
+    },
+    {
+      "changes": 144,
+      "filename": "src/components/site.tsx",
+      "status": "added"
+    },
+    {
+      "changes": 111,
+      "filename": "src/integrations/supabase/auth-middleware.ts",
+      "status": "added"
+    },
+    {
+      "changes": 69,
+      "filename": "src/integrations/supabase/client.server.ts",
+      "status": "added"
+    },
+    {
+      "changes": 87,
+      "filename": "src/integrations/supabase/client.ts",
+      "status": "added"
+    },
+    {
+      "changes": 144,
+      "filename": "src/integrations/supabase/previewAuthStorage.ts",
+      "status": "added"
+    },
+    {
+      "changes": 793,
+      "filename": "src/integrations/supabase/types.ts",
+      "status": "added"
+    },
+    {
+      "changes": 6,
+      "filename": "src/lib/auth-bearer.ts",
+      "status": "added"
+    },
+    {
+      "changes": 3,
+      "filename": "src/lib/creator-query.ts",
+      "status": "added"
+    },
+    {
+      "changes": 49,
+      "filename": "src/lib/creator.functions.ts",
+      "status": "added"
+    },
+    {
+      "changes": 11,
+      "filename": "src/lib/seo.ts",
+      "status": "added"
+    },
+    {
+      "changes": 4,
+      "filename": "src/lib/session.tsx",
+      "status": "added"
+    },
+    {
+      "changes": 6,
+      "filename": "src/lib/store.tsx",
+      "status": "modified"
+    },
+    {
+      "changes": 216,
+      "filename": "src/routeTree.gen.ts",
+      "status": "modified"
+    },
+    {
+      "changes": 37,
+      "filename": "src/routes/__root.tsx",
+      "status": "modified"
+    },
+    {
+      "changes": 91,
+      "filename": "src/routes/_authenticated/dashboard.tsx",
+      "status": "added"
+    },
+    {
+      "changes": 128,
+      "filename": "src/routes/_authenticated/dashboard_.activity.tsx",
+      "status": "added"
+    },
+    {
+      "changes": 115,
+      "filename": "src/routes/_authenticated/dashboard_.projects.tsx",
+      "status": "added"
+    },
+    {
+      "changes": 195,
+      "filename": "src/routes/_authenticated/onboarding.tsx",
+      "status": "added"
+    },
+    {
+      "changes": 10,
+      "filename": "src/routes/_authenticated/route.tsx",
+      "status": "added"
+    },
+    {
+      "changes": 4,
+      "filename": "src/routes/auth.tsx",
+      "status": "added"
+    },
+    {
+      "changes": 6,
+      "filename": "src/routes/brand-kit.tsx",
+      "status": "modified"
+    },
+    {
+      "changes": 6,
+      "filename": "src/routes/editor.$id.tsx",
+      "status": "modified"
+    },
+    {
+      "changes": 225,
+      "filename": "src/routes/index.tsx",
+      "status": "modified"
+    },
+    {
+      "changes": 8,
+      "filename": "src/routes/library.tsx",
+      "status": "modified"
+    },
+    {
+      "changes": 4,
+      "filename": "src/routes/login.tsx",
+      "status": "added"
+    },
+    {
+      "changes": 47,
+      "filename": "src/routes/pricing.tsx",
+      "status": "added"
+    },
+    {
+      "changes": 8,
+      "filename": "src/routes/project.$id.tsx",
+      "status": "modified"
+    },
+    {
+      "changes": 6,
+      "filename": "src/routes/projects.tsx",
+      "status": "modified"
+    },
+    {
+      "changes": 16,
+      "filename": "src/routes/reset-password.tsx",
+      "status": "added"
+    },
+    {
+      "changes": 4,
+      "filename": "src/routes/signup.tsx",
+      "status": "added"
+    },
+    {
+      "changes": 6,
+      "filename": "src/routes/templates.tsx",
+      "status": "modified"
+    },
+    {
+      "changes": 6,
+      "filename": "src/routes/trash.tsx",
+      "status": "modified"
+    },
+    {
+      "changes": 2,
+      "filename": "src/start.ts",
+      "status": "modified"
+    },
+    {
+      "changes": 239,
+      "filename": "src/styles.css",
+      "status": "modified"
+    },
+    {
+      "changes": 14,
+      "filename": "src/test/app-routing.test.tsx",
+      "status": "modified"
+    },
+    {
+      "changes": 1,
+      "filename": "supabase/config.toml",
+      "status": "added"
+    }
+  ],
+  "source_alignment_decision": "pending_user_reply",
+  "published_revision_verified": false
+}

@@ -57,7 +57,16 @@ describe("server beta owner access", () => {
   });
   it("returns 403 to a valid uninvited account for encoded and normal private paths", async () => {
     sdk.getUser.mockResolvedValue({ data: { user: { ...owner, id: "other-owner" } }, error: null });
-    for (const path of ["/library", "/settings", "/project/a", "/editor/a", "/%6cibrary"])
+    for (const path of [
+      "/library",
+      "/settings",
+      "/project/a",
+      "/editor/a",
+      "/%6cibrary",
+      "/dashboard",
+      "/_server/example",
+      "/assets/%2e%2e%2fsettings",
+    ])
       expect((await authorizeBetaRequest(request(path))).response?.status).toBe(403);
   });
   it("fails closed on an authentication outage", async () => {

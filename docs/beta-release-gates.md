@@ -5,6 +5,11 @@ installation, processing approval or EC2 startup. The expired deployment stays
 stopped. The [workload plan](owner-scoped-beta.md) and its completed benchmarks
 stand; this stage verifies the new access restrictions and seals a new frontend.
 
+Fresh owner consent was explicitly authorized and recorded as generation
+**`0e8f4eb3-53a9-4ad0-8aa0-d0b0a19dc2a2`**, then independently read back through
+the normal authenticated owner RPC. Approval/expiry remain null. No processing
+approval, new user, password reset, email delivery or worker start accompanied it.
+
 ## Alert proposal selected for review
 
 Use the [operator-attended local-log-only proposal](../deploy/beta/alert-delivery-proposal.json)
@@ -45,7 +50,9 @@ publication must stop. Never substitute a development server or a different buil
 
 The [hosting proposal](../deploy/beta/hosting-proposal.json) binds these controls:
 
-- HTTP workspace requests validate the cookie with **native Supabase GoTrue**.
+- Requests are private by default, including newly added routes and server
+  functions. The current public entry pages/build assets are explicitly exempt.
+  Protected requests validate the cookie with **native Supabase GoTrue**.
   Only confirmed, non-anonymous authenticated owner
   `21b61ad1-bda4-4abd-ac35-7a0bf477ed69` is invited. Other signed-in identities
   receive **403**; invalid/missing sessions go to login; Auth outages fail closed.
@@ -99,9 +106,24 @@ Fresh consent may be recorded only following the owner's explicit new response.
 
 Before authorization, capture the **current Lovable published revision/deployment
 ID**, previous source/configuration and complete Auth URL/signup settings. GitHub
-deployment records were unavailable to this connection, and the repository has
-no recorded Lovable project ID. A public HTML snapshot cannot reconstruct the
+deployment records were unavailable to this connection. A public HTML snapshot cannot reconstruct the
 old SSR worker and is not an adequate rollback artifact.
+
+The identified Lovable project is
+**`40ff324d-5ed8-4890-ac90-cff43cfb1144`** and source edit
+`0714528508a7f835a4d4f4455087c6e234d52569`. That edit remains **unverified as a
+published revision** and is not a rollback target. Only the actual History entry
+marked Published plus the Auth inventory completes this gate.
+
+Read-only GitHub comparison also found **35 Lovable-editor commits outside
+`56bc531` and 71 PR commits outside the editor lineage**. The editor's 55 changed
+files include a different dashboard/auth flow and styling. The current beta
+candidate is the reviewed PR frontend; it does not incorporate those new editor
+changes. Publication is blocked pending the user's source-alignment choice.
+Neither lineage was merged, reset or overwritten. If reconciliation is selected,
+prepare/reverify a new candidate and hashes before publication; keep the six-sample
+worker plan and existing backend intact. See the
+[divergence record](evidence/beta-lovable-source-divergence.json).
 
 Publication approval must name the sealed frontend commit, artifact-map digest,
 access-policy digest, same hostname and exact Auth diff. On failure, restore the
@@ -155,12 +177,13 @@ mandatory before queue access in every subsequently authorized generation.
 
 ## Minimum approvals
 
-1. **Fresh owner consent** for this six-sample two-hour local-AI test. This is a
-   native authenticated request; operator approval remains absent.
-2. **Hosting/Auth release approval**, after the current publish revision and Auth
+Fresh owner consent is complete. **Two operational approvals remain**, after
+the source decision, dashboard inventory and fresh SSM preflights:
+
+1. **Hosting/Auth release approval**, after the current publish revision and Auth
    inventory are read: exact new frontend identities/hostname, narrow Auth diff
    and restoration of the captured prior release/configuration if needed.
-3. **One bounded EC2 trial approval**, after fresh preflights and consent: exact
+2. **One bounded EC2 trial approval**, after fresh preflights and consent: exact
    new manifest/digests/window; named attended operator/local-log-only mode;
    dedicated monitor files/unit installation; only this owner's processing approval;
    detached systemd start; six samples, cancellation/retry and at most one new-worker
@@ -169,3 +192,42 @@ mandatory before queue access in every subsequently authorized generation.
 
 Dashboard/SSM reads are preparation evidence, not additional deployment approvals.
 The worker stays stopped while any required evidence or approval is missing.
+
+## Verification performed in this stage
+
+- 33 frontend tests and TypeScript pass, including native-user policy checks,
+  forged/missing sessions, private-by-default/encoded paths, Auth outages,
+  cookie refresh propagation and cross-owner signed URL cache isolation.
+- 41 focused beta worker-policy/preparation/watchdog tests pass. No full model
+  benchmark, new inference, upload, export or queue consumer was run.
+- [Native Supabase reads](evidence/beta-release-live-security.json) show the
+  worker offline/unready, zero active leases, privileged RPC denied to the
+  ordinary user (403), and the original upload queued/zero attempts/exact original
+  row hash. The existing MP4 downloads authenticated with its exact original
+  bytes/hash; anonymous, public and cross-owner access/signing fail. A temporary
+  signed URL returned 206 then 400 after its actual expiry.
+- The initial new production artifact passed anonymous mobile/desktop checks
+  under stock Wrangler. Authenticated workerd fetch hit this task's direct-TLS
+  restriction and failed closed (503). A separate pinned **Miniflare/workerd
+  outboundService** verifier forwards real TLS requests through the inherited
+  proxy to this Supabase project only; it supplies no identity or mock response
+  and does not alter artifact bytes. Real native sessions then returned 200 for
+  the invited owner, 403 for the other QA identity and 302 for forged/missing
+  sessions. The owner's pending consent rendered and persisted through refresh
+  without browser exceptions or mobile overflow. These are local production-runtime
+  checks; final HTTPS hosted acceptance remains pending publication authorization.
+- [Auth probes](evidence/beta-release-auth-redirects.json) and
+  [public settings](evidence/beta-release-auth-settings.json) are recorded without
+  credentials or unused one-time links. They do not substitute for the full
+  dashboard inventory. No Auth configuration was changed.
+
+For this managed proxy environment, the optional local production verifier is:
+
+```sh
+NODE_USE_ENV_PROXY=1 node scripts/preview-beta-proxy.mjs
+```
+
+It binds loopback port 8082 only and is never an EC2 worker or hosting deployment.
+The final clean build, source identity and disabled manifest are sealed after
+this documentation commit and attached to the PR/private review handoff; no
+later source is treated as byte-identical without resealing.

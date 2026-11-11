@@ -1,9 +1,9 @@
 {
   "schema": 1,
-  "status": "pending_owner_consent_and_release_approvals",
+  "status": "fresh_owner_consented_operator_unapproved",
   "deployment_id": "8269d26c-3a07-4822-ab78-5e78b3697c12",
   "owner_id": "21b61ad1-bda4-4abd-ac35-7a0bf477ed69",
-  "consent_id": null,
+  "consent_id": "0e8f4eb3-53a9-4ad0-8aa0-d0b0a19dc2a2",
   "proposed_window_utc": {
     "start": "2026-11-12T09:00:00Z",
     "stop": "2026-11-12T11:00:00Z"

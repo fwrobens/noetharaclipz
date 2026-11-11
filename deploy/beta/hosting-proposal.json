@@ -3,11 +3,16 @@
   "status": "prepared_not_authorized",
   "origin": "https://noetharaclipz.lovable.app",
   "target": "Existing Lovable TanStack/Nitro Cloudflare hosting",
+  "lovable_project_id": "40ff324d-5ed8-4890-ac90-cff43cfb1144",
+  "user_reported_latest_lovable_source_edit": "0714528508a7f835a4d4f4455087c6e234d52569",
+  "source_edit_is_verified_published_revision": false,
   "production_build_command": "npm run build:beta",
   "release_identity_endpoint": "/api/release",
   "required_mode": "owner-scoped-beta",
   "required_server_access": "authenticated-owner-allowlist-v1",
-  "allowed_frontend_owner_ids": ["21b61ad1-bda4-4abd-ac35-7a0bf477ed69"],
+  "allowed_frontend_owner_ids": [
+    "21b61ad1-bda4-4abd-ac35-7a0bf477ed69"
+  ],
   "other_authenticated_accounts": "HTTP 403 for workspace pages; no private page rendering",
   "auth_proposal": {
     "observed_untrusted_redirect_fallback": "http://localhost:3000",
@@ -29,5 +34,8 @@
   "publication_authorized": false,
   "new_hosting_resources": false,
   "lovable_generation_credits": false,
-  "worker_start_authorized": false
+  "worker_start_authorized": false,
+  "source_alignment_decision": "pending",
+  "editor_only_commits_vs_reviewed_pr": 35,
+  "publication_requires_explicit_source_alignment": true
 }

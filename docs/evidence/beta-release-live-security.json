@@ -1,0 +1,30 @@
+{
+  "checked_utc": "2026-11-11T09:41:48.483551+00:00",
+  "data_operations_read_only": true,
+  "worker_started": false,
+  "processing_approval_issued": false,
+  "new_jobs": 0,
+  "pipeline_health": {
+    "detail": "Processing authorization inactive",
+    "online": false,
+    "ai_ready": false,
+    "max_bytes": 45000000,
+    "max_seconds": 300
+  },
+  "private_download_status": 200,
+  "private_download_bytes": 2044140,
+  "private_download_sha256": "cf4670c8baaa209384a207f63140db92aa0b936494b783449b1885af19db50e3",
+  "anonymous_authenticated_path_status": 400,
+  "cross_owner_authenticated_path_status": 400,
+  "public_path_status": 400,
+  "cross_owner_signing_status": 400,
+  "temporary_signed_url_initial_status": 206,
+  "temporary_signed_url_expired_status": 400,
+  "regular_user_privileged_protocol_status": 403,
+  "protected_job": {
+    "status": "queued",
+    "attempts": 0,
+    "sha256": "deac9a0a9f311218fce3c531def81e1a3f92ff11e82132701a06e366d545dbdb"
+  },
+  "active_job_leases": 0
+}

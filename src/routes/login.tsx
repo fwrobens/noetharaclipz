@@ -35,9 +35,13 @@ function Login() {
           })
         : await supabase.auth.signInWithPassword({ email, password });
       if (result.error) throw result.error;
-      if (result.data.session && betaEnabled() && !(await fetchIdentity())) {
-        await supabase.auth.signOut({ scope: "local" });
-        throw new Error("This account is not invited to the beta.");
+      if (result.data.session && betaEnabled()) {
+        try {
+          if (!(await fetchIdentity())) throw new Error("Beta access denied");
+        } catch {
+          await supabase.auth.signOut({ scope: "local" });
+          throw new Error("Beta access could not be verified. Sign in with your invited account.");
+        }
       }
       if (!result.data.session) setNote("Check your email to confirm your account, then sign in.");
       else await nav({ to: "/library" });

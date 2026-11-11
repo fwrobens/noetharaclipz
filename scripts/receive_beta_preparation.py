@@ -70,6 +70,14 @@ def validate(payload):
         **{"systemd/" + k: v for k, v in bundle["unit_sha256"].items()},
         **{"handoff/" + k: v for k, v in payload["helper_sha256"].items()},
     }
+    review_name = "review/noetharaclipz-beta-alerts@.service"
+    if payload.get("monitor_unit_text") and sha(
+        payload["monitor_unit_text"].encode()
+    ) == payload.get("monitor_unit_sha256"):
+        files[review_name] = payload["monitor_unit_text"]
+        hashes[review_name] = payload["monitor_unit_sha256"]
+    else:
+        raise ValueError("Reviewed monitor template required for syntax-only preflight")
     if set(files) != set(hashes):
         raise ValueError("Incomplete source manifest")
     for name, text in files.items():
@@ -78,7 +86,8 @@ def validate(payload):
             path.is_absolute()
             or ".." in path.parts
             or "\\" in name
-            or path.parts[0] not in ("host", "worker", "runtime", "systemd", "handoff")
+            or path.parts[0]
+            not in ("host", "worker", "runtime", "systemd", "handoff", "review")
             or sha(text.encode()) != hashes[name]
         ):
             raise ValueError("Unsafe path or changed source")

@@ -23,6 +23,9 @@ stopped cleanly. The next stage is a [limited workload beta](docs/owner-scoped-b
 on the same m6i.2xlarge, with SmolVLM2-500M and an 8 GiB / 2 CPU / one-job cap.
 Its production frontend candidate, consent controls and independent alert monitor
 are prepared; a new hosted rollout and worker start require separate approval.
+The [current release gates](docs/beta-release-gates.md) record fresh owner consent,
+server access controls, the attended alert option and a divergent Lovable editor
+lineage that must be resolved before publication.
 Global processing and Gemini remain disabled. Keep Draft PR #1 unmerged and
 unpublished until separately authorized.
 

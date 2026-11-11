@@ -9,6 +9,7 @@ import argparse
 import json
 from pathlib import Path
 import sys
+import subprocess
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import inspect_continuous_24h_host as base  # noqa: E402
@@ -31,6 +32,19 @@ def collect(root, deployment, bundle_sha):
         report = base.collect(root, deployment, bundle_sha)
     finally:
         base.PREVIOUS, base.PREVIOUS_SHA, base.PREVIOUS_CID = saved
+    unit = root / "review/noetharaclipz-beta-alerts@.service"
+    if unit.is_file():
+        check = subprocess.run(
+            ["systemd-analyze", "--generators=no", "verify", str(unit)],
+            capture_output=True,
+            text=True,
+            timeout=30,
+        )
+        report["checks"]["new_monitor_unit_syntax_valid_without_installation"] = (
+            check.returncode == 0
+        )
+        report["monitor_unit_syntax_exit_code"] = check.returncode
+        report["host_preparation_checks_passed"] = all(report["checks"].values())
     report["pending"] = [
         "Exact hosted release and rollback/Auth inventory approval",
         "Fresh authenticated owner consent and two-hour manifest review",

@@ -1,0 +1,9 @@
+{
+  "worker_started": false,
+  "new_jobs": 0,
+  "operator_approval_issued": false,
+  "allowed_owner_settings_status": 200,
+  "fresh_consent_pending_after_refresh": true,
+  "mobile_no_overflow": true,
+  "browser_errors": []
+}
