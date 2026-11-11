@@ -44,11 +44,11 @@ function ActivityPage() {
         <p className="mt-1.5 text-sm text-muted-foreground">What's happening across your workspace.</p>
       </div>
 
-      <div className="mt-6 grid grid-cols-3 gap-2.5 sm:gap-4">
+      <div className="mt-6 grid grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-4">
         {stats.map((stat, index) => (
           <div
             key={stat.label}
-            className="animate-in-up rounded-2xl border border-border bg-card/80 p-3 shadow-soft transition hover:-translate-y-1 hover:shadow-pop sm:p-5"
+            className="animate-in-up min-w-0 rounded-2xl border border-border bg-card/80 p-3 last:col-span-2 sm:last:col-span-1 shadow-soft transition hover:-translate-y-1 hover:shadow-pop sm:p-5"
             style={{ animationDelay: `${index * 60}ms` }}
           >
             <div className="flex items-center justify-between gap-2">
