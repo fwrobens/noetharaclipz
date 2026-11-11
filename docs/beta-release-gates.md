@@ -115,6 +115,41 @@ The identified Lovable project is
 published revision** and is not a rollback target. Only the actual History entry
 marked Published plus the Auth inventory completes this gate.
 
+### Live production Auth and release check — November 11
+
+The owner subsequently set the Supabase Auth Site URL to
+`https://noetharaclipz.lovable.app` and added
+`https://noetharaclipz.lovable.app/auth/callback` to Redirect URLs. A new
+non-sending native magic-link check confirmed the default email redirect lands
+on the production origin, the exact callback redirect is accepted, and an
+unapproved redirect host falls back to that production origin rather than
+`localhost`. The public Auth settings endpoint reports signup is still enabled
+(`disable_signup=false`) and email auto-confirm is off. It does not return the
+configured Site URL or the full Redirect URLs list, so those values are not
+represented here as a complete management snapshot.
+
+The non-sending link signed the existing pilot owner into GoTrue; `/auth/v1/user`
+confirmed the expected identity. The currently published site's
+`/auth/callback` returned **404**, so the site cannot finish the callback flow.
+The Supabase logout endpoint returned 204 and the just-revoked refresh token was
+rejected with 400. Authenticated Storage listing/download succeeded for an
+existing private MP4 (2,044,140 bytes, SHA-256
+`cf4670c8baaa209384a207f63140db92aa0b936494b783449b1885af19db50e3`); an
+anonymous request for that object returned 400. This verifies the Supabase
+private-object policy, not the published website's Download button. No email was
+sent, user created, job submitted, consent changed, or worker started.
+
+Live `/login` returned 200, while `/auth/callback` and `/api/release` returned
+404. The proposed release remains the **unpublished** candidate at
+`ded5040258a04b82a503cb782f7444a3eecaef6f`, artifact-map SHA-256
+`7b797ff99838c459f22c434de37152c8774b2d917765b58dc2577358e39476f1`, access
+policy SHA-256 `de9d6fc6095ae6fc62d78027d475ef20869a0b61fa1116b877b405f784d65911`.
+The public host exposed an opaque platform deployment marker, recorded only as a
+fingerprint; it does not identify the Lovable source revision. The Lovable
+project editor returned 403 to the available read-only request, and this session
+has no Lovable History connector. The exact entry marked **Published** remains
+unknown; `071452…` must not be used as its substitute.
+
 The user selected **the latest design committed to `main`**, confirmed as
 `0714528508a7f835a4d4f4455087c6e234d52569`. That lineage is integrated into
 `feat/real-video-pipeline` without rewriting either history or merging Draft PR #1.
@@ -158,6 +193,16 @@ the callback exists, allowed-owner pages succeed, uninvited/forged sessions are
 denied, refresh/sign-out behave correctly, old saved edits persist and native
 private downloads deny anonymous/cross-owner access. Fail before creating a
 workload job if the published build or access digest differs.
+
+The rollback procedure is to capture the History entry marked Published and the
+current Auth settings immediately before any authorized publication. If the new
+site fails, restore that captured Published entry through Lovable History and
+restore the captured Auth Site URL, complete Redirect URLs list and signup
+settings; do not alter storage, jobs or consent. Verify the restored site
+identity and Auth redirects before resuming beta use. No restore or publication
+was performed here. Because the Published History entry and complete current
+Redirect URLs list are still inaccessible, the rollback steps are confirmed but
+the exact restore target and full Auth snapshot are not yet verified.
 
 ## Two-hour workload packet
 
