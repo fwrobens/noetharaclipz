@@ -250,3 +250,34 @@ consent; fresh EC2 preflights/private transfer; final UTC window/manifest and
 separate installation/start/fault approval; then the actual spaced hosted workload
 and final security/expiry evidence. No completed EC2 benchmark is a prerequisite
 to repeat. Nothing in this plan makes the service active for normal users.
+
+## Actual preparation verification
+
+[Sealed local verification](evidence/beta-local-verification.json) records the
+production artifact from **`85692456a1813d6c4e5c5cb636dc074c8bd07cb4`**, built
+from clean committed source. Its file-hash-map SHA256 is
+**`6d666a7c9531e742725d5d217feae0230032040e39d519a9aa077664456e3cf7`**;
+the report includes individual file hashes. A build from a later commit or
+different dependency/runtime configuration must be resealed and checked again.
+This is a frontend artifact digest, not a new worker image or active manifest.
+
+- **394 worker tests passed, one optional sample test skipped**; 33 focused beta
+  authorization/watchdog tests passed. No new model benchmark or live job ran.
+- **24 frontend tests**, TypeScript and Ruff passed. ESLint has zero errors and
+  the existing 11 Fast Refresh warnings. Application dependency lockfiles and
+  the reviewed 25-file worker overlay/two worker units remain unchanged.
+- The clean production artifact ran under pinned Wrangler **4.160.0** and local
+  **workerd 2026-11-10**, with account/provider credentials withheld. At 390/1440px,
+  hydrated invitation login, protected-page redirects, callback error handling,
+  release GET/HEAD/405 behavior and no horizontal overflow/browser exceptions
+  passed. No development Vite server, account consent or upload was used.
+- All six real input samples fully decoded. Three representative frames were
+  inspected and show racing, strategy gameplay and voxel terrain respectively;
+  this is input inspection, not new model-quality evidence.
+- Local `systemd-analyze verify` could not initialize `/run/systemd` under this
+  executor's permissions. The alert unit was not installed; real EC2/systemd
+  validation and alert delivery remain required preflights.
+- Live Supabase protocol and the protected row passed read-only inspection.
+  [Existing hosted routes](evidence/beta-published-site-read-only.json) still show
+  the callback/release 404s, so **authenticated hosted beta acceptance remains
+  pending**. The expired worker was not restarted and nothing was published.

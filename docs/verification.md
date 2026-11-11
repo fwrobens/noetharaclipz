@@ -9,6 +9,13 @@ and a separate bounded alert monitor. No worker restart, new owner consent,
 operator approval, schema change, notification or publication occurs during this
 preparation. See that plan for current checks and remaining deployment gates.
 
+[Current preparation results](evidence/beta-local-verification.json): 394 worker
+tests passed/one optional skipped, 24 frontend tests, TypeScript and Ruff pass;
+ESLint zero errors/11 existing warnings. Clean production output passed local
+Cloudflare-runtime anonymous browser checks at mobile/desktop sizes. Hosted
+authenticated beta acceptance, external alert delivery and fresh EC2 preflights
+remain pending; none is inferred from the local checks.
+
 The following sections preserve the earlier implementation results; their
 historical counts and EC2-access limitations are not current beta results.
 
