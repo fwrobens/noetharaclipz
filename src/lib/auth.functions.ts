@@ -7,5 +7,8 @@ export const fetchIdentity = createServerFn({ method: "GET" }).handler(async () 
     (error.name === "AuthRetryableFetchError" || error.status === 0 || (error.status ?? 0) >= 500)
   )
     throw new Error("Authentication is temporarily unavailable. Please retry.");
-  return error ? null : data.user;
+  if (error) return null;
+  const { betaEnabled } = await import("./beta");
+  const { betaOwnerAllowed } = await import("./beta-access.server");
+  return betaEnabled() && !betaOwnerAllowed(data.user) ? null : data.user;
 });

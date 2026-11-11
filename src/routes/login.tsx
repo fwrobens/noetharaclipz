@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase/client";
 import { publishableKey, supabaseUrl } from "@/lib/supabase/config";
 import { betaEnabled } from "@/lib/beta";
+import { fetchIdentity } from "@/lib/auth.functions";
 export const Route = createFileRoute("/login")({
   component: Login,
   head: () => ({ meta: [{ title: "Sign in — Clipwave" }] }),
@@ -16,6 +17,7 @@ function Login() {
   const [note, setNote] = useState("");
   const [google, setGoogle] = useState(false);
   useEffect(() => {
+    if (betaEnabled()) return;
     fetch(supabaseUrl + "/auth/v1/settings", { headers: { apikey: publishableKey } })
       .then((r) => r.json())
       .then((s) => setGoogle(s.external?.google === true))
@@ -33,6 +35,10 @@ function Login() {
           })
         : await supabase.auth.signInWithPassword({ email, password });
       if (result.error) throw result.error;
+      if (result.data.session && betaEnabled() && !(await fetchIdentity())) {
+        await supabase.auth.signOut({ scope: "local" });
+        throw new Error("This account is not invited to the beta.");
+      }
       if (!result.data.session) setNote("Check your email to confirm your account, then sign in.");
       else await nav({ to: "/library" });
     } catch (e) {

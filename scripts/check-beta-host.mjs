@@ -27,6 +27,9 @@ if (
   info.app !== "NoetharaClipz" ||
   info.build !== expectedBuild ||
   info.mode !== "owner-scoped-beta" ||
+  info.access?.mode !== "authenticated-owner-allowlist-v1" ||
+  info.access.owners !== 1 ||
+  !/^[a-f0-9]{64}$/.test(info.access.sha256 ?? "") ||
   !release.headers.get("cache-control")?.includes("no-store")
 )
   throw new Error("Hosted release differs from reviewed beta.");

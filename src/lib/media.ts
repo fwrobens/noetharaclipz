@@ -1,8 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "./supabase/client";
 const cache = new Map<string, { url: string; expires: number }>();
+export const clearMediaCache = () => cache.clear();
 export async function signedMedia(bucket: string, path: string) {
-  const key = `${bucket}/${path}`,
+  const {
+    data: { session },
+    error: authError,
+  } = await supabase.auth.getSession();
+  if (authError || !session) throw new Error("Sign in to download private media.");
+  const key = `${session.user.id}/${bucket}/${path}`,
     previous = cache.get(key);
   if (previous && previous.expires > Date.now()) return previous.url;
   const { data, error } = await supabase.storage.from(bucket).createSignedUrl(path, 600);

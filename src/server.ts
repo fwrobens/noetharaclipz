@@ -3,6 +3,7 @@ import "./lib/error-capture";
 import { consumeLastCapturedError } from "./lib/error-capture";
 import { renderErrorPage } from "./lib/error-page";
 import { betaEnabled, releaseInfo } from "./lib/beta";
+import { authorizeBetaRequest, betaAccessIdentity } from "./lib/beta-access.server";
 
 type ServerEntry = {
   fetch: (request: Request, env: unknown, ctx: unknown) => Promise<Response> | Response;
@@ -59,17 +60,33 @@ export default {
       };
       if (!["GET", "HEAD"].includes(request.method))
         return new Response(null, { status: 405, headers });
-      return new Response(request.method === "HEAD" ? null : JSON.stringify(releaseInfo()), {
-        headers,
-      });
+      return new Response(
+        request.method === "HEAD"
+          ? null
+          : JSON.stringify({
+              ...releaseInfo(),
+              access: betaEnabled() ? betaAccessIdentity() : { mode: "inactive" },
+            }),
+        {
+          headers,
+        },
+      );
     }
     try {
+      const access = await authorizeBetaRequest(request);
+      if (access.response) {
+        for (const cookie of access.cookies) access.response.headers.append("Set-Cookie", cookie);
+        return access.response;
+      }
       const handler = await getServerEntry();
-      const response = await handler.fetch(request, env, ctx);
+      const response = await handler.fetch(access.request ?? request, env, ctx);
       const normalized = await normalizeCatastrophicSsrResponse(response);
       if (!betaEnabled()) return normalized;
       const headers = new Headers(normalized.headers);
       headers.set("X-Robots-Tag", "noindex, nofollow");
+      headers.set("Cache-Control", "private, no-store");
+      headers.append("Vary", "Cookie");
+      for (const cookie of access.cookies) headers.append("Set-Cookie", cookie);
       return new Response(normalized.body, {
         status: normalized.status,
         statusText: normalized.statusText,

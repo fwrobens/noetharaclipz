@@ -123,12 +123,17 @@ def main():
     with httpx.Client(timeout=30, follow_redirects=False) as client:
         release = client.get(approval["frontend_origin"].rstrip("/") + "/api/release")
         release.raise_for_status()
-        if release.json() != {
+        identity = release.json()
+        if {k: identity.get(k) for k in ("app", "mode", "build")} != {
             "app": "NoetharaClipz",
             "build": approval["frontend_build"],
             "mode": "owner-scoped-beta",
         }:
             raise ValueError("Published frontend is not the reviewed beta")
+        if identity.get("access", {}).get("sha256") != approval.get(
+            "frontend_access_sha256"
+        ) or not approval.get("frontend_access_sha256"):
+            raise ValueError("Published server access policy differs from approval")
     with httpx.Client(timeout=30, headers={"apikey": PUBLIC_KEY}) as api:
         response = api.post(
             PROJECT + "/auth/v1/token?grant_type=password",

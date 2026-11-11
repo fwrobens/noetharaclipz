@@ -38,11 +38,17 @@ def main():
     with httpx.Client(timeout=30, follow_redirects=False) as client:
         release = client.get(origin + "/api/release")
         release.raise_for_status()
-        assert release.json() == {
+        identity = release.json()
+        assert {k: identity[k] for k in ("app", "mode", "build")} == {
             "app": "NoetharaClipz",
             "mode": "owner-scoped-beta",
             "build": args.build,
         }
+        assert identity["access"]["mode"] == "authenticated-owner-allowlist-v1"
+        assert (
+            identity["access"]["owners"] == 1
+            and len(identity["access"]["sha256"]) == 64
+        )
         assert "no-store" in release.headers.get("cache-control", "")
         assert client.post(origin + "/api/release").status_code == 405
         head = client.head(origin + "/api/release")

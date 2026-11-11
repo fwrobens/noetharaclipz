@@ -1,0 +1,38 @@
+{
+  "schema": 1,
+  "status": "proposed_not_authorized",
+  "preferred_mode": "operator-attended-local-log-only",
+  "external_destination_available": false,
+  "external_delivery_enabled": false,
+  "existing_https_webhook_alternative": {
+    "requires_destination_selection": true,
+    "requires_notification_authorization": true,
+    "credential_location": "/etc/noetharaclipz-isolated/beta-webhook",
+    "credential_mode": "0600",
+    "destination_host_and_file_hash_pinned": true,
+    "attempts_per_event": 3,
+    "redirects_allowed": false,
+    "payload": "event ID, deployment ID, UTC time, severity and fixed fault code"
+  },
+  "attended_fallback": {
+    "requires_explicit_approval": true,
+    "operator_assigned": false,
+    "checkpoint_seconds": 120,
+    "fault_acknowledgment_seconds": 120,
+    "maximum_visibility_gap_seconds": 300,
+    "on_visibility_loss": "Pause submissions; stop only the new beta through its scoped rollback as soon as SSM is available; mark the trial inconclusive.",
+    "required_checkpoints": "Startup; every two minutes; before each input; before/after the one approved worker fault; expiry and final snapshots.",
+    "ssm_session_owns_worker": false,
+    "host_outage_alerting_provided": false
+  },
+  "installation": {
+    "authorized": false,
+    "existing_ec2_only": "i-0be10e530045fc650",
+    "unit": "noetharaclipz-beta-alerts@NEW_DEPLOYMENT.service",
+    "memory_bytes": 67108864,
+    "cpu_percent_of_one_core": 5,
+    "boot_start": false,
+    "new_paid_services": false,
+    "worker_mutations_by_watchdog": false
+  }
+}
