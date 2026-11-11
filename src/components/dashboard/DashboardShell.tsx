@@ -11,6 +11,7 @@ import {
   Plus,
   Search,
   Sparkles,
+  Zap,
 } from "lucide-react";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Brand } from "@/components/Brand";
@@ -18,6 +19,9 @@ import { focusComposer } from "@/components/dashboard/focusComposer";
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
 import { supabase } from "@/integrations/supabase/client";
 import { cn } from "@/lib/utils";
+
+// Placeholder until credit balances are stored per account.
+export const CREDITS = { remaining: 120, total: 150 } as const;
 
 const navigation = [
   { id: "/dashboard", label: "New clip", icon: LayoutDashboard },
@@ -48,7 +52,9 @@ export function DashboardShell({
 }: DashboardShellProps) {
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const activeSection = useRouterState({ select: (r) => r.location.pathname.replace(/\/$/, "") }) as (typeof navigation)[number]["id"];
+  const activeSection = useRouterState({
+    select: (r) => r.location.pathname.replace(/\/$/, ""),
+  }) as (typeof navigation)[number]["id"];
   const searchRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
   const { queryClient } = useRouteContext({ from: "__root__" });
@@ -93,13 +99,13 @@ export function DashboardShell({
       projectCount={projectCount}
       onGoTo={goTo}
       onCreate={startNew}
-      onSignOut={() => demoMode ? void navigate({ to: "/auth" }) : void signOut()}
+      onSignOut={() => (demoMode ? void navigate({ to: "/auth" }) : void signOut())}
       demoMode={demoMode}
     />
   );
 
   return (
-    <div className="clipspark-skin dashboard-skin flex min-h-screen bg-background text-foreground">
+    <div className="clipspark-skin dashboard-skin flex min-h-screen w-full overflow-x-hidden bg-background text-foreground">
       <aside
         className={cn(
           "sticky top-0 hidden h-screen shrink-0 flex-col border-r border-border bg-sidebar/80 backdrop-blur-xl transition-[width] duration-300 lg:flex",
@@ -153,34 +159,50 @@ export function DashboardShell({
               <Clapperboard className="h-4 w-4 text-ember" />
               <span>Creator workspace</span>
             </div>
-            {onSearchChange ? <label className="mx-auto flex h-10 w-full max-w-md items-center gap-2.5 rounded-xl border border-border bg-card px-4 shadow-soft transition focus-within:border-ember/40 focus-within:shadow-pop">
-              <Search className="h-4 w-4 shrink-0 text-muted-foreground" />
-              <input
-                ref={searchRef}
-                value={search}
-                onChange={(event) => onSearchChange(event.target.value)}
-                onKeyDown={(event) => {
-                  if (event.key === "Escape") {
-                    onSearchChange("");
-                    event.currentTarget.blur();
-                  }
-                }}
-                placeholder="Search projects…"
-                aria-label="Search projects"
-                className="min-w-0 flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground/70"
-              />
-              <kbd className="hidden rounded-md border border-border bg-muted px-1.5 py-0.5 text-[10px] text-muted-foreground sm:block">
-                ⌘ K
-              </kbd>
-            </label> : <div />}
-            <button
-              type="button"
-              onClick={startNew}
-              className="glow-border glow-border-soft inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-primary px-3 text-sm font-medium text-primary-foreground shadow-pop transition hover:-translate-y-0.5 sm:px-4"
-            >
-              <Plus className="h-4 w-4" />
-              <span className="hidden sm:inline">{demoMode ? "Sign in to create" : "New project"}</span>
-            </button>
+            {onSearchChange ? (
+              <label className="mx-auto flex h-10 w-full max-w-md items-center gap-2.5 rounded-xl border border-border bg-card px-4 shadow-soft transition focus-within:border-ember/40 focus-within:shadow-pop">
+                <Search className="h-4 w-4 shrink-0 text-muted-foreground" />
+                <input
+                  ref={searchRef}
+                  value={search}
+                  onChange={(event) => onSearchChange(event.target.value)}
+                  onKeyDown={(event) => {
+                    if (event.key === "Escape") {
+                      onSearchChange("");
+                      event.currentTarget.blur();
+                    }
+                  }}
+                  placeholder="Search projects…"
+                  aria-label="Search projects"
+                  className="min-w-0 flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground/70"
+                />
+                <kbd className="hidden rounded-md border border-border bg-muted px-1.5 py-0.5 text-[10px] text-muted-foreground sm:block">
+                  ⌘ K
+                </kbd>
+              </label>
+            ) : (
+              <div />
+            )}
+            <div className="flex items-center gap-2">
+              <Link
+                to="/pricing"
+                className="inline-flex h-10 items-center gap-1.5 rounded-xl border border-ember/25 bg-ember/10 px-2.5 text-xs font-medium text-foreground shadow-soft transition hover:border-ember/50 lg:hidden"
+                aria-label={`${CREDITS.remaining} credits left`}
+              >
+                <Zap className="h-3.5 w-3.5 text-ember" />
+                {CREDITS.remaining}
+              </Link>
+              <button
+                type="button"
+                onClick={startNew}
+                className="glow-border glow-border-soft inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-primary px-3 text-sm font-medium text-primary-foreground shadow-pop transition hover:-translate-y-0.5 sm:px-4"
+              >
+                <Plus className="h-4 w-4" />
+                <span className="hidden sm:inline">
+                  {demoMode ? "Sign in to create" : "New project"}
+                </span>
+              </button>
+            </div>
           </div>
         </header>
         <main className="relative min-w-0 flex-1 overflow-hidden">
@@ -274,19 +296,38 @@ function SidebarContent({
       </nav>
 
       <div className="mt-auto pt-6">
-        {!collapsed && (
+        {!collapsed ? (
           <div className="mb-4 rounded-2xl border border-border bg-card/70 p-4 shadow-soft">
             <div className="flex items-center justify-between gap-3">
-              <p className="text-xs font-medium">Your workspace</p>
-              <span className="rounded-full bg-ember/10 px-2 py-0.5 text-[10px] text-ember">
-                {demoMode ? "DEMO" : "Live"}
+              <p className="flex items-center gap-1.5 text-xs font-medium">
+                <Zap className="h-3.5 w-3.5 text-ember" /> Credits
+              </p>
+              <span className="text-[10px] text-muted-foreground">
+                {projectCount} {projectCount === 1 ? "project" : "projects"}
               </span>
             </div>
-            <p className="mt-3 font-display text-3xl">{projectCount}</p>
-            <p className="mt-1 text-xs text-muted-foreground">
-              {projectCount === 1 ? "project" : "projects"}, one creative home.
+            <p className="mt-3 font-display text-3xl">
+              {CREDITS.remaining}
+              <span className="ml-1 text-sm text-muted-foreground">/ {CREDITS.total}</span>
             </p>
+            <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-muted">
+              <div
+                className="h-full rounded-full bg-ember shadow-[0_0_10px_var(--ember)]"
+                style={{ width: `${(CREDITS.remaining / CREDITS.total) * 100}%` }}
+              />
+            </div>
+            <Link to="/pricing" className="mt-3 inline-block text-xs text-ember hover:underline">
+              Top up credits
+            </Link>
           </div>
+        ) : (
+          <Link
+            to="/pricing"
+            title={`${CREDITS.remaining} credits left`}
+            className="mb-3 grid h-10 w-10 place-items-center rounded-xl border border-ember/25 bg-ember/10"
+          >
+            <Zap className="h-4 w-4 text-ember" />
+          </Link>
         )}
         <Link
           to="/"
