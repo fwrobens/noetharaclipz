@@ -59,6 +59,7 @@ def main():
             assert response and response.status == 200
             assert "no-store" in response.headers.get("cache-control", "")
             page.get_by_role("heading", name="What should we clip,", exact=False).wait_for()
+            assert page.get_by_role("heading", name="What should we clip,", exact=False).evaluate("heading => heading.scrollWidth <= heading.clientWidth")
             assert page.get_by_label("Choose a video file", exact=True).count() == 1
             assert page.evaluate("document.documentElement.scrollWidth") <= width
             assert page.locator("img").evaluate_all("images => images.every(image => image.complete && image.naturalWidth > 0)")
