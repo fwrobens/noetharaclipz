@@ -11,7 +11,11 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "build:beta": "node scripts/build-beta.mjs",
+    "preview:beta": "node scripts/preview-beta.mjs",
+    "check:beta-host": "node scripts/check-beta-host.mjs",
+    "setup:beta-preview": "npm ci --prefix deploy/beta/preview --ignore-scripts --no-audit --no-fund"
   },
   "overrides": {
     "rolldown": "1.2.1"
