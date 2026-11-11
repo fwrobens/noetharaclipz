@@ -1,0 +1,9 @@
+{
+  "source_origin": "https://noetharaclipz.lovable.app",
+  "asset_id": "3664cb90-8d4f-4704-9900-5e2d39fb0dc2",
+  "lovable_project_id": "40ff324d-5ed8-4890-ac90-cff43cfb1144",
+  "bytes": 1681800,
+  "sha256": "88afb36b215389e0360cbec0c2261ed4bf8112bfebd0db961ef9562bbdf278fc",
+  "visual_edits": false,
+  "reason": "Bundle the exact existing logo so the production artifact does not depend on a platform-injected asset route."
+}

@@ -1,0 +1,17 @@
+{
+  "checked_utc": "2026-11-11T10:54:35.152966+00:00",
+  "data_operations_read_only": true,
+  "protected_job": {
+    "status": "queued",
+    "attempts": 0,
+    "sha256": "deac9a0a9f311218fce3c531def81e1a3f92ff11e82132701a06e366d545dbdb"
+  },
+  "active_job_leases": 0,
+  "fresh_consent_id": "0e8f4eb3-53a9-4ad0-8aa0-d0b0a19dc2a2",
+  "processing_approval_issued": false,
+  "worker_online": false,
+  "ai_ready": false,
+  "new_jobs_created": 0,
+  "database_migrations_applied": false,
+  "active_lease_definition": "Nonterminal job with non-null token and lease_until in the future; historical completed-job tokens are not active leases."
+}

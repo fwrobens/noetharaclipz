@@ -10,9 +10,11 @@ export const Route = createFileRoute("/library")({
   beforeLoad: requireAuth,
   head: () => ({
     meta: [
-      { title: "Library — Clipwave" },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { title: "Library — Noethara Clipz" },
       { name: "description", content: "All your imported streams and videos in one place." },
-      { property: "og:title", content: "Library — Clipwave" },
+      { property: "og:title", content: "Library — Noethara Clipz" },
       { property: "og:description", content: "All your imported streams and videos in one place." },
     ],
   }),
@@ -42,7 +44,7 @@ function LibraryPage() {
     );
   return (
     <div className="animate-fade-up p-4 sm:p-8">
-      <PageHeader title="Library" sub="Every video you've brought into Clipwave." />
+      <PageHeader title="Library" sub="Every video you've brought into Noethara Clipz." />
       <div className="no-scrollbar mb-6 flex gap-2 overflow-x-auto">
         {filters.map((x) => (
           <button

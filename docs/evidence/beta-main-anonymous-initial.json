@@ -1,0 +1,30 @@
+{
+  "origin": "http://127.0.0.1:8082",
+  "build": "249decb09a0354ee209f9fcc8d1955c68c08ceda",
+  "production_artifact": true,
+  "locally_served": true,
+  "anonymous_checks": [
+    {
+      "viewport": 390,
+      "login": true,
+      "private_redirects": true,
+      "callback_missing_code": true,
+      "no_overflow": true,
+      "page_errors": []
+    },
+    {
+      "viewport": 1440,
+      "login": true,
+      "private_redirects": true,
+      "callback_missing_code": true,
+      "no_overflow": true,
+      "page_errors": []
+    }
+  ],
+  "authenticated_hosted_acceptance_passed": false,
+  "uploads_performed": 0,
+  "published_by_this_check": false,
+  "release_eligible": false,
+  "verification_scope": "Initial integrated main design in local workerd, before final clean source/artifact seal; final identities are attached to Draft PR #1.",
+  "superseded_platform_logo_route": "Exact original logo is now bundled; all image-load assertions are included in final verification."
+}

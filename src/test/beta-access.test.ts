@@ -101,7 +101,7 @@ describe("server beta owner access", () => {
     });
   });
   it("keeps login, callback and release public while binding an exact access policy identity", async () => {
-    for (const path of ["/login", "/auth/callback", "/api/release"])
+    for (const path of ["/login", "/auth", "/signup", "/auth/callback", "/api/release"])
       expect((await authorizeBetaRequest(request(path))).response).toBeUndefined();
     expect(sdk.getUser).not.toHaveBeenCalled();
     expect(betaAccessIdentity()).toMatchObject({

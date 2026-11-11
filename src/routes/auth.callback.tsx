@@ -19,7 +19,7 @@ function Callback() {
       .exchangeCodeForSession(code, flowId ? { flowId } : undefined)
       .then(({ error }) => {
         if (error) setNote(error.message);
-        else window.location.replace("/library");
+        else window.location.replace("/dashboard");
       })
       .catch(() => setNote("Sign in could not be completed. Return to sign in and try again."));
   }, []);

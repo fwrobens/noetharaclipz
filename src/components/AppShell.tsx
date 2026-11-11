@@ -25,7 +25,7 @@ import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 
 const nav = [
-  { to: "/", label: "Home", icon: Home },
+  { to: "/dashboard", label: "Dashboard", icon: Home },
   { to: "/library", label: "Library", icon: Library },
   { to: "/projects", label: "Projects", icon: FolderOpen },
   { to: "/templates", label: "Templates", icon: LayoutTemplate },
@@ -39,7 +39,9 @@ function Logo({ compact }: { compact?: boolean }) {
       <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-foreground text-background shadow-pop">
         <Scissors className="h-4 w-4" />
       </span>
-      {!compact && <span className="font-display text-lg font-bold tracking-tight">Clipwave</span>}
+      {!compact && (
+        <span className="font-display text-lg font-bold tracking-tight">NoetharaClipZ</span>
+      )}
     </Link>
   );
 }
@@ -55,7 +57,7 @@ function NavList({
   return (
     <nav className="flex flex-col gap-1">
       {nav.map((n) => {
-        const active = n.to === "/" ? path === "/" : path.startsWith(n.to);
+        const active = path.startsWith(n.to);
         return (
           <Link
             key={n.to}

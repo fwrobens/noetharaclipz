@@ -47,7 +47,7 @@ def collect(root, deployment, bundle_sha):
         report["host_preparation_checks_passed"] = all(report["checks"].values())
     report["pending"] = [
         "Exact hosted release and rollback/Auth inventory approval",
-        "Fresh authenticated owner consent and two-hour manifest review",
+        "Review fresh authenticated owner consent and exact two-hour manifest",
         "Separate approval of attended monitoring installation, scoped processing and detached startup",
         "Fresh per-generation actual kernel quotas and scoped live denial proofs before queue grant",
     ]

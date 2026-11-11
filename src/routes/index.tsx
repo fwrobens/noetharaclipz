@@ -1,286 +1,236 @@
-import { useAuth } from "@/lib/auth";
-import { uploadVideo, validateVideo } from "@/lib/upload";
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useRef, useState } from "react";
-import {
-  ArrowUp,
-  Upload,
-  Sparkles,
-  Video,
-  FilePlus2,
-  Wand2,
-  Captions,
-  Crop,
-  Mic,
-} from "lucide-react";
-import { toast } from "sonner";
-import { useStore } from "@/lib/store";
-import { suggestions } from "@/lib/domain";
-import { VideoCard } from "@/components/VideoCard";
-import { cn } from "@/lib/utils";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import hero from "@/assets/creator-studio.jpg";
+import { Badge, btnClass, Footer, Nav, PricingCard, plans } from "@/components/site";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Clipwave — Turn streams into viral clips with AI" },
+      { title: "NoetharaClipZ — AI clips the best moments of your streams" },
       {
         name: "description",
         content:
-          "Paste a link or upload a video, tell the AI what you want, and get ready-to-post highlights.",
+          "Drop a YouTube or Twitch link. AI finds the funniest, hypest, most viral moments and turns them into ready-to-post clips.",
       },
-      { property: "og:title", content: "Clipwave — Turn streams into viral clips with AI" },
+      { property: "og:title", content: "NoetharaClipZ — AI clips the best moments" },
       {
         property: "og:description",
-        content:
-          "Paste a link or upload a video, tell the AI what you want, and get ready-to-post highlights.",
+        content: "Turn hours of VODs and livestreams into viral shorts automatically.",
       },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
-  component: Home,
+  component: Index,
 });
 
-const modes = [
-  { id: "ai", label: "AI Clips", icon: Sparkles },
-  { id: "rec", label: "Record Video", icon: Video },
-  { id: "blank", label: "Blank Project", icon: FilePlus2 },
-] as const;
-
-const tools = [
-  { icon: Wand2, label: "Long video to shorts" },
-  { icon: Captions, label: "Auto captions" },
-  { icon: Crop, label: "Smart reframe" },
-  { icon: Mic, label: "Enhance speech" },
+const features = [
+  {
+    t: "Moment detection",
+    d: "Multimodal AI scores chat spikes, laughter, reactions and audio peaks to find what matters.",
+  },
+  {
+    t: "Funny & hype modes",
+    d: "Tell it what you want — fails, clutches, rage, wholesome — and it hunts for exactly that.",
+  },
+  {
+    t: "Auto-reframe 9:16",
+    d: "Face & action tracking keeps the subject centered for Shorts, TikTok and Reels.",
+  },
+  {
+    t: "Animated captions",
+    d: "Word-by-word captions with emoji and styles that stop the scroll.",
+  },
+  {
+    t: "Live stream clipping",
+    d: "Livestream clipping is planned; upload recorded streams today.",
+  },
+  { t: "Virality score", d: "Every clip is ranked so you post the winners first." },
 ];
 
-function Home() {
-  const { projects, refresh } = useStore();
-  const { user } = useAuth();
-  const [uploading, setUploading] = useState(false);
-  const [progress, setProgress] = useState(0);
-  const [error, setError] = useState("");
-  const [rights, setRights] = useState(false);
-  const requestId = useRef(crypto.randomUUID());
-  const abort = useRef<AbortController | null>(null);
-  const nav = useNavigate();
-  const [mode, setMode] = useState<(typeof modes)[number]["id"]>("ai");
-  const [text, setText] = useState("");
-  const [file, setFile] = useState<File | null>(null);
-  const fileRef = useRef<HTMLInputElement>(null);
+const logos = ["YouTube", "Twitch", "Kick", "TikTok", "Shorts", "Reels", "X", "Rumble"];
 
-  const choose = (chosen: File | undefined) => {
-    if (!chosen) return;
-    try {
-      validateVideo(chosen);
-      setFile(chosen);
-      setError("");
-      requestId.current = crypto.randomUUID();
-    } catch (e) {
-      setError(e instanceof Error ? e.message : "Invalid video");
-    }
-  };
-  const submit = async (value = text) => {
-    if (uploading) return;
-    if (!user) {
-      await nav({ to: "/login" });
-      return;
-    }
-    if (mode !== "ai") {
-      setError(
-        "Recording and blank projects are not enabled yet. Choose AI Clips and upload a video.",
-      );
-      return;
-    }
-    if (!file) {
-      setError(
-        /https?:\/\//i.test(value)
-          ? "URL media retrieval is not enabled yet. Upload a video you are authorized to process."
-          : "Choose a video to analyze first.",
-      );
-      return;
-    }
-    if (!rights) {
-      setError(
-        "Confirm you have permission to process this footage and it contains no sensitive content.",
-      );
-      return;
-    }
-    setUploading(true);
-    setError("");
-    abort.current = new AbortController();
-    try {
-      const id = await uploadVideo(
-        file,
-        value.trim() || "Find the strongest moments in this video",
-        requestId.current,
-        (p) => setProgress(p),
-        abort.current.signal,
-      );
-      await refresh();
-      await nav({ to: "/project/$id", params: { id } });
-    } catch (e) {
-      setError(e instanceof Error ? e.message : "Upload failed. Please retry.");
-    } finally {
-      setUploading(false);
-    }
-  };
-
-  const recent = projects.filter((p) => !p.deleted);
-
+function Index() {
   return (
-    <div className="animate-fade-up">
-      <section className="relative px-4 pb-14 pt-12 sm:px-8 sm:pt-20">
-        <div className="pointer-events-none absolute inset-x-0 top-10 mx-auto h-80 max-w-3xl glow-halo opacity-80" />
-        <div className="relative mx-auto max-w-2xl text-center">
-          <h1 className="text-3xl font-bold sm:text-5xl">What are we clipping today?</h1>
-          <p className="mt-3 text-sm text-muted-foreground sm:text-base">
-            Drop a stream link or upload a video. Tell the AI what you want.
-          </p>
-        </div>
+    <div className="clipspark-skin min-h-screen overflow-x-hidden">
+      <Nav />
 
-        <div className="relative mx-auto mt-8 max-w-2xl">
-          <div className="no-scrollbar mb-2 flex gap-1 overflow-x-auto">
-            {modes.map((m) => (
-              <button
-                key={m.id}
-                onClick={() => setMode(m.id)}
-                className={cn(
-                  "flex shrink-0 items-center gap-1.5 rounded-xl px-3 py-1.5 text-sm transition",
-                  mode === m.id
-                    ? "bg-card font-medium shadow-pop ring-1 ring-border"
-                    : "text-muted-foreground hover:bg-card/60",
-                )}
-              >
-                <m.icon className={cn("h-4 w-4", mode === m.id && "text-primary")} /> {m.label}
-              </button>
-            ))}
+      {/* HERO */}
+      <section className="relative pt-32 pb-16 md:pt-40">
+        <div className="grid-bg absolute inset-0 -z-10" />
+        <div className="ember-orb absolute left-1/2 top-24 -z-10 h-[420px] w-[620px] -translate-x-1/2" />
+        <div className="mx-auto grid max-w-6xl items-center gap-12 px-5 lg:grid-cols-[1.1fr_1fr]">
+          <div className="text-center lg:text-left">
+            <div className="animate-in-up">
+              <Badge>Find your standout moments</Badge>
+            </div>
+            <h1
+              className="animate-in-up mt-6 text-[2.6rem] font-medium leading-[1.05] tracking-tight sm:text-6xl"
+              style={{ animationDelay: "80ms" }}
+            >
+              <span className="text-gradient">Your best moments,</span>
+              <br />
+              <span className="font-display italic text-ember">clipped by AI.</span>
+            </h1>
+            <p
+              className="animate-in-up mx-auto mt-6 max-w-lg text-muted-foreground lg:mx-0"
+              style={{ animationDelay: "160ms" }}
+            >
+              Upload a recording to your workspace. AI helps find standout moments and prepares
+              clips for review. Link imports and livestream clipping are planned.
+            </p>
+            <div
+              className="animate-in-up mx-auto mt-8 flex max-w-md flex-col gap-3 sm:flex-row lg:mx-0"
+              style={{ animationDelay: "240ms" }}
+            >
+              <div className="glow-border glow-border-soft flex h-12 flex-1 items-center rounded-full bg-surface pl-5 pr-1.5">
+                <input
+                  placeholder="Upload a video in your workspace"
+                  className="min-w-0 flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
+                />
+                <Link to="/signup" className={btnClass("solid", "sm")}>
+                  Start
+                </Link>
+              </div>
+            </div>
+            <p className="mt-4 text-xs text-muted-foreground">
+              Video uploads available · Credits and link imports coming soon
+            </p>
           </div>
-          <div
-            onDragOver={(e) => e.preventDefault()}
-            onDrop={(e) => {
-              e.preventDefault();
-              choose(e.dataTransfer.files[0]);
-            }}
-            className="glow-ring rounded-3xl bg-card shadow-float"
-          >
-            <textarea
-              value={text}
-              onChange={(e) => setText(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" && !e.shiftKey) {
-                  e.preventDefault();
-                  submit();
-                }
-              }}
-              rows={3}
-              placeholder={
-                mode === "rec"
-                  ? "Describe what you'll record…"
-                  : mode === "blank"
-                    ? "Name your project…"
-                    : "Paste a YouTube/Twitch link, or say “clip the funniest moments”…"
-              }
-              className="w-full resize-none rounded-t-3xl bg-transparent px-5 pt-5 text-base outline-none placeholder:text-muted-foreground"
+
+          <div className="animate-in-up relative" style={{ animationDelay: "200ms" }}>
+            <img
+              src={hero}
+              alt="Chrome film strip"
+              width={1280}
+              height={1024}
+              className="w-full rounded-3xl"
             />
-            <div className="flex items-center justify-between gap-2 px-3 pb-3">
-              <input
-                ref={fileRef}
-                type="file"
-                accept="video/*"
-                hidden
-                onChange={(e) => choose(e.target.files?.[0])}
-              />
-              <button
-                onClick={() => fileRef.current?.click()}
-                className="flex min-w-0 items-center gap-2 rounded-xl border bg-background px-3 py-2 text-sm shadow-soft transition hover:shadow-pop"
-              >
-                <Upload className="h-4 w-4 shrink-0" />{" "}
-                <span className="truncate">{file?.name ?? "Upload video"}</span>
-              </button>
-              <button
-                disabled={uploading}
-                onClick={() => void submit()}
-                aria-label="Generate"
-                className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-foreground text-background shadow-pop transition hover:scale-105 active:scale-95"
-              >
-                <ArrowUp className="h-5 w-5" />
-              </button>
+            <div className="glow-border absolute -bottom-6 left-2 w-60 rounded-2xl bg-card/90 p-3 backdrop-blur-xl sm:left-6">
+              <div className="flex items-center justify-between text-xs">
+                <span className="text-muted-foreground">Analyzing VOD</span>
+                <span className="text-ember">3:42:10</span>
+              </div>
+              <div className="relative mt-3 flex h-8 items-end gap-[3px] overflow-hidden">
+                {Array.from({ length: 34 }).map((_, i) => (
+                  <span
+                    key={i}
+                    className="flex-1 rounded-sm bg-muted-foreground/30"
+                    style={{ height: `${20 + Math.abs(Math.sin(i * 1.7)) * 80}%` }}
+                  />
+                ))}
+                <span className="animate-scan absolute top-0 h-full w-px bg-ember shadow-[0_0_12px_var(--ember)]" />
+              </div>
+            </div>
+            <div className="glow-border glow-border-soft absolute -top-4 right-2 rounded-2xl bg-card/90 px-4 py-3 backdrop-blur-xl sm:right-6">
+              <p className="text-xs text-muted-foreground">Clips found</p>
+              <p className="font-display text-3xl">
+                24 <span className="text-sm text-ember">🔥 8 viral</span>
+              </p>
             </div>
           </div>
-          <div className="mt-3 space-y-2 text-left text-xs text-muted-foreground">
-            <p>
-              MP4 / MOV / WebM · up to 45 MB and 5 minutes. Processing requires an approved account
-              and an available worker.
-            </p>
-            <label className="flex items-start gap-2">
-              <input
-                type="checkbox"
-                checked={rights}
-                onChange={(e) => setRights(e.target.checked)}
-                className="mt-0.5"
-              />
-              I have permission to process this footage and it contains no sensitive, confidential,
-              or personal information.
-            </label>
-            {uploading && (
-              <div>
-                <p role="status">Uploading… {progress}%</p>
-                <progress className="w-full" max={100} value={progress} />
-                <button onClick={() => abort.current?.abort()} className="text-primary">
-                  Cancel upload
-                </button>
-              </div>
-            )}
-            {error && (
-              <p role="alert" className="text-sm text-destructive">
-                {error}
-              </p>
-            )}
-          </div>
-          <div className="mt-4 flex flex-wrap justify-center gap-2">
-            {suggestions.map((s) => (
-              <button
-                key={s}
-                onClick={() => submit(s)}
-                className="rounded-full border bg-card px-3 py-1.5 text-xs text-muted-foreground shadow-soft transition hover:-translate-y-0.5 hover:text-foreground hover:shadow-pop sm:text-sm"
+        </div>
+      </section>
+
+      {/* LOGOS */}
+      <section className="border-y border-border py-8">
+        <div className="relative overflow-hidden [mask-image:linear-gradient(90deg,transparent,#000_15%,#000_85%,transparent)]">
+          <div className="animate-marquee flex w-max gap-16">
+            {[...logos, ...logos].map((l, i) => (
+              <span
+                key={i}
+                className="text-lg font-semibold tracking-tight text-muted-foreground/60"
               >
-                {s}
-              </button>
+                {l}
+              </span>
             ))}
           </div>
         </div>
+      </section>
 
-        <div className="relative mx-auto mt-10 grid max-w-3xl grid-cols-2 gap-3 sm:grid-cols-4">
-          {tools.map((t) => (
-            <button
-              key={t.label}
-              onClick={() => setText(t.label + ": ")}
-              className="flex items-center gap-2 rounded-2xl border bg-card p-3 text-left text-sm lift"
+      {/* FEATURES */}
+      <section id="features" className="mx-auto max-w-6xl px-5 py-24">
+        <div className="grid gap-6 md:grid-cols-2 md:items-end">
+          <div>
+            <p className="text-xs uppercase tracking-[0.2em] text-ember">Features</p>
+            <h2 className="mt-3 text-4xl font-medium tracking-tight sm:text-5xl">
+              Built to find <span className="font-display italic">the moment</span>
+            </h2>
+          </div>
+          <p className="text-muted-foreground">
+            Hours of footage in, a feed of post-ready shorts out. Every clip is scored, captioned
+            and framed.
+          </p>
+        </div>
+        <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {features.map((f, i) => (
+            <div
+              key={f.t}
+              className="surface-card group rounded-2xl p-6 transition hover:-translate-y-1 hover:bg-accent/40"
             >
-              <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-accent text-accent-foreground">
-                <t.icon className="h-4 w-4" />
+              <span className="grid h-10 w-10 place-items-center rounded-xl border border-border bg-surface font-display text-lg text-ember">
+                0{i + 1}
               </span>
-              <span className="min-w-0 leading-tight">{t.label}</span>
-            </button>
+              <h3 className="mt-5 font-medium">{f.t}</h3>
+              <p className="mt-2 text-sm text-muted-foreground">{f.d}</p>
+            </div>
           ))}
         </div>
       </section>
 
-      <section className="border-t bg-surface px-4 py-8 sm:px-8">
-        <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-lg font-semibold">Recent videos</h2>
-          <button
-            onClick={() => nav({ to: "/library" })}
-            className="text-sm text-primary hover:underline"
-          >
-            See all
-          </button>
+      {/* HOW */}
+      <section id="how" className="mx-auto max-w-6xl px-5 pb-24">
+        <div className="glow-border glow-border-soft rounded-3xl bg-card p-8 md:p-14">
+          <h2 className="text-center text-4xl font-medium tracking-tight">
+            Three steps. <span className="text-shimmer">Less scrubbing.</span>
+          </h2>
+          <div className="mt-12 grid gap-10 md:grid-cols-3">
+            {[
+              ["Upload a recording", "Bring an MP4, MOV or WebM video into your workspace."],
+              ["AI watches", "It reads chat, audio and visuals to rank every second."],
+              ["Post clips", "Export 9:16 shorts with captions, or publish directly."],
+            ].map(([t, d], i) => (
+              <div key={t} className="text-center md:text-left">
+                <p className="font-display text-6xl text-muted-foreground/40">{i + 1}</p>
+                <h3 className="mt-2 font-medium">{t}</h3>
+                <p className="mt-2 text-sm text-muted-foreground">{d}</p>
+              </div>
+            ))}
+          </div>
         </div>
-        <div className="no-scrollbar flex snap-x gap-4 overflow-x-auto p-1 pb-4">
-          {recent.map((p) => (
-            <VideoCard key={p.id} p={p} className="w-64 shrink-0 snap-start sm:w-72" />
+      </section>
+
+      {/* PRICING */}
+      <section className="mx-auto max-w-6xl px-5 pb-24">
+        <div className="text-center">
+          <p className="text-xs uppercase tracking-[0.2em] text-ember">Pricing</p>
+          <h2 className="mt-3 text-4xl font-medium tracking-tight sm:text-5xl">
+            Simple <span className="font-display italic">credits</span>
+          </h2>
+          <p className="mt-4 text-muted-foreground">
+            Credit-based plans are being planned; pricing is not active yet.
+          </p>
+        </div>
+        <div className="mt-14 grid gap-6 md:grid-cols-3">
+          {plans.map((p) => (
+            <PricingCard key={p.name} p={p} />
           ))}
         </div>
       </section>
+
+      {/* CTA */}
+      <section className="relative mx-auto max-w-6xl px-5 pb-28 text-center">
+        <div className="ember-orb absolute left-1/2 top-0 -z-10 h-72 w-[500px] -translate-x-1/2" />
+        <h2 className="text-4xl font-medium tracking-tight sm:text-6xl">
+          <span className="text-gradient">Less scrubbing.</span>
+          <br />
+          <span className="font-display italic text-ember">Start posting.</span>
+        </h2>
+        <Link to="/signup" className={btnClass("glow", "lg") + " mt-10"}>
+          Get started →
+        </Link>
+      </section>
+
+      <Footer />
     </div>
   );
 }

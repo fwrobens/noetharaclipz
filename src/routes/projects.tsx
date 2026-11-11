@@ -9,9 +9,11 @@ export const Route = createFileRoute("/projects")({
   beforeLoad: requireAuth,
   head: () => ({
     meta: [
-      { title: "Projects — Clipwave" },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { title: "Projects — Noethara Clipz" },
       { name: "description", content: "Your clipping projects organized by destination." },
-      { property: "og:title", content: "Projects — Clipwave" },
+      { property: "og:title", content: "Projects — Noethara Clipz" },
       { property: "og:description", content: "Your clipping projects organized by destination." },
     ],
   }),

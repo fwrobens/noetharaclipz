@@ -33,7 +33,7 @@ export function betaOwnerAllowed(
 // A new route cannot silently bypass the beta gate. Only the current public
 // entry pages and build assets are exempt; server functions remain protected.
 const publicPath =
-  /^(?:\/$|\/login\/?$|\/auth\/callback\/?$|\/api\/release\/?$|\/assets\/|\/favicon\.(?:ico|png)$|\/robots\.txt$)/;
+  /^(?:\/$|\/(?:login|auth|signup|pricing)\/?$|\/auth\/callback\/?$|\/api\/release\/?$|\/assets\/|\/favicon\.(?:ico|png)$|\/robots\.txt$)/;
 
 export async function authorizeBetaRequest(
   request: Request,

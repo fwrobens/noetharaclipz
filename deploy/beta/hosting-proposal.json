@@ -35,7 +35,10 @@
   "new_hosting_resources": false,
   "lovable_generation_credits": false,
   "worker_start_authorized": false,
-  "source_alignment_decision": "pending",
+  "source_alignment_decision": "Use the latest frontend design committed on main; integrate its 0714528508a7f835a4d4f4455087c6e234d52569 source into the real-pipeline development branch.",
   "editor_only_commits_vs_reviewed_pr": 35,
-  "publication_requires_explicit_source_alignment": true
+  "publication_requires_explicit_source_alignment": false,
+  "source_alignment_authorized_by": "call_0bbe44488e3e439ba279b16a0619b888: use the latest frontend design i have commited in main",
+  "frontend_design_source": "0714528508a7f835a4d4f4455087c6e234d52569",
+  "source_alignment_completed": true
 }

@@ -70,9 +70,9 @@ def main():
             response = page.goto(origin + "/login", wait_until="networkidle")
             assert response and response.status == 200
             assert "noindex" in response.headers.get("x-robots-tag", "")
-            assert page.get_by_role("button", name="Sign in", exact=True).count() == 1
+            assert page.get_by_role("button", name="Log in", exact=True).count() == 1
             assert (
-                page.get_by_text("Beta access is by invitation.", exact=False).count()
+                page.get_by_text("This beta is invitation only.", exact=False).count()
                 == 1
             )
             assert (
@@ -81,12 +81,13 @@ def main():
             )
             assert (
                 page.get_by_role(
-                    "button", name="Continue with Google", exact=True
+                    "button", name="Google", exact=True
                 ).count()
                 == 0
             )
             assert page.evaluate("document.documentElement.scrollWidth") <= width
-            for protected in ("/library", "/settings", "/projects"):
+            assert page.locator("img").evaluate_all("images => images.every(image => image.complete && image.naturalWidth > 0)")
+            for protected in ("/dashboard", "/dashboard/projects", "/library", "/settings", "/projects"):
                 page.goto(origin + protected, wait_until="networkidle")
                 assert urlsplit(page.url).path == "/login"
             page.goto(origin + "/auth/callback", wait_until="networkidle")

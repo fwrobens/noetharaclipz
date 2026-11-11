@@ -15,6 +15,7 @@ if (dirty && !process.argv.includes("--allow-dirty")) {
 }
 const publicNames = new Set([
   "VITE_SUPABASE_URL",
+  "VITE_SUPABASE_PROJECT_ID",
   "VITE_SUPABASE_PUBLISHABLE_KEY",
   "VITE_NC_BETA_MODE",
   "VITE_NC_BUILD_SHA",
@@ -30,6 +31,12 @@ if (
   )
 ) {
   throw new Error("Unreviewed public build configuration; values withheld.");
+}
+if (
+  publicEnv.VITE_SUPABASE_PROJECT_ID &&
+  publicEnv.VITE_SUPABASE_PROJECT_ID !== "zxdnjnsghdnviflahvry"
+) {
+  throw new Error("The beta build must use the existing Supabase project.");
 }
 // Preserve inherited proxy/CA trust. Provider, Supabase server, AWS and hosting
 // tokens are intentionally absent from the compiler child environment.

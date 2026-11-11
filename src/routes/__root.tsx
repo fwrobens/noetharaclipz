@@ -6,13 +6,15 @@ import {
   useRouter,
   HeadContent,
   Scripts,
+  useRouterState,
   type ErrorComponentProps,
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
+import { AuthProvider, useAuth } from "@/lib/auth";
+import { SessionContext } from "@/lib/session";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
-import { AuthProvider } from "@/lib/auth";
 import { StoreProvider } from "@/lib/store";
 import { AppShell } from "@/components/AppShell";
 import { Toaster } from "@/components/ui/sonner";
@@ -85,19 +87,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Clipwave — AI video clipping" },
+      { title: "Noethara Clipz — Creator workspace" },
       {
         name: "description",
         content: "Tell the AI what you want and get ready-to-post clips from your streams.",
       },
-      { property: "og:title", content: "Clipwave — AI video clipping" },
+      { property: "og:title", content: "Noethara Clipz — Creator workspace" },
       {
         property: "og:description",
         content: "Tell the AI what you want and get ready-to-post clips from your streams.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:site", content: "@Lovable" },
     ],
     links: [
       {
@@ -108,9 +109,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Instrument+Sans:wght@400;500;600&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Instrument+Sans:wght@400;500;600&family=Geist:wght@300..700&family=Instrument+Serif:ital@0;1&display=swap",
       },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      { rel: "icon", href: "/favicon.png", type: "image/png" },
     ],
   }),
   shellComponent: RootShell,
@@ -121,7 +122,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" className="dark" suppressHydrationWarning>
       <head>
         <HeadContent />
       </head>
@@ -141,12 +142,36 @@ function RootComponent() {
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <AuthProvider>
         <StoreProvider>
-          <AppShell>
-            <Outlet />
-          </AppShell>
+          <WorkspaceRoutes />
           <Toaster />
         </StoreProvider>
       </AuthProvider>
     </QueryClientProvider>
+  );
+}
+
+function WorkspaceRoutes() {
+  const { user } = useAuth();
+  const path = useRouterState({ select: (r) => r.location.pathname });
+  const legacy = [
+    "/library",
+    "/projects",
+    "/templates",
+    "/brand-kit",
+    "/trash",
+    "/settings",
+    "/project/",
+    "/editor/",
+  ].some((p) => path.startsWith(p));
+  return (
+    <SessionContext.Provider value={user}>
+      {legacy ? (
+        <AppShell>
+          <Outlet />
+        </AppShell>
+      ) : (
+        <Outlet />
+      )}
+    </SessionContext.Provider>
   );
 }

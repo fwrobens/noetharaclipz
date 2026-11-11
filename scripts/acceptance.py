@@ -91,11 +91,11 @@ def main():
             page.goto(base + "/login", wait_until="networkidle")
             page.get_by_label("Email", exact=True).fill(email)
             page.get_by_label("Password", exact=True).fill(password)
-            page.get_by_role("button", name="Sign in", exact=True).click()
-            page.wait_for_url("**/library")
-            page.get_by_role("heading", name="Library", exact=True).wait_for()
+            page.get_by_role("button", name="Log in", exact=True).click()
+            page.wait_for_url("**/dashboard")
+            page.get_by_role("heading", name="What should we clip,", exact=False).wait_for()
             page.wait_for_load_state("networkidle")
-            page.goto(base + "/", wait_until="networkidle")
+            page.goto(base + "/dashboard", wait_until="networkidle")
             page.locator("input[type=file]").set_input_files(str(sample))
             page.locator("textarea").fill(
                 os.getenv(
@@ -103,8 +103,7 @@ def main():
                     "Find a visually dramatic or surprising moment and explain the visible evidence. Select a complete short clip.",
                 )
             )
-            page.get_by_role("checkbox").check()
-            page.get_by_role("button", name="Generate", exact=True).click()
+            page.get_by_role("button", name="Start clipping", exact=True).click()
             page.wait_for_url("**/project/*", timeout=60000)
             pid = page.url.rsplit("/", 1)[-1]
             evidence["project_id"] = pid

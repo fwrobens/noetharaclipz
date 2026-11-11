@@ -14,4 +14,22 @@ describe("App routing", () => {
 
     expect(matches.at(-1)?.routeId).not.toBe(rootRouteId);
   });
+
+  it("gives dashboard projects and activity their own pages", () => {
+    const router = createRouter({ routeTree, context: { queryClient: new QueryClient() } });
+    expect(router.matchRoutes("/dashboard/projects").at(-1)?.routeId).toBe(
+      "/_authenticated/dashboard_/projects",
+    );
+    expect(router.matchRoutes("/dashboard/activity").at(-1)?.routeId).toBe(
+      "/_authenticated/dashboard_/activity",
+    );
+  });
+
+  it("matches the authenticated creator dashboard", () => {
+    const router = createRouter({ routeTree, context: { queryClient: new QueryClient() } });
+
+    const matches = router.matchRoutes("/dashboard");
+
+    expect(matches.at(-1)?.routeId).toBe("/_authenticated/dashboard");
+  });
 });

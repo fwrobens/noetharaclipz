@@ -1,3 +1,7 @@
 - [x] Build AI clipping prototype (home, library, projects, workspace, editor, dark mode)
 - [x] Mobile responsive + drop shadows
 - [x] Do NOT connect GitHub connector (user request)
+- [ ] Build Noethara Clipz landing page and premium charcoal design
+- [ ] Connect email authentication and creator onboarding to existing Supabase
+- [ ] Build premium responsive dashboard with real projects and upload flow
+- [ ] Verify navigation and mobile layouts

@@ -32,9 +32,11 @@ export const Route = createFileRoute("/project/$id")({
   beforeLoad: requireAuth,
   head: () => ({
     meta: [
-      { title: "Project workspace — Clipwave" },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { title: "Project workspace — Noethara Clipz" },
       { name: "description", content: "Chat with the AI and review detected highlights." },
-      { property: "og:title", content: "Project workspace — Clipwave" },
+      { property: "og:title", content: "Project workspace — Noethara Clipz" },
       { property: "og:description", content: "Chat with the AI and review detected highlights." },
     ],
   }),
@@ -141,7 +143,7 @@ function Workspace() {
           <Scissors className="h-3.5 w-3.5" />
         </span>
         <div className="min-w-0 flex-1">
-          <p className="text-sm font-semibold">Clipwave AI</p>
+          <p className="text-sm font-semibold">Noethara Clipz AI</p>
           <p className="truncate text-xs text-muted-foreground">{project.title}</p>
         </div>
         <button
