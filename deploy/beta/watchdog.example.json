@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "operator_approved": false,
+  "deployment_id": null,
+  "manifest_sha256": null,
+  "delivery_enabled": false,
+  "destination_file": "/etc/noetharaclipz-isolated/beta-webhook",
+  "destination_host": null,
+  "destination_sha256": null,
+  "payload_format": "generic"
+}

@@ -1,6 +1,8 @@
 import { Upload } from "tus-js-client";
 import { supabase } from "./supabase/client";
 import { must } from "./store";
+import { betaEnabled } from "./beta";
+import { requireBetaAdmission } from "./processing-consent";
 export const MAX_UPLOAD = 45_000_000;
 export function validateVideo(file: File) {
   if (!["video/mp4", "video/quicktime", "video/webm"].includes(file.type))
@@ -17,6 +19,9 @@ export async function uploadVideo(
 ) {
   validateVideo(file);
   if (prompt.length > 4000) throw new Error("Keep instructions under 4,000 characters.");
+  // UX admission before reserving storage. Server consent-bound queue claims
+  // remain the authorization boundary; a browser check cannot replace RLS.
+  if (betaEnabled()) await requireBetaAdmission();
   const reservation = must(
     await supabase.rpc("prepare_upload", {
       request_id: requestId,

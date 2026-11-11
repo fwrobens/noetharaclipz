@@ -3,6 +3,8 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { requireAuth, useAuth } from "@/lib/auth";
 import { supabase } from "@/lib/supabase/client";
+import { betaEnabled } from "@/lib/beta";
+import { ProcessingConsentCard } from "@/components/ProcessingConsent";
 export const Route = createFileRoute("/settings")({ beforeLoad: requireAuth, component: Settings });
 function Settings() {
   const { user } = useAuth();
@@ -47,6 +49,7 @@ function Settings() {
           Sign out
         </button>
       </div>
+      {betaEnabled() && <ProcessingConsentCard />}
     </div>
   );
 }

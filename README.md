@@ -18,12 +18,13 @@ and authenticated private MP4 download/decode. See the
 [hosted acceptance report](docs/hosted-local-acceptance.md). Gemini remains
 disabled; the existing queued upload is protected.
 
-A continuously running worker is the next milestone.
-[Isolated EC2 deployment preparation](docs/worker-deployment.md) targets the
-operator-confirmed existing m6i.2xlarge (8 vCPU/32 GiB) with an 8 GiB / 2 vCPU container, standby by default.
-Local Docker/research tests do not constitute deployment or verified spare AWS
-capacity. No EC2 worker or global queue consumer has been started. Keep Draft
-PR #1 unmerged and unpublished until separately authorized.
+The [24-hour owner-scoped EC2 pilot](docs/continuous-24h-pilot.md) completed and
+stopped cleanly. The next stage is a [limited workload beta](docs/owner-scoped-beta.md)
+on the same m6i.2xlarge, with SmolVLM2-500M and an 8 GiB / 2 CPU / one-job cap.
+Its production frontend candidate, consent controls and independent alert monitor
+are prepared; a new hosted rollout and worker start require separate approval.
+Global processing and Gemini remain disabled. Keep Draft PR #1 unmerged and
+unpublished until separately authorized.
 
 See [verification evidence](docs/verification.md), [architecture](docs/architecture.md), and [worker setup](docs/worker-setup.md).
 

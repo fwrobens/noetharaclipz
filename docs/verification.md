@@ -1,4 +1,16 @@
-# Verification — updated 2026-11-08
+# Verification — updated 2026-11-11
+
+## Limited beta preparation
+
+The [24-hour pilot closed cleanly](continuous-24h-pilot.md); its benchmarks and
+historical evidence are retained. The next [owner-scoped workload beta](owner-scoped-beta.md)
+adds spaced gaming samples, production-artifact checks, browser consent/revocation
+and a separate bounded alert monitor. No worker restart, new owner consent,
+operator approval, schema change, notification or publication occurs during this
+preparation. See that plan for current checks and remaining deployment gates.
+
+The following sections preserve the earlier implementation results; their
+historical counts and EC2-access limitations are not current beta results.
 
 ## Deployment preparation follow-up
 

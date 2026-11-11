@@ -208,8 +208,8 @@ function Home() {
           </div>
           <div className="mt-3 space-y-2 text-left text-xs text-muted-foreground">
             <p>
-              MP4 / MOV / WebM · up to 45 MB and 5 minutes. Free AI development processing may use
-              content to improve Google products.
+              MP4 / MOV / WebM · up to 45 MB and 5 minutes. Processing requires an approved account
+              and an available worker.
             </p>
             <label className="flex items-start gap-2">
               <input

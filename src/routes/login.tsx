@@ -2,6 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase/client";
 import { publishableKey, supabaseUrl } from "@/lib/supabase/config";
+import { betaEnabled } from "@/lib/beta";
 export const Route = createFileRoute("/login")({
   component: Login,
   head: () => ({ meta: [{ title: "Sign in — Clipwave" }] }),
@@ -85,7 +86,7 @@ function Login() {
         >
           {busy ? "Please wait…" : signup ? "Create account" : "Sign in"}
         </button>
-        {google && (
+        {google && !betaEnabled() && (
           <button
             type="button"
             onClick={() =>
@@ -99,13 +100,20 @@ function Login() {
             Continue with Google
           </button>
         )}
-        <button
-          type="button"
-          onClick={() => setSignup(!signup)}
-          className="w-full text-sm text-primary"
-        >
-          {signup ? "Already have an account? Sign in" : "Create an account"}
-        </button>
+        {!betaEnabled() && (
+          <button
+            type="button"
+            onClick={() => setSignup(!signup)}
+            className="w-full text-sm text-primary"
+          >
+            {signup ? "Already have an account? Sign in" : "Create an account"}
+          </button>
+        )}
+        {betaEnabled() && (
+          <p className="text-sm text-muted-foreground">
+            Beta access is by invitation. Sign in with your approved account.
+          </p>
+        )}
         <Link to="/" className="block text-center text-sm text-muted-foreground">
           Back home
         </Link>

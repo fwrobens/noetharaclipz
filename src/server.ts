@@ -2,6 +2,7 @@ import "./lib/error-capture";
 
 import { consumeLastCapturedError } from "./lib/error-capture";
 import { renderErrorPage } from "./lib/error-page";
+import { betaEnabled, releaseInfo } from "./lib/beta";
 
 type ServerEntry = {
   fetch: (request: Request, env: unknown, ctx: unknown) => Promise<Response> | Response;
@@ -49,10 +50,31 @@ function isH3SwallowedErrorBody(body: string): boolean {
 // twice and renders garbled.
 export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
+    if (new URL(request.url).pathname === "/api/release") {
+      const headers = {
+        "Content-Type": "application/json",
+        "Cache-Control": "no-store",
+        "X-Robots-Tag": "noindex, nofollow",
+        Allow: "GET, HEAD",
+      };
+      if (!["GET", "HEAD"].includes(request.method))
+        return new Response(null, { status: 405, headers });
+      return new Response(request.method === "HEAD" ? null : JSON.stringify(releaseInfo()), {
+        headers,
+      });
+    }
     try {
       const handler = await getServerEntry();
       const response = await handler.fetch(request, env, ctx);
-      return await normalizeCatastrophicSsrResponse(response);
+      const normalized = await normalizeCatastrophicSsrResponse(response);
+      if (!betaEnabled()) return normalized;
+      const headers = new Headers(normalized.headers);
+      headers.set("X-Robots-Tag", "noindex, nofollow");
+      return new Response(normalized.body, {
+        status: normalized.status,
+        statusText: normalized.statusText,
+        headers,
+      });
     } catch (error) {
       console.error(error);
       return new Response(renderErrorPage(), {
