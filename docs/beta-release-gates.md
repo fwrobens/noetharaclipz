@@ -204,6 +204,43 @@ was performed here. Because the Published History entry and complete current
 Redirect URLs list are still inaccessible, the rollback steps are confirmed but
 the exact restore target and full Auth snapshot are not yet verified.
 
+### Dashboard inventory — November 13, 2026
+
+A later read-only Supabase dashboard inventory supersedes the “published revision
+unknown” and “redirect list inaccessible” statements in the November 11 section
+above. Nothing was changed. The record is
+[docs/evidence/beta-auth-url-inventory.json](evidence/beta-auth-url-inventory.json).
+
+- **Published identity** is `e70ca9fd8f8156e22e3e450ae4095be35cfec47e`
+  (“Added credits meter to UI”). The live homepage `data-commit-sha` matches it.
+  That commit is GitHub `main` and the base of Draft PR #1. Live `/auth/callback`
+  and `/api/release` still return **404** until the PR head is published.
+- **Site URL** is `https://noetharaclipz.lovable.app`.
+- **Redirect URLs** are snapshotted in full (8 entries), including the exact
+  callback `https://noetharaclipz.lovable.app/auth/callback`.
+- Entries **1–3 and 5–7** are preview/dev wildcards
+  (`lovableproject.com`, `id-preview`, `preview*--noetharaclipz.lovable.app`,
+  and the project dev/prod Lovable hosts). They are allowed redirect targets
+  today. The owner should consider trimming them after launch. Do not change
+  them now.
+- Sign-up is still **ON** (`disable_signup=false`). Confirm email is ON.
+  Anonymous sign-ins and manual linking are OFF. Email is the only enabled
+  provider. Seven confirmed users, zero anonymous, two banned accounts that are
+  not pilots. Invited pilot `21b61ad1-bda4-4abd-ac35-7a0bf477ed69` and QA identity
+  `c7ade7f9-2003-4a38-ae19-393fffae8452` are present and unbanned. No email
+  addresses were recorded.
+- **Rollback target** is that published revision. After a future publish, hover
+  the newest Published row in Lovable History and use Revert (circular arrow)
+  back to `e70ca9f`. Revert is disabled on the row that is already published, so
+  it cannot be exercised before a newer publish. Do not touch storage, jobs,
+  consent, or EC2.
+
+`supabase/config.toml` now mirrors the intended beta Auth posture for review
+only. Committing that file does not change hosted Auth. The live signup toggle
+stays ON until a separate owner-approved dashboard change. Publication steps are
+in [deployment-checklist.md](deployment-checklist.md) and
+[production-smoke-test.md](production-smoke-test.md).
+
 ## Two-hour workload packet
 
 [Disabled workload proposal](../deploy/beta/workload-proposal.json) preserves the
@@ -244,18 +281,24 @@ mandatory before queue access in every subsequently authorized generation.
 
 ## Minimum approvals
 
-Fresh owner consent is complete. **Two operational approvals remain**, after
-the dashboard inventory and fresh SSM preflights:
+Fresh owner consent is complete. The November 13 dashboard inventory is read
+and unchanged. **Three separate approvals remain.** Do not treat them as one action:
 
-1. **Hosting/Auth release approval**, after the current publish revision and Auth
-   inventory are read: exact new frontend identities/hostname, narrow Auth diff
-   and restoration of the captured prior release/configuration if needed.
-2. **One bounded EC2 trial approval**, after fresh preflights and consent: exact
-   new manifest/digests/window; named attended operator/local-log-only mode;
-   dedicated monitor files/unit installation; only this owner's processing approval;
-   detached systemd start; six samples, cancellation/retry and at most one new-worker
-   fault; expiry/rollback. No boot enable, global processing, Gemini, paid service,
-   host-wide Docker/network change or action on an old trial is included.
+1. **(A) Publish** the exact Draft PR #1 head in Lovable to
+   `https://noetharaclipz.lovable.app`.
+2. **(B) Auth toggle**, separately: hosted “Allow new users to sign up” OFF
+   (`disable_signup=true`). Leave the redirect list unchanged.
+3. **(C) One bounded EC2 trial**, later and only after its own approval, fresh
+   preflights, and consent: exact new manifest/digests/window; named attended
+   operator/local-log-only mode; dedicated monitor files/unit installation; only
+   this owner's processing approval; detached systemd start; six samples,
+   cancellation/retry and at most one new-worker fault; expiry/rollback. No boot
+   enable, global processing, Gemini, paid service, host-wide Docker/network
+   change, or action on an old trial is included.
+
+If (A) or (B) fails, restore Lovable History to `e70ca9f` and, if signup was
+turned OFF, restore “Allow new users to sign up” to ON. Do not touch storage,
+jobs, consent, or EC2.
 
 Dashboard/SSM reads are preparation evidence, not additional deployment approvals.
 The worker stays stopped while any required evidence or approval is missing.

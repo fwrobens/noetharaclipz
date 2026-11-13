@@ -1,0 +1,58 @@
+{
+  "checked_date_utc": "2026-11-13",
+  "source": "dashboard read-only",
+  "changed": false,
+  "project_id": "zxdnjnsghdnviflahvry",
+  "lovable_project_id": "40ff324d-5ed8-4890-ac90-cff43cfb1144",
+  "site_url": "https://noetharaclipz.lovable.app",
+  "redirect_urls": [
+    "https://40ff324d-5ed8-4890-ac90-cff43cfb1144-thr_*.lovableproject.com/**",
+    "https://40ff324d-5ed8-4890-ac90-cff43cfb1144.lovableproject.com/**",
+    "https://id-preview*--40ff324d-5ed8-4890-ac90-cff43cfb1144.lovable.app/**",
+    "https://noetharaclipz.lovable.app/**",
+    "https://preview*--noetharaclipz.lovable.app/**",
+    "https://project--40ff324d-5ed8-4890-ac90-cff43cfb1144-dev.lovable.app/**",
+    "https://project--40ff324d-5ed8-4890-ac90-cff43cfb1144.lovable.app/**",
+    "https://noetharaclipz.lovable.app/auth/callback"
+  ],
+  "redirect_url_count": 8,
+  "preview_or_dev_wildcard_indexes": [1, 2, 3, 5, 6, 7],
+  "providers": {
+    "allow_new_users_to_sign_up": true,
+    "disable_signup": false,
+    "confirm_email": true,
+    "allow_anonymous_sign_ins": false,
+    "allow_manual_linking": false,
+    "email_enabled": true,
+    "google_enabled": false,
+    "phone_enabled": false,
+    "saml_enabled": false,
+    "other_oauth_enabled": false
+  },
+  "accounts": {
+    "emails_recorded": false,
+    "user_count": 7,
+    "confirmed_count": 7,
+    "anonymous_count": 0,
+    "banned_count": 2,
+    "banned_are_pilots": false,
+    "invited_pilot_present_unbanned": "21b61ad1-bda4-4abd-ac35-7a0bf477ed69",
+    "qa_identity_present_unbanned": "c7ade7f9-2003-4a38-ae19-393fffae8452"
+  },
+  "published": {
+    "lovable_revision": "e70ca9fd8f8156e22e3e450ae4095be35cfec47e",
+    "message": "Added credits meter to UI",
+    "matches_live_homepage_data_commit_sha": true,
+    "matches_github_main": true,
+    "matches_pr_base": true,
+    "live_auth_callback_status": 404,
+    "live_api_release_status": 404
+  },
+  "rollback": {
+    "method": "Lovable History: after a future publish, hover the newest Published row and use Revert (circular arrow) back to e70ca9fd8f8156e22e3e450ae4095be35cfec47e",
+    "revert_disabled_on_currently_published_row": true,
+    "exercised": false
+  },
+  "hosted_auth_changed_by_this_record": false,
+  "published_or_deployed_by_this_record": false
+}
