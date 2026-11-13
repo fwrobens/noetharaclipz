@@ -13,6 +13,7 @@ from .consent import CONTRACT, ConsentedBackend, ProcessingRevoked
 from .media import Cancelled, ffmpeg, prepare, render, run, transcribe
 from .models import Candidate, Edit, rank_candidates
 from .providers import build_provider
+from .router import build_router, local_runs, record_runs
 
 log = logging.getLogger(__name__)
 
@@ -79,7 +80,7 @@ class Lease:
 
 
 class Worker:
-    def __init__(self, settings=None, backend=None, provider=None, stop_event=None):
+    def __init__(self, settings=None, backend=None, provider=None, stop_event=None, router=None):
         self.stop_event = stop_event or threading.Event()
         self.settings = settings or Settings()
         self.backend = backend or (
@@ -88,6 +89,8 @@ class Worker:
             else Backend(self.settings)
         )
         self.provider = provider or build_provider(self.settings)
+        # Optional AI refinement router; disabled by default (zero external requests).
+        self.router = router or build_router()
         self.protocol_checked = False
         self.last_cycle = time.monotonic()
 
@@ -235,11 +238,13 @@ class Worker:
             else:
                 self.backend.update("videos", metadata, project_id="eq." + job["project_id"])
             lease.stage("analyzing", 25, "Transcribing spoken audio locally")
+            transcribe_started = time.monotonic()
             transcript = (
                 self.provider.transcript(data, lease.tick)
                 if self.settings.provider == "local"
                 else transcribe(data["audio"], self.settings.whisper_model, lease.tick)
             )
+            transcribe_ms = int((time.monotonic() - transcribe_started) * 1000)
             artifact = {
                 "transcript": transcript,
                 "scenes": data["scenes"],
@@ -275,9 +280,25 @@ class Worker:
             self.provider.preflight()
             if self.settings.provider == "local":
                 lease.stage("analyzing", 50, "Comparing actual videos with the local model")
+                analysis_started = time.monotonic()
                 analysis, result, result_path = self.provider.analyze(
                     source, data, transcript, project["instructions"], lease.tick
                 )
+                if self.router.enabled:
+                    analysis = self.refine_with_router(
+                        job,
+                        project,
+                        analysis,
+                        result,
+                        transcript,
+                        data,
+                        metadata,
+                        lease,
+                        {
+                            "transcription": transcribe_ms,
+                            "video_analysis": int((time.monotonic() - analysis_started) * 1000),
+                        },
+                    )
                 lease.stage(
                     "generating_highlights", 90, "Saving local evidence and validated intervals"
                 )
@@ -438,6 +459,57 @@ class Worker:
                 artifacts=artifact,
                 highlights=[h.model_dump() for h in highlights],
             )
+
+    def refine_with_router(
+        self, job, project, analysis, result, transcript, data, metadata, lease, latency
+    ):
+        """Optional hosted refinement. Any failure keeps the local analysis unchanged."""
+        identity = (
+            job["id"],
+            job["project_id"],
+            job["lease_token"],
+            project["id"],
+            project["owner_id"],
+        )
+        runs = local_runs(
+            self.settings.whisper_model,
+            getattr(self.provider, "model", "local"),
+            result.get("execution_usage"),
+            latency,
+        )
+        refined = analysis
+        lease.stage("generating_highlights", 85, "Refining local highlights")
+        try:
+            outcome = self.router.refine(
+                analysis,
+                transcript=transcript,
+                scenes=data.get("scenes", []),
+                description=result.get("raw_visual_observation", ""),
+                instructions=project["instructions"],
+                duration=metadata["duration"],
+                tick=lease.tick,
+            )
+            runs += outcome.runs
+            if outcome.refined:
+                refined = outcome.analysis
+        except (Cancelled, InterruptedError, TimeoutError):
+            raise
+        except Exception as error:
+            log.warning(
+                "AI refinement router failed (%s); keeping local result", type(error).__name__
+            )
+            refined = analysis
+        if identity != (
+            job["id"],
+            job["project_id"],
+            job["lease_token"],
+            project["id"],
+            project["owner_id"],
+        ):
+            # The router can never change job/project/owner identity.
+            raise RuntimeError("Job identity changed during refinement")
+        record_runs(self.backend, job, runs)
+        return refined
 
     def once(self):
         self.last_cycle = time.monotonic()
