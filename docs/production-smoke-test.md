@@ -9,7 +9,7 @@ contains [deployment-checklist.md](deployment-checklist.md). Call that value
 `REVIEWED_SHA` below. Rollback SHA stays
 `e70ca9fd8f8156e22e3e450ae4095be35cfec47e`.
 
-Invited pilot: `21b61ad1-bda4-4abd-ac35-7a0bf477ed69`.
+Invited pilots: `21b61ad1-bda4-4abd-ac35-7a0bf477ed69` and `f0235878-e130-45a9-a031-f21cd91da7b9`.
 Uninvited confirmed QA identity: `c7ade7f9-2003-4a38-ae19-393fffae8452`.
 Do not record email addresses, passwords, links, or tokens in the results.
 
@@ -23,7 +23,7 @@ mark that row blocked, not failed.
    - Abort if it still equals `e70ca9fd8f8156e22e3e450ae4095be35cfec47e` or any other SHA.
 
 2. **Release identity.** `GET https://noetharaclipz.lovable.app/api/release` with no cookies and no Authorization header. Also send `HEAD` and `POST`.
-   - Expected: GET returns 200, `Cache-Control: no-store`, and JSON `build` equal to `REVIEWED_SHA` and to the homepage `data-commit-sha`. `build` is not `development` and not `unknown`. `app` is `NoetharaClipz`, `mode` is `owner-scoped-beta`, and `access.mode` is `authenticated-owner-allowlist-v1`. `access` also has an owner count and a 64-character digest, and nothing else. The body does not contain a user id, email, access token, refresh token, service key, or cookie. HEAD returns 200 with an empty body. POST returns 405.
+   - Expected: GET returns 200, `Cache-Control: no-store`, and JSON `build` equal to `REVIEWED_SHA` and to the homepage `data-commit-sha`. `build` is not `development` and not `unknown`. `app` is `NoetharaClipz`, `mode` is `owner-scoped-beta`, and `access.mode` is `authenticated-owner-allowlist-v1`. `access.owners` is 2 and `access.sha256` is `8366d22defa4f3bf3ee9e944845aa8cde6b9567242db042040ffac2ddc427651`. `access` has nothing else. The body does not contain a user id, email, access token, refresh token, service key, or cookie. HEAD returns 200 with an empty body. POST returns 405.
 
 3. **Callback route.** Open `https://noetharaclipz.lovable.app/auth/callback` with no `code`.
    - Expected: not 404. The page status text says the sign-in link is missing its code, and a Sign in link is present.
@@ -58,7 +58,7 @@ mark that row blocked, not failed.
 | # | Check | Result | Notes |
 | --- | --- | --- | --- |
 | 1 | `data-commit-sha` equals `REVIEWED_SHA` | | |
-| 2 | `/api/release` `build` equals `REVIEWED_SHA` and `data-commit-sha`; mode is `owner-scoped-beta`; access mode is `authenticated-owner-allowlist-v1`; POST is 405 | | |
+| 2 | `/api/release` `build` equals `REVIEWED_SHA` and `data-commit-sha`; mode is `owner-scoped-beta`; access mode is `authenticated-owner-allowlist-v1`; `access.owners` is 2; digest is `8366d22defa4f3bf3ee9e944845aa8cde6b9567242db042040ffac2ddc427651`; POST is 405 | | |
 | 3 | `/auth/callback` is not 404 | | |
 | 4 | Invited pilot login returns through production `/auth/callback` | | |
 | 5 | No-cookie `/dashboard` redirects to `/login`; logout does the same for protected routes | | |

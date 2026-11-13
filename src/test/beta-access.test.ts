@@ -78,6 +78,17 @@ describe("server beta owner access", () => {
     expect(value.response?.status).toBe(503);
     expect(value.response?.headers.get("cache-control")).toBe("private, no-store");
   });
+  it("allows both invited pilots and denies the unlisted QA account", async () => {
+    for (const id of [owner.id, "f0235878-e130-45a9-a031-f21cd91da7b9"]) {
+      sdk.getUser.mockResolvedValue({ data: { user: { ...owner, id } }, error: null });
+      expect((await authorizeBetaRequest(request("/dashboard"))).response).toBeUndefined();
+    }
+    sdk.getUser.mockResolvedValue({
+      data: { user: { ...owner, id: "c7ade7f9-2003-4a38-ae19-393fffae8452" } },
+      error: null,
+    });
+    expect((await authorizeBetaRequest(request("/dashboard"))).response?.status).toBe(403);
+  });
   it("allows the verified owner and refreshes both request and response cookies securely", async () => {
     sdk.getUser.mockImplementation(async () => {
       const cookies = sdk.options!["cookies"] as { setAll: (values: unknown[]) => void };
@@ -106,7 +117,7 @@ describe("server beta owner access", () => {
     expect(sdk.getUser).not.toHaveBeenCalled();
     expect(betaAccessIdentity()).toMatchObject({
       mode: "authenticated-owner-allowlist-v1",
-      owners: 1,
+      owners: 2,
       sha256: expect.stringMatching(/^[a-f0-9]{64}$/),
     });
   });

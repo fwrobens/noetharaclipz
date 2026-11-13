@@ -3,8 +3,10 @@ import handler from "@/server";
 import { publicReleaseDocument } from "@/lib/release";
 
 const owner = "21b61ad1-bda4-4abd-ac35-7a0bf477ed69";
+const secondPilot = "f0235878-e130-45a9-a031-f21cd91da7b9";
 const forbidden = [
   owner,
+  secondPilot,
   "sb_publishable_",
   "sb_secret_",
   "service_role",
@@ -41,7 +43,7 @@ describe("public release identity", () => {
       app: "NoetharaClipz",
       build: "a".repeat(40),
       mode: "owner-scoped-beta",
-      access: { mode: "authenticated-owner-allowlist-v1", owners: 1 },
+      access: { mode: "authenticated-owner-allowlist-v1", owners: 2 },
     });
     expect(body.access.sha256).toMatch(/^[a-f0-9]{64}$/);
     const serialized = JSON.stringify(body);

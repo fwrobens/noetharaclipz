@@ -90,5 +90,14 @@ it("denies a private download for an existing account that is not invited", asyn
   native.getSession.mockResolvedValue({ data: { session: { user: invited } }, error: null });
   native.createSignedUrl.mockResolvedValue({ data: { signedUrl: "https://example.test/signed" }, error: null });
   await expect(signedMedia("rendered-clips", rendered)).resolves.toBe("https://example.test/signed");
+  native.getSession.mockResolvedValue({
+    data: {
+      session: {
+        user: { ...invited, id: "f0235878-e130-45a9-a031-f21cd91da7b9" },
+      },
+    },
+    error: null,
+  });
+  await expect(signedMedia("rendered-clips", rendered)).resolves.toBe("https://example.test/signed");
   vi.unstubAllEnvs();
 });

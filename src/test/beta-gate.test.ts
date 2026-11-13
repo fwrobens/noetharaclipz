@@ -12,6 +12,7 @@ const owner = {
   email_confirmed_at: "2026-11-09",
   is_anonymous: false,
 };
+const secondPilot = { ...owner, id: "f0235878-e130-45a9-a031-f21cd91da7b9" };
 const qa = { ...owner, id: "c7ade7f9-2003-4a38-ae19-393fffae8452" };
 const production = { PROD: true, DEV: false } as const;
 
@@ -47,8 +48,9 @@ describe("allowlist fail closed", () => {
     expect(betaOwnerAllowed(owner, { owners: [owner.id, 12] })).toBe(false);
   });
 
-  it("allows only the invited owner", () => {
+  it("allows both invited pilots and denies the QA account", () => {
     expect(betaOwnerAllowed(owner)).toBe(true);
+    expect(betaOwnerAllowed(secondPilot)).toBe(true);
     expect(betaOwnerAllowed(qa)).toBe(false);
   });
 

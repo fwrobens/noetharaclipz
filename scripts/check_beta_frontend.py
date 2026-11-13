@@ -46,7 +46,7 @@ def main():
         }
         assert identity["access"]["mode"] == "authenticated-owner-allowlist-v1"
         assert (
-            identity["access"]["owners"] == 1
+            identity["access"]["owners"] == 2
             and len(identity["access"]["sha256"]) == 64
         )
         assert "no-store" in release.headers.get("cache-control", "")
