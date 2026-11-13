@@ -1,0 +1,11 @@
+{
+  "checked_utc": "2026-11-09T21:29:47.111595+00:00",
+  "worker_tests_passed": 298,
+  "optional_sample_tests_skipped": 1,
+  "command": "worker/.venv/bin/python -m pytest worker/tests -q",
+  "elapsed_seconds": 27.45,
+  "stdout_sha256": "d926b873527772ed1ddd8554a89f1853c2544d798c4e99a0a359ab9cf65a3850",
+  "ruff": "passed",
+  "scope": "Current worker/helper unit suite; no extra inference jobs or benchmarks",
+  "normal_browser_acceptance": "continuous-pilot-2100-browser.json"
+}

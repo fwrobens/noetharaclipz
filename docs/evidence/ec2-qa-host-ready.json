@@ -1,0 +1,15 @@
+{
+  "trial_id": "9563aeb9-2620-4e05-acf2-1e69ce18b819",
+  "owner_id": "c7ade7f9-2003-4a38-ae19-393fffae8452",
+  "stop_at": 1794185532,
+  "image": "sha256:472913bf34e918c48e5b77a56c4ea2dfd31873bdd79ecc2d1c4e7ab4cf3e5759",
+  "started": true,
+  "ready": true,
+  "global_consumption": false,
+  "gemini_enabled": false,
+  "container_id": "fbe3d4f4d9b1c95cb3cae77278a40a5cf5d52c77435eccdc3d14c60d17c06f99",
+  "existing_services_unchanged": true,
+  "stop_at_utc": "2026-11-09T00:52:12+00:00",
+  "remaining_seconds": 1793,
+  "provider": "local-smolvlm2"
+}

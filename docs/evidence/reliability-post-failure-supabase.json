@@ -1,0 +1,16 @@
+{
+  "checked_utc": "2026-11-09T05:24:19.841518+00:00",
+  "read_only": true,
+  "protected_job": {
+    "id": "9c5c8869-ec2e-4a3e-927d-697615bb58a3",
+    "status": "queued",
+    "attempts": 0,
+    "whole_row_identical": true,
+    "lease_token_absent": true,
+    "lease_until_absent": true,
+    "cancel_requested": false
+  },
+  "failed_trial_owner_projects": 0,
+  "active_unfinished_leases": 0,
+  "worker_claims_heartbeats_or_database_changes": false
+}

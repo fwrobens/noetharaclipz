@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Brand } from "./Brand";
 import { Button } from "./ui/button";
 import { useSessionUser } from "@/lib/session";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase/client";
 export function PublicNav() {
   const [open, setOpen] = useState(false);
   const user = useSessionUser();

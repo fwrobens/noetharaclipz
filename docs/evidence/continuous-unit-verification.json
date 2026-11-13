@@ -1,0 +1,9 @@
+{
+  "passed": true,
+  "scope": "Local unit syntax/dependency validation with isolated inert dependency fixtures; no actual boot/install/enable/start.",
+  "units": [
+    "noetharaclipz-isolation.service",
+    "noetharaclipz-continuous.service"
+  ],
+  "diagnostics": ""
+}

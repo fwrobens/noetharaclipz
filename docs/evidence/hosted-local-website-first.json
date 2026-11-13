@@ -1,0 +1,72 @@
+{
+  "passed": true,
+  "hosted_generation": false,
+  "global_worker_started": false,
+  "checks": {
+    "compatible_scoped_queue_protocol": true,
+    "normal_ui_acceptance": true,
+    "cross_user_rows_denied": true,
+    "cross_user_private_download_denied": true,
+    "browser_privileged_operations_denied": true,
+    "invalid_upload_denied": true,
+    "protected_job_unchanged": true
+  },
+  "acceptance": {
+    "passed": true,
+    "source_sha256": "988596de4e539c1c200ab1a76421d3e66aa7c73b8b1bc13e1a33febd61ebf1d7",
+    "project_id": "e9836bc8-4698-4919-bc5f-b5b4fb71a2b9",
+    "provider": "local-smolvlm2",
+    "analysis_job_id": "5015396f-4a3c-4dbf-8b2b-09607579d270",
+    "render_job_id": "cd02aed4-5929-4408-9fcd-2e7b13769219",
+    "analysis_attempts": 1,
+    "render_attempts": 1,
+    "highlights": [
+      {
+        "id": "298b5bb3-5970-4c1a-b181-27b4dcae1aa6",
+        "project_id": "e9836bc8-4698-4919-bc5f-b5b4fb71a2b9",
+        "start_time": 31.65,
+        "end_time": 54,
+        "title": "Are you hurt? I don't think so. You?",
+        "category": "Other",
+        "score": 32,
+        "explanation": "Timestamped speech excerpt: Are you hurt? I don't think so. You?. Local multimodal model chose candidate G among 8 actual videos plus a none option. Measured evidence: 2 speech segments, 0 audio events, 1 scene boundaries. Scores are relative choices, not calibrated quality or virality.",
+        "evidence": {
+          "visual": "Four decoded frames per candidate; selected interval with measured speech context 31.650\u201354.000s. Comparison tensor SHA256 5ee1d309e42dda98cc1462952fac8af0ff3b2af558c4e1a1d4f2c106d3466f9b."
+        },
+        "created_at": "2026-11-08T15:35:31.870532+00:00"
+      }
+    ],
+    "clip_id": "a994ac9d-0032-4929-a16b-5f330905edaa",
+    "persisted_edit": {
+      "end": 54,
+      "font": "Instrument Sans",
+      "ratio": "9:16",
+      "start": 31.7,
+      "crop_x": 0.5,
+      "crop_y": 0.5,
+      "volume": 1,
+      "version": 1,
+      "captions": true,
+      "caption_size": 28,
+      "caption_color": "#FFFFFF",
+      "caption_style": "Bold pop",
+      "caption_overrides": {}
+    },
+    "output_path": "4b70c77a-c0a3-4f93-b8b3-6a233f2928e9/e9836bc8-4698-4919-bc5f-b5b4fb71a2b9/cd02aed4-5929-4408-9fcd-2e7b13769219.mp4",
+    "output_bytes": 5070117,
+    "output_sha256": "9040142ea33351973fe377c2958c7ac1f85a4c57c81dd30dd9df2795f0cc4e53",
+    "output_duration": 22.3,
+    "unhandled_browser_errors": [],
+    "ui_steps": "login, upload, instructions, generate, select, edit, save, refresh, Export button, Download MP4 button"
+  },
+  "cleanup": [
+    {
+      "user_id": "4b70c77a-c0a3-4f93-b8b3-6a233f2928e9",
+      "removed": true
+    },
+    {
+      "user_id": "d218a8b4-7d8b-456d-87db-c0c6ce3db6d8",
+      "removed": true
+    }
+  ]
+}

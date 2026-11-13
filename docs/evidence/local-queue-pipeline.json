@@ -1,0 +1,42 @@
+{
+  "scope": "Disposable real PG/PGMQ + normal worker, local file transport; NOT hosted/browser acceptance",
+  "source_sha256": "988596de4e539c1c200ab1a76421d3e66aa7c73b8b1bc13e1a33febd61ebf1d7",
+  "hosted_inference": false,
+  "checks": {
+    "actual_queue_analysis_and_truthful_usage": true,
+    "actual_queued_export_and_mp4_decode": true,
+    "saved_edit_and_render": true,
+    "cross_user_row_denial": true,
+    "protected_job_and_queue_message_identical": true,
+    "duplicate_finalize_and_export_prevented": true
+  },
+  "analysis_seconds_including_model_load": 127.347,
+  "highlights": [
+    {
+      "id": "89075eca-727e-46b7-8bbe-97689dd67aca",
+      "score": 36,
+      "title": "Are you hurt? I don't think so. You?",
+      "category": "Other",
+      "end_time": 54,
+      "evidence": {
+        "visual": "Four decoded frames per candidate; selected interval with measured speech context 31.650\u201354.000s. Comparison tensor SHA256 5ee1d309e42dda98cc1462952fac8af0ff3b2af558c4e1a1d4f2c106d3466f9b."
+      },
+      "created_at": "2026-11-08T15:10:07.90842+00:00",
+      "project_id": "33fefb83-e1e9-49f9-a954-314b1493c2fa",
+      "start_time": 31.65,
+      "explanation": "Timestamped speech excerpt: Are you hurt? I don't think so. You?. Local multimodal model chose candidate G among 8 actual videos plus a none option. Measured evidence: 2 speech segments, 0 audio events, 1 scene boundaries. Scores are relative choices, not calibrated quality or virality."
+    }
+  ],
+  "analysis_cache": {
+    "admission_rejected": false,
+    "analysis_cache_hit": false,
+    "prepared_cache_hit": false,
+    "transcript_cache_hit": false,
+    "source_inference_input_tokens": 4240
+  },
+  "output": {
+    "bytes": 3109088,
+    "duration": "22.200000",
+    "sha256": "65a6712716fe96689ad11a5c7471ab0259944f81d78c71c76eae2db9ed75f8ce"
+  }
+}

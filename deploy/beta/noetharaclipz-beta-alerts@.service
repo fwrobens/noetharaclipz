@@ -1,0 +1,31 @@
+# Review-only. Disabled at boot; instantiate only for a newly approved beta ID.
+# Intentionally independent of the worker unit so worker failure cannot stop it.
+[Unit]
+Description=Independent alerts for bounded NoetharaClipz beta %i
+After=network-online.target
+ConditionPathExists=/etc/noetharaclipz-isolated/beta/%i/watchdog.json
+StartLimitIntervalSec=7500
+StartLimitBurst=3
+
+[Service]
+Type=exec
+UMask=0077
+EnvironmentFile=/etc/noetharaclipz-isolated/beta/%i/approved-watchdog.env
+ExecStart=/usr/bin/python3 /etc/noetharaclipz-isolated/beta/%i/watchdog.py --config /etc/noetharaclipz-isolated/beta/%i/watchdog.json --approved-config-sha256 ${NC_APPROVED_WATCHDOG_SHA256}
+Restart=on-failure
+RestartSec=30
+RuntimeMaxSec=7500
+MemoryMax=64M
+MemorySwapMax=0
+CPUQuota=5%
+TasksMax=16
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectHome=yes
+ProtectSystem=strict
+ReadWritePaths=/var/lib/noetharaclipz-isolated/beta-alerts/%i
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=nccz-beta-alerts-%i
+
+# No Install section: this beta does not authorize boot startup.

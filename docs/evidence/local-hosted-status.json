@@ -1,0 +1,44 @@
+{
+  "date": "2026-11-08",
+  "normal_hosted_website_acceptance": "passed_development_website_with_live_supabase",
+  "previous_blocker": "Resolved by operator deployment of the reviewed protocol; no reapplication",
+  "migration": {
+    "reported_deployed_version": "20261108152724_local_worker_queue",
+    "version_source": "user/operator report, not a direct catalog query",
+    "recorded_file": "supabase/migrations/20261108152724_local_worker_queue.sql",
+    "sha256": "37ff1347f255c3a3217258c3c54daa58f7a1342c392643e1ee5e8a01f04324fd",
+    "reapplied": false
+  },
+  "website_evidence": "hosted-local-website.json",
+  "first_website_evidence": "hosted-local-website-first.json",
+  "queue_control_evidence": "hosted-local-queue-recovery.json",
+  "automated_checks": {
+    "worker_passed": 60,
+    "worker_skipped": 0,
+    "worker_seconds": 38.83,
+    "frontend_passed": 15,
+    "typescript": "passed",
+    "build": "passed",
+    "ruff": "passed",
+    "lint_errors": 0,
+    "lint_existing_warnings": 11,
+    "fresh_disposable_sql": "passed"
+  },
+  "protected_upload_final_readonly_check": {
+    "status": "queued",
+    "attempts": 0,
+    "lease_token": null,
+    "lease_until": null,
+    "cancel_requested": false
+  },
+  "protected_job_row_sha256": "deac9a0a9f311218fce3c531def81e1a3f92ff11e82132701a06e366d545dbdb",
+  "protected_row_identical_to_previous_task_snapshot": true,
+  "gemini_free_tier_verified": false,
+  "global_worker_started": false,
+  "qa_worker_stopped": true,
+  "always_on_worker_provisioned": false,
+  "paid_services_activated": false,
+  "lovable_credits_used": false,
+  "merged": false,
+  "published": false
+}

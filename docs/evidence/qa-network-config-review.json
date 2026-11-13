@@ -1,0 +1,10 @@
+{
+  "dns": "172.31.0.2",
+  "ipv6_disabled": true,
+  "qa_restart": "on-failure:3",
+  "8gib_2cpu_no_swap": true,
+  "global_and_gemini_disabled": true,
+  "no_public_ports": true,
+  "containers_started": 0,
+  "firewall_rules_applied": 0
+}

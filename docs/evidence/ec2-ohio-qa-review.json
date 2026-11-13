@@ -1,0 +1,265 @@
+{
+  "baseline_commit": "b51ffb5",
+  "target": {
+    "instance_id": "i-0be10e530045fc650",
+    "region": "us-east-2",
+    "type": "m6i.2xlarge",
+    "vcpus": 8,
+    "installed_ram_gib_approx": 32,
+    "source": "operator-returned board asset tag, IMDSv2 instance-type and nproc; no direct remote agent access"
+  },
+  "previous_operator_readings": {
+    "available_ram_gib_approx": 14,
+    "free_disk_gb_approx": 53,
+    "cpu": "low",
+    "credits_approx": 1300,
+    "current_recheck": false,
+    "measurement_time": "not supplied",
+    "superseded": true
+  },
+  "current_aws_access_recheck": {
+    "connector_available": false,
+    "aws_cli_present": false,
+    "usable_identity_present": false,
+    "profile": "__oai_no_aws_identity__",
+    "configured_files_have_profiles": false,
+    "credentials_or_cli_installed_or_changed": false,
+    "aws_api_calls": 0
+  },
+  "host_suitability": "fresh operator capacity and listed collision checks pass for bounded 500M QA; approved but artifact transfer, final project collision and actual preflights remain outstanding",
+  "local_configuration_review": {
+    "base_standby": true,
+    "missing_qa_owner_refused": true,
+    "qa_owner_explicit": true,
+    "global_consumption_disabled": true,
+    "gemini_disabled": true,
+    "8gib_2cpu_no_extra_swap": true,
+    "no_public_ports": true,
+    "image_pull_disabled": true,
+    "network_name_reviewable": true,
+    "containers_started": 0,
+    "models_downloaded_or_loaded": 0,
+    "aws_operations": 0
+  },
+  "deployment_guard_tests": {
+    "passed": 14,
+    "seconds": 0.15
+  },
+  "network_security_on_ec2": "operator firewall/bridge/UID/path collision checks pass; scoped policy not applied; actual runtime allow/deny tests pending",
+  "production_model": "pinned SmolVLM2-500M only",
+  "runtime_image_id": "sha256:32fd88495ceab2c59ab7bc6a0c7980c1003d9b4b6eea507131783a24be4b88a5",
+  "models_installed_activated_or_downloaded": 0,
+  "protected_upload_readonly_check": {
+    "status": "queued",
+    "attempts": 0,
+    "lease_token": null,
+    "lease_until": null,
+    "cancel_requested": false
+  },
+  "protected_row_identical_to_previous_snapshot": true,
+  "queue_claims": 0,
+  "ec2_deployment_or_startup": false,
+  "qa_deployment_authorized": true,
+  "global_consumption_enabled": false,
+  "gemini_enabled": false,
+  "aws_infrastructure_or_billing_changes": false,
+  "merged_or_published": false,
+  "superseded_target_assumption": {
+    "instance_id": "i-0be10e530045fc650",
+    "region": "us-east-2",
+    "type": "t2.xlarge",
+    "vcpus": 4,
+    "installed_ram_gib": 16,
+    "source": "operator supplied"
+  },
+  "current_operator_readings": {
+    "available_ram_gib_approx": 29,
+    "docker_reported_host_ram_gib": 30.81,
+    "free_disk_gb_approx": 53,
+    "filesystem": "ext4",
+    "load_average": [
+      0.06,
+      0.04,
+      0.0
+    ],
+    "container_count": 6,
+    "supabase_container_count": 5,
+    "staging_container_count": 1,
+    "combined_container_memory_mib_approx": 395.22,
+    "snapshot_cpu": "very low",
+    "published_bindings_shown": "loopback-only",
+    "staging_container_memory_limit_gib": 1,
+    "supabase_explicit_memory_caps": "not confirmed; stats show host-sized limit",
+    "network_cidrs": [
+      "172.17.0.0/16",
+      "172.18.0.0/16",
+      "172.19.0.0/16"
+    ],
+    "ipv4_docker_user_chain": "exists, empty",
+    "observation_source": "user-pasted read-only command output"
+  },
+  "cpu_credit_review": "not applicable to confirmed non-burstable m6i; previous T2 costs, mode, credit thresholds superseded",
+  "cost_review": {
+    "additional_ec2_allocation_planned": false,
+    "cpu_credit_charges_applicable": false,
+    "previous_t2_price_and_surplus_estimates_applicable": false,
+    "actual_existing_m6i_bill": "not queried",
+    "remaining_usage_costs": "data transfer and hosted Supabase allowances; repository records EC2 Ohio versus Supabase us-east-1"
+  },
+  "inventory_update_validation": {
+    "mocked_aws_contract_tests_passed": 2,
+    "actual_aws_calls": 0,
+    "credentials_or_cli_installed": false
+  },
+  "operator_network_report": {
+    "default_gateway": "172.31.32.1",
+    "host_subnet": "172.31.32.0/20",
+    "upstream_dns": "172.31.0.2",
+    "local_dns_stub": "127.0.0.53",
+    "input_policy": "ACCEPT",
+    "forward_policy": "DROP with DOCKER-USER and DOCKER-FORWARD jumps",
+    "docker_user_rules": [],
+    "security_group_id": "sg-0e74e0664079302bd",
+    "security_group_name": "launch-wizard-3",
+    "reported_ipv4_ingress": "TCP 22 from 0.0.0.0/0",
+    "reported_ipv4_egress": "all traffic to 0.0.0.0/0",
+    "source": "operator-provided outputs and group summary; no direct AWS API calls"
+  },
+  "network_proposal": {
+    "mode": "print-only",
+    "source": "deploy/worker/egress_policy.py",
+    "hooks_match_only_bridge": "nccz-qa0",
+    "chain": "NCZQA_EGRESS",
+    "dns_allowed": "172.31.0.2 UDP/TCP 53",
+    "tls_allowed": "public IPv4 TCP 443 under existing Docker policy",
+    "denies": "host INPUT/local, private/shared/link-local including VPC/staging/Supabase and IPv4 IMDS, other egress",
+    "ipv6": "disabled in worker/seed namespaces only",
+    "shared_policies_or_existing_rules_changed": false,
+    "security_groups_changed": false,
+    "rules_applied": 0,
+    "qa_restart": "on-failure:3; manual review required after host/daemon restart",
+    "syntax_and_guard_validation": {
+      "targeted_tests_passed": 25,
+      "iptables_translation": "all proposed apply commands passed read-only translator",
+      "shell_syntax": "apply and rollback pass sh -n",
+      "compose_network_review": "passed; no containers started"
+    }
+  },
+  "remaining_checks": [
+    "Seed pinned 500M/Whisper assets under actual seed cgroup limits; return only public transport key",
+    "Deliver existing service credential encrypted to host, then configure exactly one temporary QA owner",
+    "Run bounded <=30 minute worker and normal website/recovery/security acceptance; no global consumption"
+  ],
+  "deployment_review_status": "EC2 quota and network preflight passed; owned bridge/rules retained and existing services unchanged; assets, secure credentials and scoped QA worker pending",
+  "local_kernel_resource_validation": {
+    "previous_hard_cap_claim_superseded": true,
+    "evidence": "local-cgroup-validation-correction.json",
+    "actual_ec2_limits_verified": true,
+    "new_probe": "deploy/worker/check_cgroup_limits.py",
+    "gates": "seed preparation and standby-to-QA activation require exit 0; missing/unlimited/host-parent limits fail",
+    "benchmark_models_loaded_this_review": 0,
+    "actual_ec2_scope": "network-none diagnostic only; still verify seed/standby profiles before AI"
+  },
+  "operator_daemon_report": {
+    "engine_version": "29.1.3",
+    "cgroup_version": 2,
+    "security_options": [
+      "apparmor",
+      "seccomp default profile",
+      "cgroupns"
+    ],
+    "warnings": null,
+    "compose_version": "2.40.3+ds1-0ubuntu1",
+    "source": "operator-pasted read-only docker info and compose version output",
+    "minimum_version_review": "passed; exceeds Engine 24+/Compose 2.24+ plan"
+  },
+  "execution_access": {
+    "checked_after_approval": true,
+    "aws_connector": false,
+    "aws_cli": false,
+    "usable_aws_identity": false,
+    "ssh_config": false,
+    "ssh_keys": false,
+    "ssh_agent": false,
+    "credentials_installed_or_changed": false,
+    "ec2_commands_executed": 0
+  },
+  "approval": {
+    "received": "2026-11-08",
+    "user_response": "yes",
+    "scope": "maximum 30-minute isolated 500M QA, dedicated resources and new QA owner only; reviewed scoped policy; 8 GiB, 2 vCPU, one job; conditional on collision, actual quota and network preflight",
+    "global_or_production_authorized": false
+  },
+  "protected_upload_post_approval_readonly_check": {
+    "read_only": true,
+    "status": "queued",
+    "attempts": 0,
+    "lease_token": null,
+    "lease_until": null,
+    "cancel_requested": false,
+    "row_matches_previous_snapshot": true
+  },
+  "operator_admission_recheck": {
+    "source": "operator-pasted inline read-only Python and Docker/iptables output after QA approval",
+    "measurement_timestamp": "not supplied",
+    "instance_id": "i-0be10e530045fc650",
+    "cpus": 8,
+    "memtotal_kib": 32308560,
+    "memavailable_kib": 31207124,
+    "swap_kib": 0,
+    "disk_free_gib": 52.2,
+    "uid_62001_in_use": false,
+    "gid_62001_in_use": false,
+    "reserved_paths_exist": {
+      "/var/lib/noetharaclipz-isolated": false,
+      "/etc/noetharaclipz-isolated": false,
+      "/sys/class/net/nccz-qa0": false
+    },
+    "running_containers": 6,
+    "existing_container_ids_unchanged": true,
+    "combined_container_memory_mib_approx": 409.87,
+    "cpu_snapshot": "0.04% rest, 0.01% kong, other listed containers 0.00%",
+    "published_bindings_shown": "loopback-only",
+    "docker_networks": [
+      "bridge",
+      "host",
+      "noethara-ec2-staging_default",
+      "noethara-v15-supabase-loopback",
+      "none"
+    ],
+    "firewall": {
+      "input_policy": "ACCEPT",
+      "forward_policy": "DROP",
+      "output_policy": "ACCEPT",
+      "docker_user_chain": "exists, empty",
+      "NCZQA_EGRESS_exists": false
+    },
+    "review": "capacity and listed UID/GID/path/bridge/firewall-chain collision checks pass for bounded QA; not proof of container quotas or egress enforcement",
+    "not_observed": [
+      "stopped Compose-project container collisions",
+      "actual seed/worker cgroup limits",
+      "actual worker network allow/deny behavior",
+      "EC2 QA processing"
+    ]
+  },
+  "transfer_attempt": {
+    "operator_access": "SSM terminal only",
+    "repository_private": true,
+    "image_sha256_rechecked": true,
+    "archive_sha256": "29afebf52f7e4edca43282405941f9b636611ad8bb36cb1126f7ef1275ce41b9",
+    "temporary_github_release_id": 438521804,
+    "release_was_draft": true,
+    "asset_upload_endpoint": "uploads.github.com",
+    "asset_upload_result": "HTTP 401 Bad credentials",
+    "assets_uploaded": 0,
+    "release_published": false,
+    "empty_draft_deleted": true,
+    "remaining_release_list_empty": true,
+    "credentials_installed_or_changed": false,
+    "new_paid_services": false
+  },
+  "artifact_transfer_evidence": "private-worker-transfer.json",
+  "runtime_content_config_digest": "sha256:32fd88495ceab2c59ab7bc6a0c7980c1003d9b4b6eea507131783a24be4b88a5",
+  "ec2_oci_runtime_reference": "sha256:472913bf34e918c48e5b77a56c4ea2dfd31873bdd79ecc2d1c4e7ab4cf3e5759",
+  "runtime_preflight_evidence": "ec2-runtime-preflight.json"
+}

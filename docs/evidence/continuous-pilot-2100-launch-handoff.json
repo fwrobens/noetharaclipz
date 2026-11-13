@@ -1,0 +1,19 @@
+{
+  "prepared_utc": "2026-11-09T20:54:30.282588+00:00",
+  "source_commit": "a49bc7adf7804e475386afc204385e3634e5f3c6",
+  "payload_sha256": "71327b36bf6fbdc6e92cf3a4aed7eb46d796e9a260a1f2c88d31711ab2ba320e",
+  "payload_bytes": 16279,
+  "launcher_python_sha256": "20095125342c7437b4de47290e6bd00b3466d49f2868bb73dabd4abbf6e2632f",
+  "active_manifest_sha256": "0903df1cfcb68f120877ca1088f4608584bc1bddebbb1b9b4ddb41725ec3792f",
+  "object": "_worker-transfer/24c16467-cc0f-4b76-88e8-1ec1484d3187/authorized-pilot-2100.json",
+  "signed_readback_verified": true,
+  "public_unsigned_http_status": 400,
+  "approval_authorized": true,
+  "startup_authorized": true,
+  "operator_rpc_applied": false,
+  "worker_started": false,
+  "issue_not_before_utc": "2026-11-09T21:00:00Z",
+  "fixed_stop_utc": "2026-11-09T21:30:00Z",
+  "normal_website_acceptance_pending": true,
+  "launch_local_tests_passed": 10
+}

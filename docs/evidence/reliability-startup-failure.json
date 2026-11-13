@@ -1,0 +1,88 @@
+{
+  "schema": 1,
+  "provenance": "Operator-pasted EC2 controller, journal and read-only firewall output in this chat; no direct AWS connection is available to Codex.",
+  "trial_id": "bebbf5ad-094f-4b6f-964f-c7ac22e1f760",
+  "plan_sha256": "f61e6a59341a82bfb136a098f9fd0465590cad727b31a8f7170bb3d8c9630947",
+  "authorization": {
+    "separately_authorized": true,
+    "approved_at_unix": 1794200550,
+    "stop_at_unix": 1794202350,
+    "deadline_utc": "2026-11-09T05:32:30Z",
+    "deadline_extended": false
+  },
+  "container_id": "af5b1136b2c734fd0c67e26918cb9d415af370db297c4d8250d2f8860ef4301d",
+  "image": "sha256:472913bf34e918c48e5b77a56c4ea2dfd31873bdd79ecc2d1c4e7ab4cf3e5759",
+  "operator_final_report": {
+    "stage": "closed",
+    "error_type": "ValueError",
+    "cleanup_error_type": null,
+    "network_generations_verified": 0,
+    "global_processing": false,
+    "state": {
+      "Status": "exited",
+      "Running": false,
+      "ExitCode": 0,
+      "OOMKilled": false,
+      "StartedAt": "2026-11-09T05:07:19.254948936Z",
+      "FinishedAt": "2026-11-09T05:07:23.150744756Z"
+    },
+    "restart_count": 0,
+    "existing_services_unchanged": true,
+    "old_container_untouched": true,
+    "protected_upload_unchanged": true,
+    "crash_verification": {"injected": false},
+    "resource_coverage_complete": false,
+    "metrics": {
+      "sample_count": 3,
+      "peak_memory_bytes": 26980352,
+      "sampled_peak_cpu_percent": 32.68374948038258,
+      "total_cpu_seconds": 0.704408,
+      "final_snapshots_complete": false,
+      "cpu_peak_is_sampled_not_instantaneous": true,
+      "limitation": "Startup-gate activity only. No model loaded or job processed; these are not inference benchmarks. Final-snapshot coverage was incomplete."
+    }
+  },
+  "journal_failure": {
+    "utc": "2026-11-09T05:07:23Z",
+    "unit": "nccz-reliability-bebbf5ad094f",
+    "error_type": "ValueError",
+    "details": "Network denial lacks a matching scoped rejection counter",
+    "service_exit_status": 1
+  },
+  "operator_diagnostics": {
+    "firewall_matches_admission": true,
+    "docker_events_returned": 0,
+    "event_retention_complete": false,
+    "filter_reject_packets": {
+      "NCZQA_EGRESS_169.254.0.0/16": 1,
+      "NCZQA_EGRESS_172.16.0.0/12": 3,
+      "NCZQA_EGRESS_final": 2,
+      "INPUT_nccz-qa0": 2
+    },
+    "raw_prerouting_rules": [
+      "-P PREROUTING ACCEPT",
+      "-P OUTPUT ACCEPT",
+      "-A PREROUTING -d 172.19.0.2/32 ! -i br-42232e0aef70 -j DROP",
+      "-A PREROUTING -d 172.18.0.2/32 ! -i br-e589eb5e511a -j DROP",
+      "-A PREROUTING -d 172.19.0.3/32 ! -i br-42232e0aef70 -j DROP",
+      "-A PREROUTING -d 172.19.0.5/32 ! -i br-42232e0aef70 -j DROP",
+      "-A PREROUTING -d 127.0.0.1/32 ! -i lo -p tcp -m tcp --dport 8080 -j DROP",
+      "-A PREROUTING -d 172.19.0.6/32 ! -i br-42232e0aef70 -j DROP",
+      "-A PREROUTING -d 127.0.0.1/32 ! -i lo -p tcp -m tcp --dport 54324 -j DROP",
+      "-A PREROUTING -d 127.0.0.1/32 ! -i lo -p tcp -m tcp --dport 54321 -j DROP",
+      "-A PREROUTING -d 127.0.0.1/32 ! -i lo -p tcp -m tcp --dport 54322 -j DROP",
+      "-A PREROUTING -d 172.19.0.4/32 ! -i br-42232e0aef70 -j DROP"
+    ]
+  },
+  "diagnosis": {
+    "failed_target_inferred_from_probe_order": "staging 172.18.0.2:8080",
+    "failed_target_was_not_saved_by_old_controller": true,
+    "cause": "Docker raw PREROUTING drops packets addressed to live container IPs arriving outside their bridge before the filter-table worker REJECT counter. The first target was a live staging IP, so blocking alone could not satisfy the counter check.",
+    "correction": "Use unused private-subnet probe addresses as in the earlier successful preflight. Read-only checks reject allocated or raw-shadowed destinations; every target still needs a matching scoped counter increase. Save partial attempt reports on failure.",
+    "network_rules_changed": false,
+    "failed_trial_configuration_overwritten": false,
+    "failed_container_restarted": false,
+    "long_sample_processed": false,
+    "live_crash_recovery_verified": false
+  }
+}

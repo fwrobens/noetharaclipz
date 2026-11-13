@@ -1,0 +1,98 @@
+{
+  "baseline_commit": "0a306ef",
+  "target": {
+    "instance_id": "i-0be10e530045fc650",
+    "type": "t2.xlarge",
+    "vcpu": 4,
+    "ram_gib": 16,
+    "free_disk_gb_approx": 53,
+    "source": "user supplied; not live host inspection"
+  },
+  "aws_access": {
+    "connector_available": false,
+    "outbound_identities": 0,
+    "configured_profile": "__oai_no_aws_identity__",
+    "config_and_credentials_files_empty": true,
+    "aws_cli_present": false,
+    "remote_operations_performed": [],
+    "existing_capacity_suitability": "unverified pending read-only identity and host capacity history"
+  },
+  "deployment_status": "prepared_locally_not_deployed",
+  "production_model": "SmolVLM2-500M float32",
+  "container_limits": {
+    "cpus": 2,
+    "memory_bytes": 8589934592,
+    "swap_enabled": false,
+    "active_jobs": 1,
+    "default_mode": "standby",
+    "ports": []
+  },
+  "local_benchmark": {
+    "source": "authorized SuperTuxKart gameplay, CC BY-SA 4.0",
+    "source_interval": [
+      20,
+      50
+    ],
+    "candidate_windows": 4,
+    "executor_cpu": "AMD EPYC 9V74 80-Core Processor; not EC2 T2 hardware",
+    "500m_status": "completed",
+    "500m_seconds": 54.784,
+    "500m_peak_rss_bytes": 3061641216,
+    "2.2b_status": "safety-aborted during BF16 loading",
+    "2.2b_seconds_until_abort": 11.045,
+    "2.2b_peak_rss_bytes": 7914926080,
+    "2.2b_inference_speed_and_quality": "unavailable; model never finished loading",
+    "raw": "worker-container-benchmark/",
+    "hard_kernel_8gib_2cpu_cap_verified": false
+  },
+  "pricing": {
+    "sources": [
+      "https://aws.amazon.com/ec2/instance-types/t2/",
+      "https://aws.amazon.com/ec2/pricing/on-demand/"
+    ],
+    "published_t2xlarge_hourly_linux_illustration_usd": 0.1856,
+    "illustrative_730hour_month_usd": 135.49,
+    "credits_earned_per_hour": 54,
+    "linux_unlimited_surplus_vcpu_hour_usd": 0.05,
+    "possible_incremental_credit_cost_2cpu_continuous_usd_month": [
+      40.15,
+      73.0
+    ],
+    "actual_region_credit_mode_balance_discounts_and_cost": "unverified",
+    "new_infrastructure_created": false
+  },
+  "protected_job_row_identical_to_prior_snapshot": true,
+  "protected_job_status": {
+    "status": "queued",
+    "attempts": 0,
+    "lease_token": null,
+    "lease_until": null,
+    "cancel_requested": false
+  },
+  "supabase_jobs_claimed": 0,
+  "ec2_worker_started": false,
+  "global_consumer_started": false,
+  "gemini_inference_enabled": false,
+  "paid_infrastructure_activated": false,
+  "merged": false,
+  "published": false,
+  "verification": {
+    "worker_tests": 74,
+    "worker_skipped": 0,
+    "worker_seconds": 36.76,
+    "deployment_guard_tests": 14,
+    "ruff": "passed",
+    "compose_validation": "passed",
+    "final_image_build_and_pip_check": "passed",
+    "local_container_smoke": "lifecycle/requested configuration passed; actual kernel quota enforcement unverified on rootless executor",
+    "ec2_deployment_test": "not authorized or performed"
+  },
+  "artifact": {
+    "image_id": "sha256:32fd88495ceab2c59ab7bc6a0c7980c1003d9b4b6eea507131783a24be4b88a5",
+    "local_archive": "test-results/noetharaclipz-worker-review.tar.gz",
+    "archive_bytes": 762913897,
+    "archive_sha256": "29afebf52f7e4edca43282405941f9b636611ad8bb36cb1126f7ef1275ce41b9",
+    "uploaded_to_aws_or_registry": false
+  },
+  "local_kernel_quota_validation_correction": "local-cgroup-validation-correction.json"
+}

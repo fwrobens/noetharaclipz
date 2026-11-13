@@ -1,3 +1,4 @@
+import { requireAuth } from "@/lib/auth";
 import { createFileRoute } from "@tanstack/react-router";
 import { Folder } from "lucide-react";
 import { useStore } from "@/lib/store";
@@ -5,6 +6,7 @@ import { VideoCard } from "@/components/VideoCard";
 import { PageHeader } from "@/components/Page";
 
 export const Route = createFileRoute("/projects")({
+  beforeLoad: requireAuth,
   head: () => ({
     meta: [
       { property: "og:type", content: "website" },
@@ -29,11 +31,20 @@ function ProjectsPage() {
           const list = projects.filter((p) => !p.deleted && p.folder === f);
           return (
             <section key={f}>
-              <h2 className="mb-3 flex items-center gap-2 text-base font-semibold"><Folder className="h-4 w-4 text-primary" /> {f} <span className="text-sm font-normal text-muted-foreground">· {list.length}</span></h2>
+              <h2 className="mb-3 flex items-center gap-2 text-base font-semibold">
+                <Folder className="h-4 w-4 text-primary" /> {f}{" "}
+                <span className="text-sm font-normal text-muted-foreground">· {list.length}</span>
+              </h2>
               {list.length ? (
-                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">{list.map((p) => <VideoCard key={p.id} p={p} />)}</div>
+                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                  {list.map((p) => (
+                    <VideoCard key={p.id} p={p} />
+                  ))}
+                </div>
               ) : (
-                <p className="rounded-2xl border border-dashed p-6 text-sm text-muted-foreground">No projects in this folder yet.</p>
+                <p className="rounded-2xl border border-dashed p-6 text-sm text-muted-foreground">
+                  No projects in this folder yet.
+                </p>
               )}
             </section>
           );

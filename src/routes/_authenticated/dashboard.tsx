@@ -41,7 +41,10 @@ function StudioPage() {
             <Brand />
           </div>
           <h1 className="text-[1.9rem] font-medium leading-tight tracking-[-0.035em] sm:text-5xl">
-            What should we clip, <span className="font-display italic text-ember">{firstName}?</span>
+            What should we clip,{" "}
+            <span className="font-display italic text-ember [overflow-wrap:anywhere]">
+              {firstName}?
+            </span>
           </h1>
           <p className="mx-auto mt-3 max-w-md text-sm text-muted-foreground sm:text-base">
             Attach a recording and describe the moments you want. AI does the rest.

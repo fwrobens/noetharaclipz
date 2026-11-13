@@ -1,0 +1,27 @@
+{
+  "first_attempt": {
+    "stage": "website_acceptance_failed",
+    "passed": false,
+    "created_processing_job": false,
+    "failure": "Local Node development server SSR authentication lacked NODE_USE_ENV_PROXY=1; failed at Library before upload"
+  },
+  "correction": {
+    "local_test_server_only": true,
+    "NODE_USE_ENV_PROXY": "1",
+    "extra_ca_trust_preserved": true,
+    "frontend_or_worker_source_changed": false,
+    "ec2_worker_restarted": false
+  },
+  "retry": {
+    "normal_ui_passed": true,
+    "evidence": "continuous-pilot-2100-browser.json",
+    "analysis_seconds": 165.848,
+    "complete_seconds": 192.495,
+    "fresh_local_inference_tokens": 3711,
+    "analysis_cache_hit": false,
+    "output_bytes": 2044140,
+    "output_sha256": "971241b594bc54bb617d5b753e2ab32f3cce64a31cc00fa79cf0599ee949e8e5"
+  },
+  "operator_fixed_expiry_utc": "2026-11-09T21:30:00Z",
+  "deadline_extended": false
+}

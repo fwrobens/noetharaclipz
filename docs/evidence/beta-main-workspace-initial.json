@@ -1,0 +1,45 @@
+{
+  "checked_utc": "2026-11-11T10:52:18.943920+00:00",
+  "origin": "http://127.0.0.1:8082",
+  "local_production_runtime": true,
+  "native_qa_sessions": true,
+  "uninvited_dashboard_status": 403,
+  "observations": [
+    {
+      "viewport": 390,
+      "dashboard_and_refresh": true,
+      "real_saved_project_and_editor": true,
+      "saved_trim_survives_refresh": true,
+      "normal_export_dialog": true,
+      "existing_private_download": {
+        "bytes": 2044140,
+        "sha256": "cf4670c8baaa209384a207f63140db92aa0b936494b783449b1885af19db50e3"
+      },
+      "pending_consent_survives_refresh": true,
+      "browser_errors": 0,
+      "mobile_overflow": false
+    },
+    {
+      "viewport": 1440,
+      "dashboard_and_refresh": true,
+      "real_saved_project_and_editor": true,
+      "saved_trim_survives_refresh": true,
+      "normal_export_dialog": true,
+      "existing_private_download": {
+        "bytes": 2044140,
+        "sha256": "cf4670c8baaa209384a207f63140db92aa0b936494b783449b1885af19db50e3"
+      },
+      "pending_consent_survives_refresh": true,
+      "browser_errors": 0,
+      "mobile_overflow": false
+    }
+  ],
+  "new_jobs": 0,
+  "edits_saved_by_check": 0,
+  "consent_mutations": 0,
+  "new_inference_verified": false,
+  "hosted_acceptance_passed": false,
+  "release_eligible": false,
+  "verification_scope": "Initial integrated main design in local workerd, before final clean source/artifact seal; final identities are attached to Draft PR #1.",
+  "superseded_platform_logo_route": "Exact original logo is now bundled; all image-load assertions are included in final verification."
+}

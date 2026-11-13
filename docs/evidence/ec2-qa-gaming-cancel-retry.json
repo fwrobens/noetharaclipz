@@ -1,0 +1,120 @@
+{
+  "passed": true,
+  "source_sha256": "1a9326264a3c8ef29db2dfadb818725b06ecd5bc7caf0ddd54dafd9fcb8080b5",
+  "project_id": "be22cb59-9eda-45f3-a548-0a32cc6fadb6",
+  "cancellation": {
+    "job_id": "d777a5ce-2e21-459a-9eba-0665f7aa906c",
+    "attempts": 1,
+    "acknowledged_seconds": 10.409,
+    "during_local_analysis": true,
+    "status": "cancelled",
+    "retry_attempts": 2
+  },
+  "upload_and_analysis_seconds": 104.159,
+  "usage": [
+    {
+      "id": "568043f2-f3c8-4ba4-ad02-46e9458c9230",
+      "job_id": "d777a5ce-2e21-459a-9eba-0665f7aa906c",
+      "project_id": "be22cb59-9eda-45f3-a548-0a32cc6fadb6",
+      "request_key": "local:d777a5ce-2e21-459a-9eba-0665f7aa906c",
+      "provider": "local-smolvlm2",
+      "model": "HuggingFaceTB/SmolVLM2-500M-Video-Instruct@7b375e1b73b11138ff12fe22c8f2822d8fe03467",
+      "status": "completed",
+      "input_tokens": 4192,
+      "output_tokens": 19,
+      "estimated_cost": 0,
+      "created_at": "2026-11-09T00:32:14.38154+00:00"
+    }
+  ],
+  "provider_model": "HuggingFaceTB/SmolVLM2-500M-Video-Instruct@7b375e1b73b11138ff12fe22c8f2822d8fe03467",
+  "local_metrics": {
+    "admission_rejected": false,
+    "analysis_cache_hit": false,
+    "prepared_cache_hit": true,
+    "transcript_cache_hit": true,
+    "source_inference_input_tokens": 4192
+  },
+  "model_evidence": {
+    "decision": {
+      "choice": "E",
+      "relative_choice_scores": {
+        "A": 0.04715697839856148,
+        "B": 0.010876891203224659,
+        "C": 0.03378694877028465,
+        "D": 0.04048362001776695,
+        "E": 0.23483990132808685,
+        "F": 0.19665876030921936,
+        "G": 0.20597881078720093,
+        "H": 0.19251517951488495,
+        "Z": 0.03770285099744797
+      },
+      "video_tensor_shape": [
+        8,
+        4,
+        3,
+        512,
+        512
+      ],
+      "input_tokens": 3823,
+      "video_tensor_sha256": "ed241a4f0c98cdbb19f205e0e9a981290422e1ac6fee47f30369ad4d9f70d332",
+      "model_window": [
+        36.6,
+        46.6
+      ],
+      "speech_completed_interval": [
+        36.6,
+        46.6
+      ]
+    },
+    "source_hash": "1a9326264a3c8ef29db2dfadb818725b06ecd5bc7caf0ddd54dafd9fcb8080b5",
+    "hosted_inference": false,
+    "original_inference_usage": {
+      "input_tokens": 4192,
+      "output_tokens": 19
+    }
+  },
+  "provider": "local-smolvlm2",
+  "analysis_job_id": "d777a5ce-2e21-459a-9eba-0665f7aa906c",
+  "render_job_id": "7f3cfe51-714a-47bd-b016-3eafb3ba95f1",
+  "analysis_attempts": 2,
+  "render_attempts": 1,
+  "highlights": [
+    {
+      "id": "01eb3d5b-c20b-4e77-bee6-ff8b8b028389",
+      "project_id": "be22cb59-9eda-45f3-a548-0a32cc6fadb6",
+      "start_time": 36.6,
+      "end_time": 46.6,
+      "title": "Visual moment at 36.6s",
+      "category": "Other",
+      "score": 23,
+      "explanation": "Timestamped speech excerpt: No complete ASR words inside this interval. Local multimodal model chose candidate E among 8 actual videos plus a none option. Measured evidence: 0 speech segments, 21 audio events, 6 scene boundaries. Scores are relative choices, not calibrated quality or virality.",
+      "evidence": {
+        "visual": "Four decoded frames per candidate; selected interval with measured speech context 36.600\u201346.600s. Comparison tensor SHA256 ed241a4f0c98cdbb19f205e0e9a981290422e1ac6fee47f30369ad4d9f70d332."
+      },
+      "created_at": "2026-11-09T00:32:14.38154+00:00"
+    }
+  ],
+  "clip_id": "44f26676-854d-47f3-af51-c51859a5969e",
+  "persisted_edit": {
+    "end": 46.6,
+    "font": "Instrument Sans",
+    "ratio": "9:16",
+    "start": 36.7,
+    "crop_x": 0.5,
+    "crop_y": 0.5,
+    "volume": 1,
+    "version": 1,
+    "captions": true,
+    "caption_size": 28,
+    "caption_color": "#FFFFFF",
+    "caption_style": "Bold pop",
+    "caption_overrides": {}
+  },
+  "output_path": "c7ade7f9-2003-4a38-ae19-393fffae8452/be22cb59-9eda-45f3-a548-0a32cc6fadb6/7f3cfe51-714a-47bd-b016-3eafb3ba95f1.mp4",
+  "output_bytes": 3645799,
+  "output_sha256": "8cdac207c42fd070b1273caaa2082ca6751b82a00697b7299fd7997df2dec91f",
+  "output_duration": 9.9,
+  "elapsed_seconds": 128.66,
+  "unhandled_browser_errors": [],
+  "ui_steps": "login, upload, instructions, generate, select, edit, save, refresh, Export button, Download MP4 button"
+}

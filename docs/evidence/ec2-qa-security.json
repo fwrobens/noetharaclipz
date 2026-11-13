@@ -1,0 +1,25 @@
+{
+  "passed": true,
+  "checked_unix": 1794185056,
+  "checks": {
+    "anonymous_privileged_operations_denied": {
+      "worker_protocol": 401,
+      "worker_claim_scoped": 401
+    },
+    "authenticated_qa_privileged_operations_denied": {
+      "worker_protocol": 403,
+      "worker_claim_scoped": 403
+    },
+    "cross_owner_rows_hidden": true,
+    "cross_owner_private_source_download_and_signing_denied": true,
+    "anonymous_and_public_rendered_file_access_denied": true,
+    "authenticated_owner_private_download_permitted": true,
+    "duplicate_export_returns_existing_completed_job": true,
+    "browser_cannot_forge_worker_completion": true,
+    "invalid_upload_size_mime_and_prompt_rejected_without_creating_projects": true,
+    "actual_local_provenance_and_zero_recorded_provider_cost": true,
+    "protected_original_row_identical_queued_zero_attempts": true
+  },
+  "one_existing_qa_owner": true,
+  "new_accounts_or_workers": false
+}

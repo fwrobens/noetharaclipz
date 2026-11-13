@@ -1,0 +1,80 @@
+{
+  "checked_utc": "2026-11-09T05:50:50.878401+00:00",
+  "read_only": true,
+  "trial_id": "f3fc3665-76e9-4cc5-b6e6-2c437873a6a4",
+  "qa_owner_id": "07ad237e-669b-475d-871d-9bdb6e80f062",
+  "qa_projects": [
+    {
+      "id": "010bb2e2-f371-4892-b9ba-58e6dd6a1e7a",
+      "jobs": [
+        {
+          "id": "d19af413-3046-4765-8319-30bdd95eec8a",
+          "kind": "analysis",
+          "status": "completed",
+          "attempts": 2,
+          "cancel_requested": false
+        },
+        {
+          "id": "9164a894-3511-4a49-98b5-70b3f5bda100",
+          "kind": "render",
+          "status": "completed",
+          "attempts": 1,
+          "cancel_requested": false
+        }
+      ],
+      "usage": [
+        {
+          "provider": "local-smolvlm2",
+          "model": "HuggingFaceTB/SmolVLM2-500M-Video-Instruct@7b375e1b73b11138ff12fe22c8f2822d8fe03467",
+          "status": "completed",
+          "input_tokens": 3711,
+          "output_tokens": 12,
+          "estimated_cost": 0
+        }
+      ],
+      "highlight_count": 1,
+      "clip_count": 1
+    },
+    {
+      "id": "05023304-2d96-40d0-b82c-184eab2ddca2",
+      "jobs": [
+        {
+          "id": "f13a8cbe-bde7-479e-a722-88def4d7dde4",
+          "kind": "analysis",
+          "status": "completed",
+          "attempts": 1,
+          "cancel_requested": false
+        },
+        {
+          "id": "8f124b56-1c07-4427-a1fe-60b6dccd6f60",
+          "kind": "render",
+          "status": "completed",
+          "attempts": 1,
+          "cancel_requested": false
+        }
+      ],
+      "usage": [
+        {
+          "provider": "local-smolvlm2",
+          "model": "HuggingFaceTB/SmolVLM2-500M-Video-Instruct@7b375e1b73b11138ff12fe22c8f2822d8fe03467",
+          "status": "completed",
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "estimated_cost": 0
+        }
+      ],
+      "highlight_count": 1,
+      "clip_count": 1
+    }
+  ],
+  "active_unfinished_leases": 0,
+  "protected_job": {
+    "id": "9c5c8869-ec2e-4a3e-927d-697615bb58a3",
+    "status": "queued",
+    "attempts": 0,
+    "whole_row_identical": true,
+    "lease_token_absent": true,
+    "lease_until_absent": true,
+    "cancel_requested": false
+  }
+}

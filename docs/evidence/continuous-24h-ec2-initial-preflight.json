@@ -1,0 +1,68 @@
+{
+  "provenance": {
+    "kind": "operator_pasted_read_only_collector",
+    "normalized_material_fields": true,
+    "direct_ec2_connection": false
+  },
+  "checked_utc": "2026-11-09T22:23:24.810775+00:00",
+  "received_utc": "2026-11-09T22:23:20.219088+00:00",
+  "deployment_id": "c25d8492-56fb-4c56-a519-e9a9e4246525",
+  "instance_id": "i-0be10e530045fc650",
+  "host_preparation_checks_passed": false,
+  "checks_passed": 22,
+  "checks_total": 23,
+  "failed_check": "both_units_loaded_from_reviewed_files",
+  "failure_details": {
+    "pinned_unit_files": true,
+    "fragment_paths_correct": true,
+    "need_daemon_reload": "no",
+    "DropInPaths": null,
+    "diagnosis": "systemctl show omits empty properties unless --all; require explicit empty value rather than infer it"
+  },
+  "host_cpu_count": 8,
+  "memory_bytes": {
+    "MemTotal": 33083965440,
+    "MemAvailable": 30902091776,
+    "SwapTotal": 0
+  },
+  "free_disk_bytes": 49007652864,
+  "load_average": [
+    0.013671875,
+    0.01171875,
+    0.0
+  ],
+  "docker": {
+    "version": "29.1.3",
+    "cgroup": "2",
+    "security_options": [
+      "name=apparmor",
+      "name=seccomp,profile=builtin",
+      "name=cgroupns"
+    ]
+  },
+  "existing_six_services_unchanged_and_healthy": true,
+  "rest_container_has_no_healthcheck": true,
+  "four_previous_containers_stopped": true,
+  "previous_evidence": {
+    "files": 46,
+    "sha256": "f42143987246ba8f4796dd3bdb9a1a7399c0c9b7c36c4140542c887e910e7416"
+  },
+  "both_units_disabled_at_boot": true,
+  "worker_active": "inactive",
+  "isolation_active": "active",
+  "previous_grant_absent": true,
+  "firewall_fingerprint": "4489b256c620398c44a4d1c66a75ee60319444c27d072dc24e81a87d5d5b102b",
+  "model_weights": {
+    "smolvlm2_500m": "b9bfd456c9472c0acd5719d6e514c4b859891af205ee1a736552fd3497b8b0c3",
+    "whisper_small": "3e305921506d8872816023e4c273e75d2419fb89b24da97b4fe7bce14170d671"
+  },
+  "model_weight_hashes_match": true,
+  "source_files_verified": 25,
+  "unit_files_verified": 2,
+  "worker_started": false,
+  "operator_approval_issued": false,
+  "credential_contents_read": false,
+  "network_rules_changed": false,
+  "unit_files_changed": false,
+  "initial_report_retained_on_ec2": true
+}

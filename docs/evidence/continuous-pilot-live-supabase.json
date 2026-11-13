@@ -1,0 +1,45 @@
+{
+  "checked_utc": "2026-11-09T13:09:48.919197+00:00",
+  "read_only": true,
+  "migration_version_reported_by_owner": "20261109124958_continuous_worker_consent",
+  "migration_reapplied": false,
+  "protocol_http_status": 200,
+  "protocol": {
+    "audit": true,
+    "version": 2,
+    "contract": "future-jobs-only-v1",
+    "provider": "local-smolvlm2",
+    "revocable": true,
+    "global_claim": false,
+    "job_exclusions": true,
+    "future_jobs_only": true
+  },
+  "protected_upload": {
+    "id": "9c5c8869-ec2e-4a3e-927d-697615bb58a3",
+    "status": "queued",
+    "attempts": 0,
+    "whole_row_sha256": "deac9a0a9f311218fce3c531def81e1a3f92ff11e82132701a06e366d545dbdb",
+    "unchanged_from_original": true,
+    "leased": false,
+    "cancelled": false
+  },
+  "anonymous_privileged_protocol_http_status": 401,
+  "post_consent_checked_utc": "2026-11-09T13:20:01.368351+00:00",
+  "protected_upload_after_consent": {
+    "id": "9c5c8869-ec2e-4a3e-927d-697615bb58a3",
+    "status": "queued",
+    "attempts": 0,
+    "whole_row_sha256": "deac9a0a9f311218fce3c531def81e1a3f92ff11e82132701a06e366d545dbdb",
+    "unchanged": true
+  },
+  "pilot_status": {
+    "owner_id": "21b61ad1-bda4-4abd-ac35-7a0bf477ed69",
+    "authorized": false,
+    "consent_id": "4426bdad-bc7a-4972-ace2-ae65ac3f9fa4",
+    "expires_at": null,
+    "approved_at": null,
+    "future_jobs_only": true
+  },
+  "pilot_projects_count": 0,
+  "pilot_processing_jobs_count": 0
+}

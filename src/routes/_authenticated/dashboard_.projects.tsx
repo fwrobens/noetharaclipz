@@ -16,7 +16,10 @@ import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/_authenticated/dashboard_/projects")({
   head: () =>
-    pageHead("Projects — Creator studio", "Browse, search and review all your Noethara Clipz projects."),
+    pageHead(
+      "Projects — Creator studio",
+      "Browse, search and review all your Noethara Clipz projects.",
+    ),
   loader: ({ context }) => context.queryClient.ensureQueryData(creatorQuery()),
   pendingComponent: DashboardLoading,
   pendingMs: 300,
@@ -36,9 +39,11 @@ function ProjectsPage() {
   const visible = useMemo(() => {
     const query = search.trim().toLowerCase();
     return projects.filter((project) => {
-      const text = `${project.title} ${project.source_platform} ${project.instructions}`.toLowerCase();
+      const text =
+        `${project.title} ${project.source_platform} ${project.instructions}`.toLowerCase();
       const matchesFilter =
-        filter === "all" || (filter === "ready" ? project.status === "ready" : isProjectActive(project));
+        filter === "all" ||
+        (filter === "ready" ? project.status === "ready" : isProjectActive(project));
       return (!query || text.includes(query)) && matchesFilter;
     });
   }, [filter, projects, search]);
@@ -66,7 +71,11 @@ function ProjectsPage() {
                   : "border-border bg-card text-muted-foreground hover:text-foreground",
               )}
             >
-              {value === "all" ? `All · ${projects.length}` : value === "ready" ? "Ready" : "In progress"}
+              {value === "all"
+                ? `All · ${projects.length}`
+                : value === "ready"
+                  ? "Ready"
+                  : "In progress"}
             </button>
           ))}
         </div>
@@ -75,7 +84,12 @@ function ProjectsPage() {
       {visible.length ? (
         <div className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
           {visible.map((project, index) => (
-            <ProjectCard key={project.id} project={project} index={index} onOpen={() => setSelectedId(project.id)} />
+            <ProjectCard
+              key={project.id}
+              project={project}
+              index={index}
+              onOpen={() => setSelectedId(project.id)}
+            />
           ))}
         </div>
       ) : (
@@ -83,9 +97,13 @@ function ProjectsPage() {
           <span className="grid h-14 w-14 place-items-center rounded-2xl border border-ember/20 bg-ember/10 text-ember shadow-pop">
             {filtered ? <SearchX className="h-6 w-6" /> : <Film className="h-6 w-6" />}
           </span>
-          <h3 className="mt-5 text-lg font-medium">{filtered ? "No matching projects" : "No projects yet"}</h3>
+          <h3 className="mt-5 text-lg font-medium">
+            {filtered ? "No matching projects" : "No projects yet"}
+          </h3>
           <p className="mt-2 max-w-sm text-sm text-muted-foreground">
-            {filtered ? "Try another search or filter." : "Upload a recording and let AI find your best moments."}
+            {filtered
+              ? "Try another search or filter."
+              : "Upload a recording and let AI find your best moments."}
           </p>
           {filtered ? (
             <button

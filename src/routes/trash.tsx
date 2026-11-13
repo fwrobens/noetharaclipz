@@ -1,3 +1,4 @@
+import { requireAuth } from "@/lib/auth";
 import { createFileRoute } from "@tanstack/react-router";
 import { RotateCcw } from "lucide-react";
 import { toast } from "sonner";
@@ -5,6 +6,7 @@ import { useStore } from "@/lib/store";
 import { PageHeader, EmptyState } from "@/components/Page";
 
 export const Route = createFileRoute("/trash")({
+  beforeLoad: requireAuth,
   head: () => ({
     meta: [
       { property: "og:type", content: "website" },
@@ -27,10 +29,20 @@ function Trash() {
       {list.length ? (
         <div className="space-y-3">
           {list.map((p) => (
-            <div key={p.id} className="flex items-center gap-3 rounded-2xl border bg-card p-3 shadow-soft">
+            <div
+              key={p.id}
+              className="flex items-center gap-3 rounded-2xl border bg-card p-3 shadow-soft"
+            >
               <img src={p.thumb} alt="" className="h-14 w-24 shrink-0 rounded-lg object-cover" />
               <p className="min-w-0 flex-1 truncate text-sm font-medium">{p.title}</p>
-              <button onClick={() => { setDeleted(p.id, false); toast.success("Restored"); }} className="flex shrink-0 items-center gap-1.5 rounded-xl border px-3 py-1.5 text-sm shadow-soft hover:shadow-pop">
+              <button
+                onClick={() =>
+                  void setDeleted(p.id, false)
+                    .then(() => toast.success("Restored"))
+                    .catch((e) => toast.error(e.message))
+                }
+                className="flex shrink-0 items-center gap-1.5 rounded-xl border px-3 py-1.5 text-sm shadow-soft hover:shadow-pop"
+              >
                 <RotateCcw className="h-4 w-4" /> Restore
               </button>
             </div>

@@ -1,0 +1,83 @@
+{
+  "schema": 1,
+  "status": "fresh_owner_consented_operator_unapproved",
+  "deployment_id": "8269d26c-3a07-4822-ab78-5e78b3697c12",
+  "owner_id": "21b61ad1-bda4-4abd-ac35-7a0bf477ed69",
+  "consent_id": "0e8f4eb3-53a9-4ad0-8aa0-d0b0a19dc2a2",
+  "proposed_window_utc": {
+    "start": "2026-11-12T09:00:00Z",
+    "stop": "2026-11-12T11:00:00Z"
+  },
+  "duration_seconds": 7200,
+  "provider": "local-smolvlm2",
+  "instance_id": "i-0be10e530045fc650",
+  "instance_type": "m6i.2xlarge",
+  "region": "us-east-2",
+  "image": "sha256:472913bf34e918c48e5b77a56c4ea2dfd31873bdd79ecc2d1c4e7ab4cf3e5759",
+  "model": "HuggingFaceTB/SmolVLM2-500M-Video-Instruct",
+  "memory_bytes": 8589934592,
+  "cpus": 2,
+  "active_jobs": 1,
+  "global_processing": false,
+  "gemini_enabled": false,
+  "boot_start": false,
+  "alert_mode": "operator-attended-local-log-only",
+  "operator_attended_authorized": false,
+  "publication_authorized": false,
+  "monitoring_install_authorized": false,
+  "processing_approval_issued": false,
+  "worker_start_authorized": false,
+  "proposed_worker_only_fault_sample": "E",
+  "fault_injection_authorized": false,
+  "permanently_excluded_job": "9c5c8869-ec2e-4a3e-927d-697615bb58a3",
+  "samples": [
+    {
+      "id": "A",
+      "game": "SuperTuxKart",
+      "file": "sample-A.mp4",
+      "sha256": "df3cab87541c7bd6f5a3d5f6a65480d9f464fe54d9195552a0a17441c9600789",
+      "bytes": 5649887,
+      "at_minute": 0
+    },
+    {
+      "id": "B",
+      "game": "0 A.D.",
+      "file": "sample-B.mp4",
+      "sha256": "f5140effbe44ae4399651ea14cd6f18d0b3577036a5f53b01ee41b557622b9f2",
+      "bytes": 3299089,
+      "at_minute": 20
+    },
+    {
+      "id": "C",
+      "game": "Minetest",
+      "file": "sample-C.mp4",
+      "sha256": "3da4b56c5b122ac80c184e3bddfaa853a30c70a078a2eb43830be436cac31781",
+      "bytes": 3750761,
+      "at_minute": 20
+    },
+    {
+      "id": "D",
+      "game": "0 A.D.",
+      "file": "sample-D.mp4",
+      "sha256": "f1caee73e8fe1e0411061ee7182eb1dec580e9a76c802fe3d8d96964eeaaa8c5",
+      "bytes": 4478196,
+      "at_minute": 50
+    },
+    {
+      "id": "E",
+      "game": "Minetest",
+      "file": "sample-E.mp4",
+      "sha256": "49bea9f6f5c91be92caca729a85174db4c8b9ce43c214bb3168931b6aa9d18c5",
+      "bytes": 6121963,
+      "at_minute": 75
+    },
+    {
+      "id": "F",
+      "game": "SuperTuxKart",
+      "file": "sample-F.mp4",
+      "sha256": "21a4594e886e8756675cfa4a7ccaaa91b43c251f4d45abf20e8be17d6c9626a3",
+      "bytes": 5851310,
+      "at_minute": 100
+    }
+  ]
+}

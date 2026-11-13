@@ -1,0 +1,33 @@
+{
+  "design_source": "0714528508a7f835a4d4f4455087c6e234d52569",
+  "selection": "latest frontend design committed to main",
+  "explicit_user_response_reference": "call_0bbe44488e3e439ba279b16a0619b888",
+  "integration_branch": "feat/real-video-pipeline",
+  "preserved_design": [
+    "landing",
+    "auth",
+    "dashboard",
+    "projects",
+    "activity",
+    "onboarding",
+    "styles",
+    "fonts",
+    "assets"
+  ],
+  "real_pipeline_connections": [
+    "cookie-native authenticated creator server functions",
+    "server consent and worker readiness admission",
+    "private resumable upload",
+    "existing upload RPCs",
+    "real workspace and highlight editor links",
+    "queued export and private download"
+  ],
+  "worker_runtime_changed": false,
+  "worker_image_rebuilt": false,
+  "database_migrations_applied": false,
+  "source_history_rewritten": false,
+  "pull_request_merged": false,
+  "published": false,
+  "requires_new_clean_artifact_seal": true,
+  "published_rollback_revision_verified": false
+}

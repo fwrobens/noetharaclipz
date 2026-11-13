@@ -1,0 +1,20 @@
+{
+  "stage": "scoped_stopped_heartbeat_observed",
+  "expected_deadline_utc": "2026-11-09T00:52:12+00:00",
+  "deadline": 1794185532,
+  "writes_to_remote_services": false,
+  "claims_or_workers_started": false,
+  "direct_docker_exit_observed": false,
+  "last_health": {
+    "detail": "Worker stopped",
+    "online": true,
+    "ai_ready": false,
+    "max_bytes": 45000000,
+    "max_seconds": 300
+  },
+  "last_checked_unix": 1794185441,
+  "stop_observed_unix": 1794185441,
+  "within_approved_window": true,
+  "near_scheduled_shutdown": true,
+  "protected_original_identical_queued_zero_attempts": true
+}

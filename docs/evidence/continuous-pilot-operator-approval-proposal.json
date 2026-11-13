@@ -1,0 +1,26 @@
+{
+  "schema": 1,
+  "status": "proposal_only_not_issued",
+  "owner_id": "21b61ad1-bda4-4abd-ac35-7a0bf477ed69",
+  "consent_id": "4426bdad-bc7a-4972-ace2-ae65ac3f9fa4",
+  "deployment_id": "11865b83-9836-4ff3-a99e-dfac4df71f34",
+  "duration_seconds": 1800,
+  "not_before_utc": null,
+  "expires_at_utc": null,
+  "authorization_reference": null,
+  "operator_approved": false,
+  "worker_start_authorized": false,
+  "manifest_proposal_sha256": "736b72c902eae0b65d251db69d15dedfe38e5e5b105b71849b3469c702d90d73",
+  "restrictions": {
+    "memory_bytes": 8589934592,
+    "cpus": 2,
+    "active_jobs": 1,
+    "provider": "local-smolvlm2",
+    "model": "HuggingFaceTB/SmolVLM2-500M-Video-Instruct",
+    "gemini_enabled": false,
+    "global_processing": false,
+    "public_ports": [],
+    "restore_isolation": false,
+    "new_paid_infrastructure": false
+  }
+}

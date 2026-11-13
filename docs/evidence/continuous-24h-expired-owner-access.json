@@ -1,0 +1,28 @@
+{
+  "checked_utc": "2026-11-10T23:35:19.986543+00:00",
+  "data_checks_read_only": true,
+  "authentication_method": "Ephemeral native magic-link session for the existing dedicated QA identity; no email delivery, password reset, or new user",
+  "authentication_session_logout_status": 204,
+  "authenticated_owner_id": "21b61ad1-bda4-4abd-ac35-7a0bf477ed69",
+  "role": "authenticated",
+  "pipeline_health": {
+    "detail": "Processing authorization inactive",
+    "online": false,
+    "ai_ready": false,
+    "max_bytes": 45000000,
+    "max_seconds": 300
+  },
+  "consent_id": "6b13bb7a-5b9b-4564-80d8-3904872d8c01",
+  "approval_expires_at": "2026-11-10T23:00:00+00:00",
+  "private_download_status": 200,
+  "private_download_bytes": 2044140,
+  "private_download_sha256": "cf4670c8baaa209384a207f63140db92aa0b936494b783449b1885af19db50e3",
+  "private_file_matches_initial_download": true,
+  "public_download_denied_status": 400,
+  "anonymous_download_denied_status": 400,
+  "privileged_protocol_denied_status": 403,
+  "saved_edit_still_persisted": true,
+  "processing_consent_requested_or_renewed": false,
+  "jobs_created_or_processed": false,
+  "worker_started_or_restarted": false
+}

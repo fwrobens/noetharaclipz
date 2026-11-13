@@ -1,0 +1,76 @@
+{
+  "provenance": "Operator pasted authorized SSM launch output; checked against live Supabase readiness",
+  "launch_requested": true,
+  "deployment_id": "11865b83-9836-4ff3-a99e-dfac4df71f34",
+  "manifest_sha256": "0903df1cfcb68f120877ca1088f4608584bc1bddebbb1b9b4ddb41725ec3792f",
+  "processing_approval_issued": true,
+  "approved_at_utc": "2026-11-09T21:00:03.216779+00:00",
+  "generation_started_utc": "2026-11-09T21:00:04.300004727Z",
+  "fixed_stop_utc": "2026-11-09T21:30:00Z",
+  "ready_status_at_unix": 1794258013.4917293,
+  "stage": "monitoring",
+  "ai_ready": true,
+  "global_processing": false,
+  "gemini_enabled": false,
+  "existing_services_unchanged": true,
+  "kernel": {
+    "version": 2,
+    "memory_bytes": 8589934592,
+    "cpu_quota": 200000,
+    "cpu_period": 100000,
+    "extra_swap_bytes": 0,
+    "pids_max": 256,
+    "passed": true,
+    "source": "Actual process cgroup files"
+  },
+  "live_denials": [
+    {
+      "target": "staging",
+      "delta": 1,
+      "blocked": true
+    },
+    {
+      "target": "supabase",
+      "delta": 1,
+      "blocked": true
+    },
+    {
+      "target": "vpc",
+      "delta": 1,
+      "blocked": true
+    },
+    {
+      "target": "imds",
+      "delta": 1,
+      "blocked": true
+    },
+    {
+      "target": "host",
+      "delta": 1,
+      "blocked": true
+    },
+    {
+      "target": "gateway",
+      "delta": 1,
+      "blocked": true
+    },
+    {
+      "target": "non_https",
+      "delta": 1,
+      "blocked": true
+    }
+  ],
+  "public_tls": {
+    "zxdnjnsghdnviflahvry.supabase.co": 401,
+    "huggingface.co": 200
+  },
+  "ipv6_disabled": true,
+  "startup_metrics_only": {
+    "sample_count": 5,
+    "peak_memory_bytes": 271966208,
+    "sampled_peak_cpu_percent": 100.13590324728541,
+    "cpu_seconds": 5.9924,
+    "final_snapshots_complete": false
+  },
+  "complete_pilot_peak_metrics_pending": true
+}

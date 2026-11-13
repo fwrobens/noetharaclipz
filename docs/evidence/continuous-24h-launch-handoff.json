@@ -1,0 +1,14 @@
+{
+  "payload_sha256": "6148a90f924e0008fe0e5cfab7052029bf552df328a42912cc77c8339bd71b21",
+  "payload_bytes": 24176,
+  "launcher_sha256": "f043d31e4082f9839fb0edc9d4e904b62e1068829a6924e29fb30e5f90299d86",
+  "manifest_candidate_sha256": "0d3dd0f3e1ce7a74712bb555f85104e4c661543e20677a652882bc47bd277bb8",
+  "activation_manifest_sha256": "3918b9eb1dee06597852c016a7098a873eea914bbac8afa151557cda2c34dda0",
+  "review_plan_sha256": "1b0e2436c5a93b65ce73e4cfabfd8625ad87c4c5019458605ada6e85f2875912",
+  "download_expires_utc": "2026-11-10T22:34:07.967729+00:00",
+  "public_status": 400,
+  "authorization_object_absent": true,
+  "operator_approval_issued": false,
+  "worker_started": false,
+  "boot_enabled": false
+}

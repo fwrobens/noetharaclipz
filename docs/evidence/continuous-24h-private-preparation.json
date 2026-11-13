@@ -1,0 +1,20 @@
+{
+  "deployment_id": "c25d8492-56fb-4c56-a519-e9a9e4246525",
+  "owner_id": "21b61ad1-bda4-4abd-ac35-7a0bf477ed69",
+  "local_directory": "test-results/continuous-24h/c25d8492-56fb-4c56-a519-e9a9e4246525",
+  "remote_directory": "/var/tmp/nccz-24h-c25d8492-56fb-4c56-a519-e9a9e4246525",
+  "source_bundle_sha256": "564a5b6a5de0664448737e0c5291c30a4d1ff2074be096b08711dce11fb381d8",
+  "preparation_sha256": "64c5a37fcc66a7eae62dc756f22edce067786524ddeafe22d77d4b20e22c383e",
+  "payload_sha256": "a55d38c2c88e697dd2fb5655285845a5ea0aeee080313eb0a6ff1b6022bfe43a",
+  "payload_bytes": 226883,
+  "receiver_sha256": "a1cb40298996d5f82c6dd1c35397364b15a57799dcc360d509f02e6ec42ce3e9",
+  "helper_sha256": {
+    "inspect_continuous_pilot_host.py": "7bba366d6bb5ade982feb94668e127396e043ed5a10bad50c9b4efbf21918efc",
+    "inspect_continuous_24h_host.py": "5843298e15fb21ad0f6f83ca5d07f2dc3a4b825063af9dae21c2757453862f74"
+  },
+  "url_expires_utc": "2026-11-10T22:12:29.656988+00:00",
+  "storage_bytes_before": 273608204,
+  "public_status": 400,
+  "operator_approval_issued": false,
+  "worker_started": false
+}

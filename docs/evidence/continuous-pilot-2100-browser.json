@@ -1,0 +1,112 @@
+{
+  "passed": true,
+  "source_sha256": "08ce51d71e20d7119a9b3800f1b152d6d98d672ff31974c42edf28ade03861cb",
+  "project_id": "f74fcb1f-3e8b-41bc-9eed-41fadebaa1a2",
+  "upload_and_analysis_seconds": 165.848,
+  "usage": [
+    {
+      "id": "4895177b-9922-4860-91bf-8a5d31ee2fa6",
+      "job_id": "9c5b0b8d-5c7b-48c3-8308-53119010d724",
+      "project_id": "f74fcb1f-3e8b-41bc-9eed-41fadebaa1a2",
+      "request_key": "local:9c5b0b8d-5c7b-48c3-8308-53119010d724",
+      "provider": "local-smolvlm2",
+      "model": "HuggingFaceTB/SmolVLM2-500M-Video-Instruct@7b375e1b73b11138ff12fe22c8f2822d8fe03467",
+      "status": "completed",
+      "input_tokens": 3711,
+      "output_tokens": 12,
+      "estimated_cost": 0,
+      "created_at": "2026-11-09T21:06:04.960168+00:00"
+    }
+  ],
+  "provider_model": "HuggingFaceTB/SmolVLM2-500M-Video-Instruct@7b375e1b73b11138ff12fe22c8f2822d8fe03467",
+  "local_metrics": {
+    "admission_rejected": false,
+    "analysis_cache_hit": false,
+    "prepared_cache_hit": false,
+    "transcript_cache_hit": false,
+    "source_inference_input_tokens": 3711
+  },
+  "model_evidence": {
+    "decision": {
+      "choice": "G",
+      "relative_choice_scores": {
+        "A": 0.01887841336429119,
+        "B": 0.008126402273774147,
+        "C": 0.033988937735557556,
+        "D": 0.05694989114999771,
+        "E": 0.27929970622062683,
+        "F": 0.11125927418470383,
+        "G": 0.35447731614112854,
+        "H": 0.1211761012673378,
+        "Z": 0.015843963250517845
+      },
+      "video_tensor_shape": [
+        8,
+        4,
+        3,
+        512,
+        512
+      ],
+      "input_tokens": 3342,
+      "video_tensor_sha256": "c66e6b3ebd94a3e27d9ece1f5d1c5eb02b6921338e0555faeb894baaac7ceb38",
+      "model_window": [
+        151.967,
+        161.967
+      ],
+      "speech_completed_interval": [
+        151.967,
+        161.967
+      ]
+    },
+    "source_hash": "08ce51d71e20d7119a9b3800f1b152d6d98d672ff31974c42edf28ade03861cb",
+    "hosted_inference": false,
+    "original_inference_usage": {
+      "input_tokens": 3711,
+      "output_tokens": 12
+    }
+  },
+  "provider": "local-smolvlm2",
+  "analysis_job_id": "9c5b0b8d-5c7b-48c3-8308-53119010d724",
+  "render_job_id": "2c9eba52-4835-4c45-8839-2de90e99d2bf",
+  "analysis_attempts": 1,
+  "render_attempts": 1,
+  "highlights": [
+    {
+      "id": "33ca7b47-1aed-423b-b59d-064baf07c82c",
+      "project_id": "f74fcb1f-3e8b-41bc-9eed-41fadebaa1a2",
+      "start_time": 151.967,
+      "end_time": 161.967,
+      "title": "Visual moment at 152.0s",
+      "category": "Other",
+      "score": 35,
+      "explanation": "Timestamped speech excerpt: No complete ASR words inside this interval. Local multimodal model chose candidate G among 8 actual videos plus a none option. Measured evidence: 0 speech segments, 5 audio events, 1 scene boundaries. Scores are relative choices, not calibrated quality or virality.",
+      "evidence": {
+        "visual": "Four decoded frames per candidate; selected interval with measured speech context 151.967\u2013161.967s. Comparison tensor SHA256 c66e6b3ebd94a3e27d9ece1f5d1c5eb02b6921338e0555faeb894baaac7ceb38."
+      },
+      "created_at": "2026-11-09T21:06:04.960168+00:00"
+    }
+  ],
+  "clip_id": "2fc9d23c-3923-42e1-91ad-a20c3b2d0621",
+  "persisted_edit": {
+    "end": 161.967,
+    "font": "Instrument Sans",
+    "ratio": "9:16",
+    "start": 152.1,
+    "crop_x": 0.5,
+    "crop_y": 0.5,
+    "volume": 1,
+    "version": 1,
+    "captions": true,
+    "caption_size": 28,
+    "caption_color": "#FFFFFF",
+    "caption_style": "Bold pop",
+    "caption_overrides": {}
+  },
+  "output_path": "21b61ad1-bda4-4abd-ac35-7a0bf477ed69/f74fcb1f-3e8b-41bc-9eed-41fadebaa1a2/2c9eba52-4835-4c45-8839-2de90e99d2bf.mp4",
+  "output_bytes": 2044140,
+  "output_sha256": "971241b594bc54bb617d5b753e2ab32f3cce64a31cc00fa79cf0599ee949e8e5",
+  "output_duration": 9.9,
+  "elapsed_seconds": 192.495,
+  "unhandled_browser_errors": [],
+  "ui_steps": "login, upload, instructions, generate, select, edit, save, refresh, Export button, Download MP4 button"
+}

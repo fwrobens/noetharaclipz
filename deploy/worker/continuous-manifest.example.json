@@ -1,0 +1,21 @@
+{
+  "schema": 1,
+  "deployment_id": null,
+  "owner_id": null,
+  "consent_id": null,
+  "operator_approved": false,
+  "approval_reference": "",
+  "not_before": 0,
+  "valid_until": 0,
+  "image": "sha256:472913bf34e918c48e5b77a56c4ea2dfd31873bdd79ecc2d1c4e7ab4cf3e5759",
+  "model": "HuggingFaceTB/SmolVLM2-500M-Video-Instruct",
+  "memory_bytes": 8589934592,
+  "cpus": 2,
+  "active_jobs": 1,
+  "global_processing": false,
+  "gemini_enabled": false,
+  "restore_isolation": false,
+  "source_commit": null,
+  "unit_sha256": {},
+  "files": {}
+}

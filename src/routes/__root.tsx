@@ -9,9 +9,8 @@ import {
   useRouterState,
   type ErrorComponentProps,
 } from "@tanstack/react-router";
-import { useEffect, useState, type ReactNode } from "react";
-import type { User } from "@supabase/supabase-js";
-import { supabase } from "@/integrations/supabase/client";
+import { useEffect, type ReactNode } from "react";
+import { AuthProvider, useAuth } from "@/lib/auth";
 import { SessionContext } from "@/lib/session";
 
 import appCss from "../styles.css?url";
@@ -89,9 +88,15 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "Noethara Clipz — Creator workspace" },
-      { name: "description", content: "Tell the AI what you want and get ready-to-post clips from your streams." },
+      {
+        name: "description",
+        content: "Tell the AI what you want and get ready-to-post clips from your streams.",
+      },
       { property: "og:title", content: "Noethara Clipz — Creator workspace" },
-      { property: "og:description", content: "Tell the AI what you want and get ready-to-post clips from your streams." },
+      {
+        property: "og:description",
+        content: "Tell the AI what you want and get ready-to-post clips from your streams.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -102,7 +107,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Instrument+Sans:wght@400;500;600&family=Geist:wght@300..700&family=Instrument+Serif:ital@0;1&display=swap" },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Instrument+Sans:wght@400;500;600&family=Geist:wght@300..700&family=Instrument+Serif:ital@0;1&display=swap",
+      },
       { rel: "icon", href: "/favicon.png", type: "image/png" },
     ],
   }),
@@ -128,30 +136,42 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
-  const router = useRouter();
-  const path = useRouterState({ select: r => r.location.pathname });
-  const [user, setUser] = useState<User | null>(null);
-  const legacy = ["/library", "/projects", "/templates", "/brand-kit", "/trash", "/project/", "/editor/"].some(p => path.startsWith(p));
-  useEffect(() => {
-    void supabase.auth.getUser().then(({ data }) => setUser(data.user));
-    const { data } = supabase.auth.onAuthStateChange((event, session) => {
-      if (!["SIGNED_IN", "SIGNED_OUT", "USER_UPDATED"].includes(event)) return;
-      setUser(session?.user ?? null);
-      void router.invalidate();
-      if (event !== "SIGNED_OUT") void queryClient.invalidateQueries();
-    });
-    return () => data.subscription.unsubscribe();
-  }, [router, queryClient]);
 
   return (
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <StoreProvider>
-        <SessionContext.Provider value={user}>
-          {legacy ? <AppShell><Outlet /></AppShell> : <Outlet />}
-        </SessionContext.Provider>
-        <Toaster />
-      </StoreProvider>
+      <AuthProvider>
+        <StoreProvider>
+          <WorkspaceRoutes />
+          <Toaster />
+        </StoreProvider>
+      </AuthProvider>
     </QueryClientProvider>
+  );
+}
+
+function WorkspaceRoutes() {
+  const { user } = useAuth();
+  const path = useRouterState({ select: (r) => r.location.pathname });
+  const legacy = [
+    "/library",
+    "/projects",
+    "/templates",
+    "/brand-kit",
+    "/trash",
+    "/settings",
+    "/project/",
+    "/editor/",
+  ].some((p) => path.startsWith(p));
+  return (
+    <SessionContext.Provider value={user}>
+      {legacy ? (
+        <AppShell>
+          <Outlet />
+        </AppShell>
+      ) : (
+        <Outlet />
+      )}
+    </SessionContext.Provider>
   );
 }

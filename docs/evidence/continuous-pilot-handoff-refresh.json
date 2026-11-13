@@ -1,0 +1,20 @@
+{
+  "refreshed_utc": "2026-11-09T14:42:44.429640+00:00",
+  "old_link_expired": true,
+  "original_handoff_object_unchanged": true,
+  "handoff_sha256": "0a30367d6040d53dceec7632000a0b1b48caa5d2178e75f52f098955c06a700e",
+  "original_collector_sha256": "7bba366d6bb5ade982feb94668e127396e043ed5a10bad50c9b4efbf21918efc",
+  "wrapper_sha256": "f9313ff7b3b1bc662e5107529d580295c693cb8e43b2c06893559919f24f9420",
+  "wrapper_python_sha256": "e29607183c9242f95a97e0274b145806b6ae74cbae39a63a19223904f406405a",
+  "wrapper_bytes": 8262,
+  "wrapper_object": "_worker-transfer/bcfff223-af9d-4235-8c15-1318c7cac582/receive-and-inspect-4187c691-2954-4247-9714-963b8a806874.json",
+  "wrapper_source_commit": "a6e89d4dfb1ac166ae7c964008c51494aed068ba",
+  "signed_readback_verified": true,
+  "unsigned_public_http_status": 400,
+  "expires_utc": "2026-11-09T15:41:04+00:00",
+  "private_bucket_settings_changed": false,
+  "credential_values_exposed": false,
+  "worker_started": false,
+  "operator_approval_issued": false,
+  "ec2_receipt_pending": true
+}

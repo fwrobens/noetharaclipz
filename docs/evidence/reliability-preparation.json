@@ -1,0 +1,105 @@
+{
+  "stage": "prepared_ready_for_separate_approval",
+  "trial_id": "bebbf5ad-094f-4b6f-964f-c7ac22e1f760",
+  "canonical_plan_sha256": "f61e6a59341a82bfb136a098f9fd0465590cad727b31a8f7170bb3d8c9630947",
+  "source_commit": "75e3b832f9d8e8a4f9843a08b2b6ebea297ba8b3",
+  "ec2_preparation_receipt": {
+    "source": "operator-pasted SSM prepare result",
+    "prepared": true,
+    "ready_for_approval": true,
+    "trial_id": "bebbf5ad-094f-4b6f-964f-c7ac22e1f760",
+    "plan_sha256": "f61e6a59341a82bfb136a098f9fd0465590cad727b31a8f7170bb3d8c9630947",
+    "worker_started": false,
+    "approval_receipt_created": false,
+    "new_qa_account_created": false,
+    "old_evidence_preserved": true,
+    "network_rules_changed": false
+  },
+  "limits": {
+    "memory_bytes": 8589934592,
+    "cpus": 2,
+    "active_jobs": 1,
+    "maximum_seconds": 1800,
+    "gemini_enabled": false,
+    "global_processing": false
+  },
+  "sample": {
+    "author": "kimden STK",
+    "bytes": 18575024,
+    "continuous_source_interval_seconds": [
+      120,
+      300
+    ],
+    "duration_seconds": 180.0,
+    "filename": "supertuxkart-long-180s.mp4",
+    "license": "CC BY 3.0",
+    "license_url": "https://creativecommons.org/licenses/by/3.0/",
+    "looped_or_concatenated": false,
+    "sha256": "08ce51d71e20d7119a9b3800f1b152d6d98d672ff31974c42edf28ade03861cb",
+    "source_duration_seconds": 2261.668,
+    "source_page": "https://commons.wikimedia.org/wiki/File:SuperTuxKart_2.x_GP_with_24%25_handicap_and_road_tracks_(open_source_Mario_Kart-like_Linux_game).webm",
+    "source_url": "https://upload.wikimedia.org/wikipedia/commons/transcoded/0/03/SuperTuxKart_2.x_GP_with_24%25_handicap_and_road_tracks_%28open_source_Mario_Kart-like_Linux_game%29.webm/SuperTuxKart_2.x_GP_with_24%25_handicap_and_road_tracks_%28open_source_Mario_Kart-like_Linux_game%29.webm.240p.vp9.webm",
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "height": 360,
+        "width": 640
+      },
+      {
+        "codec_name": "aac",
+        "codec_type": "audio",
+        "height": null,
+        "width": null
+      }
+    ],
+    "title": "File:SuperTuxKart 2.x GP with 24% handicap and road tracks (open source Mario Kart-like Linux game).webm"
+  },
+  "sample_full_decode": "passed in cloud workspace; no AI or hosted queue processing",
+  "previous_evidence_files_verified_unchanged": 12,
+  "automated_checks": {
+    "worker_passed": 222,
+    "worker_skipped": 1,
+    "seconds": 26.88,
+    "new_targeted_checks": 44,
+    "ruff": "passed",
+    "runtime_image_rebuilt": false
+  },
+  "protected_upload_readonly_check": {
+    "checked_utc": "2026-11-09T04:47:31.796565+00:00",
+    "source": "read-only hosted REST",
+    "protected_job_id": "9c5c8869-ec2e-4a3e-927d-697615bb58a3",
+    "status": "queued",
+    "attempts": 0,
+    "full_row_unchanged": true,
+    "active_unfinished_leases": 0,
+    "claims_or_heartbeats_called": false,
+    "database_changes": false
+  },
+  "private_preparation_handoff": {
+    "transfer_id": "2b6f6663-a411-4e79-bf55-4f015f34b747",
+    "prefix": "_worker-transfer/2b6f6663-a411-4e79-bf55-4f015f34b747/",
+    "objects": [
+      "_worker-transfer/2b6f6663-a411-4e79-bf55-4f015f34b747/reliability-preparation.json"
+    ],
+    "sha256": "d52185dd67fac8daffc5dbb7750460f688b0c0df7d19d62be05f4bba32a3298c",
+    "created_unix": 1794199309,
+    "bytes": 119158,
+    "storage_before_bytes": 138882061,
+    "trial_id": "bebbf5ad-094f-4b6f-964f-c7ac22e1f760",
+    "source_commit": "75e3b832f9d8e8a4f9843a08b2b6ebea297ba8b3",
+    "public": false,
+    "contains_credentials": false,
+    "contains_activation_or_approval": false,
+    "public_request_status": 400,
+    "expires_unix": 1794202910,
+    "download_hash_verified": true,
+    "cleaned": true
+  },
+  "current_live_trial_results": "not run; no approval/owner/deadline activation issued",
+  "old_container_restarted": false,
+  "host_or_docker_settings_changed": false,
+  "global_queue_enabled": false,
+  "merged_or_published": false,
+  "paid_services_activated": false
+}

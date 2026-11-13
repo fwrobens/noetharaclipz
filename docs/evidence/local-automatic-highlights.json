@@ -1,0 +1,2002 @@
+{
+  "date": "2026-11-08",
+  "source": {
+    "name": "Elephants Dream, first 60 seconds",
+    "url": "https://download.blender.org/ED/elephantsdream-480-h264-st-aac.mov",
+    "license_url": "https://creativecommons.org/licenses/by/2.5/",
+    "license_context": "https://orange.blender.org/blog/creative-commons-license-2/",
+    "attribution": "(c) copyright 2006, Blender Foundation / Netherlands Media Art Institute / www.elephantsdream.org. Edited excerpt, CC BY 2.5: https://creativecommons.org/licenses/by/2.5/",
+    "sample_sha256": "988596de4e539c1c200ab1a76421d3e66aa7c73b8b1bc13e1a33febd61ebf1d7"
+  },
+  "queued_upload_readonly_inspection": {
+    "inspection": "read-only object download and ffprobe; no inference or queue claim",
+    "status": "queued",
+    "attempts": 0,
+    "lease_until": null,
+    "gemini_enabled": false,
+    "recorded_bytes": 39882848,
+    "object_size_matches": true,
+    "validated_metadata": {
+      "duration": 151.126667,
+      "width": 540,
+      "height": 1080,
+      "fps": 37.31598390031427,
+      "has_audio": true
+    },
+    "worker_media_validation": "passed",
+    "codecs": ["aac", "h264"],
+    "job_unchanged": true
+  },
+  "models_investigated": [
+    {
+      "model": "HuggingFaceTB/SmolVLM2-500M-Video-Instruct",
+      "revision": "7b375e1b73b11138ff12fe22c8f2822d8fe03467",
+      "license": "apache-2.0",
+      "gated": false,
+      "parameter_count": 507482304
+    },
+    {
+      "model": "HuggingFaceTB/SmolVLM2-2.2B-Instruct",
+      "revision": "482adb537c021c86670beed01cd58990d01e72e4",
+      "license": "apache-2.0",
+      "gated": false,
+      "parameter_count": 2246784880
+    },
+    {
+      "model": "Qwen/Qwen2.5-VL-3B-Instruct",
+      "revision": "66285546d2b821cf421d4f5eb2576359d3770cd3",
+      "license": null,
+      "gated": false,
+      "parameter_count": 3754622976
+    }
+  ],
+  "actual_local_analysis": {
+    "provider": "local-smolvlm2",
+    "model": "HuggingFaceTB/SmolVLM2-500M-Video-Instruct",
+    "revision": "7b375e1b73b11138ff12fe22c8f2822d8fe03467",
+    "prompt": "Find a clear moment with a character speaking or gesturing, with visible action and understandable speech.",
+    "source_hash": "988596de4e539c1c200ab1a76421d3e66aa7c73b8b1bc13e1a33febd61ebf1d7",
+    "selection_method": "local multimodal comparison of measured candidate videos, including a none choice",
+    "decision": {
+      "choice": "G",
+      "relative_choice_scores": {
+        "A": 0.019027117639780045,
+        "B": 0.010246085934340954,
+        "C": 0.040813740342855453,
+        "D": 0.0309455506503582,
+        "E": 0.2375703752040863,
+        "F": 0.12537676095962524,
+        "G": 0.3488709628582001,
+        "H": 0.16769194602966309,
+        "Z": 0.019457411020994186
+      },
+      "video_tensor_shape": [8, 4, 3, 512, 512],
+      "input_tokens": 3877,
+      "video_tensor_sha256": "2e9ca44b154592c7e406a8d9a6603c9aeb7093975a4fd6464c2f5d51fc8880e4"
+    },
+    "raw_visual_observation": "A man in a brown jacket is seen walking on a rooftop, while another man in a black shirt is standing nearby.",
+    "visual_observation_warning": "Model descriptions may hallucinate; measured evidence and raw scores are retained for review",
+    "candidates": [
+      {
+        "start": 0.0,
+        "end": 10.0,
+        "speech": [],
+        "audio_events": [
+          {
+            "time": 0.0,
+            "kind": "silence",
+            "rms": 0.0
+          },
+          {
+            "time": 0.25,
+            "kind": "silence",
+            "rms": 0.0
+          },
+          {
+            "time": 0.5,
+            "kind": "silence",
+            "rms": 0.0
+          },
+          {
+            "time": 0.75,
+            "kind": "silence",
+            "rms": 0.0001
+          },
+          {
+            "time": 1.0,
+            "kind": "silence",
+            "rms": 0.0002
+          },
+          {
+            "time": 1.25,
+            "kind": "silence",
+            "rms": 0.0003
+          },
+          {
+            "time": 1.5,
+            "kind": "silence",
+            "rms": 0.0007
+          },
+          {
+            "time": 1.75,
+            "kind": "silence",
+            "rms": 0.0011
+          },
+          {
+            "time": 2.0,
+            "kind": "silence",
+            "rms": 0.0011
+          },
+          {
+            "time": 2.25,
+            "kind": "silence",
+            "rms": 0.0018
+          },
+          {
+            "time": 2.5,
+            "kind": "silence",
+            "rms": 0.002
+          },
+          {
+            "time": 2.75,
+            "kind": "silence",
+            "rms": 0.0024
+          },
+          {
+            "time": 3.0,
+            "kind": "silence",
+            "rms": 0.002
+          },
+          {
+            "time": 3.25,
+            "kind": "silence",
+            "rms": 0.0025
+          },
+          {
+            "time": 3.5,
+            "kind": "silence",
+            "rms": 0.0026
+          },
+          {
+            "time": 3.75,
+            "kind": "silence",
+            "rms": 0.0024
+          },
+          {
+            "time": 4.0,
+            "kind": "silence",
+            "rms": 0.0033
+          },
+          {
+            "time": 4.25,
+            "kind": "silence",
+            "rms": 0.0028
+          },
+          {
+            "time": 4.5,
+            "kind": "silence",
+            "rms": 0.0027
+          },
+          {
+            "time": 4.75,
+            "kind": "silence",
+            "rms": 0.0024
+          },
+          {
+            "time": 5.0,
+            "kind": "silence",
+            "rms": 0.0026
+          },
+          {
+            "time": 5.25,
+            "kind": "silence",
+            "rms": 0.0026
+          },
+          {
+            "time": 5.5,
+            "kind": "silence",
+            "rms": 0.0025
+          },
+          {
+            "time": 5.75,
+            "kind": "silence",
+            "rms": 0.0028
+          },
+          {
+            "time": 6.0,
+            "kind": "silence",
+            "rms": 0.0026
+          },
+          {
+            "time": 6.25,
+            "kind": "silence",
+            "rms": 0.0026
+          },
+          {
+            "time": 6.5,
+            "kind": "silence",
+            "rms": 0.0029
+          },
+          {
+            "time": 6.75,
+            "kind": "silence",
+            "rms": 0.0028
+          },
+          {
+            "time": 7.0,
+            "kind": "silence",
+            "rms": 0.003
+          },
+          {
+            "time": 7.25,
+            "kind": "silence",
+            "rms": 0.0027
+          },
+          {
+            "time": 7.5,
+            "kind": "silence",
+            "rms": 0.0027
+          },
+          {
+            "time": 7.75,
+            "kind": "silence",
+            "rms": 0.0033
+          },
+          {
+            "time": 8.0,
+            "kind": "silence",
+            "rms": 0.0024
+          },
+          {
+            "time": 8.25,
+            "kind": "silence",
+            "rms": 0.0026
+          },
+          {
+            "time": 8.5,
+            "kind": "silence",
+            "rms": 0.0025
+          },
+          {
+            "time": 8.75,
+            "kind": "silence",
+            "rms": 0.0028
+          },
+          {
+            "time": 9.0,
+            "kind": "silence",
+            "rms": 0.0028
+          },
+          {
+            "time": 9.25,
+            "kind": "silence",
+            "rms": 0.0025
+          },
+          {
+            "time": 9.5,
+            "kind": "silence",
+            "rms": 0.0025
+          },
+          {
+            "time": 9.75,
+            "kind": "silence",
+            "rms": 0.0023
+          }
+        ],
+        "scene_boundaries": [
+          {
+            "start": 0.0,
+            "end": 25.8
+          }
+        ],
+        "candidate_file": "candidate-0.mp4"
+      },
+      {
+        "start": 14.12,
+        "end": 24.12,
+        "speech": [
+          {
+            "id": "0",
+            "start": 15.12,
+            "end": 24.54,
+            "text": "At the left we can see, uh, we can see the, uh, at the right we can see the, the hat snarlers, everything is safe, perfectly safe.",
+            "words": [
+              {
+                "start": 15.12,
+                "end": 15.28,
+                "text": " At"
+              },
+              {
+                "start": 15.28,
+                "end": 15.42,
+                "text": " the"
+              },
+              {
+                "start": 15.42,
+                "end": 15.7,
+                "text": " left"
+              },
+              {
+                "start": 15.7,
+                "end": 15.94,
+                "text": " we"
+              },
+              {
+                "start": 15.94,
+                "end": 16.12,
+                "text": " can"
+              },
+              {
+                "start": 16.12,
+                "end": 16.52,
+                "text": " see,"
+              },
+              {
+                "start": 16.72,
+                "end": 16.72,
+                "text": " uh,"
+              },
+              {
+                "start": 16.98,
+                "end": 17.3,
+                "text": " we"
+              },
+              {
+                "start": 17.3,
+                "end": 17.54,
+                "text": " can"
+              },
+              {
+                "start": 17.54,
+                "end": 17.84,
+                "text": " see"
+              },
+              {
+                "start": 17.84,
+                "end": 17.98,
+                "text": " the,"
+              },
+              {
+                "start": 18.1,
+                "end": 18.34,
+                "text": " uh,"
+              },
+              {
+                "start": 18.68,
+                "end": 18.82,
+                "text": " at"
+              },
+              {
+                "start": 18.82,
+                "end": 18.96,
+                "text": " the"
+              },
+              {
+                "start": 18.96,
+                "end": 19.26,
+                "text": " right"
+              },
+              {
+                "start": 19.26,
+                "end": 19.52,
+                "text": " we"
+              },
+              {
+                "start": 19.52,
+                "end": 19.72,
+                "text": " can"
+              },
+              {
+                "start": 19.72,
+                "end": 20.06,
+                "text": " see"
+              },
+              {
+                "start": 20.06,
+                "end": 20.24,
+                "text": " the,"
+              },
+              {
+                "start": 20.28,
+                "end": 20.72,
+                "text": " the"
+              },
+              {
+                "start": 20.72,
+                "end": 21.02,
+                "text": " hat"
+              },
+              {
+                "start": 21.02,
+                "end": 21.82,
+                "text": " snarlers,"
+              },
+              {
+                "start": 21.98,
+                "end": 22.52,
+                "text": " everything"
+              },
+              {
+                "start": 22.52,
+                "end": 23.0,
+                "text": " is"
+              },
+              {
+                "start": 23.0,
+                "end": 23.36,
+                "text": " safe,"
+              },
+              {
+                "start": 23.6,
+                "end": 23.96,
+                "text": " perfectly"
+              },
+              {
+                "start": 23.96,
+                "end": 24.54,
+                "text": " safe."
+              }
+            ]
+          }
+        ],
+        "audio_events": [
+          {
+            "time": 14.25,
+            "kind": "silence",
+            "rms": 0.0028
+          },
+          {
+            "time": 14.5,
+            "kind": "silence",
+            "rms": 0.0025
+          },
+          {
+            "time": 14.75,
+            "kind": "silence",
+            "rms": 0.0029
+          },
+          {
+            "time": 15.0,
+            "kind": "silence",
+            "rms": 0.0034
+          },
+          {
+            "time": 15.5,
+            "kind": "silence",
+            "rms": 0.0059
+          },
+          {
+            "time": 15.75,
+            "kind": "silence",
+            "rms": 0.0061
+          },
+          {
+            "time": 16.25,
+            "kind": "silence",
+            "rms": 0.0054
+          },
+          {
+            "time": 16.5,
+            "kind": "silence",
+            "rms": 0.0048
+          },
+          {
+            "time": 16.75,
+            "kind": "silence",
+            "rms": 0.0031
+          },
+          {
+            "time": 17.5,
+            "kind": "silence",
+            "rms": 0.0042
+          },
+          {
+            "time": 17.75,
+            "kind": "silence",
+            "rms": 0.0079
+          },
+          {
+            "time": 19.25,
+            "kind": "silence",
+            "rms": 0.0075
+          },
+          {
+            "time": 20.25,
+            "kind": "silence",
+            "rms": 0.0071
+          },
+          {
+            "time": 21.0,
+            "kind": "silence",
+            "rms": 0.0068
+          },
+          {
+            "time": 21.75,
+            "kind": "silence",
+            "rms": 0.0061
+          },
+          {
+            "time": 22.0,
+            "kind": "silence",
+            "rms": 0.0075
+          }
+        ],
+        "scene_boundaries": [],
+        "candidate_file": "candidate-1.mp4"
+      },
+      {
+        "start": 17.143,
+        "end": 27.143,
+        "speech": [
+          {
+            "id": "0",
+            "start": 15.12,
+            "end": 24.54,
+            "text": "At the left we can see, uh, we can see the, uh, at the right we can see the, the hat snarlers, everything is safe, perfectly safe.",
+            "words": [
+              {
+                "start": 15.12,
+                "end": 15.28,
+                "text": " At"
+              },
+              {
+                "start": 15.28,
+                "end": 15.42,
+                "text": " the"
+              },
+              {
+                "start": 15.42,
+                "end": 15.7,
+                "text": " left"
+              },
+              {
+                "start": 15.7,
+                "end": 15.94,
+                "text": " we"
+              },
+              {
+                "start": 15.94,
+                "end": 16.12,
+                "text": " can"
+              },
+              {
+                "start": 16.12,
+                "end": 16.52,
+                "text": " see,"
+              },
+              {
+                "start": 16.72,
+                "end": 16.72,
+                "text": " uh,"
+              },
+              {
+                "start": 16.98,
+                "end": 17.3,
+                "text": " we"
+              },
+              {
+                "start": 17.3,
+                "end": 17.54,
+                "text": " can"
+              },
+              {
+                "start": 17.54,
+                "end": 17.84,
+                "text": " see"
+              },
+              {
+                "start": 17.84,
+                "end": 17.98,
+                "text": " the,"
+              },
+              {
+                "start": 18.1,
+                "end": 18.34,
+                "text": " uh,"
+              },
+              {
+                "start": 18.68,
+                "end": 18.82,
+                "text": " at"
+              },
+              {
+                "start": 18.82,
+                "end": 18.96,
+                "text": " the"
+              },
+              {
+                "start": 18.96,
+                "end": 19.26,
+                "text": " right"
+              },
+              {
+                "start": 19.26,
+                "end": 19.52,
+                "text": " we"
+              },
+              {
+                "start": 19.52,
+                "end": 19.72,
+                "text": " can"
+              },
+              {
+                "start": 19.72,
+                "end": 20.06,
+                "text": " see"
+              },
+              {
+                "start": 20.06,
+                "end": 20.24,
+                "text": " the,"
+              },
+              {
+                "start": 20.28,
+                "end": 20.72,
+                "text": " the"
+              },
+              {
+                "start": 20.72,
+                "end": 21.02,
+                "text": " hat"
+              },
+              {
+                "start": 21.02,
+                "end": 21.82,
+                "text": " snarlers,"
+              },
+              {
+                "start": 21.98,
+                "end": 22.52,
+                "text": " everything"
+              },
+              {
+                "start": 22.52,
+                "end": 23.0,
+                "text": " is"
+              },
+              {
+                "start": 23.0,
+                "end": 23.36,
+                "text": " safe,"
+              },
+              {
+                "start": 23.6,
+                "end": 23.96,
+                "text": " perfectly"
+              },
+              {
+                "start": 23.96,
+                "end": 24.54,
+                "text": " safe."
+              }
+            ]
+          },
+          {
+            "id": "1",
+            "start": 25.02,
+            "end": 26.76,
+            "text": "Emo? Emo?",
+            "words": [
+              {
+                "start": 25.02,
+                "end": 25.34,
+                "text": " Emo?"
+              },
+              {
+                "start": 26.12,
+                "end": 26.76,
+                "text": " Emo?"
+              }
+            ]
+          }
+        ],
+        "audio_events": [
+          {
+            "time": 17.5,
+            "kind": "silence",
+            "rms": 0.0042
+          },
+          {
+            "time": 17.75,
+            "kind": "silence",
+            "rms": 0.0079
+          },
+          {
+            "time": 19.25,
+            "kind": "silence",
+            "rms": 0.0075
+          },
+          {
+            "time": 20.25,
+            "kind": "silence",
+            "rms": 0.0071
+          },
+          {
+            "time": 21.0,
+            "kind": "silence",
+            "rms": 0.0068
+          },
+          {
+            "time": 21.75,
+            "kind": "silence",
+            "rms": 0.0061
+          },
+          {
+            "time": 22.0,
+            "kind": "silence",
+            "rms": 0.0075
+          },
+          {
+            "time": 24.75,
+            "kind": "silence",
+            "rms": 0.0046
+          }
+        ],
+        "scene_boundaries": [
+          {
+            "start": 25.8,
+            "end": 27.266666666666666
+          }
+        ],
+        "candidate_file": "candidate-2.mp4"
+      },
+      {
+        "start": 26.44,
+        "end": 36.44,
+        "speech": [
+          {
+            "id": "1",
+            "start": 25.02,
+            "end": 26.76,
+            "text": "Emo? Emo?",
+            "words": [
+              {
+                "start": 25.02,
+                "end": 25.34,
+                "text": " Emo?"
+              },
+              {
+                "start": 26.12,
+                "end": 26.76,
+                "text": " Emo?"
+              }
+            ]
+          },
+          {
+            "id": "2",
+            "start": 27.44,
+            "end": 29.26,
+            "text": "Oh, watch out!",
+            "words": [
+              {
+                "start": 27.44,
+                "end": 27.92,
+                "text": " Oh,"
+              },
+              {
+                "start": 28.7,
+                "end": 29.04,
+                "text": " watch"
+              },
+              {
+                "start": 29.04,
+                "end": 29.26,
+                "text": " out!"
+              }
+            ]
+          },
+          {
+            "id": "3",
+            "start": 31.8,
+            "end": 47.51,
+            "text": "Are you hurt?",
+            "words": [
+              {
+                "start": 31.8,
+                "end": 32.44,
+                "text": " Are"
+              },
+              {
+                "start": 46.55,
+                "end": 47.19,
+                "text": " you"
+              },
+              {
+                "start": 47.19,
+                "end": 47.51,
+                "text": " hurt?"
+              }
+            ]
+          }
+        ],
+        "audio_events": [
+          {
+            "time": 27.75,
+            "kind": "intensity",
+            "rms": 0.2225
+          },
+          {
+            "time": 28.75,
+            "kind": "intensity",
+            "rms": 0.181
+          },
+          {
+            "time": 31.5,
+            "kind": "intensity",
+            "rms": 0.2212
+          },
+          {
+            "time": 31.75,
+            "kind": "intensity",
+            "rms": 0.2156
+          }
+        ],
+        "scene_boundaries": [
+          {
+            "start": 27.266666666666666,
+            "end": 28.933333333333334
+          },
+          {
+            "start": 28.933333333333334,
+            "end": 30.133333333333333
+          },
+          {
+            "start": 30.133333333333333,
+            "end": 31.433333333333334
+          },
+          {
+            "start": 31.433333333333334,
+            "end": 32.86666666666667
+          },
+          {
+            "start": 32.86666666666667,
+            "end": 50.0
+          }
+        ],
+        "candidate_file": "candidate-3.mp4"
+      },
+      {
+        "start": 28.933,
+        "end": 38.933,
+        "speech": [
+          {
+            "id": "2",
+            "start": 27.44,
+            "end": 29.26,
+            "text": "Oh, watch out!",
+            "words": [
+              {
+                "start": 27.44,
+                "end": 27.92,
+                "text": " Oh,"
+              },
+              {
+                "start": 28.7,
+                "end": 29.04,
+                "text": " watch"
+              },
+              {
+                "start": 29.04,
+                "end": 29.26,
+                "text": " out!"
+              }
+            ]
+          },
+          {
+            "id": "3",
+            "start": 31.8,
+            "end": 47.51,
+            "text": "Are you hurt?",
+            "words": [
+              {
+                "start": 31.8,
+                "end": 32.44,
+                "text": " Are"
+              },
+              {
+                "start": 46.55,
+                "end": 47.19,
+                "text": " you"
+              },
+              {
+                "start": 47.19,
+                "end": 47.51,
+                "text": " hurt?"
+              }
+            ]
+          }
+        ],
+        "audio_events": [
+          {
+            "time": 31.5,
+            "kind": "intensity",
+            "rms": 0.2212
+          },
+          {
+            "time": 31.75,
+            "kind": "intensity",
+            "rms": 0.2156
+          }
+        ],
+        "scene_boundaries": [
+          {
+            "start": 28.933333333333334,
+            "end": 30.133333333333333
+          },
+          {
+            "start": 30.133333333333333,
+            "end": 31.433333333333334
+          },
+          {
+            "start": 31.433333333333334,
+            "end": 32.86666666666667
+          },
+          {
+            "start": 32.86666666666667,
+            "end": 50.0
+          }
+        ],
+        "candidate_file": "candidate-4.mp4"
+      },
+      {
+        "start": 34.286,
+        "end": 44.286,
+        "speech": [
+          {
+            "id": "3",
+            "start": 31.8,
+            "end": 47.51,
+            "text": "Are you hurt?",
+            "words": [
+              {
+                "start": 31.8,
+                "end": 32.44,
+                "text": " Are"
+              },
+              {
+                "start": 46.55,
+                "end": 47.19,
+                "text": " you"
+              },
+              {
+                "start": 47.19,
+                "end": 47.51,
+                "text": " hurt?"
+              }
+            ]
+          }
+        ],
+        "audio_events": [],
+        "scene_boundaries": [],
+        "candidate_file": "candidate-5.mp4"
+      },
+      {
+        "start": 42.857,
+        "end": 52.857,
+        "speech": [
+          {
+            "id": "3",
+            "start": 31.8,
+            "end": 47.51,
+            "text": "Are you hurt?",
+            "words": [
+              {
+                "start": 31.8,
+                "end": 32.44,
+                "text": " Are"
+              },
+              {
+                "start": 46.55,
+                "end": 47.19,
+                "text": " you"
+              },
+              {
+                "start": 47.19,
+                "end": 47.51,
+                "text": " hurt?"
+              }
+            ]
+          },
+          {
+            "id": "4",
+            "start": 52.05,
+            "end": 53.85,
+            "text": "I don't think so. You?",
+            "words": [
+              {
+                "start": 52.05,
+                "end": 52.29,
+                "text": " I"
+              },
+              {
+                "start": 52.29,
+                "end": 52.45,
+                "text": " don't"
+              },
+              {
+                "start": 52.45,
+                "end": 52.61,
+                "text": " think"
+              },
+              {
+                "start": 52.61,
+                "end": 52.89,
+                "text": " so."
+              },
+              {
+                "start": 53.59,
+                "end": 53.85,
+                "text": " You?"
+              }
+            ]
+          }
+        ],
+        "audio_events": [],
+        "scene_boundaries": [
+          {
+            "start": 50.0,
+            "end": 55.03333333333333
+          }
+        ],
+        "candidate_file": "candidate-6.mp4"
+      },
+      {
+        "start": 54.33,
+        "end": 60.0,
+        "speech": [
+          {
+            "id": "5",
+            "start": 55.33,
+            "end": 59.97,
+            "text": "I'm okay. Get up. Emo, it's not...",
+            "words": [
+              {
+                "start": 55.33,
+                "end": 55.97,
+                "text": " I'm"
+              },
+              {
+                "start": 55.97,
+                "end": 56.33,
+                "text": " okay."
+              },
+              {
+                "start": 57.39,
+                "end": 57.83,
+                "text": " Get"
+              },
+              {
+                "start": 57.83,
+                "end": 58.07,
+                "text": " up."
+              },
+              {
+                "start": 58.43,
+                "end": 58.83,
+                "text": " Emo,"
+              },
+              {
+                "start": 59.43,
+                "end": 59.67,
+                "text": " it's"
+              },
+              {
+                "start": 59.67,
+                "end": 59.97,
+                "text": " not..."
+              }
+            ]
+          }
+        ],
+        "audio_events": [],
+        "scene_boundaries": [
+          {
+            "start": 55.03333333333333,
+            "end": 60.0
+          }
+        ],
+        "candidate_file": "candidate-7.mp4"
+      }
+    ],
+    "highlights": [
+      {
+        "start": 42.857,
+        "end": 52.857,
+        "title": "you hurt? I don't think",
+        "category": "Other",
+        "score": 35,
+        "explanation": "Local multimodal model chose candidate G among 8 actual videos plus a none option. Measured evidence: 2 speech segments, 0 audio events, 1 scene boundaries. Scores are relative choices, not calibrated quality or virality.",
+        "visual_evidence": "Four decoded frames per candidate; selected source interval 42.857\u201352.857s. Comparison tensor SHA256 2e9ca44b154592c7e406a8d9a6603c9aeb7093975a4fd6464c2f5d51fc8880e4."
+      }
+    ],
+    "hosted_inference": false,
+    "metadata": {
+      "duration": 60.0,
+      "width": 640,
+      "height": 360,
+      "fps": 23.63586206896552,
+      "has_audio": true
+    },
+    "transcript": [
+      {
+        "id": "0",
+        "start": 15.12,
+        "end": 24.54,
+        "text": "At the left we can see, uh, we can see the, uh, at the right we can see the, the hat snarlers, everything is safe, perfectly safe.",
+        "words": [
+          {
+            "start": 15.12,
+            "end": 15.28,
+            "text": " At"
+          },
+          {
+            "start": 15.28,
+            "end": 15.42,
+            "text": " the"
+          },
+          {
+            "start": 15.42,
+            "end": 15.7,
+            "text": " left"
+          },
+          {
+            "start": 15.7,
+            "end": 15.94,
+            "text": " we"
+          },
+          {
+            "start": 15.94,
+            "end": 16.12,
+            "text": " can"
+          },
+          {
+            "start": 16.12,
+            "end": 16.52,
+            "text": " see,"
+          },
+          {
+            "start": 16.72,
+            "end": 16.72,
+            "text": " uh,"
+          },
+          {
+            "start": 16.98,
+            "end": 17.3,
+            "text": " we"
+          },
+          {
+            "start": 17.3,
+            "end": 17.54,
+            "text": " can"
+          },
+          {
+            "start": 17.54,
+            "end": 17.84,
+            "text": " see"
+          },
+          {
+            "start": 17.84,
+            "end": 17.98,
+            "text": " the,"
+          },
+          {
+            "start": 18.1,
+            "end": 18.34,
+            "text": " uh,"
+          },
+          {
+            "start": 18.68,
+            "end": 18.82,
+            "text": " at"
+          },
+          {
+            "start": 18.82,
+            "end": 18.96,
+            "text": " the"
+          },
+          {
+            "start": 18.96,
+            "end": 19.26,
+            "text": " right"
+          },
+          {
+            "start": 19.26,
+            "end": 19.52,
+            "text": " we"
+          },
+          {
+            "start": 19.52,
+            "end": 19.72,
+            "text": " can"
+          },
+          {
+            "start": 19.72,
+            "end": 20.06,
+            "text": " see"
+          },
+          {
+            "start": 20.06,
+            "end": 20.24,
+            "text": " the,"
+          },
+          {
+            "start": 20.28,
+            "end": 20.72,
+            "text": " the"
+          },
+          {
+            "start": 20.72,
+            "end": 21.02,
+            "text": " hat"
+          },
+          {
+            "start": 21.02,
+            "end": 21.82,
+            "text": " snarlers,"
+          },
+          {
+            "start": 21.98,
+            "end": 22.52,
+            "text": " everything"
+          },
+          {
+            "start": 22.52,
+            "end": 23.0,
+            "text": " is"
+          },
+          {
+            "start": 23.0,
+            "end": 23.36,
+            "text": " safe,"
+          },
+          {
+            "start": 23.6,
+            "end": 23.96,
+            "text": " perfectly"
+          },
+          {
+            "start": 23.96,
+            "end": 24.54,
+            "text": " safe."
+          }
+        ]
+      },
+      {
+        "id": "1",
+        "start": 25.02,
+        "end": 26.76,
+        "text": "Emo? Emo?",
+        "words": [
+          {
+            "start": 25.02,
+            "end": 25.34,
+            "text": " Emo?"
+          },
+          {
+            "start": 26.12,
+            "end": 26.76,
+            "text": " Emo?"
+          }
+        ]
+      },
+      {
+        "id": "2",
+        "start": 27.44,
+        "end": 29.26,
+        "text": "Oh, watch out!",
+        "words": [
+          {
+            "start": 27.44,
+            "end": 27.92,
+            "text": " Oh,"
+          },
+          {
+            "start": 28.7,
+            "end": 29.04,
+            "text": " watch"
+          },
+          {
+            "start": 29.04,
+            "end": 29.26,
+            "text": " out!"
+          }
+        ]
+      },
+      {
+        "id": "3",
+        "start": 31.8,
+        "end": 47.51,
+        "text": "Are you hurt?",
+        "words": [
+          {
+            "start": 31.8,
+            "end": 32.44,
+            "text": " Are"
+          },
+          {
+            "start": 46.55,
+            "end": 47.19,
+            "text": " you"
+          },
+          {
+            "start": 47.19,
+            "end": 47.51,
+            "text": " hurt?"
+          }
+        ]
+      },
+      {
+        "id": "4",
+        "start": 52.05,
+        "end": 53.85,
+        "text": "I don't think so. You?",
+        "words": [
+          {
+            "start": 52.05,
+            "end": 52.29,
+            "text": " I"
+          },
+          {
+            "start": 52.29,
+            "end": 52.45,
+            "text": " don't"
+          },
+          {
+            "start": 52.45,
+            "end": 52.61,
+            "text": " think"
+          },
+          {
+            "start": 52.61,
+            "end": 52.89,
+            "text": " so."
+          },
+          {
+            "start": 53.59,
+            "end": 53.85,
+            "text": " You?"
+          }
+        ]
+      },
+      {
+        "id": "5",
+        "start": 55.33,
+        "end": 59.97,
+        "text": "I'm okay. Get up. Emo, it's not...",
+        "words": [
+          {
+            "start": 55.33,
+            "end": 55.97,
+            "text": " I'm"
+          },
+          {
+            "start": 55.97,
+            "end": 56.33,
+            "text": " okay."
+          },
+          {
+            "start": 57.39,
+            "end": 57.83,
+            "text": " Get"
+          },
+          {
+            "start": 57.83,
+            "end": 58.07,
+            "text": " up."
+          },
+          {
+            "start": 58.43,
+            "end": 58.83,
+            "text": " Emo,"
+          },
+          {
+            "start": 59.43,
+            "end": 59.67,
+            "text": " it's"
+          },
+          {
+            "start": 59.67,
+            "end": 59.97,
+            "text": " not..."
+          }
+        ]
+      }
+    ],
+    "scenes": [
+      {
+        "start": 0.0,
+        "end": 25.8
+      },
+      {
+        "start": 25.8,
+        "end": 27.266666666666666
+      },
+      {
+        "start": 27.266666666666666,
+        "end": 28.933333333333334
+      },
+      {
+        "start": 28.933333333333334,
+        "end": 30.133333333333333
+      },
+      {
+        "start": 30.133333333333333,
+        "end": 31.433333333333334
+      },
+      {
+        "start": 31.433333333333334,
+        "end": 32.86666666666667
+      },
+      {
+        "start": 32.86666666666667,
+        "end": 50.0
+      },
+      {
+        "start": 50.0,
+        "end": 55.03333333333333
+      },
+      {
+        "start": 55.03333333333333,
+        "end": 60.0
+      }
+    ],
+    "audio_events": [
+      {
+        "time": 0.0,
+        "kind": "silence",
+        "rms": 0.0
+      },
+      {
+        "time": 0.25,
+        "kind": "silence",
+        "rms": 0.0
+      },
+      {
+        "time": 0.5,
+        "kind": "silence",
+        "rms": 0.0
+      },
+      {
+        "time": 0.75,
+        "kind": "silence",
+        "rms": 0.0001
+      },
+      {
+        "time": 1.0,
+        "kind": "silence",
+        "rms": 0.0002
+      },
+      {
+        "time": 1.25,
+        "kind": "silence",
+        "rms": 0.0003
+      },
+      {
+        "time": 1.5,
+        "kind": "silence",
+        "rms": 0.0007
+      },
+      {
+        "time": 1.75,
+        "kind": "silence",
+        "rms": 0.0011
+      },
+      {
+        "time": 2.0,
+        "kind": "silence",
+        "rms": 0.0011
+      },
+      {
+        "time": 2.25,
+        "kind": "silence",
+        "rms": 0.0018
+      },
+      {
+        "time": 2.5,
+        "kind": "silence",
+        "rms": 0.002
+      },
+      {
+        "time": 2.75,
+        "kind": "silence",
+        "rms": 0.0024
+      },
+      {
+        "time": 3.0,
+        "kind": "silence",
+        "rms": 0.002
+      },
+      {
+        "time": 3.25,
+        "kind": "silence",
+        "rms": 0.0025
+      },
+      {
+        "time": 3.5,
+        "kind": "silence",
+        "rms": 0.0026
+      },
+      {
+        "time": 3.75,
+        "kind": "silence",
+        "rms": 0.0024
+      },
+      {
+        "time": 4.0,
+        "kind": "silence",
+        "rms": 0.0033
+      },
+      {
+        "time": 4.25,
+        "kind": "silence",
+        "rms": 0.0028
+      },
+      {
+        "time": 4.5,
+        "kind": "silence",
+        "rms": 0.0027
+      },
+      {
+        "time": 4.75,
+        "kind": "silence",
+        "rms": 0.0024
+      },
+      {
+        "time": 5.0,
+        "kind": "silence",
+        "rms": 0.0026
+      },
+      {
+        "time": 5.25,
+        "kind": "silence",
+        "rms": 0.0026
+      },
+      {
+        "time": 5.5,
+        "kind": "silence",
+        "rms": 0.0025
+      },
+      {
+        "time": 5.75,
+        "kind": "silence",
+        "rms": 0.0028
+      },
+      {
+        "time": 6.0,
+        "kind": "silence",
+        "rms": 0.0026
+      },
+      {
+        "time": 6.25,
+        "kind": "silence",
+        "rms": 0.0026
+      },
+      {
+        "time": 6.5,
+        "kind": "silence",
+        "rms": 0.0029
+      },
+      {
+        "time": 6.75,
+        "kind": "silence",
+        "rms": 0.0028
+      },
+      {
+        "time": 7.0,
+        "kind": "silence",
+        "rms": 0.003
+      },
+      {
+        "time": 7.25,
+        "kind": "silence",
+        "rms": 0.0027
+      },
+      {
+        "time": 7.5,
+        "kind": "silence",
+        "rms": 0.0027
+      },
+      {
+        "time": 7.75,
+        "kind": "silence",
+        "rms": 0.0033
+      },
+      {
+        "time": 8.0,
+        "kind": "silence",
+        "rms": 0.0024
+      },
+      {
+        "time": 8.25,
+        "kind": "silence",
+        "rms": 0.0026
+      },
+      {
+        "time": 8.5,
+        "kind": "silence",
+        "rms": 0.0025
+      },
+      {
+        "time": 8.75,
+        "kind": "silence",
+        "rms": 0.0028
+      },
+      {
+        "time": 9.0,
+        "kind": "silence",
+        "rms": 0.0028
+      },
+      {
+        "time": 9.25,
+        "kind": "silence",
+        "rms": 0.0025
+      },
+      {
+        "time": 9.5,
+        "kind": "silence",
+        "rms": 0.0025
+      },
+      {
+        "time": 9.75,
+        "kind": "silence",
+        "rms": 0.0023
+      },
+      {
+        "time": 10.0,
+        "kind": "silence",
+        "rms": 0.0027
+      },
+      {
+        "time": 10.25,
+        "kind": "silence",
+        "rms": 0.0025
+      },
+      {
+        "time": 10.5,
+        "kind": "silence",
+        "rms": 0.0023
+      },
+      {
+        "time": 10.75,
+        "kind": "silence",
+        "rms": 0.0027
+      },
+      {
+        "time": 11.0,
+        "kind": "silence",
+        "rms": 0.0022
+      },
+      {
+        "time": 11.25,
+        "kind": "silence",
+        "rms": 0.0026
+      },
+      {
+        "time": 11.5,
+        "kind": "silence",
+        "rms": 0.0022
+      },
+      {
+        "time": 11.75,
+        "kind": "silence",
+        "rms": 0.0017
+      },
+      {
+        "time": 12.0,
+        "kind": "silence",
+        "rms": 0.0021
+      },
+      {
+        "time": 12.25,
+        "kind": "silence",
+        "rms": 0.0022
+      },
+      {
+        "time": 12.5,
+        "kind": "silence",
+        "rms": 0.0023
+      },
+      {
+        "time": 12.75,
+        "kind": "silence",
+        "rms": 0.0021
+      },
+      {
+        "time": 13.0,
+        "kind": "silence",
+        "rms": 0.0023
+      },
+      {
+        "time": 13.25,
+        "kind": "silence",
+        "rms": 0.0024
+      },
+      {
+        "time": 13.5,
+        "kind": "silence",
+        "rms": 0.0025
+      },
+      {
+        "time": 13.75,
+        "kind": "silence",
+        "rms": 0.0027
+      },
+      {
+        "time": 14.0,
+        "kind": "silence",
+        "rms": 0.0029
+      },
+      {
+        "time": 14.25,
+        "kind": "silence",
+        "rms": 0.0028
+      },
+      {
+        "time": 14.5,
+        "kind": "silence",
+        "rms": 0.0025
+      },
+      {
+        "time": 14.75,
+        "kind": "silence",
+        "rms": 0.0029
+      },
+      {
+        "time": 15.0,
+        "kind": "silence",
+        "rms": 0.0034
+      },
+      {
+        "time": 15.5,
+        "kind": "silence",
+        "rms": 0.0059
+      },
+      {
+        "time": 15.75,
+        "kind": "silence",
+        "rms": 0.0061
+      },
+      {
+        "time": 16.25,
+        "kind": "silence",
+        "rms": 0.0054
+      },
+      {
+        "time": 16.5,
+        "kind": "silence",
+        "rms": 0.0048
+      },
+      {
+        "time": 16.75,
+        "kind": "silence",
+        "rms": 0.0031
+      },
+      {
+        "time": 17.5,
+        "kind": "silence",
+        "rms": 0.0042
+      },
+      {
+        "time": 17.75,
+        "kind": "silence",
+        "rms": 0.0079
+      },
+      {
+        "time": 19.25,
+        "kind": "silence",
+        "rms": 0.0075
+      },
+      {
+        "time": 20.25,
+        "kind": "silence",
+        "rms": 0.0071
+      },
+      {
+        "time": 21.0,
+        "kind": "silence",
+        "rms": 0.0068
+      },
+      {
+        "time": 21.75,
+        "kind": "silence",
+        "rms": 0.0061
+      },
+      {
+        "time": 22.0,
+        "kind": "silence",
+        "rms": 0.0075
+      },
+      {
+        "time": 24.75,
+        "kind": "silence",
+        "rms": 0.0046
+      },
+      {
+        "time": 27.75,
+        "kind": "intensity",
+        "rms": 0.2225
+      },
+      {
+        "time": 28.75,
+        "kind": "intensity",
+        "rms": 0.181
+      },
+      {
+        "time": 31.5,
+        "kind": "intensity",
+        "rms": 0.2212
+      },
+      {
+        "time": 31.75,
+        "kind": "intensity",
+        "rms": 0.2156
+      }
+    ],
+    "waveform": [
+      0.0, 0.0, 0.0001, 0.0003, 0.0007, 0.0013, 0.003, 0.005, 0.0051, 0.0082, 0.0088, 0.0107,
+      0.0091, 0.0113, 0.0117, 0.0108, 0.0147, 0.0125, 0.012, 0.0108, 0.0116, 0.0115, 0.0112, 0.0128,
+      0.0117, 0.0116, 0.0132, 0.0128, 0.0133, 0.0123, 0.0122, 0.0147, 0.0106, 0.0117, 0.0113,
+      0.0128, 0.0124, 0.0114, 0.0111, 0.0103, 0.012, 0.0114, 0.0103, 0.012, 0.0098, 0.0117, 0.01,
+      0.0078, 0.0095, 0.0097, 0.0103, 0.0095, 0.0105, 0.0108, 0.0113, 0.0123, 0.0131, 0.0127,
+      0.0112, 0.0132, 0.0154, 0.0407, 0.0265, 0.0276, 0.0378, 0.0244, 0.0214, 0.0141, 0.0404,
+      0.0555, 0.0189, 0.0355, 0.0429, 0.039, 0.051, 0.1018, 0.1482, 0.0335, 0.0448, 0.037, 0.0608,
+      0.0317, 0.119, 0.1575, 0.0304, 0.0925, 0.0809, 0.0275, 0.0338, 0.1642, 0.1734, 0.0821, 0.0777,
+      0.0446, 0.1501, 0.0897, 0.0583, 0.0685, 0.0702, 0.0207, 0.1246, 0.1255, 0.0588, 0.0737,
+      0.0846, 0.3735, 0.3644, 0.2153, 0.2533, 0.3135, 0.4778, 1.0, 0.7219, 0.5408, 0.6892, 0.8137,
+      0.6386, 0.4321, 0.4687, 0.5082, 0.603, 0.7376, 0.6876, 0.5543, 0.4315, 0.7366, 0.994, 0.969,
+      0.6815, 0.5504, 0.7201, 0.6006, 0.5797, 0.5814, 0.6382, 0.6169, 0.6008, 0.4191, 0.3504,
+      0.4263, 0.2663, 0.2641, 0.2494, 0.2682, 0.273, 0.2339, 0.2011, 0.2206, 0.3495, 0.2699, 0.1801,
+      0.2011, 0.1466, 0.1425, 0.1781, 0.2255, 0.2048, 0.1666, 0.1749, 0.1091, 0.1068, 0.0971,
+      0.0841, 0.1081, 0.0819, 0.0814, 0.0851, 0.0789, 0.0703, 0.1009, 0.1146, 0.0918, 0.111, 0.071,
+      0.0726, 0.0661, 0.062, 0.0664, 0.0707, 0.0566, 0.0506, 0.0571, 0.0614, 0.0613, 0.0495, 0.0584,
+      0.0687, 0.2816, 0.3439, 0.2275, 0.0772, 0.068, 0.0578, 0.0557, 0.0507, 0.0492, 0.0606, 0.0553,
+      0.0602, 0.0526, 0.0437, 0.0448, 0.0521, 0.0466, 0.0542, 0.0494, 0.0427, 0.0486, 0.0772,
+      0.1131, 0.1585, 0.2556, 0.107, 0.0381, 0.22, 0.3637, 0.0569, 0.1834, 0.0635, 0.0516, 0.039,
+      0.0477, 0.0748, 0.2615, 0.14, 0.1202, 0.1115, 0.1359, 0.1108, 0.1356, 0.2028, 0.2434, 0.1167,
+      0.1376, 0.404, 0.1621, 0.0907, 0.0974, 0.1737, 0.1658
+    ],
+    "frames": [
+      {
+        "time": 0.0,
+        "file": "frame-0.jpg"
+      },
+      {
+        "time": 5.455,
+        "file": "frame-1.jpg"
+      },
+      {
+        "time": 10.909,
+        "file": "frame-2.jpg"
+      },
+      {
+        "time": 16.364,
+        "file": "frame-3.jpg"
+      },
+      {
+        "time": 21.818,
+        "file": "frame-4.jpg"
+      },
+      {
+        "time": 25.8,
+        "file": "frame-5.jpg"
+      },
+      {
+        "time": 27.267,
+        "file": "frame-6.jpg"
+      },
+      {
+        "time": 27.273,
+        "file": "frame-7.jpg"
+      },
+      {
+        "time": 28.933,
+        "file": "frame-8.jpg"
+      },
+      {
+        "time": 30.133,
+        "file": "frame-9.jpg"
+      },
+      {
+        "time": 31.433,
+        "file": "frame-10.jpg"
+      },
+      {
+        "time": 32.727,
+        "file": "frame-11.jpg"
+      },
+      {
+        "time": 32.867,
+        "file": "frame-12.jpg"
+      },
+      {
+        "time": 38.182,
+        "file": "frame-13.jpg"
+      },
+      {
+        "time": 43.636,
+        "file": "frame-14.jpg"
+      },
+      {
+        "time": 49.091,
+        "file": "frame-15.jpg"
+      },
+      {
+        "time": 50.0,
+        "file": "frame-16.jpg"
+      },
+      {
+        "time": 54.545,
+        "file": "frame-17.jpg"
+      },
+      {
+        "time": 55.033,
+        "file": "frame-18.jpg"
+      }
+    ],
+    "render": {
+      "duration": 10.0,
+      "width": 720,
+      "height": 1280,
+      "fps": 30.0,
+      "has_audio": true
+    },
+    "elapsed_seconds": 112.02
+  },
+  "isolated_ui_render_storage_download_test": {
+    "scope": "isolated explicit local runner; shared queue untouched",
+    "model": "HuggingFaceTB/SmolVLM2-500M-Video-Instruct",
+    "revision": "7b375e1b73b11138ff12fe22c8f2822d8fe03467",
+    "automatic_highlight": {
+      "start": 42.857,
+      "end": 52.857,
+      "title": "you hurt? I don't think",
+      "category": "Other",
+      "score": 35,
+      "explanation": "Local multimodal model chose candidate G among 8 actual videos plus a none option. Measured evidence: 2 speech segments, 0 audio events, 1 scene boundaries. Scores are relative choices, not calibrated quality or virality.",
+      "visual_evidence": "Four decoded frames per candidate; selected source interval 42.857\u201352.857s. Comparison tensor SHA256 2e9ca44b154592c7e406a8d9a6603c9aeb7093975a4fd6464c2f5d51fc8880e4."
+    },
+    "checks": {
+      "real_automatic_highlight_edit_and_playback": true,
+      "saved_edit_persists": true,
+      "edited_mp4_private_browser_download_and_decode": true,
+      "bucket_remains_private": true
+    },
+    "hosted_inference": false,
+    "attribution": "(c) copyright 2006, Blender Foundation / Netherlands Media Art Institute / www.elephantsdream.org. Edited excerpt, CC BY 2.5: https://creativecommons.org/licenses/by/2.5/",
+    "saved_edit": {
+      "version": 1,
+      "start": 43.0,
+      "end": 52.857,
+      "ratio": "1:1",
+      "crop_x": 0.5,
+      "crop_y": 0.5,
+      "volume": 1.0,
+      "captions": true,
+      "caption_style": "Bold pop",
+      "caption_size": 28,
+      "caption_color": "#FFFFFF",
+      "caption_overrides": {},
+      "font": "Instrument Sans"
+    },
+    "download": {
+      "bytes": 1109229,
+      "sha256": "028697281ea0bd7b1bd02bdfc1478c0574d4119b41a4ca561f97f520d17b1245",
+      "duration": 9.866667,
+      "codecs": ["h264", "aac"],
+      "path": "test-results/local-auto-ed-final/downloaded-automatic-highlight.mp4"
+    },
+    "browser_errors": [],
+    "passed": true,
+    "qa_removed": true,
+    "shared_queue_unchanged": true
+  },
+  "worker_tests": {
+    "passed": 45,
+    "elapsed_seconds": 40.84,
+    "stub_choices_only_test_boundary_contracts": true
+  },
+  "scope": "Explicit local CPU runner; not default shared-queue acceptance",
+  "hosted_inference": false,
+  "default_worker_changed": false,
+  "migrations_changed": false
+}

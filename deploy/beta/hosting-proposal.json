@@ -1,0 +1,44 @@
+{
+  "schema": 1,
+  "status": "prepared_not_authorized",
+  "origin": "https://noetharaclipz.lovable.app",
+  "target": "Existing Lovable TanStack/Nitro Cloudflare hosting",
+  "lovable_project_id": "40ff324d-5ed8-4890-ac90-cff43cfb1144",
+  "user_reported_latest_lovable_source_edit": "0714528508a7f835a4d4f4455087c6e234d52569",
+  "source_edit_is_verified_published_revision": false,
+  "production_build_command": "npm run build:beta",
+  "release_identity_endpoint": "/api/release",
+  "required_mode": "owner-scoped-beta",
+  "required_server_access": "authenticated-owner-allowlist-v1",
+  "allowed_frontend_owner_ids": [
+    "21b61ad1-bda4-4abd-ac35-7a0bf477ed69"
+  ],
+  "other_authenticated_accounts": "HTTP 403 for workspace pages; no private page rendering",
+  "auth_proposal": {
+    "observed_untrusted_redirect_fallback": "http://localhost:3000",
+    "site_url_after_review": "https://noetharaclipz.lovable.app",
+    "required_redirect_url": "https://noetharaclipz.lovable.app/auth/callback",
+    "disable_signup_for_limited_beta": true,
+    "preserve_google_disabled": true,
+    "preserve_email_confirmation_required": true,
+    "redirect_inventory_read_required": true,
+    "redirect_policy": "Review the full current list; retain legitimate exact entries and narrow unapproved wildcards. Never overwrite an unread list.",
+    "management_changes_authorized": false
+  },
+  "rollback": {
+    "current_lovable_published_revision": null,
+    "exact_release_and_auth_configuration_snapshot_required": true,
+    "restore_prior_release_and_exact_auth_values_if_acceptance_fails": true,
+    "delete_or_reset_application_data": false
+  },
+  "publication_authorized": false,
+  "new_hosting_resources": false,
+  "lovable_generation_credits": false,
+  "worker_start_authorized": false,
+  "source_alignment_decision": "Use the latest frontend design committed on main; integrate its 0714528508a7f835a4d4f4455087c6e234d52569 source into the real-pipeline development branch.",
+  "editor_only_commits_vs_reviewed_pr": 35,
+  "publication_requires_explicit_source_alignment": false,
+  "source_alignment_authorized_by": "call_0bbe44488e3e439ba279b16a0619b888: use the latest frontend design i have commited in main",
+  "frontend_design_source": "0714528508a7f835a4d4f4455087c6e234d52569",
+  "source_alignment_completed": true
+}

@@ -1,4 +1,4 @@
-import type { ErrorComponentProps } from "@tanstack/react-router";
+import { Link, type ErrorComponentProps } from "@tanstack/react-router";
 import { ArrowUpRight, Clapperboard, Clock3, Loader2, Play } from "lucide-react";
 import {
   Dialog,
@@ -8,7 +8,8 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import type { loadCreator } from "@/lib/creator.functions";
-import { fmt } from "@/lib/mock";
+import { fmt } from "@/lib/domain";
+import { activeJob } from "@/lib/editor";
 import { cn } from "@/lib/utils";
 
 export type CreatorData = Awaited<ReturnType<typeof loadCreator>>;
@@ -87,12 +88,11 @@ export function ProjectCard({
         </div>
         <div className="mt-3 flex items-center justify-between gap-3 text-[11px] text-muted-foreground">
           <span className="flex items-center gap-1.5">
-            <Clapperboard className="h-3.5 w-3.5" /> {(project.highlights?.length ?? 0)}{" "}
+            <Clapperboard className="h-3.5 w-3.5" /> {project.highlights?.length ?? 0}{" "}
             {(project.highlights?.length ?? 0) === 1 ? "clip" : "clips"}
           </span>
           <span className="flex items-center gap-1.5">
-            <Clock3 className="h-3.5 w-3.5" />{" "}
-            {formatProjectAge(project.updated_at)}
+            <Clock3 className="h-3.5 w-3.5" /> {formatProjectAge(project.updated_at)}
           </span>
         </div>
       </div>
@@ -128,10 +128,15 @@ export function ProjectDialog({
                 )}
               </div>
               <DialogTitle className="text-xl font-medium">{project.title}</DialogTitle>
-              <DialogDescription>
-                Updated {formatProjectAge(project.updated_at)}
-              </DialogDescription>
+              <DialogDescription>Updated {formatProjectAge(project.updated_at)}</DialogDescription>
             </DialogHeader>
+            <Link
+              to="/project/$id"
+              params={{ id: project.id }}
+              className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground"
+            >
+              Open workspace <ArrowUpRight className="h-4 w-4" />
+            </Link>
             {progress !== null && (
               <div className="rounded-2xl border border-border bg-surface p-4">
                 <div className="flex items-center justify-between gap-3 text-xs">
@@ -158,7 +163,7 @@ export function ProjectDialog({
               <div className="flex items-center justify-between gap-3">
                 <h3 className="text-sm font-medium">Detected moments</h3>
                 <span className="text-xs text-muted-foreground">
-                  {(project.highlights?.length ?? 0)} total
+                  {project.highlights?.length ?? 0} total
                 </span>
               </div>
               {(project.highlights?.length ?? 0) ? (
@@ -174,7 +179,14 @@ export function ProjectDialog({
                           {String(index + 1).padStart(2, "0")}
                         </span>
                         <div className="min-w-0">
-                          <p className="truncate text-sm font-medium">{highlight.title}</p>
+                          <Link
+                            to="/editor/$id"
+                            params={{ id: `${project.id}~${highlight.id}` }}
+                            className="block truncate text-sm font-medium hover:text-ember"
+                          >
+                            {highlight.title}{" "}
+                            <span className="text-xs text-ember">· Edit clip</span>
+                          </Link>
                           <p className="mt-1 text-xs text-muted-foreground">
                             {highlight.category} · {fmt(highlight.start_time)}–
                             {fmt(highlight.end_time)}
@@ -206,14 +218,12 @@ export function ProjectDialog({
 export function isProjectActive(project: CreatorProject) {
   return (
     ["queued", "processing", "uploading", "analyzing"].includes(project.status) ||
-    (project.processing_jobs ?? []).some((job) => ["queued", "running", "processing"].includes(job.status))
+    (project.processing_jobs ?? []).some((job) => activeJob(job.status))
   );
 }
 
 export function getProjectProgress(project: CreatorProject) {
-  const job = (project.processing_jobs ?? []).find((item) =>
-    ["queued", "running", "processing"].includes(item.status),
-  );
+  const job = (project.processing_jobs ?? []).find((item) => activeJob(item.status));
   return job ? Math.max(0, Math.min(100, Math.round(Number(job.progress ?? 0)))) : null;
 }
 
@@ -224,7 +234,10 @@ export function getProjectStatus(project: CreatorProject) {
       active: false,
       className: "border-success/20 bg-success/10 text-success",
     };
-  if (project.status === "failed" || (project.processing_jobs ?? []).some((job) => job.status === "failed"))
+  if (
+    project.status === "failed" ||
+    (project.processing_jobs ?? []).some((job) => job.status === "failed")
+  )
     return {
       label: "Needs attention",
       active: false,
@@ -274,28 +287,45 @@ export function buildWeeklyActivity(projects: CreatorProject[]) {
   };
 }
 
-
 // Route-scoped fallbacks keep the actual authenticated workspace from going blank
 // when its initial query or a newly optimized module fails to load.
 export function DashboardLoading() {
-  return <div className="clipspark-skin flex min-h-screen items-center justify-center bg-background px-6 text-foreground" role="status">
-    <div className="flex items-center gap-3 rounded-2xl border border-border bg-card px-6 py-5 text-sm text-muted-foreground">
-      <Loader2 className="h-5 w-5 animate-spin text-ember" /> Loading your workspace…
+  return (
+    <div
+      className="clipspark-skin flex min-h-screen items-center justify-center bg-background px-6 text-foreground"
+      role="status"
+    >
+      <div className="flex items-center gap-3 rounded-2xl border border-border bg-card px-6 py-5 text-sm text-muted-foreground">
+        <Loader2 className="h-5 w-5 animate-spin text-ember" /> Loading your workspace…
+      </div>
     </div>
-  </div>;
+  );
 }
 
 export function DashboardLoadError({ reset }: ErrorComponentProps) {
-  return <div className="clipspark-skin flex min-h-screen items-center justify-center bg-background px-6 text-foreground">
-    <div className="max-w-md rounded-3xl border border-border bg-card p-7 text-center shadow-pop">
-      <h1 className="text-xl font-medium">Your workspace didn't load.</h1>
-      <p className="mt-3 text-sm leading-6 text-muted-foreground">This can happen during a preview reload or a temporary connection issue. Your saved projects haven't been changed.</p>
-      <div className="mt-6 flex flex-wrap justify-center gap-3">
-        <button type="button" className="rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground" onClick={() => { reset(); window.location.reload(); }}>Try again</button>
-        
+  return (
+    <div className="clipspark-skin flex min-h-screen items-center justify-center bg-background px-6 text-foreground">
+      <div className="max-w-md rounded-3xl border border-border bg-card p-7 text-center shadow-pop">
+        <h1 className="text-xl font-medium">Your workspace didn't load.</h1>
+        <p className="mt-3 text-sm leading-6 text-muted-foreground">
+          This can happen during a preview reload or a temporary connection issue. Your saved
+          projects haven't been changed.
+        </p>
+        <div className="mt-6 flex flex-wrap justify-center gap-3">
+          <button
+            type="button"
+            className="rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground"
+            onClick={() => {
+              reset();
+              window.location.reload();
+            }}
+          >
+            Try again
+          </button>
+        </div>
       </div>
     </div>
-  </div>;
+  );
 }
 
 export function formatProjectAge(value: string | null | undefined): string {

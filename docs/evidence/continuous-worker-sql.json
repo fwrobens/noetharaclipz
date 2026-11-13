@@ -1,0 +1,15 @@
+{
+  "passed": true,
+  "database": "disposable local PostgreSQL 17 and pinned PGMQ",
+  "hosted_database_changed": false,
+  "continuous_worker_started": false,
+  "model_inference_run": false,
+  "proposal_sha256": "3548ef325b499d8045f305f4a888631905add26149b24c746bc16943e087a4ce",
+  "sql_assertions_output": [
+    "PASS: consent, future-only binding, exclusions, revocation, stale lease, ownership, audit, global denial and whole-row preservation"
+  ],
+  "revocation_concurrency": {
+    "inflight_transaction_finishes_before_revoke_commits": true,
+    "transaction_waiting_behind_revoke_cannot_commit": true
+  }
+}

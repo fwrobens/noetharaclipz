@@ -1,0 +1,33 @@
+{
+  "checked_utc": "2026-11-09T22:23:01.546922+00:00",
+  "read_only": true,
+  "protocol": {
+    "audit": true,
+    "version": 2,
+    "contract": "future-jobs-only-v1",
+    "provider": "local-smolvlm2",
+    "revocable": true,
+    "global_claim": false,
+    "job_exclusions": true,
+    "future_jobs_only": true
+  },
+  "active_lease_count": 0,
+  "launcher_active_lease_query_verified_live": true,
+  "lease_query_matches_deployed_column": "lease_until",
+  "prior_query_correction": {
+    "invalid_column": "lease_expires_at",
+    "http_status": 400,
+    "database_mutated": false
+  },
+  "protected_job": {
+    "id": "9c5c8869-ec2e-4a3e-927d-697615bb58a3",
+    "status": "queued",
+    "attempts": 0,
+    "row_sha256": "deac9a0a9f311218fce3c531def81e1a3f92ff11e82132701a06e366d545dbdb",
+    "unchanged": true
+  },
+  "owner_consent_requested": false,
+  "operator_approval_issued": false,
+  "worker_started": false,
+  "migrations_applied": false
+}

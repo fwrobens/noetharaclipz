@@ -1,19 +1,22 @@
 import { Link } from "@tanstack/react-router";
 import { useState, type ReactNode, type ButtonHTMLAttributes } from "react";
 import { cn } from "@/lib/utils";
-import brandImage from "@/assets/noethara-logo.png.asset.json";
+import brandImage from "@/assets/noethara-logo.png";
 
 export function Logo({ className }: { className?: string }) {
   return (
     <Link to="/" className={cn("flex items-center gap-2.5", className)}>
       {/* Logo placeholder — swap the square for your mark */}
-      <img src={brandImage.url} alt="" className="h-8 w-8 shrink-0 object-contain" />
+      <img src={brandImage} alt="" className="h-8 w-8 shrink-0 object-contain" />
       <span className="text-[15px] font-semibold tracking-tight">NoetharaClipZ</span>
     </Link>
   );
 }
 
-type BtnProps = ButtonHTMLAttributes<HTMLButtonElement> & { variant?: "glow" | "ghost" | "solid"; size?: "sm" | "md" | "lg" };
+type BtnProps = ButtonHTMLAttributes<HTMLButtonElement> & {
+  variant?: "glow" | "ghost" | "solid";
+  size?: "sm" | "md" | "lg";
+};
 
 export function btnClass(variant: BtnProps["variant"] = "glow", size: BtnProps["size"] = "md") {
   return cn(
@@ -23,7 +26,8 @@ export function btnClass(variant: BtnProps["variant"] = "glow", size: BtnProps["
     size === "lg" && "h-12 px-7 text-[15px]",
     variant === "glow" && "glow-border bg-primary text-primary-foreground hover:bg-primary/90",
     variant === "solid" && "bg-primary text-primary-foreground hover:bg-primary/90",
-    variant === "ghost" && "glow-border glow-border-soft bg-surface text-foreground hover:bg-accent",
+    variant === "ghost" &&
+      "glow-border glow-border-soft bg-surface text-foreground hover:bg-accent",
   );
 }
 
@@ -51,33 +55,71 @@ export function Nav() {
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5">
         <Logo />
         <nav className="hidden items-center gap-8 text-sm text-muted-foreground md:flex">
-          <a href="/#features" className="hover:text-foreground">Features</a>
-          <a href="/#how" className="hover:text-foreground">How it works</a>
-          <Link to="/dashboard" className="hover:text-foreground">Workspace</Link>
+          <a href="/#features" className="hover:text-foreground">
+            Features
+          </a>
+          <a href="/#how" className="hover:text-foreground">
+            How it works
+          </a>
+          <Link to="/dashboard" className="hover:text-foreground">
+            Workspace
+          </Link>
           {links.slice(1).map((l) => (
-            <Link key={l.label} to={l.to} className="hover:text-foreground">{l.label}</Link>
+            <Link key={l.label} to={l.to} className="hover:text-foreground">
+              {l.label}
+            </Link>
           ))}
         </nav>
         <div className="hidden items-center gap-3 md:flex">
-          <Link to="/login" className="text-sm text-muted-foreground hover:text-foreground">Log in</Link>
-          <Link to="/signup" className={btnClass("glow", "sm")}>Get started</Link>
+          <Link to="/login" className="text-sm text-muted-foreground hover:text-foreground">
+            Log in
+          </Link>
+          <Link to="/signup" className={btnClass("glow", "sm")}>
+            Get started
+          </Link>
         </div>
-        <button aria-label="Menu" onClick={() => setOpen(!open)} className="grid h-9 w-9 place-items-center rounded-lg border border-border md:hidden">
+        <button
+          aria-label="Menu"
+          onClick={() => setOpen(!open)}
+          className="grid h-9 w-9 place-items-center rounded-lg border border-border md:hidden"
+        >
           <span className="flex flex-col gap-1">
-            <span className={cn("h-px w-4 bg-foreground transition", open && "translate-y-[2.5px] rotate-45")} />
-            <span className={cn("h-px w-4 bg-foreground transition", open && "-translate-y-[2.5px] -rotate-45")} />
+            <span
+              className={cn(
+                "h-px w-4 bg-foreground transition",
+                open && "translate-y-[2.5px] rotate-45",
+              )}
+            />
+            <span
+              className={cn(
+                "h-px w-4 bg-foreground transition",
+                open && "-translate-y-[2.5px] -rotate-45",
+              )}
+            />
           </span>
         </button>
       </div>
       {open && (
         <div className="animate-in-up border-t border-border px-5 py-5 md:hidden">
           <div className="flex flex-col gap-4 text-sm">
-            <a href="/#features" onClick={() => setOpen(false)}>Features</a>
-            <a href="/#how" onClick={() => setOpen(false)}>How it works</a>
-            <Link to="/pricing" onClick={() => setOpen(false)}>Pricing</Link>
-            <Link to="/login" onClick={() => setOpen(false)}>Log in</Link>
-            <Link to="/dashboard" onClick={() => setOpen(false)}>Workspace</Link>
-            <Link to="/signup" className={btnClass("glow", "md")}>Get started</Link>
+            <a href="/#features" onClick={() => setOpen(false)}>
+              Features
+            </a>
+            <a href="/#how" onClick={() => setOpen(false)}>
+              How it works
+            </a>
+            <Link to="/pricing" onClick={() => setOpen(false)}>
+              Pricing
+            </Link>
+            <Link to="/login" onClick={() => setOpen(false)}>
+              Log in
+            </Link>
+            <Link to="/dashboard" onClick={() => setOpen(false)}>
+              Workspace
+            </Link>
+            <Link to="/signup" className={btnClass("glow", "md")}>
+              Get started
+            </Link>
           </div>
         </div>
       )}
@@ -91,7 +133,9 @@ export function Footer() {
       <div className="mx-auto grid max-w-6xl gap-10 px-5 py-14 sm:grid-cols-2 md:grid-cols-4">
         <div className="space-y-3">
           <Logo />
-          <p className="max-w-xs text-sm text-muted-foreground">AI that watches the whole stream so you don't have to.</p>
+          <p className="max-w-xs text-sm text-muted-foreground">
+            AI that watches the whole stream so you don't have to.
+          </p>
         </div>
         {[
           ["Product", ["Features", "Pricing", "Changelog"]],
@@ -101,40 +145,102 @@ export function Footer() {
           <div key={t as string} className="space-y-3 text-sm">
             <p className="font-medium">{t}</p>
             {(items as string[]).map((i) => (
-              <p key={i} className="text-muted-foreground">{i}</p>
+              <p key={i} className="text-muted-foreground">
+                {i}
+              </p>
             ))}
           </div>
         ))}
       </div>
-      <p className="pb-8 text-center text-xs text-muted-foreground">© {new Date().getFullYear()} NoetharaClipZ. All rights reserved.</p>
+      <p className="pb-8 text-center text-xs text-muted-foreground">
+        © {new Date().getFullYear()} NoetharaClipZ. All rights reserved.
+      </p>
     </footer>
   );
 }
 
 export const plans = [
-  { name: "Starter", price: "0", credits: "—", desc: "Preview tier · not available yet.", features: ["Credit plans coming soon", "720p exports", "Watermark", "Basic captions"], cta: "Join waitlist" },
-  { name: "Creator", price: "—", credits: "—", desc: "Planned tier · not available yet.", features: ["Credit plans coming soon", "1080p, no watermark", "Funny & hype detection", "Animated captions", "Auto-reframe 9:16"], cta: "Join waitlist", featured: true },
-  { name: "Studio", price: "—", credits: "—", desc: "Planned tier · not available yet.", features: ["Credit plans coming soon", "4K exports", "Brand kits", "Team seats", "Priority processing"], cta: "Join waitlist" },
+  {
+    name: "Starter",
+    price: "0",
+    credits: "—",
+    desc: "Preview tier · not available yet.",
+    features: ["Credit plans coming soon", "720p exports", "Watermark", "Basic captions"],
+    cta: "Join waitlist",
+  },
+  {
+    name: "Creator",
+    price: "—",
+    credits: "—",
+    desc: "Planned tier · not available yet.",
+    features: [
+      "Credit plans coming soon",
+      "1080p, no watermark",
+      "Funny & hype detection",
+      "Animated captions",
+      "Auto-reframe 9:16",
+    ],
+    cta: "Join waitlist",
+    featured: true,
+  },
+  {
+    name: "Studio",
+    price: "—",
+    credits: "—",
+    desc: "Planned tier · not available yet.",
+    features: [
+      "Credit plans coming soon",
+      "4K exports",
+      "Brand kits",
+      "Team seats",
+      "Priority processing",
+    ],
+    cta: "Join waitlist",
+  },
 ];
 
 export function PricingCard({ p }: { p: (typeof plans)[number] }) {
   return (
-    <div className={cn("glow-border flex flex-col rounded-3xl bg-card p-7", !p.featured && "glow-border-soft")}>
+    <div
+      className={cn(
+        "glow-border flex flex-col rounded-3xl bg-card p-7",
+        !p.featured && "glow-border-soft",
+      )}
+    >
       <div className="flex items-center justify-between">
         <p className="font-medium">{p.name}</p>
-        {p.featured && <span className="rounded-full bg-ember/15 px-2.5 py-1 text-[11px] text-ember">Most popular</span>}
+        {p.featured && (
+          <span className="rounded-full bg-ember/15 px-2.5 py-1 text-[11px] text-ember">
+            Most popular
+          </span>
+        )}
       </div>
       <p className="mt-2 text-sm text-muted-foreground">{p.desc}</p>
       <div className="mt-6 flex items-end gap-1">
         <span className="font-display text-5xl">{p.price === "—" ? "TBA" : `$${p.price}`}</span>
         {p.price !== "—" && <span className="pb-2 text-sm text-muted-foreground">/mo</span>}
       </div>
-      <p className="mt-1 text-sm"><span className="text-ember">{p.credits}</span> <span className="text-muted-foreground">credits · plan details pending</span></p>
-      <Link to="/signup" className={cn(btnClass(p.featured ? "glow" : "ghost", "md"), "mt-6 w-full")}>{p.cta}</Link>
+      <p className="mt-1 text-sm">
+        <span className="text-ember">{p.credits}</span>{" "}
+        <span className="text-muted-foreground">credits · plan details pending</span>
+      </p>
+      <Link
+        to="/signup"
+        className={cn(btnClass(p.featured ? "glow" : "ghost", "md"), "mt-6 w-full")}
+      >
+        {p.cta}
+      </Link>
       <ul className="mt-7 space-y-3 text-sm text-muted-foreground">
         {p.features.map((f) => (
           <li key={f} className="flex items-center gap-2.5">
-            <svg viewBox="0 0 24 24" className="h-4 w-4 shrink-0 stroke-ember" fill="none" strokeWidth="2.5"><path d="M5 12l5 5L20 7" /></svg>
+            <svg
+              viewBox="0 0 24 24"
+              className="h-4 w-4 shrink-0 stroke-ember"
+              fill="none"
+              strokeWidth="2.5"
+            >
+              <path d="M5 12l5 5L20 7" />
+            </svg>
             {f}
           </li>
         ))}

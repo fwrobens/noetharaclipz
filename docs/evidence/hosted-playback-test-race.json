@@ -1,0 +1,33 @@
+{
+  "time": 31.65,
+  "paused": true,
+  "ready": 4,
+  "seeking": false,
+  "ended": false,
+  "error": null,
+  "network": 1,
+  "events": [
+    {
+      "event": "play",
+      "time": 5.8e-05,
+      "paused": false,
+      "ready": 4,
+      "seeking": false
+    },
+    {
+      "event": "playing",
+      "time": 0.000323,
+      "paused": false,
+      "ready": 4,
+      "seeking": false
+    },
+    {
+      "event": "pause",
+      "time": 0.066073,
+      "paused": true,
+      "ready": 4,
+      "seeking": false
+    }
+  ],
+  "initial_time": 0
+}

@@ -10,6 +10,7 @@ import {
   PanelLeftClose,
   Plus,
   Search,
+  Settings,
   Sparkles,
   Zap,
 } from "lucide-react";
@@ -17,16 +18,19 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Brand } from "@/components/Brand";
 import { focusComposer } from "@/components/dashboard/focusComposer";
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
 
-// Placeholder until credit balances are stored per account.
+// Sample figures only. There is no per-account credit ledger yet, so this
+// meter must not be read as a real balance.
 export const CREDITS = { remaining: 120, total: 150 } as const;
+export const CREDITS_METER_LABEL = "Sample balance, not your account";
 
 const navigation = [
   { id: "/dashboard", label: "New clip", icon: LayoutDashboard },
   { id: "/dashboard/projects", label: "Projects", icon: FolderOpen },
   { id: "/dashboard/activity", label: "Activity", icon: Activity },
+  { id: "/settings", label: "Account settings", icon: Settings },
 ] as const;
 
 type DashboardShellProps = {
@@ -187,9 +191,11 @@ export function DashboardShell({
               <Link
                 to="/pricing"
                 className="inline-flex h-10 items-center gap-1.5 rounded-xl border border-ember/25 bg-ember/10 px-2.5 text-xs font-medium text-foreground shadow-soft transition hover:border-ember/50 lg:hidden"
-                aria-label={`${CREDITS.remaining} credits left`}
+                aria-label={`Demonstration balance, not your account. ${CREDITS.remaining} of ${CREDITS.total} credits shown.`}
+                title={CREDITS_METER_LABEL}
               >
                 <Zap className="h-3.5 w-3.5 text-ember" />
+                <span className="sr-only">Demo </span>
                 {CREDITS.remaining}
               </Link>
               <button
@@ -301,6 +307,9 @@ function SidebarContent({
             <div className="flex items-center justify-between gap-3">
               <p className="flex items-center gap-1.5 text-xs font-medium">
                 <Zap className="h-3.5 w-3.5 text-ember" /> Credits
+                <span className="rounded-full bg-muted px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wide text-muted-foreground">
+                  Demo
+                </span>
               </p>
               <span className="text-[10px] text-muted-foreground">
                 {projectCount} {projectCount === 1 ? "project" : "projects"}
@@ -310,6 +319,7 @@ function SidebarContent({
               {CREDITS.remaining}
               <span className="ml-1 text-sm text-muted-foreground">/ {CREDITS.total}</span>
             </p>
+            <p className="mt-1 text-[10px] text-muted-foreground">{CREDITS_METER_LABEL}</p>
             <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-muted">
               <div
                 className="h-full rounded-full bg-ember shadow-[0_0_10px_var(--ember)]"
@@ -323,7 +333,7 @@ function SidebarContent({
         ) : (
           <Link
             to="/pricing"
-            title={`${CREDITS.remaining} credits left`}
+            title={`Demonstration balance, not your account. ${CREDITS.remaining} of ${CREDITS.total} credits shown.`}
             className="mb-3 grid h-10 w-10 place-items-center rounded-xl border border-ember/25 bg-ember/10"
           >
             <Zap className="h-4 w-4 text-ember" />

@@ -1,0 +1,51 @@
+{
+  "non_sending_native_auth": true,
+  "users_created": 0,
+  "passwords_reset": false,
+  "processing_consent_changed": false,
+  "redirect_probes": [
+    {
+      "owner_id": "21b61ad1-bda4-4abd-ac35-7a0bf477ed69",
+      "requested": "https://noetharaclipz.lovable.app/auth/callback",
+      "observed": "https://noetharaclipz.lovable.app/auth/callback",
+      "requested_preserved": true,
+      "management_configuration_inventory_verified": false
+    },
+    {
+      "owner_id": "21b61ad1-bda4-4abd-ac35-7a0bf477ed69",
+      "requested": "https://noetharaclipz-beta.invalid/auth/callback",
+      "observed": "http://localhost:3000",
+      "requested_preserved": false,
+      "management_configuration_inventory_verified": false
+    },
+    {
+      "owner_id": "c7ade7f9-2003-4a38-ae19-393fffae8452",
+      "requested": "https://noetharaclipz.lovable.app/auth/callback",
+      "observed": "https://noetharaclipz.lovable.app/auth/callback",
+      "requested_preserved": true,
+      "management_configuration_inventory_verified": false
+    },
+    {
+      "requested": "https://codex-unapproved-noethara.lovable.app/auth/callback",
+      "observed": "http://localhost:3000",
+      "requested_preserved": false,
+      "link_not_followed": true,
+      "email_not_sent": true,
+      "management_inventory_verified": false
+    }
+  ],
+  "sessions": [
+    {
+      "id": "21b61ad1-bda4-4abd-ac35-7a0bf477ed69",
+      "role": "authenticated",
+      "method": "native admin-generated link verified without mail delivery",
+      "operator_approval_issued": false
+    },
+    {
+      "id": "c7ade7f9-2003-4a38-ae19-393fffae8452",
+      "role": "authenticated",
+      "method": "native admin-generated link verified without mail delivery",
+      "operator_approval_issued": false
+    }
+  ]
+}

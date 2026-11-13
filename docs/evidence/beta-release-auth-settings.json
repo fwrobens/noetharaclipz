@@ -1,0 +1,51 @@
+{
+  "public_auth_settings": {
+    "disable_signup": false,
+    "mailer_autoconfirm": false,
+    "external": {
+      "anonymous_users": false,
+      "apple": false,
+      "azure": false,
+      "bitbucket": false,
+      "discord": false,
+      "facebook": false,
+      "snapchat": false,
+      "figma": false,
+      "fly": false,
+      "github": false,
+      "gitlab": false,
+      "google": false,
+      "keycloak": false,
+      "kakao": false,
+      "linkedin": false,
+      "linkedin_oidc": false,
+      "notion": false,
+      "spotify": false,
+      "slack": false,
+      "slack_oidc": false,
+      "workos": false,
+      "twitch": false,
+      "twitter": false,
+      "email": true,
+      "phone": false,
+      "zoom": false
+    },
+    "phone_autoconfirm": false
+  },
+  "management_token_configured": false,
+  "webhook_binding_configured": false,
+  "existing_qa_identities": [
+    {
+      "id": "21b61ad1-bda4-4abd-ac35-7a0bf477ed69",
+      "role": "authenticated",
+      "email_confirmed": true,
+      "anonymous": false
+    },
+    {
+      "id": "c7ade7f9-2003-4a38-ae19-393fffae8452",
+      "role": "authenticated",
+      "email_confirmed": true,
+      "anonymous": false
+    }
+  ]
+}

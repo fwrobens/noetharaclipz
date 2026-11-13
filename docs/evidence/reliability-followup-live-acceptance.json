@@ -1,0 +1,112 @@
+{
+  "passed": true,
+  "source_sha256": "08ce51d71e20d7119a9b3800f1b152d6d98d672ff31974c42edf28ade03861cb",
+  "project_id": "010bb2e2-f371-4892-b9ba-58e6dd6a1e7a",
+  "upload_and_analysis_seconds": 286.988,
+  "usage": [
+    {
+      "id": "fa4fcb93-f56a-4c77-9f2c-cb9e183eee38",
+      "job_id": "d19af413-3046-4765-8319-30bdd95eec8a",
+      "project_id": "010bb2e2-f371-4892-b9ba-58e6dd6a1e7a",
+      "request_key": "local:d19af413-3046-4765-8319-30bdd95eec8a",
+      "provider": "local-smolvlm2",
+      "model": "HuggingFaceTB/SmolVLM2-500M-Video-Instruct@7b375e1b73b11138ff12fe22c8f2822d8fe03467",
+      "status": "completed",
+      "input_tokens": 3711,
+      "output_tokens": 12,
+      "estimated_cost": 0,
+      "created_at": "2026-11-09T05:41:47.572563+00:00"
+    }
+  ],
+  "provider_model": "HuggingFaceTB/SmolVLM2-500M-Video-Instruct@7b375e1b73b11138ff12fe22c8f2822d8fe03467",
+  "local_metrics": {
+    "admission_rejected": false,
+    "analysis_cache_hit": false,
+    "prepared_cache_hit": true,
+    "transcript_cache_hit": true,
+    "source_inference_input_tokens": 3711
+  },
+  "model_evidence": {
+    "decision": {
+      "choice": "G",
+      "relative_choice_scores": {
+        "A": 0.01887841336429119,
+        "B": 0.008126402273774147,
+        "C": 0.033988937735557556,
+        "D": 0.05694989114999771,
+        "E": 0.27929970622062683,
+        "F": 0.11125927418470383,
+        "G": 0.35447731614112854,
+        "H": 0.1211761012673378,
+        "Z": 0.015843963250517845
+      },
+      "video_tensor_shape": [
+        8,
+        4,
+        3,
+        512,
+        512
+      ],
+      "input_tokens": 3342,
+      "video_tensor_sha256": "c66e6b3ebd94a3e27d9ece1f5d1c5eb02b6921338e0555faeb894baaac7ceb38",
+      "model_window": [
+        151.967,
+        161.967
+      ],
+      "speech_completed_interval": [
+        151.967,
+        161.967
+      ]
+    },
+    "source_hash": "08ce51d71e20d7119a9b3800f1b152d6d98d672ff31974c42edf28ade03861cb",
+    "hosted_inference": false,
+    "original_inference_usage": {
+      "input_tokens": 3711,
+      "output_tokens": 12
+    }
+  },
+  "provider": "local-smolvlm2",
+  "analysis_job_id": "d19af413-3046-4765-8319-30bdd95eec8a",
+  "render_job_id": "9164a894-3511-4a49-98b5-70b3f5bda100",
+  "analysis_attempts": 2,
+  "render_attempts": 1,
+  "highlights": [
+    {
+      "id": "003d6e05-5fbd-4b64-b7f1-8d34060f2d4e",
+      "project_id": "010bb2e2-f371-4892-b9ba-58e6dd6a1e7a",
+      "start_time": 151.967,
+      "end_time": 161.967,
+      "title": "Visual moment at 152.0s",
+      "category": "Other",
+      "score": 35,
+      "explanation": "Timestamped speech excerpt: No complete ASR words inside this interval. Local multimodal model chose candidate G among 8 actual videos plus a none option. Measured evidence: 0 speech segments, 5 audio events, 1 scene boundaries. Scores are relative choices, not calibrated quality or virality.",
+      "evidence": {
+        "visual": "Four decoded frames per candidate; selected interval with measured speech context 151.967\u2013161.967s. Comparison tensor SHA256 c66e6b3ebd94a3e27d9ece1f5d1c5eb02b6921338e0555faeb894baaac7ceb38."
+      },
+      "created_at": "2026-11-09T05:41:47.572563+00:00"
+    }
+  ],
+  "clip_id": "4cbbac50-60d3-4314-bd06-caa6bbe08776",
+  "persisted_edit": {
+    "end": 161.967,
+    "font": "Instrument Sans",
+    "ratio": "9:16",
+    "start": 152.1,
+    "crop_x": 0.5,
+    "crop_y": 0.5,
+    "volume": 1,
+    "version": 1,
+    "captions": true,
+    "caption_size": 28,
+    "caption_color": "#FFFFFF",
+    "caption_style": "Bold pop",
+    "caption_overrides": {}
+  },
+  "output_path": "07ad237e-669b-475d-871d-9bdb6e80f062/010bb2e2-f371-4892-b9ba-58e6dd6a1e7a/9164a894-3511-4a49-98b5-70b3f5bda100.mp4",
+  "output_bytes": 2044140,
+  "output_sha256": "971241b594bc54bb617d5b753e2ab32f3cce64a31cc00fa79cf0599ee949e8e5",
+  "output_duration": 9.9,
+  "elapsed_seconds": 310.965,
+  "unhandled_browser_errors": [],
+  "ui_steps": "login, upload, instructions, generate, select, edit, save, refresh, Export button, Download MP4 button"
+}

@@ -1,0 +1,17 @@
+{
+  "checks": {
+    "shutdown_preserves_live_recoverable_lease": true,
+    "global_concurrency_guard": true,
+    "expired_job_reclaimed_with_new_token": true,
+    "stale_token_rejected": true,
+    "claimed_job_cancellation_acknowledged": true,
+    "retry_and_finished_job_guard": true,
+    "attempt_limit_enforced": true,
+    "protected_job_unchanged": true
+  },
+  "hosted_generation_requested": false,
+  "scope": "Live HTTP queue control tests; not video or AI acceptance",
+  "status": "passed",
+  "cleanup": "all test objects/projects/accounts removed",
+  "elapsed_seconds": 125.72
+}

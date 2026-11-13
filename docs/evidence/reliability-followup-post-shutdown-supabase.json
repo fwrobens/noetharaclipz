@@ -1,0 +1,57 @@
+{
+  "checked_utc": "2026-11-09T06:07:51.817250+00:00",
+  "read_only_checks": true,
+  "trial_id": "f3fc3665-76e9-4cc5-b6e6-2c437873a6a4",
+  "after_fixed_deadline": true,
+  "qa_owner_pipeline_health": {
+    "detail": "Authorized heartbeat repair verification Authorized heartbeat repair verification Authorized heartbeat repair verification Authorized heartbeat repair verification Authorized heartbeat repair verification Authorized heartbeat repair verification Authorized heartbeat repair verification Authorized he",
+    "online": false,
+    "ai_ready": false,
+    "max_bytes": 45000000,
+    "max_seconds": 300
+  },
+  "qa_jobs": [
+    {
+      "id": "d19af413-3046-4765-8319-30bdd95eec8a",
+      "kind": "analysis",
+      "status": "completed",
+      "attempts": 2,
+      "cancel_requested": false
+    },
+    {
+      "id": "9164a894-3511-4a49-98b5-70b3f5bda100",
+      "kind": "render",
+      "status": "completed",
+      "attempts": 1,
+      "cancel_requested": false
+    },
+    {
+      "id": "f13a8cbe-bde7-479e-a722-88def4d7dde4",
+      "kind": "analysis",
+      "status": "completed",
+      "attempts": 1,
+      "cancel_requested": false
+    },
+    {
+      "id": "8f124b56-1c07-4427-a1fe-60b6dccd6f60",
+      "kind": "render",
+      "status": "completed",
+      "attempts": 1,
+      "cancel_requested": false
+    }
+  ],
+  "active_unfinished_leases": 0,
+  "protected_job": {
+    "id": "9c5c8869-ec2e-4a3e-927d-697615bb58a3",
+    "status": "queued",
+    "attempts": 0,
+    "whole_row_identical": true,
+    "lease_token_absent": true,
+    "lease_until_absent": true,
+    "cancel_requested": false
+  },
+  "worker_claims_or_heartbeats_called": false,
+  "database_schema_or_queue_mutations": false,
+  "qa_password_or_access_token_in_report": false,
+  "health_detail_note": "After the 90-second scoped heartbeat expires, the deployed pipeline_health function falls back to the older global health row. Its retained heartbeat-repair description is stale; online=false and ai_ready=false. This check sent no heartbeat and did not modify that row."
+}

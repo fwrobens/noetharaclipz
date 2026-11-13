@@ -1,0 +1,80 @@
+{
+  "checked_date_utc": "2026-11-11",
+  "project_id": "zxdnjnsghdnviflahvry",
+  "frontend_origin": "https://noetharaclipz.lovable.app",
+  "proposed_release": {
+    "source_commit": "ded5040258a04b82a503cb782f7444a3eecaef6f",
+    "artifact_map_sha256": "7b797ff99838c459f22c434de37152c8774b2d917765b58dc2577358e39476f1",
+    "server_access_sha256": "de9d6fc6095ae6fc62d78027d475ef20869a0b61fa1116b877b405f784d65911",
+    "published": false
+  },
+  "live_host": {
+    "login_status": 200,
+    "callback_status": 404,
+    "release_identity_endpoint_status": 404,
+    "deployment_marker": {
+      "platform_prefix": "psr2",
+      "platform_deployment_uuid": "99146e57-eb48-4b1f-a13e-c893c882abe5",
+      "build_epoch": 1795015226,
+      "full_header_withheld": true,
+      "source_commit_known": false
+    },
+    "public_project_editor_status": 403,
+    "lovable_history_revision_accessible": false
+  },
+  "supabase_auth": {
+    "site_url_reported_by_owner": "https://noetharaclipz.lovable.app",
+    "site_url_verified_by_default_magic_link_redirect": "https://noetharaclipz.lovable.app/",
+    "production_callback": "https://noetharaclipz.lovable.app/auth/callback",
+    "exact_callback_redirect_preserved": true,
+    "unapproved_host_redirect_fell_back_to_production_origin": true,
+    "unapproved_host_redirect_fell_back_to_localhost": false,
+    "public_settings_endpoint_status": 200,
+    "disable_signup": false,
+    "mailer_autoconfirm": false,
+    "full_redirect_allowlist_exposed_by_public_settings": false
+  },
+  "auth_flow": {
+    "method": "non-sending Supabase Admin magic link for existing pilot owner",
+    "email_sent": false,
+    "new_users_created": 0,
+    "email_template_or_delivery_tested": false,
+    "go_true_sign_in_user_status": 200,
+    "sign_in_user_matches_pilot_owner": true,
+    "callback_reached_production_host": true,
+    "callback_frontend_http_status": 404,
+    "callback_handled_by_published_frontend": false,
+    "logout_status": 204,
+    "refresh_after_logout_status": 400,
+    "temporary_sessions_logged_out": 2,
+    "unsent_unfollowed_probe_links": 2,
+    "probe_links_persisted_or_printed": false
+  },
+  "private_storage": {
+    "owner_list_status": 200,
+    "owner_rendered_mp4s_found": 2,
+    "authenticated_existing_mp4_status": 200,
+    "bytes": 2044140,
+    "sha256": "cf4670c8baaa209384a207f63140db92aa0b936494b783449b1885af19db50e3",
+    "anonymous_request_status": 400,
+    "delivery_surface": "authenticated Supabase Storage API",
+    "production_website_download_button_verified": false
+  },
+  "rollback": {
+    "procedure_confirmed_without_action": true,
+    "restore_target_revision_known": false,
+    "complete_auth_settings_snapshot_available": false,
+    "restore_or_publish_performed": false
+  },
+  "side_effects": {
+    "emails_sent": 0,
+    "users_created": 0,
+    "jobs_created": 0,
+    "consent_changed": false,
+    "worker_started": false,
+    "global_processing_enabled": false,
+    "gemini_enabled": false,
+    "site_published": false,
+    "pr_merged": false
+  }
+}

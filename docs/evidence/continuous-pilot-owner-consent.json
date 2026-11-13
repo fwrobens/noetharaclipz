@@ -1,0 +1,35 @@
+{
+  "owner_id": "21b61ad1-bda4-4abd-ac35-7a0bf477ed69",
+  "deployment_id": "11865b83-9836-4ff3-a99e-dfac4df71f34",
+  "explicit_owner_consent": true,
+  "owner_reply": "I consent for this pilot account",
+  "scope": "Local SmolVLM2-500M processing of separately authorized sample footage uploaded to this dedicated account for a proposed 30-minute pilot",
+  "proposed_duration_seconds": 1800,
+  "operator_approval_included": false,
+  "worker_start_authorized": false,
+  "observed_utc": "2026-11-09T13:13:28.602317+00:00",
+  "request_id": "e988f0b0-a763-44f5-82e4-e4784224308d",
+  "consent_id": "4426bdad-bc7a-4972-ace2-ae65ac3f9fa4",
+  "owner_status": {
+    "owner_id": "21b61ad1-bda4-4abd-ac35-7a0bf477ed69",
+    "consent_id": "4426bdad-bc7a-4972-ace2-ae65ac3f9fa4",
+    "expires_at": null,
+    "request_id": "e988f0b0-a763-44f5-82e4-e4784224308d",
+    "revoked_at": null,
+    "approved_at": null,
+    "requested_at": "2026-11-09T13:13:29.200933+00:00",
+    "terms_version": "local-video-v1",
+    "approval_reason": null
+  },
+  "worker_consent_status": {
+    "owner_id": "21b61ad1-bda4-4abd-ac35-7a0bf477ed69",
+    "authorized": false,
+    "consent_id": "4426bdad-bc7a-4972-ace2-ae65ac3f9fa4",
+    "expires_at": null,
+    "approved_at": null,
+    "future_jobs_only": true
+  },
+  "recorded_utc": "2026-11-09T13:13:29.624795+00:00",
+  "operator_approval_issued": false,
+  "worker_started": false
+}

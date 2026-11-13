@@ -1,0 +1,50 @@
+{
+  "checked_utc": "2026-11-09T23:11:54.709101+00:00",
+  "read_only": true,
+  "private_download_status": 206,
+  "private_range_matches_actual_download": true,
+  "public_download_status": 400,
+  "anonymous_download_status": 400,
+  "privileged_protocol_denials": {
+    "anonymous": 401,
+    "authenticated_pilot": 403
+  },
+  "cross_user_original_project_and_job_denied": true,
+  "processing_approval_did_not_elevate_pilot_role": true,
+  "project_created_after_current_operator_approval": true,
+  "edits_remain_persisted": true,
+  "jobs": [
+    {
+      "id": "5c42ac66-6b84-4527-932c-b24b719a9423",
+      "kind": "analysis",
+      "status": "completed",
+      "attempts": 1,
+      "created_at": "2026-11-09T23:02:38.296673+00:00",
+      "updated_at": "2026-11-09T23:05:13.824606+00:00"
+    },
+    {
+      "id": "1918a086-2bc9-44fe-89c3-585f04c990c1",
+      "kind": "render",
+      "status": "completed",
+      "attempts": 1,
+      "created_at": "2026-11-09T23:05:30.553527+00:00",
+      "updated_at": "2026-11-09T23:05:37.577172+00:00"
+    }
+  ],
+  "active_lease_count": 0,
+  "pipeline_health": {
+    "detail": "Ready: HuggingFaceTB/SmolVLM2-500M-Video-Instruct@7b375e1b73b11138ff12fe22c8f2822d8fe03467",
+    "online": true,
+    "ai_ready": true,
+    "max_bytes": 45000000,
+    "max_seconds": 300
+  },
+  "protected_job": {
+    "id": "9c5c8869-ec2e-4a3e-927d-697615bb58a3",
+    "status": "queued",
+    "attempts": 0,
+    "row_sha256": "deac9a0a9f311218fce3c531def81e1a3f92ff11e82132701a06e366d545dbdb",
+    "unchanged": true
+  },
+  "full_24h_test_passed": false
+}

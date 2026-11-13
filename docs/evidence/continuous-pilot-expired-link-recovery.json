@@ -1,0 +1,46 @@
+{
+  "checked_utc": "2026-11-09T20:30:15.885530+00:00",
+  "old_link_expired": true,
+  "old_download_http_status": 400,
+  "old_download_error": {
+    "statusCode": "400",
+    "error": "InvalidJWT",
+    "message": "\"exp\" claim timestamp check failed"
+  },
+  "failed_attempt_reached_receiver": false,
+  "failed_attempt_reached_host_collector": false,
+  "original_handoff_sha256": "0a30367d6040d53dceec7632000a0b1b48caa5d2178e75f52f098955c06a700e",
+  "original_handoff_unchanged": true,
+  "receiver_python_sha256": "e29607183c9242f95a97e0274b145806b6ae74cbae39a63a19223904f406405a",
+  "original_collector_sha256": "7bba366d6bb5ade982feb94668e127396e043ed5a10bad50c9b4efbf21918efc",
+  "wrapper_sha256": "69229c634e43760a9a13f360e8fbf505807055c2e90cdf939b332efcbd096eda",
+  "wrapper_bytes": 8262,
+  "wrapper_object": "_worker-transfer/bcfff223-af9d-4235-8c15-1318c7cac582/receive-and-inspect-cfa55baa-29fe-4ae4-9ef4-8e6049ee8b8f.json",
+  "new_signed_download_http_status": 200,
+  "new_signed_download_sha256_verified": true,
+  "unsigned_public_http_status": 400,
+  "outer_expires_utc": "2026-11-10T20:29:12+00:00",
+  "inner_expires_utc": "2026-11-10T20:30:12+00:00",
+  "ec2_preflight_status": "not_run_pending_ssm_result",
+  "previous_pilot_window": "expired_unapproved_2026-11-09T15:15:00Z_to_15:45:00Z",
+  "window_extended_or_rescheduled": false,
+  "operator_processing_status": {
+    "owner_id": "21b61ad1-bda4-4abd-ac35-7a0bf477ed69",
+    "authorized": false,
+    "consent_id": "4426bdad-bc7a-4972-ace2-ae65ac3f9fa4",
+    "expires_at": null,
+    "approved_at": null,
+    "future_jobs_only": true
+  },
+  "protected_upload": {
+    "status": "queued",
+    "attempts": 0,
+    "whole_row_sha256": "deac9a0a9f311218fce3c531def81e1a3f92ff11e82132701a06e366d545dbdb",
+    "unchanged": true
+  },
+  "worker_started": false,
+  "operator_approval_issued": false,
+  "bucket_public_settings_changed": false,
+  "credential_values_exposed": false,
+  "migration_reapplied": false
+}

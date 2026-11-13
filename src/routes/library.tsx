@@ -1,3 +1,4 @@
+import { requireAuth } from "@/lib/auth";
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { useStore } from "@/lib/store";
@@ -6,6 +7,7 @@ import { PageHeader, EmptyState } from "@/components/Page";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/library")({
+  beforeLoad: requireAuth,
   head: () => ({
     meta: [
       { property: "og:type", content: "website" },
@@ -24,21 +26,52 @@ const filters = ["All", "Ready", "Processing", "YouTube", "Twitch", "Kick"] as c
 function LibraryPage() {
   const { projects } = useStore();
   const [f, setF] = useState<(typeof filters)[number]>("All");
-  const list = projects.filter((p) => !p.deleted).filter((p) =>
-    f === "All" ? true : f === "Ready" ? p.status === "ready" : f === "Processing" ? p.status !== "ready" : p.platform === f,
-  );
+  const search =
+    typeof window !== "undefined"
+      ? (new URLSearchParams(window.location.search).get("q") ?? "")
+      : "";
+  const list = projects
+    .filter((p) => p.title.toLowerCase().includes(search.toLowerCase()))
+    .filter((p) => !p.deleted)
+    .filter((p) =>
+      f === "All"
+        ? true
+        : f === "Ready"
+          ? p.status === "ready"
+          : f === "Processing"
+            ? p.status !== "ready"
+            : p.platform === f,
+    );
   return (
     <div className="animate-fade-up p-4 sm:p-8">
       <PageHeader title="Library" sub="Every video you've brought into Noethara Clipz." />
       <div className="no-scrollbar mb-6 flex gap-2 overflow-x-auto">
         {filters.map((x) => (
-          <button key={x} onClick={() => setF(x)} className={cn("shrink-0 rounded-full border px-3 py-1.5 text-sm transition", f === x ? "bg-foreground text-background shadow-pop" : "bg-card shadow-soft hover:shadow-pop")}>{x}</button>
+          <button
+            key={x}
+            onClick={() => setF(x)}
+            className={cn(
+              "shrink-0 rounded-full border px-3 py-1.5 text-sm transition",
+              f === x
+                ? "bg-foreground text-background shadow-pop"
+                : "bg-card shadow-soft hover:shadow-pop",
+            )}
+          >
+            {x}
+          </button>
         ))}
       </div>
       {list.length ? (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">{list.map((p) => <VideoCard key={p.id} p={p} />)}</div>
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {list.map((p) => (
+            <VideoCard key={p.id} p={p} />
+          ))}
+        </div>
       ) : (
-        <EmptyState title="Nothing here yet" sub="Try another filter or import a video from Home." />
+        <EmptyState
+          title="Nothing here yet"
+          sub="Try another filter or import a video from Home."
+        />
       )}
     </div>
   );

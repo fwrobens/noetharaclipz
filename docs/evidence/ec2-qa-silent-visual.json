@@ -1,0 +1,110 @@
+{
+  "passed": true,
+  "source_sha256": "92c4957d7d2032c92aefc1794092b108c39151127c5e31e5afecd437e0677d3e",
+  "project_id": "fdff113a-67c7-4b5b-86a1-a1d6876c8750",
+  "upload_and_analysis_seconds": 65.724,
+  "usage": [
+    {
+      "id": "3109740c-39fe-4693-aeff-4f9cd2e8b19c",
+      "job_id": "ec94b0e8-24aa-40b4-9447-dd5af57aff1e",
+      "project_id": "fdff113a-67c7-4b5b-86a1-a1d6876c8750",
+      "request_key": "local:ec94b0e8-24aa-40b4-9447-dd5af57aff1e",
+      "provider": "local-smolvlm2",
+      "model": "HuggingFaceTB/SmolVLM2-500M-Video-Instruct@7b375e1b73b11138ff12fe22c8f2822d8fe03467",
+      "status": "completed",
+      "input_tokens": 2834,
+      "output_tokens": 15,
+      "estimated_cost": 0,
+      "created_at": "2026-11-09T00:39:24.819527+00:00"
+    }
+  ],
+  "provider_model": "HuggingFaceTB/SmolVLM2-500M-Video-Instruct@7b375e1b73b11138ff12fe22c8f2822d8fe03467",
+  "local_metrics": {
+    "admission_rejected": false,
+    "analysis_cache_hit": false,
+    "prepared_cache_hit": false,
+    "transcript_cache_hit": false,
+    "source_inference_input_tokens": 2834
+  },
+  "model_evidence": {
+    "decision": {
+      "choice": "E",
+      "relative_choice_scores": {
+        "A": 0.027362797409296036,
+        "B": 0.014032375998795033,
+        "C": 0.07729017734527588,
+        "D": 0.14215311408042908,
+        "E": 0.4699311852455139,
+        "F": 0.2567972242832184,
+        "Z": 0.012433170340955257
+      },
+      "video_tensor_shape": [
+        6,
+        4,
+        3,
+        512,
+        512
+      ],
+      "input_tokens": 2465,
+      "video_tensor_sha256": "ca06d812e9fec681340c5adcd50ee0f58b4e262344db72b329642d0d6a53786f",
+      "model_window": [
+        8.691,
+        15.209
+      ],
+      "speech_completed_interval": [
+        8.691,
+        15.209
+      ]
+    },
+    "source_hash": "92c4957d7d2032c92aefc1794092b108c39151127c5e31e5afecd437e0677d3e",
+    "hosted_inference": false,
+    "original_inference_usage": {
+      "input_tokens": 2834,
+      "output_tokens": 15
+    }
+  },
+  "provider": "local-smolvlm2",
+  "analysis_job_id": "ec94b0e8-24aa-40b4-9447-dd5af57aff1e",
+  "render_job_id": "99809064-3844-4946-8889-bf74dc651e66",
+  "analysis_attempts": 1,
+  "render_attempts": 1,
+  "highlights": [
+    {
+      "id": "5b16255e-4418-4029-acab-b09a3568b9d1",
+      "project_id": "fdff113a-67c7-4b5b-86a1-a1d6876c8750",
+      "start_time": 8.691,
+      "end_time": 15.209,
+      "title": "Visual moment at 8.7s",
+      "category": "Other",
+      "score": 47,
+      "explanation": "Timestamped speech excerpt: No complete ASR words inside this interval. Local multimodal model chose candidate E among 6 actual videos plus a none option. Measured evidence: 0 speech segments, 0 audio events, 1 scene boundaries. Scores are relative choices, not calibrated quality or virality.",
+      "evidence": {
+        "visual": "Four decoded frames per candidate; selected interval with measured speech context 8.691\u201315.209s. Comparison tensor SHA256 ca06d812e9fec681340c5adcd50ee0f58b4e262344db72b329642d0d6a53786f."
+      },
+      "created_at": "2026-11-09T00:39:24.819527+00:00"
+    }
+  ],
+  "clip_id": "fcfa9070-5ef5-4e00-9f48-77e854d3d2c8",
+  "persisted_edit": {
+    "end": 15.209,
+    "font": "Instrument Sans",
+    "ratio": "9:16",
+    "start": 8.8,
+    "crop_x": 0.5,
+    "crop_y": 0.5,
+    "volume": 1,
+    "version": 1,
+    "captions": true,
+    "caption_size": 28,
+    "caption_color": "#FFFFFF",
+    "caption_style": "Bold pop",
+    "caption_overrides": {}
+  },
+  "output_path": "c7ade7f9-2003-4a38-ae19-393fffae8452/fdff113a-67c7-4b5b-86a1-a1d6876c8750/99809064-3844-4946-8889-bf74dc651e66.mp4",
+  "output_bytes": 617104,
+  "output_sha256": "a8023c71410706a97ffd812e59e19851bb252f65066fcd0493c570e2007bf69d",
+  "output_duration": 6.366667,
+  "elapsed_seconds": 82.049,
+  "unhandled_browser_errors": [],
+  "ui_steps": "login, upload, instructions, generate, select, edit, save, refresh, Export button, Download MP4 button"
+}

@@ -17,8 +17,19 @@ describe("App routing", () => {
 
   it("gives dashboard projects and activity their own pages", () => {
     const router = createRouter({ routeTree, context: { queryClient: new QueryClient() } });
-    expect(router.matchRoutes("/dashboard/projects").at(-1)?.routeId).toBe("/_authenticated/dashboard_/projects");
-    expect(router.matchRoutes("/dashboard/activity").at(-1)?.routeId).toBe("/_authenticated/dashboard_/activity");
+    expect(router.matchRoutes("/dashboard/projects").at(-1)?.routeId).toBe(
+      "/_authenticated/dashboard_/projects",
+    );
+    expect(router.matchRoutes("/dashboard/activity").at(-1)?.routeId).toBe(
+      "/_authenticated/dashboard_/activity",
+    );
+  });
+
+  it("matches the production PKCE callback instead of the not-found page", () => {
+    const router = createRouter({ routeTree, context: { queryClient: new QueryClient() } });
+    const match = router.matchRoutes("/auth/callback").at(-1);
+    expect(match?.routeId).toBe("/auth/callback");
+    expect(match?.fullPath).toBe("/auth/callback");
   });
 
   it("matches the authenticated creator dashboard", () => {

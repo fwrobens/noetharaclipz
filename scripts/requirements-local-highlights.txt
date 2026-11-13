@@ -1,0 +1,8 @@
+# Optional local-provider worker/test environment; install official CPU torch as in provider-readiness.md.
+-r requirements-local-video.txt
+httpx==0.28.1
+pydantic==2.12.5
+faster-whisper==1.2.1
+opencv-python-headless==4.12.0.88
+scenedetect==0.6.7.1
+numpy==2.2.6

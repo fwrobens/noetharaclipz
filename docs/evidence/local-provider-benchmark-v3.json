@@ -1,0 +1,541 @@
+{
+  "model": "HuggingFaceTB/SmolVLM2-500M-Video-Instruct@7b375e1b73b11138ff12fe22c8f2822d8fe03467",
+  "model_loads": 1,
+  "warmup_seconds": 5.907613108000078,
+  "hosted_api_calls": 0,
+  "trials": [
+    {
+      "sample": "elephants-dream",
+      "repeat": 0,
+      "wall_seconds": 88.402,
+      "cpu_seconds": 179.175,
+      "average_cpu_percent_one_core": 202.68,
+      "peak_rss_bytes": 3711926272,
+      "process_max_rss_kib": 3624448,
+      "cache": {
+        "prepared_cache_hit": true,
+        "transcript_cache_hit": true,
+        "analysis_cache_hit": false,
+        "source_inference_input_tokens": 4240,
+        "admission_rejected": false
+      },
+      "execution_usage": {
+        "input_tokens": 4240,
+        "output_tokens": 29
+      },
+      "original_usage": {
+        "input_tokens": 4240,
+        "output_tokens": 29
+      },
+      "model_decision": {
+        "choice": "G",
+        "relative_choice_scores": {
+          "A": 0.024069875478744507,
+          "B": 0.013623020611703396,
+          "C": 0.037626564502716064,
+          "D": 0.03216031193733215,
+          "E": 0.20274968445301056,
+          "F": 0.13296179473400116,
+          "G": 0.35825109481811523,
+          "H": 0.17794416844844818,
+          "Z": 0.020613418892025948
+        },
+        "video_tensor_shape": [
+          8,
+          4,
+          3,
+          512,
+          512
+        ],
+        "input_tokens": 3871,
+        "video_tensor_sha256": "5ee1d309e42dda98cc1462952fac8af0ff3b2af558c4e1a1d4f2c106d3466f9b",
+        "model_window": [
+          42.857,
+          52.857
+        ],
+        "speech_completed_interval": [
+          31.65,
+          54.0
+        ]
+      },
+      "highlights": [
+        {
+          "start": 31.65,
+          "end": 54.0,
+          "title": "Are you hurt? I don't think so. You?",
+          "category": "Other",
+          "score": 36,
+          "explanation": "Timestamped speech excerpt: Are you hurt? I don't think so. You?. Local multimodal model chose candidate G among 8 actual videos plus a none option. Measured evidence: 2 speech segments, 0 audio events, 1 scene boundaries. Scores are relative choices, not calibrated quality or virality.",
+          "visual_evidence": "Four decoded frames per candidate; selected interval with measured speech context 31.650\u201354.000s. Comparison tensor SHA256 5ee1d309e42dda98cc1462952fac8af0ff3b2af558c4e1a1d4f2c106d3466f9b."
+        }
+      ],
+      "scenes": 9,
+      "speech_segments": 6,
+      "audio_events": 78,
+      "raw_visual_observation": "A man in a dark suit and a woman in a light-colored dress are standing on a rooftop, looking at something off-screen.",
+      "quality_metrics": {
+        "speech_boundary_cuts": 0,
+        "selected_count": 1
+      },
+      "cache_path": "fccf2959dcf2f9509d09f67e056bed94282da3212b40bb6b5b8df3269bfff796/analysis-05123441d601c3d1526cf1844eff1095dec527294bb51546ad10757f8be50dde.json"
+    },
+    {
+      "sample": "elephants-dream",
+      "repeat": 1,
+      "wall_seconds": 0.006,
+      "cpu_seconds": 0.012,
+      "average_cpu_percent_one_core": 178.5,
+      "peak_rss_bytes": 2706157568,
+      "process_max_rss_kib": 3624448,
+      "cache": {
+        "prepared_cache_hit": true,
+        "transcript_cache_hit": true,
+        "analysis_cache_hit": true,
+        "source_inference_input_tokens": 4240,
+        "admission_rejected": false
+      },
+      "execution_usage": {
+        "input_tokens": 0,
+        "output_tokens": 0
+      },
+      "original_usage": {
+        "input_tokens": 4240,
+        "output_tokens": 29
+      },
+      "model_decision": {
+        "choice": "G",
+        "relative_choice_scores": {
+          "A": 0.024069875478744507,
+          "B": 0.013623020611703396,
+          "C": 0.037626564502716064,
+          "D": 0.03216031193733215,
+          "E": 0.20274968445301056,
+          "F": 0.13296179473400116,
+          "G": 0.35825109481811523,
+          "H": 0.17794416844844818,
+          "Z": 0.020613418892025948
+        },
+        "video_tensor_shape": [
+          8,
+          4,
+          3,
+          512,
+          512
+        ],
+        "input_tokens": 3871,
+        "video_tensor_sha256": "5ee1d309e42dda98cc1462952fac8af0ff3b2af558c4e1a1d4f2c106d3466f9b",
+        "model_window": [
+          42.857,
+          52.857
+        ],
+        "speech_completed_interval": [
+          31.65,
+          54.0
+        ]
+      },
+      "highlights": [
+        {
+          "start": 31.65,
+          "end": 54.0,
+          "title": "Are you hurt? I don't think so. You?",
+          "category": "Other",
+          "score": 36,
+          "explanation": "Timestamped speech excerpt: Are you hurt? I don't think so. You?. Local multimodal model chose candidate G among 8 actual videos plus a none option. Measured evidence: 2 speech segments, 0 audio events, 1 scene boundaries. Scores are relative choices, not calibrated quality or virality.",
+          "visual_evidence": "Four decoded frames per candidate; selected interval with measured speech context 31.650\u201354.000s. Comparison tensor SHA256 5ee1d309e42dda98cc1462952fac8af0ff3b2af558c4e1a1d4f2c106d3466f9b."
+        }
+      ],
+      "scenes": 9,
+      "speech_segments": 6,
+      "audio_events": 78,
+      "raw_visual_observation": "A man in a dark suit and a woman in a light-colored dress are standing on a rooftop, looking at something off-screen.",
+      "quality_metrics": {
+        "speech_boundary_cuts": 0,
+        "selected_count": 1
+      },
+      "cache_path": "fccf2959dcf2f9509d09f67e056bed94282da3212b40bb6b5b8df3269bfff796/analysis-05123441d601c3d1526cf1844eff1095dec527294bb51546ad10757f8be50dde.json"
+    },
+    {
+      "sample": "sintel",
+      "repeat": 0,
+      "wall_seconds": 82.59,
+      "cpu_seconds": 168.162,
+      "average_cpu_percent_one_core": 203.61,
+      "peak_rss_bytes": 4383485952,
+      "process_max_rss_kib": 4280936,
+      "cache": {
+        "prepared_cache_hit": true,
+        "transcript_cache_hit": true,
+        "analysis_cache_hit": false,
+        "source_inference_input_tokens": 4008,
+        "admission_rejected": false
+      },
+      "execution_usage": {
+        "input_tokens": 4008,
+        "output_tokens": 15
+      },
+      "original_usage": {
+        "input_tokens": 4008,
+        "output_tokens": 15
+      },
+      "model_decision": {
+        "choice": "G",
+        "relative_choice_scores": {
+          "A": 0.02294112928211689,
+          "B": 0.00900726206600666,
+          "C": 0.041976574808359146,
+          "D": 0.04105813056230545,
+          "E": 0.15682630240917206,
+          "F": 0.18187128007411957,
+          "G": 0.3549547791481018,
+          "H": 0.17282477021217346,
+          "Z": 0.01853974536061287
+        },
+        "video_tensor_shape": [
+          8,
+          4,
+          3,
+          512,
+          512
+        ],
+        "input_tokens": 3639,
+        "video_tensor_sha256": "8f882aa846e89e8bedf9239d05af4bc241908c9c3048db79bb3f00afba91276e",
+        "model_window": [
+          37.292,
+          47.292
+        ],
+        "speech_completed_interval": [
+          37.292,
+          47.292
+        ]
+      },
+      "highlights": [
+        {
+          "start": 37.292,
+          "end": 47.292,
+          "title": "Visual moment at 37.3s",
+          "category": "Other",
+          "score": 35,
+          "explanation": "Timestamped speech excerpt: No complete ASR words inside this interval. Local multimodal model chose candidate G among 8 actual videos plus a none option. Measured evidence: 0 speech segments, 0 audio events, 1 scene boundaries. Scores are relative choices, not calibrated quality or virality.",
+          "visual_evidence": "Four decoded frames per candidate; selected interval with measured speech context 37.292\u201347.292s. Comparison tensor SHA256 8f882aa846e89e8bedf9239d05af4bc241908c9c3048db79bb3f00afba91276e."
+        }
+      ],
+      "scenes": 12,
+      "speech_segments": 2,
+      "audio_events": 32,
+      "raw_visual_observation": "A person is seen walking through a desert landscape, holding a camera.",
+      "quality_metrics": {
+        "speech_boundary_cuts": 0,
+        "selected_count": 1
+      },
+      "cache_path": "7649e5d567509a8c7a34eef28f4dce12fa787e015f5bdd24f88415c773d6db61/analysis-362daa83ab42f8f8039de8a92a7e82d857d7d8fd64a29fefbac87a94f59dfa25.json"
+    },
+    {
+      "sample": "sintel",
+      "repeat": 1,
+      "wall_seconds": 0.005,
+      "cpu_seconds": 0.009,
+      "average_cpu_percent_one_core": 175.04,
+      "peak_rss_bytes": 2723340288,
+      "process_max_rss_kib": 4280936,
+      "cache": {
+        "prepared_cache_hit": true,
+        "transcript_cache_hit": true,
+        "analysis_cache_hit": true,
+        "source_inference_input_tokens": 4008,
+        "admission_rejected": false
+      },
+      "execution_usage": {
+        "input_tokens": 0,
+        "output_tokens": 0
+      },
+      "original_usage": {
+        "input_tokens": 4008,
+        "output_tokens": 15
+      },
+      "model_decision": {
+        "choice": "G",
+        "relative_choice_scores": {
+          "A": 0.02294112928211689,
+          "B": 0.00900726206600666,
+          "C": 0.041976574808359146,
+          "D": 0.04105813056230545,
+          "E": 0.15682630240917206,
+          "F": 0.18187128007411957,
+          "G": 0.3549547791481018,
+          "H": 0.17282477021217346,
+          "Z": 0.01853974536061287
+        },
+        "video_tensor_shape": [
+          8,
+          4,
+          3,
+          512,
+          512
+        ],
+        "input_tokens": 3639,
+        "video_tensor_sha256": "8f882aa846e89e8bedf9239d05af4bc241908c9c3048db79bb3f00afba91276e",
+        "model_window": [
+          37.292,
+          47.292
+        ],
+        "speech_completed_interval": [
+          37.292,
+          47.292
+        ]
+      },
+      "highlights": [
+        {
+          "start": 37.292,
+          "end": 47.292,
+          "title": "Visual moment at 37.3s",
+          "category": "Other",
+          "score": 35,
+          "explanation": "Timestamped speech excerpt: No complete ASR words inside this interval. Local multimodal model chose candidate G among 8 actual videos plus a none option. Measured evidence: 0 speech segments, 0 audio events, 1 scene boundaries. Scores are relative choices, not calibrated quality or virality.",
+          "visual_evidence": "Four decoded frames per candidate; selected interval with measured speech context 37.292\u201347.292s. Comparison tensor SHA256 8f882aa846e89e8bedf9239d05af4bc241908c9c3048db79bb3f00afba91276e."
+        }
+      ],
+      "scenes": 12,
+      "speech_segments": 2,
+      "audio_events": 32,
+      "raw_visual_observation": "A person is seen walking through a desert landscape, holding a camera.",
+      "quality_metrics": {
+        "speech_boundary_cuts": 0,
+        "selected_count": 1
+      },
+      "cache_path": "7649e5d567509a8c7a34eef28f4dce12fa787e015f5bdd24f88415c773d6db61/analysis-362daa83ab42f8f8039de8a92a7e82d857d7d8fd64a29fefbac87a94f59dfa25.json"
+    },
+    {
+      "sample": "supertuxkart",
+      "repeat": 0,
+      "wall_seconds": 87.711,
+      "cpu_seconds": 176.848,
+      "average_cpu_percent_one_core": 201.63,
+      "peak_rss_bytes": 4391526400,
+      "process_max_rss_kib": 4299148,
+      "cache": {
+        "prepared_cache_hit": true,
+        "transcript_cache_hit": true,
+        "analysis_cache_hit": false,
+        "source_inference_input_tokens": 4227,
+        "admission_rejected": false
+      },
+      "execution_usage": {
+        "input_tokens": 4227,
+        "output_tokens": 19
+      },
+      "original_usage": {
+        "input_tokens": 4227,
+        "output_tokens": 19
+      },
+      "model_decision": {
+        "choice": "E",
+        "relative_choice_scores": {
+          "A": 0.04061303287744522,
+          "B": 0.009641120210289955,
+          "C": 0.035593532025814056,
+          "D": 0.039568644016981125,
+          "E": 0.2445676624774933,
+          "F": 0.20052920281887054,
+          "G": 0.23127548396587372,
+          "H": 0.1602913737297058,
+          "Z": 0.03791995346546173
+        },
+        "video_tensor_shape": [
+          8,
+          4,
+          3,
+          512,
+          512
+        ],
+        "input_tokens": 3858,
+        "video_tensor_sha256": "68d0bb1cbd92507ef48bc135aa4ae679a179345ee181551063120e4b58f0306a",
+        "model_window": [
+          36.6,
+          46.6
+        ],
+        "speech_completed_interval": [
+          36.6,
+          46.6
+        ]
+      },
+      "highlights": [
+        {
+          "start": 36.6,
+          "end": 46.6,
+          "title": "Visual moment at 36.6s",
+          "category": "Other",
+          "score": 24,
+          "explanation": "Timestamped speech excerpt: No complete ASR words inside this interval. Local multimodal model chose candidate E among 8 actual videos plus a none option. Measured evidence: 0 speech segments, 21 audio events, 6 scene boundaries. Scores are relative choices, not calibrated quality or virality.",
+          "visual_evidence": "Four decoded frames per candidate; selected interval with measured speech context 36.600\u201346.600s. Comparison tensor SHA256 68d0bb1cbd92507ef48bc135aa4ae679a179345ee181551063120e4b58f0306a."
+        }
+      ],
+      "scenes": 33,
+      "speech_segments": 0,
+      "audio_events": 125,
+      "raw_visual_observation": "A character is running along a path, holding a gun, and shooting at a target.",
+      "quality_metrics": {
+        "speech_boundary_cuts": 0,
+        "selected_count": 1
+      },
+      "cache_path": "a9bb5cf2daa04c09015cdf7de8bb4f41bb385c875acc81ce56e6ceb0002864ae/analysis-10e6c71e3cf11f3eeb07b7341fa56eb1a00c6c6c416eebbfbd9826547e3451e2.json"
+    },
+    {
+      "sample": "supertuxkart",
+      "repeat": 1,
+      "wall_seconds": 0.011,
+      "cpu_seconds": 0.019,
+      "average_cpu_percent_one_core": 176.77,
+      "peak_rss_bytes": 2725482496,
+      "process_max_rss_kib": 4299148,
+      "cache": {
+        "prepared_cache_hit": true,
+        "transcript_cache_hit": true,
+        "analysis_cache_hit": true,
+        "source_inference_input_tokens": 4227,
+        "admission_rejected": false
+      },
+      "execution_usage": {
+        "input_tokens": 0,
+        "output_tokens": 0
+      },
+      "original_usage": {
+        "input_tokens": 4227,
+        "output_tokens": 19
+      },
+      "model_decision": {
+        "choice": "E",
+        "relative_choice_scores": {
+          "A": 0.04061303287744522,
+          "B": 0.009641120210289955,
+          "C": 0.035593532025814056,
+          "D": 0.039568644016981125,
+          "E": 0.2445676624774933,
+          "F": 0.20052920281887054,
+          "G": 0.23127548396587372,
+          "H": 0.1602913737297058,
+          "Z": 0.03791995346546173
+        },
+        "video_tensor_shape": [
+          8,
+          4,
+          3,
+          512,
+          512
+        ],
+        "input_tokens": 3858,
+        "video_tensor_sha256": "68d0bb1cbd92507ef48bc135aa4ae679a179345ee181551063120e4b58f0306a",
+        "model_window": [
+          36.6,
+          46.6
+        ],
+        "speech_completed_interval": [
+          36.6,
+          46.6
+        ]
+      },
+      "highlights": [
+        {
+          "start": 36.6,
+          "end": 46.6,
+          "title": "Visual moment at 36.6s",
+          "category": "Other",
+          "score": 24,
+          "explanation": "Timestamped speech excerpt: No complete ASR words inside this interval. Local multimodal model chose candidate E among 8 actual videos plus a none option. Measured evidence: 0 speech segments, 21 audio events, 6 scene boundaries. Scores are relative choices, not calibrated quality or virality.",
+          "visual_evidence": "Four decoded frames per candidate; selected interval with measured speech context 36.600\u201346.600s. Comparison tensor SHA256 68d0bb1cbd92507ef48bc135aa4ae679a179345ee181551063120e4b58f0306a."
+        }
+      ],
+      "scenes": 33,
+      "speech_segments": 0,
+      "audio_events": 125,
+      "raw_visual_observation": "A character is running along a path, holding a gun, and shooting at a target.",
+      "quality_metrics": {
+        "speech_boundary_cuts": 0,
+        "selected_count": 1
+      },
+      "cache_path": "a9bb5cf2daa04c09015cdf7de8bb4f41bb385c875acc81ce56e6ceb0002864ae/analysis-10e6c71e3cf11f3eeb07b7341fa56eb1a00c6c6c416eebbfbd9826547e3451e2.json"
+    },
+    {
+      "sample": "black-silence-negative",
+      "repeat": 0,
+      "wall_seconds": 0.06,
+      "cpu_seconds": 0.06,
+      "average_cpu_percent_one_core": 99.99,
+      "peak_rss_bytes": 2725490688,
+      "process_max_rss_kib": 4299148,
+      "cache": {
+        "prepared_cache_hit": true,
+        "transcript_cache_hit": true,
+        "analysis_cache_hit": false,
+        "source_inference_input_tokens": 0,
+        "admission_rejected": true
+      },
+      "execution_usage": {
+        "input_tokens": 0,
+        "output_tokens": 0
+      },
+      "original_usage": {
+        "input_tokens": 0,
+        "output_tokens": 0
+      },
+      "model_decision": {
+        "choice": "Z",
+        "method": "measured_empty_media_admission",
+        "input_tokens": 0
+      },
+      "highlights": [],
+      "scenes": 0,
+      "speech_segments": 0,
+      "audio_events": 32,
+      "raw_visual_observation": "",
+      "quality_metrics": {
+        "speech_boundary_cuts": 0,
+        "selected_count": 0
+      },
+      "cache_path": "03faa7cea41c16b38a6ae46e37e5fc1b0d1bc80a59cce1b7d448c29b467dd022/analysis-e4425f662783cb4577b690fc04ba32029024671f7915803bf06496ef4af3a405.json"
+    },
+    {
+      "sample": "black-silence-negative",
+      "repeat": 1,
+      "wall_seconds": 0.003,
+      "cpu_seconds": 0.003,
+      "average_cpu_percent_one_core": 100.99,
+      "peak_rss_bytes": 2745413632,
+      "process_max_rss_kib": 4299148,
+      "cache": {
+        "prepared_cache_hit": true,
+        "transcript_cache_hit": true,
+        "analysis_cache_hit": true,
+        "source_inference_input_tokens": 0,
+        "admission_rejected": true
+      },
+      "execution_usage": {
+        "input_tokens": 0,
+        "output_tokens": 0
+      },
+      "original_usage": {
+        "input_tokens": 0,
+        "output_tokens": 0
+      },
+      "model_decision": {
+        "choice": "Z",
+        "method": "measured_empty_media_admission",
+        "input_tokens": 0
+      },
+      "highlights": [],
+      "scenes": 0,
+      "speech_segments": 0,
+      "audio_events": 32,
+      "raw_visual_observation": "",
+      "quality_metrics": {
+        "speech_boundary_cuts": 0,
+        "selected_count": 0
+      },
+      "cache_path": "03faa7cea41c16b38a6ae46e37e5fc1b0d1bc80a59cce1b7d448c29b467dd022/analysis-e4425f662783cb4577b690fc04ba32029024671f7915803bf06496ef4af3a405.json"
+    }
+  ],
+  "actual_model_cancellation": {
+    "passed": true,
+    "checkpoint_calls": 2,
+    "seconds": 0.23
+  }
+}

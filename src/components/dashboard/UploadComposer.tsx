@@ -1,4 +1,5 @@
 import { useServerFn } from "@tanstack/react-start";
+import { useNavigate } from "@tanstack/react-router";
 import {
   ArrowUp,
   Flame,
@@ -13,10 +14,10 @@ import {
   UploadCloud,
   X,
 } from "lucide-react";
-import { useRef, useState, type DragEvent } from "react";
+import { useEffect, useRef, useState, type DragEvent } from "react";
 import { toast } from "sonner";
 import { finalizeVideo, prepareVideo } from "@/lib/creator.functions";
-import { supabase } from "@/integrations/supabase/client";
+import { uploadVideo } from "@/lib/upload";
 import { cn } from "@/lib/utils";
 
 const MAX_FILE_SIZE = 45_000_000;
@@ -43,10 +44,14 @@ type UploadComposerProps = {
 };
 
 export function UploadComposer({ onUploaded }: UploadComposerProps) {
+  const navigate = useNavigate();
   const [file, setFile] = useState<File | null>(null);
   const [instructions, setInstructions] = useState("");
   const [dragging, setDragging] = useState(false);
   const [stage, setStage] = useState<UploadStage>("idle");
+  const [progress, setProgress] = useState(0);
+  const uploadRef = useRef<AbortController | null>(null);
+  useEffect(() => () => uploadRef.current?.abort(), []);
   const inputRef = useRef<HTMLInputElement>(null);
   const requestIdRef = useRef<string | null>(null);
   const prepare = useServerFn(prepareVideo);
@@ -59,7 +64,7 @@ export function UploadComposer({ onUploaded }: UploadComposerProps) {
       toast.error("Choose an MP4, MOV or WebM video.");
       return;
     }
-    if (nextFile.size > MAX_FILE_SIZE) {
+    if (!nextFile.size || nextFile.size > MAX_FILE_SIZE) {
       toast.error("This video is over 45 MB. Choose a smaller file to upload it here.");
       return;
     }
@@ -91,41 +96,41 @@ export function UploadComposer({ onUploaded }: UploadComposerProps) {
       setStage("preparing");
       const requestId = requestIdRef.current ?? crypto.randomUUID();
       requestIdRef.current = requestId;
-      const result = await prepare({
-        data: {
-          requestId,
-          filename: file.name,
-          mime: file.type,
-          bytes: file.size,
-          instructions:
-            instructions.trim() ||
-            "Find the most engaging moments and create vertical clips with captions.",
+      const controller = new AbortController();
+      uploadRef.current = controller;
+      setProgress(0);
+      const projectId = await uploadVideo(
+        file,
+        instructions.trim() ||
+          "Find the most engaging moments and create vertical clips with captions.",
+        requestId,
+        setProgress,
+        controller.signal,
+        {
+          prepare: async (data) => {
+            const result = await prepare({ data });
+            setStage("uploading");
+            return result;
+          },
+          finalize: async (projectId) => {
+            setStage("finalizing");
+            return finalize({ data: { projectId } });
+          },
         },
-      });
-      const prepared = result as { project_id?: string; path?: string };
-      if (!prepared.project_id || !prepared.path)
-        throw new Error("The upload could not be prepared. Please try again.");
-
-      setStage("uploading");
-      const upload = await supabase.storage.from("source-videos").upload(prepared.path, file, {
-        contentType: file.type,
-        upsert: true,
-      });
-      if (upload.error) throw new Error(upload.error.message);
-
-      setStage("finalizing");
-      await finalize({ data: { projectId: prepared.project_id } });
+      );
       toast.success("Upload complete. AI analysis is now queued.");
       setFile(null);
       setInstructions("");
       requestIdRef.current = null;
       if (inputRef.current) inputRef.current.value = "";
       await onUploaded();
+      await navigate({ to: "/project/$id", params: { id: projectId } });
     } catch (error) {
       toast.error(
         error instanceof Error ? error.message : "The upload didn't finish. Please try again.",
       );
     } finally {
+      uploadRef.current = null;
       setStage("idle");
     }
   };
@@ -134,7 +139,7 @@ export function UploadComposer({ onUploaded }: UploadComposerProps) {
     stage === "preparing"
       ? "Preparing your project…"
       : stage === "uploading"
-        ? "Uploading your video…"
+        ? `Uploading your video… ${progress}%`
         : stage === "finalizing"
           ? "Queueing AI analysis…"
           : "";
@@ -238,7 +243,7 @@ export function UploadComposer({ onUploaded }: UploadComposerProps) {
             </span>
             {file && (
               <span className="mr-2 rounded-md bg-ember/10 px-2 py-1 text-[10px] text-ember">
-                ~{Math.max(1, Math.ceil(file.size / 5_000_000))} credits
+                ~{Math.max(1, Math.ceil(file.size / 5_000_000))} demo credits
               </span>
             )}
             <button
@@ -265,7 +270,10 @@ export function UploadComposer({ onUploaded }: UploadComposerProps) {
               <Sparkles className="h-3.5 w-3.5 text-ember" /> Working on it…
             </span>
             <div className="h-1 w-24 overflow-hidden rounded-full bg-muted">
-              <div className="upload-progress h-full w-1/3 rounded-full bg-ember" />
+              <div
+                className="h-full rounded-full bg-ember transition-[width]"
+                style={{ width: `${progress}%` }}
+              />
             </div>
           </div>
         )}

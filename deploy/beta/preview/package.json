@@ -1,0 +1,8 @@
+{
+  "name": "noetharaclipz-production-preview",
+  "private": true,
+  "description": "Pinned local-only Cloudflare runtime verifier; no credentials or deployment scripts.",
+  "devDependencies": {
+    "wrangler": "4.160.0"
+  }
+}

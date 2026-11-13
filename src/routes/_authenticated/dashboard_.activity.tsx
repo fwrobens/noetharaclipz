@@ -18,7 +18,10 @@ import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/_authenticated/dashboard_/activity")({
   head: () =>
-    pageHead("Activity — Creator studio", "Follow processing progress and weekly activity in Noethara Clipz."),
+    pageHead(
+      "Activity — Creator studio",
+      "Follow processing progress and weekly activity in Noethara Clipz.",
+    ),
   loader: ({ context }) => context.queryClient.ensureQueryData(creatorQuery()),
   pendingComponent: DashboardLoading,
   pendingMs: 300,
@@ -41,7 +44,9 @@ function ActivityPage() {
     <DashboardShell {...shellProps}>
       <div className="animate-in-up">
         <h1 className="text-2xl font-medium tracking-tight sm:text-3xl">Activity</h1>
-        <p className="mt-1.5 text-sm text-muted-foreground">What's happening across your workspace.</p>
+        <p className="mt-1.5 text-sm text-muted-foreground">
+          What's happening across your workspace.
+        </p>
       </div>
 
       <div className="mt-6 grid grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-4">
@@ -70,18 +75,29 @@ function ActivityPage() {
                 const progress = getProjectProgress(project) ?? 0;
                 const status = getProjectStatus(project);
                 return (
-                  <li key={project.id} className="rounded-xl border border-border bg-surface/60 p-3.5">
+                  <li
+                    key={project.id}
+                    className="rounded-xl border border-border bg-surface/60 p-3.5"
+                  >
                     <div className="flex items-center justify-between gap-3">
                       <p className="flex min-w-0 items-center gap-2 text-sm font-medium">
                         <Loader2 className="h-3.5 w-3.5 shrink-0 animate-spin text-ember" />
                         <span className="truncate">{project.title}</span>
                       </p>
-                      <span className={cn("shrink-0 rounded-full border px-2 py-0.5 text-[10px]", status.className)}>
+                      <span
+                        className={cn(
+                          "shrink-0 rounded-full border px-2 py-0.5 text-[10px]",
+                          status.className,
+                        )}
+                      >
                         {progress}%
                       </span>
                     </div>
                     <div className="mt-3 h-1 overflow-hidden rounded-full bg-muted">
-                      <div className="h-full rounded-full bg-ember" style={{ width: `${progress}%` }} />
+                      <div
+                        className="h-full rounded-full bg-ember"
+                        style={{ width: `${progress}%` }}
+                      />
                     </div>
                     <p className="mt-2 text-[11px] text-muted-foreground">
                       Started {formatProjectAge(project.created_at)}
@@ -102,7 +118,10 @@ function ActivityPage() {
           <p className="mt-1 text-xs text-muted-foreground">Projects created in the last 7 days</p>
           <div className="mt-6 flex items-end justify-between gap-2">
             {weekly.days.map((day) => (
-              <div key={day.key} className="flex h-[110px] flex-1 flex-col items-center justify-end gap-2">
+              <div
+                key={day.key}
+                className="flex h-[110px] flex-1 flex-col items-center justify-end gap-2"
+              >
                 <span className="text-[10px] text-muted-foreground">{day.count || ""}</span>
                 <div className="flex h-[72px] w-full max-w-7 items-end overflow-hidden rounded-md bg-muted/70">
                   <div
@@ -110,7 +129,9 @@ function ActivityPage() {
                       "w-full rounded-md transition-[height] duration-700",
                       day.count ? "bg-ember" : "bg-muted-foreground/20",
                     )}
-                    style={{ height: `${day.count ? Math.max(18, (day.count / weekly.max) * 100) : 5}%` }}
+                    style={{
+                      height: `${day.count ? Math.max(18, (day.count / weekly.max) * 100) : 5}%`,
+                    }}
                   />
                 </div>
                 <span className="text-[10px] text-muted-foreground">{day.label}</span>

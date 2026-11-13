@@ -1,0 +1,257 @@
+{
+  "date": "2026-11-08",
+  "status": "EC2 artifact receipt, actual diagnostic quotas and counter-backed network preflight passed; worker not started",
+  "github_authentication": {
+    "repository_api": 200,
+    "managed_placeholder": true,
+    "alternate_identity_available": false,
+    "gh_host_credential_file_present": false,
+    "upload_probe_target": "previously deleted release; cannot create an asset",
+    "upload_probe": 401,
+    "upload_retries_stopped": true,
+    "credentials_created_or_changed": false,
+    "billing_api": 403,
+    "actions_runs_in_repository": 0
+  },
+  "selected_method": {
+    "provider": "existing Supabase Storage",
+    "bucket": "processing-artifacts",
+    "public": false,
+    "existing_object_limit_bytes": 45000000,
+    "encoding": "valid application/json chunks with base85 payloads",
+    "raw_chunk_bytes": 4194304,
+    "new_buckets_or_policy_changes": false,
+    "signed_url_lifetime_seconds": 3600,
+    "actions_or_registry_activated": false
+  },
+  "artifact": {
+    "uncompressed_tar_identical": true,
+    "uncompressed_tar_sha256": "a22386493543719fdcfbf0e5901b42b888191e04bbdcfb2cfceba5e56d2519e1",
+    "xz_sha256": "d4039e807525aab63820b947e6ee99944cf221776a85fb08c1390bfd605e6394",
+    "xz_bytes": 441120356,
+    "original_gzip_sha256": "29afebf52f7e4edca43282405941f9b636611ad8bb36cb1126f7ef1275ce41b9",
+    "rebuilt": false
+  },
+  "image": {
+    "id": "sha256:32fd88495ceab2c59ab7bc6a0c7980c1003d9b4b6eea507131783a24be4b88a5",
+    "platform": "linux/amd64",
+    "rootfs_layers": 11,
+    "original_source": "b51ffb5",
+    "base_image": "python:3.12-slim-bookworm@sha256:935c3c5b12357a7e10caa9c1e6ca5692344d97cf229832ef584be2cec9fc03df",
+    "rebuilt": false,
+    "dependency_lock": "deploy/worker/requirements.lock",
+    "model": "HuggingFaceTB/SmolVLM2-500M-Video-Instruct",
+    "model_revision": "7b375e1b73b11138ff12fe22c8f2822d8fe03467",
+    "config_digest": "sha256:32fd88495ceab2c59ab7bc6a0c7980c1003d9b4b6eea507131783a24be4b88a5",
+    "archive_oci_manifest_digest": "sha256:472913bf34e918c48e5b77a56c4ea2dfd31873bdd79ecc2d1c4e7ab4cf3e5759",
+    "ec2_runtime_reference": "sha256:472913bf34e918c48e5b77a56c4ea2dfd31873bdd79ecc2d1c4e7ab4cf3e5759"
+  },
+  "storage_before": {
+    "read_only": true,
+    "buckets": [
+      {
+        "bucket": "source-videos",
+        "bytes": 48627594,
+        "objects": 3
+      },
+      {
+        "bucket": "rendered-clips",
+        "bytes": 0,
+        "objects": 0
+      },
+      {
+        "bucket": "thumbnails",
+        "bytes": 0,
+        "objects": 0
+      },
+      {
+        "bucket": "processing-artifacts",
+        "bytes": 0,
+        "objects": 0
+      },
+      {
+        "bucket": "brand-assets",
+        "bytes": 0,
+        "objects": 0
+      }
+    ],
+    "total_object_bytes": 48627594,
+    "total_objects": 3
+  },
+  "reservations_before": {
+    "read_only": true,
+    "database_committed_and_reserved_bytes": 97255188,
+    "active_jobs": 1,
+    "rows_or_jobs_modified": false
+  },
+  "ec2_deployed": false,
+  "worker_started": false,
+  "global_queue_consumption": false,
+  "gemini_enabled": false,
+  "paid_services_activated": false,
+  "merged_or_published": false,
+  "verification": {
+    "image_archive": {
+      "verified": true,
+      "archive_sha256": "d4039e807525aab63820b947e6ee99944cf221776a85fb08c1390bfd605e6394",
+      "image_id": "sha256:32fd88495ceab2c59ab7bc6a0c7980c1003d9b4b6eea507131783a24be4b88a5",
+      "architecture": "amd64",
+      "os": "linux",
+      "worker_started": false
+    },
+    "worker_tests": {
+      "passed": 99,
+      "skipped": 1,
+      "seconds": 19.78,
+      "skip_reason": "Optional authorized-sample test; no sample selected for transfer-only run"
+    },
+    "new_security_tests_passed": 11,
+    "ruff": "passed",
+    "runtime_recipe_and_sources_unchanged_since_b51ffb5": true,
+    "provenance_file_sha256": {
+      "deploy/worker/Dockerfile": "1d0b2d2cf8e47c915410f0ed3483467e8f5fa40f8e235a482266b3562ff3fe5b",
+      "deploy/worker/requirements.lock": "2d63938d9793fa15754a4f28528f78abc30876e07d87e8b0af9d33fae8ed9d27"
+    },
+    "runtime_identity_security_tests_added": 4
+  },
+  "staged": {
+    "owned_objects": 109,
+    "total_staged_object_bytes": 551538285,
+    "prefix": "_worker-transfer/36283585-9c73-4b67-bb9c-49ad2c8a0158/",
+    "created_unix": 1794173692,
+    "chunk_expiry_unix": 1794177491,
+    "handoff_expiry_utc": "2026-11-08T22:35:07+00:00",
+    "manifest_sha256": "93124d997a654f19e33f791731b44efe7483958c17d6f67fbe4b7ba6a0932b0f",
+    "handoff_sha256": "c051e8388b9edc1bf1ef1cd25f4db9850ffabf08b645580993f2f213d79c34b7",
+    "files": [
+      {
+        "name": "worker-image.tar.xz",
+        "bytes": 441120356,
+        "sha256": "d4039e807525aab63820b947e6ee99944cf221776a85fb08c1390bfd605e6394"
+      },
+      {
+        "name": "worker-config.tar.gz",
+        "bytes": 32031,
+        "sha256": "db369c5c9001e53d33e1b6e053224e2318f41eadb7285569ac597095f28be6da"
+      }
+    ],
+    "source_commit": "360110b1cfeaa6ae74f4a8c0e0e03df42646e1ae",
+    "signed_urls_recorded_here": false,
+    "cleanup_required_after_ec2_receipt_or_abandonment": false
+  },
+  "privacy": {
+    "public_request_status": 400,
+    "unsigned_private_request_status": 400,
+    "signed_handoff_hash_verified": true,
+    "settings_or_rls_changes": false
+  },
+  "protected_upload": {
+    "status": "queued",
+    "attempts": 0,
+    "lease_token": null,
+    "lease_until": null,
+    "cancel_requested": false,
+    "read_only": true,
+    "row_identical": true
+  },
+  "cloud_download_roundtrip": [
+    {
+      "verified_file": "worker-image.tar.xz",
+      "bytes": 441120356,
+      "sha256": "d4039e807525aab63820b947e6ee99944cf221776a85fb08c1390bfd605e6394"
+    },
+    {
+      "verified_file": "worker-config.tar.gz",
+      "bytes": 32031,
+      "sha256": "db369c5c9001e53d33e1b6e053224e2318f41eadb7285569ac597095f28be6da"
+    },
+    {
+      "transfer_verified": true,
+      "directory": "/workspace/noetharaclipz/test-results/private-worker-transfer-roundtrip",
+      "image_id": "sha256:32fd88495ceab2c59ab7bc6a0c7980c1003d9b4b6eea507131783a24be4b88a5",
+      "worker_started": false
+    }
+  ],
+  "ec2_receipt_verified": true,
+  "remaining": [
+    "Pinned 500M/Whisper asset preparation with actual seed limits",
+    "Secure encrypted service-key delivery and one temporary QA owner",
+    "Bounded worker startup and complete normal website acceptance"
+  ],
+  "ec2_receipt": {
+    "source": "operator-pasted SSM downloader output",
+    "directory": "/tmp/nccz-transfer-kbbradmg/received",
+    "image_archive_bytes": 441120356,
+    "image_archive_sha256": "d4039e807525aab63820b947e6ee99944cf221776a85fb08c1390bfd605e6394",
+    "config_archive_bytes": 32031,
+    "config_archive_sha256": "db369c5c9001e53d33e1b6e053224e2318f41eadb7285569ac597095f28be6da",
+    "transfer_verified": true,
+    "image_loaded": true,
+    "worker_started": false,
+    "direct_agent_ec2_access": false
+  },
+  "cleanup": {
+    "owned_objects_deleted": 109,
+    "owned_objects_remaining": 0,
+    "current_storage_object_bytes": 48627594,
+    "matches_pre_transfer_storage_bytes": true,
+    "bucket_settings_changed": false,
+    "protected_upload": {
+      "status": "queued",
+      "attempts": 0,
+      "row_identical": true,
+      "read_only": true
+    }
+  },
+  "ec2_image_load": {
+    "source": "operator-pasted SSM output",
+    "archive_hash_checks": "all three passed",
+    "loaded_tag": "noetharaclipz-worker:review",
+    "host_available_ram_gib": 28.9,
+    "host_free_disk_gib": 52.2,
+    "docker_runtime_image_id_reported": true,
+    "quota_json_reported": true,
+    "worker_started": false,
+    "next_check": "Run the no-network cgroup probe by the verified EC2 OCI manifest ID; do not reload/rebuild",
+    "reported_id": "sha256:472913bf34e918c48e5b77a56c4ea2dfd31873bdd79ecc2d1c4e7ab4cf3e5759",
+    "reported_os": "linux",
+    "reported_architecture": "amd64",
+    "reported_user": "62001:62001",
+    "runtime_identity_binding_verified": true
+  },
+  "runtime_identity_verification": {
+    "verified": true,
+    "archive_sha256": "d4039e807525aab63820b947e6ee99944cf221776a85fb08c1390bfd605e6394",
+    "image_id": "sha256:32fd88495ceab2c59ab7bc6a0c7980c1003d9b4b6eea507131783a24be4b88a5",
+    "architecture": "amd64",
+    "runtime_id": "sha256:472913bf34e918c48e5b77a56c4ea2dfd31873bdd79ecc2d1c4e7ab4cf3e5759",
+    "runtime_id_verified": true,
+    "os": "linux",
+    "worker_started": false,
+    "source": "Offline hashing of original reviewed archive, plus operator Docker inspect output",
+    "oci_manifest_already_in_original_archive": true,
+    "config_and_manifest_have_identical_11_layer_references": true,
+    "image_or_layers_modified": false,
+    "reason_for_original_guard_failure": "Compared config digest against OCI manifest digest"
+  },
+  "ec2_kernel_quota_probe": {
+    "actual_cgroup_limits": {
+      "version": 2,
+      "memory_bytes": 8589934592,
+      "cpu_quota": 200000,
+      "cpu_period": 100000,
+      "extra_swap_bytes": 0,
+      "pids_max": 256
+    },
+    "checks": {
+      "memory_exactly_8gib": true,
+      "cpu_exactly_2": true,
+      "no_extra_swap": true,
+      "pids_at_most_256": true,
+      "all_controls_read": true
+    },
+    "passed": true,
+    "source": "current process cgroup files, not requested Docker flags"
+  },
+  "network_preflight_evidence": "ec2-runtime-preflight.json"
+}

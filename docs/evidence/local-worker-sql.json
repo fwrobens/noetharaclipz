@@ -1,0 +1,14 @@
+{
+  "passed": true,
+  "hosted_database_changed": false,
+  "postgres_image": "postgres@sha256:ff87138949ad9a46f32ff23bd6852b52ce024a13dffe9b4087be98292cdd3b4f",
+  "pgmq_revision": "12462bd29c2e4f59e58ac4840c2dcf0872d8c5c9",
+  "pgmq_sql_sha256": "c2679044f87f4ac9693ef4af61786e23dafe90fb1b3bfa0228286a495cbd7a97",
+  "proposal_sha256": "37ff1347f255c3a3217258c3c54daa58f7a1342c392643e1ee5e8a01f04324fd",
+  "existing_sql_suites": [
+    "access_and_jobs.sql",
+    "worker_heartbeat.sql"
+  ],
+  "new_sql_suite": "local_worker.sql",
+  "scope": "Actual PostgreSQL/PGMQ with disposable Auth/Storage metadata fixture; not hosted/video acceptance"
+}

@@ -1,0 +1,120 @@
+{
+  "prepared_utc": "2026-11-09T12:41:57.350114+00:00",
+  "base_commit": "0195e136a729cdec9d0afb3e69d9e364321302e3",
+  "implementation_commit": "4f78781fd05d617a0f9c1f81a490519d0195be4c",
+  "state": "implementation_prepared_locally_verified_not_deployed",
+  "artifact": {
+    "format": "nccz-continuous-source-v1",
+    "bytes": 184274,
+    "bundle_sha256": "564a5b6a5de0664448737e0c5291c30a4d1ff2074be096b08711dce11fb381d8",
+    "application_overlay_sha256": "7112fff2f36d9345cc594be09bd9bcf8e03b8a8571e451d8aa3fc51749b9efbf",
+    "source_files": 25,
+    "source_commit": "4f78781fd05d617a0f9c1f81a490519d0195be4c",
+    "source_dirty": false,
+    "base_image_ec2": "sha256:472913bf34e918c48e5b77a56c4ea2dfd31873bdd79ecc2d1c4e7ab4cf3e5759",
+    "base_image_local_config": "sha256:32fd88495ceab2c59ab7bc6a0c7980c1003d9b4b6eea507131783a24be4b88a5",
+    "image_rebuilt": false,
+    "application_changed": true,
+    "artifact_transferred_to_ec2": false,
+    "approval_issued": false,
+    "generated_manifest_disabled": true,
+    "unit_sha256": {
+      "noetharaclipz-continuous.service": "705decde701d6a96059937865c7ae29d8540795f5aea9fd26c63eae9623ad69c",
+      "noetharaclipz-isolation.service": "c5310b3348118f0397bccf8d18e99621a91de6d6623d6705a1f1d49f138accc8"
+    },
+    "note": "Existing dependency image plus a NEW read-only application overlay; import-only verified, not an identical application artifact or a new live acceptance result."
+  },
+  "controls": {
+    "provider": "local-smolvlm2",
+    "model": "HuggingFaceTB/SmolVLM2-500M-Video-Instruct",
+    "memory_bytes": 8589934592,
+    "cpus": 2,
+    "active_jobs": 1,
+    "global_processing": false,
+    "gemini_enabled": false,
+    "public_ports": [],
+    "docker_restart_policy": "no",
+    "controller_backoff_seconds": [
+      5,
+      15,
+      45
+    ],
+    "failure_budget": "3 failures per 900 seconds, persistent blocked latch",
+    "approval_window_maximum_seconds": 604800,
+    "startup": "Docker/mount/image/assets/security/consent before gated queue; every generation needs actual kernel and live network proofs",
+    "queue": "Owner request AND operator approval; new projects/jobs only; immutable consent generation/input binding; original job permanently excluded; no old-job release/backfill",
+    "revocation": "SQL row locks serialize visible publication with revoke; short-lived host grant/watchdog terminates processing; private in-flight HTTP upload can finish without publishing a result",
+    "retention": "Rotating samples/controller/Docker logs, bounded per-generation proofs and persistent cumulative resource accounting"
+  },
+  "verification": {
+    "worker_tests": {
+      "passed": 272,
+      "skipped": 1,
+      "new_control_cases": 43,
+      "command": "worker/.venv/bin/python -m pytest worker/tests -q",
+      "output_sha256": "2ce9da95c544b370c38f3c3fd1a7563aaa91405fa3b71a49d4365cf2a7ff38af"
+    },
+    "ruff": "passed",
+    "changed_python_format": "passed",
+    "sql": {
+      "passed": true,
+      "report": "continuous-worker-sql.json",
+      "proposal_sha256": "3548ef325b499d8045f305f4a888631905add26149b24c746bc16943e087a4ce",
+      "concurrent_revocation_orders_passed": 2,
+      "fixtures": "Disposable local PostgreSQL/PGMQ metadata fixtures; no model/website acceptance claim"
+    },
+    "systemd": {
+      "passed": true,
+      "report": "continuous-unit-verification.json",
+      "scope": "Isolated syntax/dependency parser only, not actual system-manager/host boot"
+    },
+    "existing_image_import_smoke": {
+      "passed": true,
+      "report": "continuous-overlay-smoke.json",
+      "network": "none",
+      "models_or_credentials_mounted": false,
+      "worker_started": false
+    },
+    "preservation": {
+      "passed": true,
+      "report": "continuous-preservation.json",
+      "counts": {
+        "prior_evidence": 55,
+        "prior_deployment_source": 30,
+        "migrations": 8
+      }
+    }
+  },
+  "protected_upload": {
+    "id": "9c5c8869-ec2e-4a3e-927d-697615bb58a3",
+    "untouched_by_this_stage": true,
+    "live_rechecked_in_this_stage": false,
+    "last_live_verification": "reliability-followup-post-shutdown-supabase.json",
+    "last_live_checked_utc": "2026-11-09T06:07:51Z",
+    "last_verified_status": "queued",
+    "last_verified_attempts": 0,
+    "protection": "Permanent exclusion plus exact whole-row preflight/runtime hash; no hosted query or mutation in this preparation"
+  },
+  "actions_not_taken": {
+    "ec2_execution": true,
+    "continuous_worker_start": true,
+    "old_qa_restart_or_mutation": true,
+    "hosted_sql_application": true,
+    "supabase_migration_file_change": true,
+    "qa_account_creation": true,
+    "approval_receipt_issuance": true,
+    "host_firewall_or_service_change": true,
+    "new_inference_or_completed_benchmark_repeat": true,
+    "paid_service_or_infrastructure_activation": true,
+    "global_queue_enablement": true,
+    "merge_or_public_website_deployment": true
+  },
+  "remaining_blockers": [
+    "Separate authorization and transactional deployment/recording of the reviewed SQL proposal, with live privilege/protocol verification.",
+    "One new pilot owner, owner consent, operator approval and review of the exact immutable pilot window/manifest.",
+    "Private source transfer and fresh EC2 installation/preflights, followed by separate limited-pilot startup authorization.",
+    "Actual hosted v2 normal website workflow, restart, cancellation, consent revocation and retention verification.",
+    "For broader production: notification delivery and sustained-load/maximum-input capacity checks."
+  ],
+  "procedure": "../continuous-worker-pilot.md"
+}

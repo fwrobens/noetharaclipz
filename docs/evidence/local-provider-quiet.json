@@ -1,0 +1,159 @@
+{
+  "model": "HuggingFaceTB/SmolVLM2-500M-Video-Instruct@7b375e1b73b11138ff12fe22c8f2822d8fe03467",
+  "model_loads": 1,
+  "warmup_seconds": 6.1974870530011685,
+  "hosted_api_calls": 0,
+  "trials": [
+    {
+      "sample": "quiet-visual",
+      "repeat": 0,
+      "wall_seconds": 79.074,
+      "cpu_seconds": 142.079,
+      "average_cpu_percent_one_core": 179.68,
+      "peak_rss_bytes": 3460665344,
+      "process_max_rss_kib": 3378976,
+      "cache": {
+        "prepared_cache_hit": false,
+        "transcript_cache_hit": false,
+        "analysis_cache_hit": false,
+        "source_inference_input_tokens": 2866,
+        "admission_rejected": false
+      },
+      "execution_usage": {
+        "input_tokens": 2866,
+        "output_tokens": 21
+      },
+      "original_usage": {
+        "input_tokens": 2866,
+        "output_tokens": 21
+      },
+      "model_decision": {
+        "choice": "E",
+        "relative_choice_scores": {
+          "A": 0.0341833233833313,
+          "B": 0.0158232431858778,
+          "C": 0.0810292586684227,
+          "D": 0.15167130529880524,
+          "E": 0.44721198081970215,
+          "F": 0.2435382902622223,
+          "Z": 0.02654256299138069
+        },
+        "video_tensor_shape": [
+          6,
+          4,
+          3,
+          512,
+          512
+        ],
+        "input_tokens": 2497,
+        "video_tensor_sha256": "2cdfbdce9e8e52971e95135341e5b69643978fe663ee958f6b2bff759e995781",
+        "model_window": [
+          8.619,
+          15.083
+        ],
+        "speech_completed_interval": [
+          8.619,
+          15.083
+        ]
+      },
+      "highlights": [
+        {
+          "start": 8.619,
+          "end": 15.083,
+          "title": "Visual moment at 8.6s",
+          "category": "Other",
+          "score": 45,
+          "explanation": "Timestamped speech excerpt: No complete ASR words inside this interval. Local multimodal model chose candidate E among 6 actual videos plus a none option. Measured evidence: 0 speech segments, 0 audio events, 1 scene boundaries. Scores are relative choices, not calibrated quality or virality.",
+          "visual_evidence": "Four decoded frames per candidate; selected interval with measured speech context 8.619\u201315.083s. Comparison tensor SHA256 2cdfbdce9e8e52971e95135341e5b69643978fe663ee958f6b2bff759e995781."
+        }
+      ],
+      "scenes": 2,
+      "speech_segments": 0,
+      "audio_events": 0,
+      "raw_visual_observation": "A man in a dark hoodie and a woman with red hair are standing in a dark room.",
+      "quality_metrics": {
+        "speech_boundary_cuts": 0,
+        "selected_count": 1
+      },
+      "cache_path": "d9e738a83b9b55ca18bca48f55880d4f8257e7e7b795c39b917bce6dc670ff30/analysis-67b7c8882fa845e7b5257a05a685414f83722a2570feee09772f6c04a412b269.json"
+    },
+    {
+      "sample": "quiet-visual",
+      "repeat": 1,
+      "wall_seconds": 0.002,
+      "cpu_seconds": 0.005,
+      "average_cpu_percent_one_core": 298.78,
+      "peak_rss_bytes": 2742390784,
+      "process_max_rss_kib": 3378976,
+      "cache": {
+        "prepared_cache_hit": true,
+        "transcript_cache_hit": true,
+        "analysis_cache_hit": true,
+        "source_inference_input_tokens": 2866,
+        "admission_rejected": false
+      },
+      "execution_usage": {
+        "input_tokens": 0,
+        "output_tokens": 0
+      },
+      "original_usage": {
+        "input_tokens": 2866,
+        "output_tokens": 21
+      },
+      "model_decision": {
+        "choice": "E",
+        "relative_choice_scores": {
+          "A": 0.0341833233833313,
+          "B": 0.0158232431858778,
+          "C": 0.0810292586684227,
+          "D": 0.15167130529880524,
+          "E": 0.44721198081970215,
+          "F": 0.2435382902622223,
+          "Z": 0.02654256299138069
+        },
+        "video_tensor_shape": [
+          6,
+          4,
+          3,
+          512,
+          512
+        ],
+        "input_tokens": 2497,
+        "video_tensor_sha256": "2cdfbdce9e8e52971e95135341e5b69643978fe663ee958f6b2bff759e995781",
+        "model_window": [
+          8.619,
+          15.083
+        ],
+        "speech_completed_interval": [
+          8.619,
+          15.083
+        ]
+      },
+      "highlights": [
+        {
+          "start": 8.619,
+          "end": 15.083,
+          "title": "Visual moment at 8.6s",
+          "category": "Other",
+          "score": 45,
+          "explanation": "Timestamped speech excerpt: No complete ASR words inside this interval. Local multimodal model chose candidate E among 6 actual videos plus a none option. Measured evidence: 0 speech segments, 0 audio events, 1 scene boundaries. Scores are relative choices, not calibrated quality or virality.",
+          "visual_evidence": "Four decoded frames per candidate; selected interval with measured speech context 8.619\u201315.083s. Comparison tensor SHA256 2cdfbdce9e8e52971e95135341e5b69643978fe663ee958f6b2bff759e995781."
+        }
+      ],
+      "scenes": 2,
+      "speech_segments": 0,
+      "audio_events": 0,
+      "raw_visual_observation": "A man in a dark hoodie and a woman with red hair are standing in a dark room.",
+      "quality_metrics": {
+        "speech_boundary_cuts": 0,
+        "selected_count": 1
+      },
+      "cache_path": "d9e738a83b9b55ca18bca48f55880d4f8257e7e7b795c39b917bce6dc670ff30/analysis-67b7c8882fa845e7b5257a05a685414f83722a2570feee09772f6c04a412b269.json"
+    }
+  ],
+  "actual_model_cancellation": {
+    "passed": true,
+    "checkpoint_calls": 2,
+    "seconds": 0.178
+  }
+}

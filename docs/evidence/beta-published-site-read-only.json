@@ -1,0 +1,29 @@
+{
+  "checked_utc": "2026-11-11T08:38:22.059657+00:00",
+  "read_only": true,
+  "origin": "https://noetharaclipz.lovable.app",
+  "published_by_this_task": false,
+  "routes": {
+    "/": {
+      "status": 200,
+      "content_type": "text/html; charset=utf-8",
+      "cache_control": "no-cache, must-revalidate, max-age=0"
+    },
+    "/login": {
+      "status": 200,
+      "content_type": "text/html; charset=utf-8",
+      "cache_control": "no-cache, must-revalidate, max-age=0"
+    },
+    "/auth/callback": {
+      "status": 404,
+      "content_type": "text/html; charset=utf-8",
+      "cache_control": "no-cache, must-revalidate, max-age=0"
+    },
+    "/api/release": {
+      "status": 404,
+      "content_type": "text/html; charset=utf-8",
+      "cache_control": "no-cache, must-revalidate, max-age=0"
+    }
+  },
+  "beta_release_verified": false
+}

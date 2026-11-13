@@ -1,0 +1,16 @@
+{
+  "all_b883b01_evidence_runtime_and_migrations_unchanged": true,
+  "counts": {
+    "docs/evidence": 60,
+    "deploy/worker": 37,
+    "worker/noetharaclipz": 10,
+    "supabase/migrations": 8
+  },
+  "control_test_command": "worker/.venv/bin/python -m pytest worker/tests/test_continuous_worker.py worker/tests/test_continuous_pilot_preparation.py -q",
+  "control_tests_passed": 54,
+  "new_read_only_collector_cases": 11,
+  "ruff": "passed",
+  "model_or_media_benchmarks_repeated": false,
+  "disabled_manifest_startup_rejected": true,
+  "hosted_sql_reapplied": false
+}

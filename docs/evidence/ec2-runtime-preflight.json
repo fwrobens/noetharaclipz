@@ -1,0 +1,293 @@
+{
+  "date": "2026-11-09",
+  "instance_id": "i-0be10e530045fc650",
+  "region": "us-east-2",
+  "source": "operator-pasted SSM result; no direct agent EC2 access",
+  "quota_probe": {
+    "actual_cgroup_limits": {
+      "version": 2,
+      "memory_bytes": 8589934592,
+      "cpu_quota": 200000,
+      "cpu_period": 100000,
+      "extra_swap_bytes": 0,
+      "pids_max": 256
+    },
+    "checks": {
+      "memory_exactly_8gib": true,
+      "cpu_exactly_2": true,
+      "no_extra_swap": true,
+      "pids_at_most_256": true,
+      "all_controls_read": true
+    },
+    "passed": true,
+    "source": "current process cgroup files, not requested Docker flags"
+  },
+  "probe_type": "short-lived network-none diagnostic, not AI worker or model seeder",
+  "runtime_reference": "sha256:472913bf34e918c48e5b77a56c4ea2dfd31873bdd79ecc2d1c4e7ab4cf3e5759",
+  "network_preflight": {
+    "status": "passed on EC2 via operator SSM output; diagnostic removed; scoped network/rules retained",
+    "source_file": "deploy/worker/network_preflight.py",
+    "sha256": "83a5f1445364d2d28942d015ba3741a662744a9ab9685cd56984afb6f229984b",
+    "policy_source_sha256": "ec116cab16d2276b87d675eced9d12b83f05b860687f7ade458b8e35a868a646",
+    "bridge": "nccz-qa0",
+    "network": "noetharaclipz-isolated_worker-egress",
+    "proposed_subnet": "172.20.0.0/24",
+    "owned_network_and_exact_reviewed_rules_retained_only_on_pass": true,
+    "deny_proof": "matching REJECT counter delta plus failed TCP connect; no application requests to private services",
+    "models_credentials_queue_or_worker": false,
+    "diagnostic_removal_required_before_policy_cleanup": true,
+    "operator_error": "Command failed: docker --host=unix:///var/run/docker.sock",
+    "reported_worker_started": false,
+    "retry_blocked_pending_readonly_error_and_state": false,
+    "error_reporting_fix": "repository helper retains Docker subcommand, exit status and bounded redacted stderr; no supplied stdin is logged",
+    "host_copy_not_patched": true,
+    "repository_error_reporting_fix_sha256": "5caeb9bc2014b0ca6d1dccb82679f8f5055b7a01a4ff9a515d6053962110b9c0",
+    "confirmed_failure": "Docker strict template map has no entry for Health on the existing unchecked REST container",
+    "state_after_failure": {
+      "receipt": null,
+      "owned_probe_containers": 0,
+      "owned_networks": 0,
+      "owned_firewall_chain_present": false,
+      "source": "operator-pasted read-only diagnostic output"
+    },
+    "repository_health_fix_sha256": "bf4e598d9bd7e316ba907ba646e3a56c99cb612c37365ce1343a72e091a1981e",
+    "retry_preserves_all_admission_policy_and_cleanup_functions": true,
+    "operator_pass_result": {
+      "network_preflight_passed": true,
+      "worker_started": false,
+      "models_loaded": false,
+      "credentials_used": false,
+      "queue_access": false,
+      "network": "noetharaclipz-isolated_worker-egress",
+      "bridge": "nccz-qa0",
+      "subnet": "172.20.0.0/24",
+      "probe_id": "afd21af8a4fe44aca8e2ae9e7ccedca6",
+      "checks": {
+        "public_endpoints": {
+          "supabase": {
+            "dns_public_ipv4": true,
+            "tls_verified": true,
+            "http_status": 401
+          },
+          "huggingface": {
+            "dns_public_ipv4": true,
+            "tls_verified": true,
+            "http_status": 200
+          }
+        },
+        "ipv6_disabled": true,
+        "staging_private": {
+          "blocked": true,
+          "matching_reject_counter_delta": 1
+        },
+        "supabase_private": {
+          "blocked": true,
+          "matching_reject_counter_delta": 1
+        },
+        "vpc_private": {
+          "blocked": true,
+          "matching_reject_counter_delta": 1
+        },
+        "imds": {
+          "blocked": true,
+          "matching_reject_counter_delta": 1
+        },
+        "host": {
+          "blocked": true,
+          "matching_reject_counter_delta": 1
+        },
+        "bridge_gateway": {
+          "blocked": true,
+          "matching_reject_counter_delta": 1
+        },
+        "public_non_https": {
+          "blocked": true,
+          "matching_reject_counter_delta": 2
+        }
+      },
+      "phase": "passed",
+      "actual_cgroup_limits": {
+        "version": 2,
+        "memory_bytes": 8589934592,
+        "cpu_quota": 200000,
+        "cpu_period": 100000,
+        "extra_swap_bytes": 0,
+        "pids_max": 256
+      },
+      "network_id": "79d31a3d0a9e1df6873461c6761dd3ce8e170de85785022d34242f04c640ef28",
+      "policy_sha256": "ec116cab16d2276b87d675eced9d12b83f05b860687f7ade458b8e35a868a646",
+      "diagnostic_removed": true,
+      "existing_services_unchanged": true,
+      "scoped_network_and_rules_retained": true,
+      "completed_unix": 1794179523
+    }
+  },
+  "automated_checks": {
+    "worker_passed": 178,
+    "worker_skipped": 1,
+    "worker_seconds": 22.49,
+    "skip_reason": "optional authorized-sample test not selected",
+    "network_scope_policy_tests_passed": 26,
+    "ruff": "passed",
+    "error_reporting_and_network_targeted_passed": 24,
+    "asset_preparation_tests_passed": 15,
+    "actual_compose_seed_profile_validation": "passed without starting containers; selected seed has no secret mounts and only /models",
+    "qa_startup_tests_passed": 20,
+    "frontend_tests_passed": 15,
+    "typescript": "passed",
+    "build": "passed",
+    "lint": "0 errors, 11 existing warnings",
+    "shutdown_inspector_and_deadline_targeted_tests": 43
+  },
+  "worker_started": true,
+  "models_loaded_on_ec2": true,
+  "qa_account_created": true,
+  "global_consumption_enabled": false,
+  "gemini_enabled": false,
+  "paid_services_activated": false,
+  "merged_or_published": false,
+  "private_helper_handoff": {
+    "transfer_id": "fd029d87-312b-4f2b-8776-545e6de1ce9c",
+    "prefix": "_worker-transfer/fd029d87-312b-4f2b-8776-545e6de1ce9c/",
+    "objects": [
+      "_worker-transfer/fd029d87-312b-4f2b-8776-545e6de1ce9c/network-preflight.json"
+    ],
+    "created_unix": 1794177408,
+    "source_sha256": "83a5f1445364d2d28942d015ba3741a662744a9ab9685cd56984afb6f229984b",
+    "source_commit": "530b149db873e0111e63486985b599da0af9b9c8",
+    "payload_sha256": "cf9957e0d236e87ff9561cdd4d8a76ee24473e4cb88aec1700eb740744438678",
+    "bytes": 16225,
+    "storage_before_bytes": 48627594,
+    "expires_unix": 1794181008,
+    "signed_download_verified": true,
+    "public_request_status": 400,
+    "public": false,
+    "credentials_in_payload": false,
+    "cleanup_after_operator_receipt_or_abandonment": false,
+    "owned_objects_deleted_after_receipt": 1,
+    "old_download_url_no_longer_needed": true
+  },
+  "protected_upload_readonly_check": {
+    "status": "queued",
+    "attempts": 0,
+    "row_identical": true
+  },
+  "docker_template_regression": {
+    "where": "managed cloud Docker only, not EC2",
+    "fixture": "empty filesystem, created but never started",
+    "original_template_exit": 1,
+    "original_error": "template parsing error: template: :1:58: executing \"\" at <.State.Health>: map has no entry for key \"Health\"",
+    "fixed_template_exit": 0,
+    "missing_health_result": "none",
+    "running": false,
+    "pid": 0
+  },
+  "operator_hotpatch_validation": {
+    "original_host_source_sha256": "83a5f1445364d2d28942d015ba3741a662744a9ab9685cd56984afb6f229984b",
+    "patched_source_sha256": "57ef6257846976d6835a04c829d088113c97564f77cac23104f1135748a9affe",
+    "service_snapshot_matches_repository_fix": true,
+    "all_admission_policy_and_cleanup_functions_unchanged": true
+  },
+  "asset_preparation": {
+    "status": "passed on EC2 via operator SSM output: pinned assets downloaded under actual 8 GiB / 2 vCPU / no-swap / 256-PID limits",
+    "model": "HuggingFaceTB/SmolVLM2-500M-Video-Instruct",
+    "model_revision": "7b375e1b73b11138ff12fe22c8f2822d8fe03467",
+    "whisper_revision": "536b0662742c02347bc0e980a01041f333bce120",
+    "inference_or_queue": false,
+    "seed_timeout_seconds": 1200,
+    "actual_seed_cgroup_gate_before_downloader_import": true,
+    "existing_network_rules_revalidated_before_seeding": true,
+    "key_delivery_plan": "host generates root-only RSA-4096 transport key; public half returned for later OAEP-SHA256 encryption of existing service credential; no account key recreation or plaintext credential in chat",
+    "controller_source_sha256": "16cbd1c5256d31412312c0ee8e151c672da88f2d73e353f1ab8a4cab65377578",
+    "private_key_stays_on_ec2": true,
+    "private_handoff": {
+      "transfer_id": "d2c4a4f4-7101-48f3-8c17-e683a39ca21e",
+      "prefix": "_worker-transfer/d2c4a4f4-7101-48f3-8c17-e683a39ca21e/",
+      "objects": [
+        "_worker-transfer/d2c4a4f4-7101-48f3-8c17-e683a39ca21e/prepare-assets.json"
+      ],
+      "source_commit": "e03d3cf22428b64cd9e838154310314418505ec3",
+      "created_unix": 1794180896,
+      "sha256": "067eeae0d2d0ed1565f853732a83f5e5a0f1907999fa50d3d3bef3511e596b86",
+      "bytes": 29426,
+      "storage_before": 48627594,
+      "file_sha256": {
+        "network_preflight.py": "bf4e598d9bd7e316ba907ba646e3a56c99cb612c37365ce1343a72e091a1981e",
+        "prepare_qa_assets.py": "16cbd1c5256d31412312c0ee8e151c672da88f2d73e353f1ab8a4cab65377578"
+      },
+      "expires_unix": 1794184497,
+      "signed_download_hash_verified": true,
+      "public_request_status": 400,
+      "public": false,
+      "cleanup_required_after_receipt": false,
+      "owned_objects_deleted_after_receipt": 1
+    },
+    "protected_job_readonly_before_step": {
+      "status": "queued",
+      "attempts": 0,
+      "row_identical": true
+    },
+    "existing_services_unchanged": true,
+    "models_downloaded_not_inference_loaded": true
+  },
+  "qa_owner_id": "c7ade7f9-2003-4a38-ae19-393fffae8452",
+  "qa_startup": {
+    "status": "completed: container exited normally before deadline; read-only host verification at 03:29 UTC",
+    "source": "deploy/worker/start_qa_worker.py",
+    "mode": "qa",
+    "provider": "local-smolvlm2",
+    "model": "HuggingFaceTB/SmolVLM2-500M-Video-Instruct",
+    "image": "sha256:472913bf34e918c48e5b77a56c4ea2dfd31873bdd79ecc2d1c4e7ab4cf3e5759",
+    "credential_transport": "existing vault credential encrypted RSA4096-OAEP-SHA256 to EC2 root-only transport key; no plaintext in storage/chat/repository",
+    "public_key_der_sha256": "f8a4b9c28bf8fa9510a368d126454f19b973a45dc3142ab2dc909abe82d46d04",
+    "fixed_deadline_seconds": 1800,
+    "restart_can_extend_trial": false,
+    "real_kernel_probe_before_credential_or_model_load": true,
+    "one_temporary_qa_owner": true,
+    "browser_monitor": "scripts/await_ec2_qa.py waits for actual readiness, then invokes normal UI acceptance; never starts any worker",
+    "protected_upload_readonly_auth_checks": "full row unchanged, queued with zero attempts; QA project/job reads empty, anonymous protocol 401, QA protocol 403, authorized protocol version 1",
+    "new_ec2_browser_acceptance_passed": true,
+    "private_handoff": {
+      "transfer_id": "d3d874ec-9794-4f93-abd2-289ac0f21fc7",
+      "prefix": "_worker-transfer/d3d874ec-9794-4f93-abd2-289ac0f21fc7/",
+      "objects": [
+        "_worker-transfer/d3d874ec-9794-4f93-abd2-289ac0f21fc7/start-qa.json"
+      ],
+      "created_unix": 1794183559,
+      "bytes": 54754,
+      "sha256": "b241f53639ca819e3641fd30c59f5a5444414922bf262baf9f67eb86ad4a6c7a",
+      "source_commit": "648973d36cf2fb22a2b1c9ad3dcd77ce53c42cb9",
+      "storage_before_bytes": 48627594,
+      "public": false,
+      "plaintext_credentials": false,
+      "file_sha256": {
+        "network_preflight.py": "bf4e598d9bd7e316ba907ba646e3a56c99cb612c37365ce1343a72e091a1981e",
+        "prepare_qa_assets.py": "16cbd1c5256d31412312c0ee8e151c672da88f2d73e353f1ab8a4cab65377578",
+        "credential_envelope.py": "0dff065cf5706ccbc6150027bc8a4f2ecef2dcd9b0bd4c53a1af46f3a9e68f0f",
+        "qa_deadline.py": "32f01d74f7379c02cf6825491220a7b1d67fd786c2c4cc1cf21486d8a771f394",
+        "start_qa_worker.py": "bf542cf1808237de231eaf6fb885c4bb2b90c83faa287ccd4f1867298b0b2188"
+      },
+      "expires_unix": 1794187161,
+      "signed_download_hash_verified": true,
+      "public_request_status": 400,
+      "cleanup_after_operator_receipt": false,
+      "owned_objects_deleted_after_receipt": 1
+    },
+    "host_ready_evidence": "ec2-qa-host-ready.json",
+    "actual_deadline_utc": "2026-11-09T00:52:12+00:00",
+    "security_evidence": "ec2-qa-security.json",
+    "recovery_evidence": "ec2-qa-lease-recovery.json",
+    "quality_evidence": "ec2-qa-model-quality.json",
+    "direct_container_crash_restart_tested": false,
+    "actual_peak_ram_cpu_measurements": "unavailable: stopped cgroup counters not retained; limits are not observed usage",
+    "scheduled_shutdown_observation": "direct operator Docker evidence confirms exited/exit 0/PID 0/no OOM; qa_window_stopped log matches fixed deadline",
+    "shutdown_evidence": "ec2-qa-shutdown-host.json",
+    "post_trial_database_evidence": "ec2-post-trial-supabase.json",
+    "continuous_processing_enabled": false
+  },
+  "worker_running": false,
+  "qa_worker_stopped": true,
+  "qa_container_exit_code": 0,
+  "qa_container_restart_count": 0,
+  "qa_stop_observed_utc": "2026-11-09T00:50:37.70991314Z"
+}
