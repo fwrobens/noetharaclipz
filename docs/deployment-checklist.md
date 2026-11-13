@@ -1,7 +1,16 @@
-# Deployment checklist — Draft PR #1
+# Deployment checklist
 
-Docs only. This file does not publish the site, merge the pull request, change
+Docs only. This file does not publish the site, merge a pull request, change
 hosted Supabase Auth, start EC2, or enable global processing.
+
+The beta gate is on for every production build, including Lovable's plain
+`vite build` with no `VITE_NC_BETA_MODE`. `/api/release` then reports
+`mode: "owner-scoped-beta"` and
+`access.mode: "authenticated-owner-allowlist-v1"`. `build` is the resolved
+source SHA, or `"unknown"` if the build could not see a commit. It is never
+`"development"` on a production build. The homepage `data-commit-sha` is the
+same source commit, stamped by Lovable on `/__l5e/events`. After publish, those
+two values must match.
 
 ## Reviewed commit
 
@@ -13,19 +22,18 @@ checklist. That head is the reviewed commit. It sits directly on pipeline commit
 
 | Role | Full SHA |
 | --- | --- |
-| Currently published / GitHub `main` / PR base / rollback | `e70ca9fd8f8156e22e3e450ae4095be35cfec47e` |
-| Previous pipeline head (code freeze before these docs) | `8bdbc55fcda09ed00f97dd1176f2d252b8c03726` |
-| Reviewed commit to publish | `git rev-parse HEAD` on `feat/real-video-pipeline` after this checklist is on the branch. That value is Draft PR #1's head. |
+| Rollback target | `e70ca9fd8f8156e22e3e450ae4095be35cfec47e` |
+| `main` when this gate fix branched | `44c56fd42cbd1f1a4b2d3227841f50d122cffe2e` |
+| Reviewed commit to publish | `git rev-parse HEAD` on this pull request's branch. That head is the commit to publish. |
 
 Confirm the reviewed SHA before publishing:
 
-1. On the branch, `git rev-parse HEAD` prints one 40-character SHA.
+1. On the pull-request branch, `git rev-parse HEAD` prints one 40-character SHA.
 2. In Lovable, open the project `40ff324d-5ed8-4890-ac90-cff43cfb1144` and select that same full SHA as the revision to publish. Do not publish whatever happens to be the current Published row.
-3. After publication, view the source of `https://noetharaclipz.lovable.app/` and confirm the homepage `data-commit-sha` equals that same SHA.
+3. After publication, view the source of `https://noetharaclipz.lovable.app/` and confirm the homepage `data-commit-sha` equals that same SHA, and `GET /api/release` returns that SHA in `build`.
 
-Until that publish, the live homepage `data-commit-sha` remains
-`e70ca9fd8f8156e22e3e450ae4095be35cfec47e`, and live `/auth/callback` and
-`/api/release` return 404.
+Rollback remains `e70ca9fd8f8156e22e3e450ae4095be35cfec47e`. Do not publish that
+commit as the new app.
 
 ## Preconditions
 

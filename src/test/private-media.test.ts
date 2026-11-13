@@ -7,6 +7,12 @@ vi.mock("@/lib/supabase/client", () => ({
   },
 }));
 import { clearMediaCache, downloadRenderedClip, signedMedia } from "@/lib/media";
+const invited = {
+  id: "21b61ad1-bda4-4abd-ac35-7a0bf477ed69",
+  role: "authenticated",
+  email_confirmed_at: "2026-11-09",
+  is_anonymous: false,
+};
 beforeEach(() => {
   clearMediaCache();
   vi.clearAllMocks();
@@ -68,4 +74,21 @@ it("refuses a download without a session or for a path outside rendered clips", 
   });
   await expect(downloadRenderedClip("../source-videos/secret.mp4")).rejects.toThrow("Download failed");
   expect(native.createSignedUrl).not.toHaveBeenCalled();
+});
+it("denies a private download for an existing account that is not invited", async () => {
+  vi.stubEnv("VITE_NC_BETA_MODE", "true");
+  native.getSession.mockResolvedValue({
+    data: {
+      session: {
+        user: { ...invited, id: "c7ade7f9-2003-4a38-ae19-393fffae8452" },
+      },
+    },
+    error: null,
+  });
+  await expect(signedMedia("rendered-clips", rendered)).rejects.toThrow("invited account");
+  expect(native.createSignedUrl).not.toHaveBeenCalled();
+  native.getSession.mockResolvedValue({ data: { session: { user: invited } }, error: null });
+  native.createSignedUrl.mockResolvedValue({ data: { signedUrl: "https://example.test/signed" }, error: null });
+  await expect(signedMedia("rendered-clips", rendered)).resolves.toBe("https://example.test/signed");
+  vi.unstubAllEnvs();
 });

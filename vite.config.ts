@@ -8,6 +8,15 @@
 // hosting already compresses at the edge.
 // You can pass additional config via defineConfig({ vite: { ... }, etc... }) if needed.
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
+import { resolveBuildSha } from "./src/lib/resolve-build-sha.ts";
+
+// Lovable's plain `vite build` does not run scripts/build-beta.mjs. Stamp the
+// source commit onto VITE_NC_BUILD_SHA before its env define runs, using the
+// same commit Lovable later prints as homepage `data-commit-sha` when the
+// checkout is available. Tests keep control of the variable via vi.stubEnv.
+if (process.env["VITEST"] !== "true") {
+  process.env["VITE_NC_BUILD_SHA"] = resolveBuildSha();
+}
 
 export default defineConfig({
   tanstackStart: {

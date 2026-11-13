@@ -4,9 +4,9 @@ Manual checks after approval A publishes the reviewed Draft PR #1 head to
 `https://noetharaclipz.lovable.app`. This document does not publish, merge, change
 Auth, enqueue a job, or start EC2.
 
-The reviewed SHA is `git rev-parse HEAD` on `feat/real-video-pipeline` for the
-commit that contains [deployment-checklist.md](deployment-checklist.md). Call
-that value `REVIEWED_SHA` below. Rollback SHA is
+The reviewed SHA is `git rev-parse HEAD` on the pull-request branch that
+contains [deployment-checklist.md](deployment-checklist.md). Call that value
+`REVIEWED_SHA` below. Rollback SHA stays
 `e70ca9fd8f8156e22e3e450ae4095be35cfec47e`.
 
 Invited pilot: `21b61ad1-bda4-4abd-ac35-7a0bf477ed69`.
@@ -23,7 +23,7 @@ mark that row blocked, not failed.
    - Abort if it still equals `e70ca9fd8f8156e22e3e450ae4095be35cfec47e` or any other SHA.
 
 2. **Release identity.** `GET https://noetharaclipz.lovable.app/api/release` with no cookies and no Authorization header. Also send `HEAD` and `POST`.
-   - Expected: GET returns 200, `Cache-Control: no-store`, JSON `build` equal to `REVIEWED_SHA`, `app` `NoetharaClipz`, and `mode` `owner-scoped-beta` when the beta build flag was on. `access` contains only mode, owner count, and a 64-character digest. The body does not contain a user id, email, access token, refresh token, service key, or cookie. HEAD returns 200 with an empty body. POST returns 405.
+   - Expected: GET returns 200, `Cache-Control: no-store`, and JSON `build` equal to `REVIEWED_SHA` and to the homepage `data-commit-sha`. `build` is not `development` and not `unknown`. `app` is `NoetharaClipz`, `mode` is `owner-scoped-beta`, and `access.mode` is `authenticated-owner-allowlist-v1`. `access` also has an owner count and a 64-character digest, and nothing else. The body does not contain a user id, email, access token, refresh token, service key, or cookie. HEAD returns 200 with an empty body. POST returns 405.
 
 3. **Callback route.** Open `https://noetharaclipz.lovable.app/auth/callback` with no `code`.
    - Expected: not 404. The page status text says the sign-in link is missing its code, and a Sign in link is present.
@@ -31,11 +31,11 @@ mark that row blocked, not failed.
 4. **Invited pilot login.** Sign in as the invited pilot with email magic link or password. Do not create a user.
    - Expected: the provider returns to `https://noetharaclipz.lovable.app/auth/callback` on that production origin, then the app lands on `/dashboard`. The session belongs to `21b61ad1-bda4-4abd-ac35-7a0bf477ed69`.
 
-5. **Logout.** Sign out from that session, then open `/dashboard`, `/library`, and `/project/<existing-id>`.
-   - Expected: the session cookie is cleared. Each protected route redirects to `/login`. `/auth/callback` without a code still loads (step 3), and it does not restore the session.
+5. **Logged-out gate.** In a fresh session with no cookies, open `/dashboard`. Then sign out the invited pilot and open `/dashboard`, `/library`, and `/project/<existing-id>`.
+   - Expected: the no-cookie `/dashboard` request redirects to `/login`. After logout the session is cleared and each protected route redirects to `/login`. `/auth/callback` without a code still loads (step 3) and does not restore a session.
 
 6. **Uninvited confirmed account.** Sign in as `c7ade7f9-2003-4a38-ae19-393fffae8452` through the same production callback.
-   - Expected: the app signs that session out locally and/or the server responds 403 for a private page. The account does not remain on `/dashboard`. No user is created, banned, or deleted.
+   - Expected: the account is denied. The app signs that session out locally and/or the server responds 403 for a private page, including a private download. The account does not remain on `/dashboard`. No user is created, banned, or deleted.
 
 7. **New signup, only after approval B.** Attempt a new email signup on the production origin. Use an address that is not one of the existing accounts. Do not record the address.
    - Expected after B: the signup is rejected. Confirm email stays ON, anonymous sign-in stays OFF, and the redirect list is still the eight snapshotted entries.
@@ -58,11 +58,11 @@ mark that row blocked, not failed.
 | # | Check | Result | Notes |
 | --- | --- | --- | --- |
 | 1 | `data-commit-sha` equals `REVIEWED_SHA` | | |
-| 2 | `/api/release` returns that SHA and no secrets; POST is 405 | | |
+| 2 | `/api/release` `build` equals `REVIEWED_SHA` and `data-commit-sha`; mode is `owner-scoped-beta`; access mode is `authenticated-owner-allowlist-v1`; POST is 405 | | |
 | 3 | `/auth/callback` is not 404 | | |
 | 4 | Invited pilot login returns through production `/auth/callback` | | |
-| 5 | Logout clears the session; protected routes redirect to `/login` | | |
-| 6 | Uninvited confirmed account is signed out or receives 403 | | |
+| 5 | No-cookie `/dashboard` redirects to `/login`; logout does the same for protected routes | | |
+| 6 | Non-allowlisted confirmed account is denied (signed out or 403) | | |
 | 7 | New email signup is rejected after approval B | blocked until B | |
 | 8 | Authenticated Download of an existing private clip succeeds | | |
 | 9 | Anon/unauthenticated object request is 400/403; other user denied; signed URL expires | | |
