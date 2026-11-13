@@ -67,9 +67,27 @@ https://assets.ngc.nvidia.com/products/api-catalog/legal/NVIDIA%20API%20Trial%20
 
 Sections 1.2–1.4 restrict trial services and their outputs to internal testing/evaluation, prohibit production use, and describe finite trial credits. A separate subscription is required after trial credits or for production. No credit purchase, subscription, endpoint switch, or inference call was attempted.
 
+### Refinement router (mocked only)
+
+The [optional refinement router](model-router.md) targets NVIDIA-hosted
+`deepseek-ai/deepseek-v4.1-flash` (highlight reasoning), `z-ai/glm-5.3-flash` (text-only
+visual context) and `nvidia/nemotron-3.5-lightning-30b-a3b` (fallback), all configurable.
+It is disabled by default and has only been exercised against mocked transports. Because
+the free endpoints fall under the Trial Terms above (testing/evaluation only, no
+production use), **real calls need separate approval (stage 4)** and a licensing decision
+before any production activation. Rebuilding the worker/starting EC2 (stage 5) and
+merge/publish plus applying `docs/model-runs-schema.sql` through Lovable (stage 6) are
+separately approved as well.
+
 ## AnyModel
 
 No connected AnyModel tool was found, and plugin discovery returned no matching integration. No verified base URL/account metadata is available in this task; candidate public documentation endpoints could not establish an official free video-capable API. The vault key is not injected here. Authentication, modalities, pricing and quotas are therefore **unverified**. No key was sent to an unverified endpoint and no model was selected based on a guessed free tier.
+
+The refinement router's independent-provider fallback defaults to
+`am/nemotron-3.5-lightning-30b-a3b` at `https://anymodel.org/v1` (OpenAI-compatible chat
+completions, configurable). It is used only when an AnyModel key is configured, and the
+endpoint, account terms and quotas remain **unverified** until the separately approved
+real-API stage.
 
 ## Local open-source multimodal proof
 
