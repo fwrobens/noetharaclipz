@@ -5,7 +5,10 @@ const OWNER_ID =
 
 export const betaAccessPolicy = {
   version: 1,
-  owners: ["21b61ad1-bda4-4abd-ac35-7a0bf477ed69"],
+  owners: [
+    "21b61ad1-bda4-4abd-ac35-7a0bf477ed69",
+    "f0235878-e130-45a9-a031-f21cd91da7b9",
+  ],
   confirmed_email_required: true,
   anonymous_allowed: false,
   routing: "private-by-default-including-server-functions-v1",

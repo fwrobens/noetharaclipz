@@ -6,7 +6,9 @@ hosted Supabase Auth, start EC2, or enable global processing.
 The beta gate is on for every production build, including Lovable's plain
 `vite build` with no `VITE_NC_BETA_MODE`. `/api/release` then reports
 `mode: "owner-scoped-beta"` and
-`access.mode: "authenticated-owner-allowlist-v1"`. `build` is the resolved
+`access.mode: "authenticated-owner-allowlist-v1"`. `access.owners` is 2 and
+`access.sha256` is `8366d22defa4f3bf3ee9e944845aa8cde6b9567242db042040ffac2ddc427651`.
+`build` is the resolved
 source SHA, or `"unknown"` if the build could not see a commit. It is never
 `"development"` on a production build. The homepage `data-commit-sha` is the
 same source commit, stamped by Lovable on `/__l5e/events`. After publish, those
@@ -67,7 +69,7 @@ Read-only dashboard inventory on 2026-11-13 for project `zxdnjnsghdnviflahvry`.
 - Allow anonymous sign-ins: OFF
 - Allow manual linking: OFF
 - Email is the only enabled provider. Google, Phone, SAML, and every other OAuth provider are disabled.
-- Accounts, with no email addresses recorded: 7 users, all confirmed, 0 anonymous, 2 banned (not pilots). Invited pilot `21b61ad1-bda4-4abd-ac35-7a0bf477ed69` and QA identity `c7ade7f9-2003-4a38-ae19-393fffae8452` are present and unbanned.
+- Accounts, with no email addresses recorded: 7 users, all confirmed, 0 anonymous, 2 banned (not pilots). Allowlisted pilots `21b61ad1-bda4-4abd-ac35-7a0bf477ed69` and `f0235878-e130-45a9-a031-f21cd91da7b9` are present and unbanned. QA identity `c7ade7f9-2003-4a38-ae19-393fffae8452` is present, unbanned, and not allowlisted.
 
 Entries 1–3 and 5–7 are preview/dev wildcards and are allowed redirect targets.
 Recommend the owner consider trimming them after launch. Do not change them in
