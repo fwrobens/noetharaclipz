@@ -3,32 +3,19 @@
 import { createHash } from "node:crypto";
 import { createServerClient, parseCookieHeader, serializeCookieHeader } from "@supabase/ssr";
 import { betaEnabled } from "./beta";
+import { betaAccessPolicy, betaOwnerAllowed, readBetaAllowlist } from "./beta-policy";
 import { supabaseUrl, publishableKey } from "./supabase/config";
 
-export const betaAccessPolicy = {
-  version: 1,
-  owners: ["21b61ad1-bda4-4abd-ac35-7a0bf477ed69"],
-  confirmed_email_required: true,
-  anonymous_allowed: false,
-  routing: "private-by-default-including-server-functions-v1",
-};
+export { betaAccessPolicy, betaOwnerAllowed, readBetaAllowlist };
 export function betaAccessIdentity() {
+  const owners = readBetaAllowlist(betaAccessPolicy);
   return {
     mode: "authenticated-owner-allowlist-v1",
-    owners: betaAccessPolicy.owners.length,
-    sha256: createHash("sha256").update(JSON.stringify(betaAccessPolicy)).digest("hex"),
+    owners: owners?.length ?? 0,
+    sha256: createHash("sha256")
+      .update(JSON.stringify(owners ? betaAccessPolicy : { invalid: true }))
+      .digest("hex"),
   };
-}
-export function betaOwnerAllowed(
-  user: { id: string; role?: string; is_anonymous?: boolean; email_confirmed_at?: string } | null,
-) {
-  return (
-    !!user &&
-    user.role === "authenticated" &&
-    user.is_anonymous !== true &&
-    !!user.email_confirmed_at &&
-    betaAccessPolicy.owners.includes(user.id)
-  );
 }
 // A new route cannot silently bypass the beta gate. Only the current public
 // entry pages and build assets are exempt; server functions remain protected.
@@ -37,18 +24,29 @@ const publicPath =
 
 export async function authorizeBetaRequest(
   request: Request,
+  policy: unknown = betaAccessPolicy,
 ): Promise<{ response?: Response; request?: Request; cookies: string[] }> {
   const cookies: string[] = [];
   const url = new URL(request.url);
   const decodedPath = decodeURIComponent(url.pathname);
   const normalizedPath = new URL(decodedPath, url.origin).pathname;
-  if (!betaEnabled() || (!/[?#]/.test(decodedPath) && publicPath.test(normalizedPath)))
-    return { cookies };
+  const isPublic = !/[?#]/.test(decodedPath) && publicPath.test(normalizedPath);
+  if (!betaEnabled() || isPublic) return { cookies };
   const headers = {
     "Cache-Control": "private, no-store",
     Vary: "Cookie",
     "X-Robots-Tag": "noindex, nofollow",
   };
+  // A missing or malformed allowlist must not fall open.
+  if (!readBetaAllowlist(policy)) {
+    return {
+      cookies,
+      response: new Response("Beta access is unavailable.", {
+        status: 403,
+        headers: { ...headers, "Content-Type": "text/plain; charset=utf-8" },
+      }),
+    };
+  }
   const signedOut = () => ({
     cookies,
     response: new Response(null, { status: 302, headers: { ...headers, Location: "/login" } }),
@@ -85,7 +83,7 @@ export async function authorizeBetaRequest(
     )
       throw new Error("Auth unavailable");
     if (error || !data.user) return signedOut();
-    if (!betaOwnerAllowed(data.user))
+    if (!betaOwnerAllowed(data.user, policy))
       return {
         cookies,
         response: new Response("This account is not invited to the beta.", {

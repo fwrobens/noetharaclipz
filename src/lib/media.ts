@@ -1,4 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
+import { betaEnabled } from "./beta";
+import { betaOwnerAllowed } from "./beta-policy";
 import { supabase } from "./supabase/client";
 const cache = new Map<string, { url: string; expires: number }>();
 export const clearMediaCache = () => cache.clear();
@@ -11,6 +13,9 @@ export async function signedMedia(bucket: string, path: string, download?: strin
     error: authError,
   } = await supabase.auth.getSession();
   if (authError || !session) throw new Error("Sign in to download private media.");
+  if (betaEnabled() && !betaOwnerAllowed(session.user)) {
+    throw new Error("Sign in with your invited account to download private media.");
+  }
   const key = `${session.user.id}/${bucket}/${path}/${download ?? ""}`,
     previous = cache.get(key);
   if (previous && previous.expires > Date.now()) return previous.url;
