@@ -69,25 +69,46 @@ Sections 1.2–1.4 restrict trial services and their outputs to internal testing
 
 ### Refinement router (mocked only)
 
-The [optional refinement router](model-router.md) targets NVIDIA-hosted
-`deepseek-ai/deepseek-v4.1-flash` (highlight reasoning), `z-ai/glm-5.3-flash` (text-only
-visual context) and `nvidia/nemotron-3.5-lightning-30b-a3b` (fallback), all configurable.
-It is disabled by default and has only been exercised against mocked transports. Because
-the free endpoints fall under the Trial Terms above (testing/evaluation only, no
-production use), **real calls need separate approval (stage 4)** and a licensing decision
-before any production activation. Rebuilding the worker/starting EC2 (stage 5) and
-merge/publish plus applying `docs/model-runs-schema.sql` through Lovable (stage 6) are
-separately approved as well.
+The [optional refinement router](model-router.md) is disabled by default and has only
+been exercised against mocked transports. No real NVIDIA or AnyModel request has been
+made, and no credentials have been used by this router.
+
+**Account eligibility blocks live testing for this project at present:**
+
+- NVIDIA's API Trial Terms require the person accepting the agreement to be an adult
+  of legal age in their country. Trial access and generated content are restricted to
+  internal testing/evaluation, not production use. See the
+  [NVIDIA API Trial Terms](https://assets.ngc.nvidia.com/products/api-catalog/legal/NVIDIA%20API%20Trial%20Terms%20of%20Service.pdf),
+  sections 1.2–1.4.
+- AnyModel's current Terms of Service (updated 2026-11-18) require the account holder
+  to be at least 18. Its FAQ describes the `am/free` auto-router as zero-priced, but
+  still requires a positive account balance; other models are pay-per-token. See
+  [AnyModel Terms](https://anymodel.org/legal/terms) section 3.1 and
+  [AnyModel FAQ](https://anymodel.org/en/faq).
+
+Do not create, access, test, or configure either provider for this project while the
+account holder is under 18. The router must remain mocked/off; the local Whisper +
+SmolVLM2 pipeline remains the only usable inference path. This is an eligibility and
+licensing blocker, not a missing API key.
+
+The existing staged restrictions remain: no real provider calls, worker rebuild/EC2
+startup, schema application, merge, or publish. Each requires separate review and
+authorization, and NVIDIA trial access cannot be used for production even after the
+age-eligibility issue is resolved.
 
 ## AnyModel
 
-No connected AnyModel tool was found, and plugin discovery returned no matching integration. No verified base URL/account metadata is available in this task; candidate public documentation endpoints could not establish an official free video-capable API. The vault key is not injected here. Authentication, modalities, pricing and quotas are therefore **unverified**. No key was sent to an unverified endpoint and no model was selected based on a guessed free tier.
+Official AnyModel documentation confirms an OpenAI-compatible API at
+`https://anymodel.org/v1`. Its FAQ describes a zero-priced `am/free` auto-router, but
+states that requests still require a positive balance; the service is otherwise
+pay-per-token. The current Terms of Service require the account holder to be at least
+18 (section 3.1). Accordingly, this project must not create or use an AnyModel account,
+send an API key, or make a live request while its account holder is under 18.
 
-The refinement router's independent-provider fallback defaults to
-`am/nemotron-3.5-lightning-30b-a3b` at `https://anymodel.org/v1` (OpenAI-compatible chat
-completions, configurable). It is used only when an AnyModel key is configured, and the
-endpoint, account terms and quotas remain **unverified** until the separately approved
-real-API stage.
+The router's configured AnyModel fallback remains a mocked integration only. Its
+model identifier, account access, quotas, retention settings and suitability for this
+project have not been live-verified. Do not infer that a zero-priced model makes the
+service free to use without an eligible account and balance.
 
 ## Local open-source multimodal proof
 
