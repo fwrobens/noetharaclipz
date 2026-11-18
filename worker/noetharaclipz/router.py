@@ -275,7 +275,7 @@ class ChatClient:
         self._key = api_key
         self.client = httpx.Client(timeout=timeout, transport=transport)
 
-    def complete(self, model: str, messages: list[dict]) -> tuple[str, dict]:
+    def complete(self, model: str, messages: list[dict], timeout: float | None = None) -> tuple[str, dict]:
         assert_text_only(messages)
         httpx = self._httpx
         body = {
@@ -290,6 +290,7 @@ class ChatClient:
                 self.base_url + "/chat/completions",
                 headers={"Authorization": "Bearer " + self._key, "Accept": "application/json"},
                 json=body,
+                timeout=timeout,
             )
         except httpx.TimeoutException:
             raise RouteError("timeout", "Request timed out", retryable=True) from None
@@ -589,7 +590,15 @@ class ModelRouter:
                 run = ModelRun(task, route.provider, route.model_id, route.role, "error", attempt)
                 runs.append(run)
                 try:
-                    content, usage = self._client(route.provider).complete(route.model_id, messages)
+                    remaining = max(0.0, deadline - self.clock())
+                    if remaining <= 0:
+                        run.status = "skipped"
+                        run.error_class = "budget_exhausted"
+                        run.latency_ms = int((self.clock() - started) * 1000)
+                        return None, None
+                    content, usage = self._client(route.provider).complete(
+                        route.model_id, messages, timeout=remaining
+                    )
                     run.input_tokens = _token(usage, "prompt_tokens")
                     run.output_tokens = _token(usage, "completion_tokens")
                     value = validate(parse_json_object(content), inp)
@@ -672,10 +681,7 @@ class ModelRouter:
                 runs=runs,
                 visual_context_model=context_route.model_id if context_route else None,
             )
-        result = Analysis(
-            summary="\n".join(h.title + ": " + h.explanation for h in refined)[:4000],
-            highlights=refined,
-        )
+        result = Analysis(summary=analysis.summary, highlights=refined)
         return RouterOutcome(
             analysis=result,
             refined=True,
