@@ -105,8 +105,8 @@ node scripts/test_model_runs_sql.mjs
 HTTP transport to fail if touched. It covers the off switch, DeepSeek success, GLM text-only
 input, timeout/429/5xx fallback to NVIDIA Nemotron, AnyModel fallback (and skip when
 unconfigured), invalid JSON/schema/bounds => next route, total failure => unchanged local
-result, record contents, logging failure, cancellation and the unchanged
-`NC_AI_PROVIDER` no-fallback rule.
+result, record contents, logging failure, cancellation, configured request-timeout capping,
+retry-backoff capping and the unchanged `NC_AI_PROVIDER` no-fallback rule.
 
 ## Staged approvals
 
