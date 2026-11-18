@@ -291,7 +291,7 @@ class ChatClient:
         # The per-request timeout and the router-wide deadline are independent
         # ceilings. Never let the remaining total budget override the request cap.
         effective_timeout = (
-            self.request_timeout if timeout is None else min(self.request_timeout, max(0.001, timeout))
+            self.request_timeout if timeout is None else min(self.request_timeout, max(0.0, timeout))
         )
         try:
             response = self.client.post(
