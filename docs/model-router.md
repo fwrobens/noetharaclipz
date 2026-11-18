@@ -54,8 +54,13 @@ job/project/owner identity is unchanged after refinement.
 | Hard off switch | `NC_ROUTER_ENABLED` unset/false/malformed => `DisabledRouter`: no key files are read, no HTTP client is constructed, no model request and no logging RPC. Total failure returns the original local object. |
 
 Retries: up to 2 attempts per route for 429, 5xx, timeouts and transport errors (backoff
-<=4 s); 4xx is not retried. A 180 s total budget caps the router well inside the 20-minute
-job limit. Lease cancellation raised by `tick()` always propagates.
+<=4 s); 4xx is not retried. A 180 s scheduling deadline prevents new attempts from starting
+after the budget expires; each in-flight request receives the smaller of the configured
+request timeout and remaining budget, and retry sleep is capped by the remaining budget.
+HTTPX timeouts are per-operation/inactivity limits, not strict wall-clock cancellation, so
+this is not a mathematically hard 180 s wall-clock bound. A cancellable transport is required
+before claiming that stronger guarantee or enabling live provider calls. Lease cancellation
+raised by `tick()` always propagates.
 
 ## Configuration
 
