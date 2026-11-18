@@ -273,6 +273,7 @@ def test_deepseek_success_refines_within_measured_bounds(no_network):
         ("highlight_reasoning", "nvidia", DEEPSEEK, "primary", "success"),
     ]
     assert out.runs[1].input_tokens == 120 and out.runs[1].output_tokens == 40
+    assert out.analysis.summary == original.summary  # Router may not alter the local summary.
     # The original local object is never mutated.
     assert original.model_dump() == local_analysis().model_dump()
 
@@ -770,3 +771,20 @@ def test_worker_router_cancellation_is_not_swallowed(media, tmp_path):
     with pytest.raises(Cancelled):
         w.process(dict(JOB))
     assert backend.finished is None and "worker_log_model_runs" not in backend.calls
+
+
+
+def test_chat_client_applies_per_request_remaining_timeout():
+    observed = []
+
+    def inspect(request):
+        observed.append(request.extensions.get("timeout"))
+        return chat(GOOD_CONTEXT)
+
+    client = ChatClient(
+        "https://integrate.api.nvidia.com/v1", NVIDIA_KEY, 30,
+        httpx.MockTransport(inspect),
+    )
+    client.complete(GLM, [{"role": "user", "content": "test"}], timeout=2.5)
+    assert observed and observed[0]["read"] == 2.5
+    client.close()
