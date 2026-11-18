@@ -711,7 +711,17 @@ def _token(usage, name):
 
 
 def build_router(settings: RouterSettings | None = None):
-    settings = settings or RouterSettings.from_env()
+    if settings is None:
+        try:
+            settings = RouterSettings.from_env()
+        except (OSError, ValueError) as error:
+            # Optional router misconfiguration must never prevent the local
+            # Whisper + SmolVLM2 worker from starting.
+            log.warning(
+                "AI refinement router configuration is invalid; keeping it disabled (%s)",
+                type(error).__name__,
+            )
+            return DisabledRouter()
     if not settings.enabled:
         return DisabledRouter()
     return ModelRouter(settings)
