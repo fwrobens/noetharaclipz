@@ -273,7 +273,10 @@ class ChatClient:
         self._httpx = httpx
         self.base_url = base_url.rstrip("/")
         self._key = api_key
-        self.client = httpx.Client(timeout=timeout, transport=transport)
+        # Preserve the configured per-request ceiling even when the router
+        # supplies a larger remaining total-budget value.
+        self.request_timeout = float(timeout)
+        self.client = httpx.Client(timeout=self.request_timeout, transport=transport)
 
     def complete(self, model: str, messages: list[dict], timeout: float | None = None) -> tuple[str, dict]:
         assert_text_only(messages)
@@ -285,12 +288,17 @@ class ChatClient:
             "max_tokens": MAX_OUTPUT_TOKENS,
             "stream": False,
         }
+        # The per-request timeout and the router-wide deadline are independent
+        # ceilings. Never let the remaining total budget override the request cap.
+        effective_timeout = (
+            self.request_timeout if timeout is None else min(self.request_timeout, max(0.001, timeout))
+        )
         try:
             response = self.client.post(
                 self.base_url + "/chat/completions",
                 headers={"Authorization": "Bearer " + self._key, "Accept": "application/json"},
                 json=body,
-                timeout=timeout,
+                timeout=effective_timeout,
             )
         except httpx.TimeoutException:
             raise RouteError("timeout", "Request timed out", retryable=True) from None
@@ -618,7 +626,12 @@ class ModelRouter:
                     run.error_class = error.error_class
                     run.error_message = sanitize_error(str(error), self._secrets())
                     if error.retryable and attempt < MAX_ATTEMPTS_PER_ROUTE:
-                        self.sleep(min(MAX_BACKOFF_SECONDS, 1.0 * attempt))
+                        # Backoff is part of the same total budget. Do not
+                        # schedule a sleep longer than the time still available.
+                        remaining = max(0.0, deadline - self.clock())
+                        if remaining <= 0:
+                            return None, None
+                        self.sleep(min(MAX_BACKOFF_SECONDS, 1.0 * attempt, remaining))
                         continue
                     break  # Next route.
                 except Exception as error:  # Defensive: unknown client failure => next route.
