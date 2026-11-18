@@ -828,3 +828,4 @@ def test_retry_backoff_is_capped_by_remaining_total_budget():
     assert sleeps == [0.5]
     assert len(recorder.requests) == 1
     assert runs[0].error_class == "rate_limited"
+    router._clients["nvidia"].close()
