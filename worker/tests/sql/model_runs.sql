@@ -61,8 +61,10 @@ select public.nc_assert(public.worker_log_model_runs('a1000000-0000-0000-0000-00
    {"task":"highlight_reasoning","provider":"anymodel","model_id":"am/nemotron-3.5-lightning-30b-a3b","role":"fallback","status":"success","attempt":1,"latency_ms":1200,"input_tokens":120,"output_tokens":40,"error_class":null,"error_message":null}]'::jsonb)=3,'service role logs three runs');
 select public.nc_assert(public.worker_log_model_runs('b1000000-0000-0000-0000-000000000002','c0000000-0000-0000-0000-000000000002',
  ('[{"task":"highlight_reasoning","provider":"nvidia","model_id":"deepseek-ai/deepseek-v4.1-flash","role":"primary","status":"success","attempt":1,"latency_ms":800,"error_message":"'||repeat('x',400)||'"}]')::jsonb)=1,'second owner run logged');
+reset role;
 select public.nc_assert((select max(length(error_message)) from public.model_runs)<=160,'error messages truncated to 160 chars');
 select public.nc_assert((select bool_and(project_id='a0000000-0000-0000-0000-000000000001') from public.model_runs where job_id='a1000000-0000-0000-0000-000000000001'),'project derived from job, not caller');
+set role service_role;
 select public.nc_rejects($q$select public.worker_log_model_runs('a1000000-0000-0000-0000-000000000001','c0000000-0000-0000-0000-000000000002','[]')$q$,'wrong lease token rejected');
 select public.nc_rejects($q$select public.worker_log_model_runs('a1000000-0000-0000-0000-000000000001',null,'[]')$q$,'missing lease token rejected');
 select public.nc_rejects($q$select public.worker_log_model_runs('a2000000-0000-0000-0000-000000000003','c0000000-0000-0000-0000-000000000003','[]')$q$,'completed job rejected');
