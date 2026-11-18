@@ -50,6 +50,7 @@ select public.nc_assert(not has_table_privilege('authenticated','public.model_ru
 select public.nc_assert(not has_table_privilege('authenticated','public.model_runs','update'),'authenticated has no UPDATE');
 select public.nc_assert(not has_table_privilege('authenticated','public.model_runs','delete'),'authenticated has no DELETE');
 select public.nc_assert(not has_table_privilege('anon','public.model_runs','select'),'anon has no SELECT');
+select public.nc_assert(not has_table_privilege('service_role','public.model_runs','insert'),'service role has no direct INSERT grant');
 select public.nc_assert(not has_table_privilege('service_role','public.model_runs','update'),'service role has no UPDATE grant');
 
 set role service_role;
@@ -67,6 +68,7 @@ select public.nc_rejects($q$select public.worker_log_model_runs('a1000000-0000-0
 select public.nc_rejects($q$select public.worker_log_model_runs('a2000000-0000-0000-0000-000000000003','c0000000-0000-0000-0000-000000000003','[]')$q$,'completed job rejected');
 select public.nc_rejects($q$select public.worker_log_model_runs('a3000000-0000-0000-0000-000000000004','c0000000-0000-0000-0000-000000000004','[]')$q$,'expired lease rejected');
 select public.nc_rejects($q$select public.worker_log_model_runs('a1000000-0000-0000-0000-000000000001','c0000000-0000-0000-0000-000000000001','{"task":"x"}')$q$,'non-array batch rejected');
+select public.nc_rejects($q$select public.worker_log_model_runs('a1000000-0000-0000-0000-000000000001','c0000000-0000-0000-0000-000000000001',null)$q$,'null batch rejected');
 select public.nc_rejects($q$select public.worker_log_model_runs('a1000000-0000-0000-0000-000000000001','c0000000-0000-0000-0000-000000000001','[{"task":"visual_context","provider":"nvidia","model_id":"m","role":"primary","status":"success","attempt":1,"project_id":"b0000000-0000-0000-0000-000000000002"}]')$q$,'project_id override rejected');
 select public.nc_rejects($q$select public.worker_log_model_runs('a1000000-0000-0000-0000-000000000001','c0000000-0000-0000-0000-000000000001','[{"task":"visual_context","provider":"nvidia","model_id":"m","role":"primary","status":"success","attempt":1,"api_key":"nvapi-x"}]')$q$,'api_key field rejected');
 select public.nc_rejects($q$select public.worker_log_model_runs('a1000000-0000-0000-0000-000000000001','c0000000-0000-0000-0000-000000000001','[{"task":"visual_context","provider":"nvidia","model_id":"m","role":"primary","status":"success","attempt":1,"prompt":"transcript text"}]')$q$,'prompt/transcript field rejected');
