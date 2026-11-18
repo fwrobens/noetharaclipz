@@ -13,6 +13,10 @@ jobs:
           node-version: 24
           cache: npm
       - run: npm ci
+      - name: Test proposed model-run SQL in disposable PostgreSQL
+        run: |
+          npm install --no-save --package-lock=false @electric-sql/pglite
+          node scripts/test_model_runs_sql.mjs
       - run: npx tsc --noEmit
       - run: npm test
       - run: npm run build
