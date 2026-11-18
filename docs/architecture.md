@@ -52,6 +52,20 @@ Model access is checked against the API before inference. Billing tier/account q
 
 Rendering consumes a versioned immutable edit snapshot, original footage, and timestamped speech. Outputs are H.264/AAC MP4 with fast-start, at 720×1280, 1280×720, 720×720, or 720×900. FFprobe and a full decode validate each output. Completion checks the exact private Storage object and size before permitting a download.
 
+### Optional AI refinement router
+
+An optional [refinement router](model-router.md) can refine the local result after
+SmolVLM2 selection and before `worker_finish_analysis`: GLM adds text-only visual context,
+DeepSeek refines titles/categories/intervals against the user's instructions and measured
+evidence, and Nemotron (NVIDIA, then optionally AnyModel) is the fallback. It is disabled by
+default (`NC_ROUTER_ENABLED=false` means zero external requests), receives no raw video,
+frames or images, may only tighten intervals inside measured local bounds, and on invalid
+output or total failure the original local highlights are committed unchanged. Each attempt
+is recorded best-effort in the proposed owner-readable `model_runs` table
+([schema proposal](model-runs-schema.sql), applied via Lovable only after approval).
+NVIDIA's free endpoints are trial/evaluation-only; real calls, worker rebuild/EC2 start and
+merge/publish are separate approvals.
+
 ## Production boundaries
 
 The local worker is a development process, not permanent hosting. Deploying the frontend alone cannot process videos. Run the worker as an unprivileged service on an authorized machine with FFmpeg and sufficient CPU/disk. Use a dedicated host/container and maintained media binaries for production untrusted uploads.

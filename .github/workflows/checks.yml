@@ -6,15 +6,31 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: 24
           cache: npm
       - run: npm ci
+      - name: Test proposed model-run SQL in disposable PostgreSQL
+        run: |
+          npm install --no-save --package-lock=false @electric-sql/pglite
+          node scripts/test_model_runs_sql.mjs
       - run: npx tsc --noEmit
       - run: npm test
       - run: npm run build
-      - run: npm run lint
+      - name: Lint changed frontend files
+        shell: bash
+        run: |
+          git fetch origin main --depth=1
+          mapfile -t changed_files < <(git diff --name-only origin/main...HEAD -- '*.js' '*.jsx' '*.ts' '*.tsx')
+          if (( ${#changed_files[@]} == 0 )); then
+            echo "No frontend JavaScript/TypeScript files changed; skipping targeted ESLint."
+          else
+            printf 'Linting changed frontend files:\n%s\n' "${changed_files[@]}"
+            npx eslint "${changed_files[@]}"
+          fi
   worker:
     runs-on: ubuntu-latest
     steps:
