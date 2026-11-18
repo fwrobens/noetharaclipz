@@ -241,6 +241,12 @@ def test_non_https_base_url_rejected(monkeypatch):
         RouterSettings.from_env()
 
 
+def test_invalid_optional_router_config_does_not_break_local_worker(monkeypatch):
+    monkeypatch.setenv("NC_ROUTER_ENABLED", "true")
+    monkeypatch.setenv("NVIDIA_BASE_URL", "http://not-https.example/v1")
+    assert isinstance(build_router(), DisabledRouter)
+
+
 def test_whisper_and_smolvlm2_tasks_have_no_hosted_route():
     r = make_router(Recorder({}))
     for task in ("transcription", "video_analysis"):
