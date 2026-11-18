@@ -788,3 +788,43 @@ def test_chat_client_applies_per_request_remaining_timeout():
     client.complete(GLM, [{"role": "user", "content": "test"}], timeout=2.5)
     assert observed and observed[0]["read"] == 2.5
     client.close()
+
+
+def test_chat_client_never_exceeds_configured_request_timeout():
+    observed = []
+
+    def inspect(request):
+        observed.append(request.extensions.get("timeout"))
+        return chat(GOOD_CONTEXT)
+
+    client = ChatClient(
+        "https://integrate.api.nvidia.com/v1", NVIDIA_KEY, 30,
+        httpx.MockTransport(inspect),
+    )
+    client.complete(GLM, [{"role": "user", "content": "test"}], timeout=120.0)
+    assert observed and observed[0]["read"] == 30.0
+    client.close()
+
+
+def test_retry_backoff_is_capped_by_remaining_total_budget():
+    sleeps = []
+    recorder = Recorder({(NV, GLM): lambda req: httpx.Response(429)})
+    router = make_router(recorder, sleeps=sleeps)
+    # First request begins with 10 seconds left; after its retryable failure
+    # only 0.5 seconds remain, so the requested backoff must be capped at 0.5.
+    ticks = iter([0.0, 0.0, 0.0, 9.5, 9.5, 10.0])
+    router.clock = lambda: next(ticks)
+    runs = []
+    value, route = router.run_task(
+        router_module.TASK_VISUAL_CONTEXT,
+        [{"role": "user", "content": "test"}],
+        lambda parsed, inp: parsed,
+        None,
+        runs,
+        deadline=10.0,
+        tick=lambda: None,
+    )
+    assert value is None and route is None
+    assert sleeps == [0.5]
+    assert len(recorder.requests) == 1
+    assert runs[0].error_class == "rate_limited"
