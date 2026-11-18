@@ -48,7 +48,7 @@ DEFAULT_TIMEOUT_SECONDS = 30.0
 # Bounded retries per route for retryable failures (429, 5xx, timeouts).
 MAX_ATTEMPTS_PER_ROUTE = 2
 MAX_BACKOFF_SECONDS = 4.0
-# Whole-refinement budget so the router can never threaten the 20-minute job limit.
+# Whole-refinement scheduling budget: do not start new attempts after this deadline.
 TOTAL_BUDGET_SECONDS = 180.0
 MAX_OUTPUT_TOKENS = 1200
 MAX_TRANSCRIPT_CHARS = 12000
