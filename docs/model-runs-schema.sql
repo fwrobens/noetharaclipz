@@ -37,7 +37,7 @@ create index model_runs_job on public.model_runs(job_id);
 alter table public.model_runs enable row level security;
 revoke all on table public.model_runs from public, anon, authenticated;
 grant select on table public.model_runs to authenticated;
-grant select, insert on table public.model_runs to service_role;
+-- The SECURITY DEFINER RPC is the only insertion path; service_role has no direct table writes.
 create policy owner_read on public.model_runs for select to authenticated
  using (exists (select 1 from public.projects p where p.id = model_runs.project_id and p.owner_id = (select auth.uid())));
 -- No insert/update/delete policies for authenticated: those operations are denied.
@@ -56,7 +56,7 @@ begin
     or j.lease_until is null or j.lease_until < now() then
   raise exception 'Invalid analysis lease';
  end if;
- if jsonb_typeof(runs) <> 'array' or jsonb_array_length(runs) > 40 then
+ if runs is null or jsonb_typeof(runs) is distinct from 'array' or jsonb_array_length(runs) > 40 then
   raise exception 'Invalid model run batch';
  end if;
  for r in select * from jsonb_array_elements(runs) loop
