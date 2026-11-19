@@ -24,11 +24,14 @@ def candidate_windows(duration, scenes, transcript, limit=8):
     starts.update(s["start"] for s in scenes)
     starts.update(i * duration / max(1, limit - 1) for i in range(limit))
     windows = []
+    # Preserve valid sub-three-second uploads as one full-duration candidate.
+    # Longer videos still require at least three seconds of evidence per window.
+    minimum_window = min(3.0, duration)
     for start in sorted(starts):
         if not math.isfinite(start) or not 0 <= start < duration:
             continue
         end = min(duration, start + 10)
-        if end - start < 3:
+        if end - start < minimum_window:
             continue
         if windows and start - windows[-1][0] < 2:
             continue
