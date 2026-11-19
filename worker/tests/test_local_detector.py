@@ -14,6 +14,12 @@ def test_invalid_media_bounds_rejected(duration):
         candidate_windows(duration, [], [])
 
 
+@pytest.mark.parametrize("duration", [0.75, 1.5, 2.99])
+def test_short_valid_media_gets_one_full_duration_candidate(duration):
+    windows = candidate_windows(duration, [], [])
+    assert windows == [(0.0, round(duration, 3))]
+
+
 def test_scene_and_speech_candidates_stay_inside_source():
     windows = candidate_windows(
         60, [{"start": 12.2}, {"start": 55}, {"start": 100}], [{"start": 24.1}]
